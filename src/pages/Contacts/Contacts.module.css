@@ -1,0 +1,80 @@
+/* Анимации */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.title {
+  animation: fadeInDown 1s ease-in-out;
+}
+
+.content {
+  animation: fadeInLeft 1s ease-in-out;
+}
+
+.container {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.cardContainer {
+  max-width: 32%;
+  animation: fadeInRight 1s ease-in-out; 
+}
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeInLeft 1s ease-in-out; 
+}
+
+.photo {
+  border-radius: 5px;
+  transition: transform 0.3s ease;
+}
+
+.photo:hover {
+  transform: scale(1.05);
+}
+
+
+@media (max-width: 1000px) {
+  .cardContainer {
+    max-width: 48%;
+  }
+}
+
+@media (max-width: 500px) {
+  .cardContainer {
+    max-width: 100%;
+  }
+}

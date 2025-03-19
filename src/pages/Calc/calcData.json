@@ -1,0 +1,246 @@
+{
+  "texts": {
+    "mainParagraphText": "Для расчета можно скорректировать основные параметры по мощности, количеству и коэффициенту одновременного использования электроприбора. Предложенное значение паспортной мощности электроприбора является усреднённой величиной. Для уточнения можно установить значение паспортной мощности электроприбора.",
+    "additionalInfoText": "Предлагаемый расчет выполнен для подключения к электрическим сетям по III категории надежности. Для электроприемников третьей категории электроснабжение может выполняться от одного источника питания при условии, что перерывы электроснабжения, необходимые для ремонта или замены поврежденного элемента системы электроснабжения, не превышают 1 сутки. Электроприемники второй категории в нормальных режимах должны обеспечиваться электроэнергией от двух независимых взаимно резервирующих источников питания. Для электроприемников второй категории при нарушении электроснабжения от одного из источников питания допустимы перерывы электроснабжения на время, необходимое для включения резервного питания действиями дежурного персонала или выездной оперативной бригады."
+  },
+  "columns": [
+    {
+      "title": "Электрическая Мощность (кВт)",
+      "dataIndex": "value",
+      "tooltip": "Усредненная паспортная электрическая мощность электроприбора или удельная мощность на единицу измерения",
+      "type": "number",
+      "defaultValue": 0.0
+    },
+    {
+      "title": "Количество",
+      "dataIndex": "count",
+      "tooltip": "Суммарное количество электроприборов по типу электрооборудования",
+      "type": "number",
+      "defaultValue": 1
+    },
+    {
+      "title": "Единица измерения",
+      "dataIndex": "unit",
+      "tooltip": "Единица измерения",
+      "type": "select",
+      "defaultValue": "Штук",
+      "options": [
+        "Штук",
+        "Квадратные метры",
+        "Погонные метры"
+      ]
+    },
+    {
+      "title": "Коэффициент использования",
+      "dataIndex": "usageCoefficient",
+      "tooltip": "Коэффициент одновременного использования электроприборов может иметь значения от 0 до 1, где 1 - постоянная работа электроприбора",
+      "type": "number",
+      "defaultValue": 0.3
+    },
+    {
+      "title": "Требуемая электрическая мощность (кВт)",
+      "dataIndex": "consumedPower",
+      "tooltip": "Оценочное значение на основе усредненных величин. Для точного расчета требуемой мощности обращаетесь в специализированные проектные организации.",
+      "type": "text"
+    }
+  ],
+  "sections": [
+    {
+      "section": "Электроприборы инженерного назначения",
+      "items": [
+        {
+          "name": "Теплые полы",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 0.03,
+          "unit": "Квадратные метры",
+          "unitShort": "кв.м."
+        },
+        {
+          "name": "Обогрев труб",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 0.02,
+          "unit": "Погонные метры",
+          "unitShort": "пог.м."
+        },
+        {
+          "name": "Обогрев дорожек",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 0.03,
+          "unit": "Квадратные метры",
+          "unitShort": "кв.м."
+        },
+        {
+          "name": "Освещение",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 0.005,
+          "unit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "Кондиционер",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 1.2,
+          "unit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "Тепловой насос",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 3.0,
+          "unit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "Водяной насос (скважина)",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 1.0,
+          "unit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "Бойлер",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 1.8,
+          "unit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "Проточный водонагреватель",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 2.5,
+          "unit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "ИБП различного назначения",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 0.4,
+          "unit": "Штук",
+          "unitShort": "шт."
+        }
+      ]
+    },
+    {
+      "section": "Электроприборы бытового назначения",
+      "items": [
+        {
+          "name": "Варочная панель",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 8.0,
+          "unit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "Духовой шкаф",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 1.5,
+          "unit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "Печь СВЧ",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 0.9,
+          "unit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "Электрочайник",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 1.7,
+          "unit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "Посудомоечная машина",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 1.0,
+          "unit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "Холодильник",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 0.3,
+          "unit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "Электрическая сауна",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 8.0,
+          "unit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "Стиральная машина",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 1.0,
+          "unit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "Телевизоры",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 0.2,
+          "unit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "Сушильный шкаф",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 1.5,
+          "unit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "Пылесос",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 1.2,
+          "unit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "Утюг",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 1.5,
+          "unit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "Обогреватель",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 1.0,
+          "unit": "Штук",
+          "unitShort": "шт."
+        }
+      ]
+    },
+    {
+      "section": "Прочие электроприборы",
+      "items": [
+        {
+          "name": "Доп. оборудование 1",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 0,
+          "defaultUnit": "Штук",
+          "unitShort": "шт."
+        },
+        {
+          "name": "Доп. оборудование 2",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 0,
+          "defaultUnit": "Погонные метры",
+          "unitShort": "пог.м."
+        },
+        {
+          "name": "Доп. оборудование 3",
+          "formula": "value * count * usageCoefficient",
+          "defaultValue": 0,
+          "defaultUnit": "Квадратные метры",
+          "unitShort": "кв.м."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rightMenu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mobileMenu {
+  display: none;
+}
+
+@media (max-width: 991px) {
+  .rightMenu {
+    display: none;
+  }
+  .mainMenu {
+    display: none;
+  }
+  .mobileMenu {
+    display: block;
+  }
+  .header {
+    padding: 0 10px;
+  }
+}

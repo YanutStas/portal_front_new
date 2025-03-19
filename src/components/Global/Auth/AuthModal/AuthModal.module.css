@@ -1,0 +1,10 @@
+.auth__modal {
+    @media (max-width: 768px) {
+      width: 90% !important;
+      top: 7% !important;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+  }
+
+

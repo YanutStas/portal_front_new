@@ -1,0 +1,20 @@
+.formElement {
+  width: calc(33.33% - 20px);
+  min-width: 500px;
+  padding: 10px;
+  border-radius: 10px;
+}
+.formElement .formElement {
+  min-width: 500px;
+  padding: 10px;
+  border-radius: 10px;
+}
+@media (max-width: 1800px) {
+
+}
+@media (max-width: 1300px) {
+  .formElement {
+    width: 100%;
+    min-width: 300px;
+  }
+}

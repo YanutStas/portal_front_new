@@ -1,0 +1,213 @@
+.content {
+  padding: 0 48px;
+}
+
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.ant-select-selection-search-input {
+  font-size: 18px;
+}
+
+/* Подключаем Arial Custom */
+@font-face {
+  font-family: "ArialCustom";
+  src: url("./assets/fonts/arial.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Arial Custom Bold */
+@font-face {
+  font-family: "ArialCustom";
+  src: url("./assets/fonts/arialbd.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* Arial Custom Italic */
+@font-face {
+  font-family: "ArialCustom";
+  src: url("./assets/fonts/ariali.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+/* Arial Custom Bold Italic */
+@font-face {
+  font-family: "ArialCustom";
+  src: url("./assets/fonts/arialbi.ttf") format("truetype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+/* Arial Narrow */
+@font-face {
+  font-family: "ArialNarrowCustom";
+  src: url("./assets/fonts/ARIALN.TTF") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Arial Narrow Bold */
+@font-face {
+  font-family: "ArialNarrowCustom";
+  src: url("./assets/fonts/ARIALNB.TTF") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* Arial Narrow Italic */
+@font-face {
+  font-family: "ArialNarrowCustom";
+  src: url("./assets/fonts/ARIALNI.TTF") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+/* Arial Narrow Bold Italic */
+@font-face {
+  font-family: "ArialNarrowCustom";
+  src: url("./assets/fonts/ARIALNBI.TTF") format("truetype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+/* Arial Black */
+@font-face {
+  font-family: "ArialBlackCustom";
+  src: url("./assets/fonts/ariblk.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Georgia", serif;
+  transition: color 0.3s;
+}
+
+button,
+.ant-btn {
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  border-radius: 5px;
+}
+
+[data-theme="dark"] body {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] button,
+[data-theme="dark"] .ant-btn {
+  background-color: #333333;
+  color: #ffffff;
+  border-color: #444444;
+}
+
+.mainContent {
+  padding: 24px 24px;
+  min-height: calc(100vh - 259px);
+  margin: 64px 0 0 0;
+}
+
+.mainContentAuth {
+  padding: 24px 24px;
+  min-height: calc(100vh - 269px);
+  margin: 64px 0 0 210px;
+}
+
+.formElement {
+  padding: 10px;
+  border-radius: 10px;
+  height: 100%;
+  transition: box-shadow 0.3s ease-in-out;
+}
+.formElement:hover {
+  /* transform: scale(1.01); */
+  box-shadow: 4px 4px 8px 0px;
+}
+.formElement .formElement {
+  padding: 10px;
+  border-radius: 10px;
+}
+.formElement .formElement:hover {
+  transform: none;
+  box-shadow: none;
+}
+.groupInput {
+  border-width: 1px;
+  border-style: solid;
+}
+.groupInput .formElement {
+  border-width: inherit;
+  border-style: solid;
+}
+@media (max-width: 1800px) {
+  .formElement {
+  }
+}
+@media (max-width: 1300px) {
+  .formElement {
+    width: 100%;
+    min-width: 300px;
+  }
+}
+
+@media (max-width: 1199px) {
+  html {
+    font-size: 14px;
+  }
+
+  .content {
+    padding: 0 30px;
+  }
+}
+
+@media (max-width: 991px) {
+  html {
+    font-size: 12px;
+  }
+
+  .content {
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 750px) {
+  html {
+    font-size: 10px;
+  }
+
+  .content {
+    padding: 0 10px;
+  }
+
+  .mainContentAuth {
+    margin: 64px 0 0 0;
+  }
+}

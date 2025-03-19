@@ -1,0 +1,29 @@
+.icon {
+  width: 32px;
+  height: 32px;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 8px;
+  text-align: center;
+  border-radius: 32px;
+  border: 1px solid transparent;
+  transition: background-color 0.3s, border-color 0.3s;
+  font-size: 20px;
+  line-height: 28px;
+}
+.iconText {
+  font-size: 20px;
+  font-family: Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  line-height: 1;
+}
+.chainFlex {
+  margin: 20px 0;
+}
+
+@media (max-width: 991px) {
+  .chainFlex {
+    flex-direction: column;
+  }
+}

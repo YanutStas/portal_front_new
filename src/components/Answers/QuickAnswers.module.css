@@ -1,0 +1,117 @@
+.imageContainer {
+    position: relative;
+    text-align: center;
+    animation: fadeInRight 1s ease-in-out; 
+  }
+  
+  .flashlight {
+    position: absolute;
+    bottom: 42%; 
+    left: 35%; 
+    transform: translateX(-50%);
+    font-size: 48px; 
+    color: #ffd700; 
+  
+    animation: shine 2s infinite;
+  }
+  
+  .flashlight::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(
+      circle,
+      rgba(255, 215, 0, 0.4) 0%,
+      rgba(255, 215, 0, 0) 70%
+    );
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    filter: blur(8px);
+  }
+  
+  .title {
+    font-size: 2em;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    color: inherit;
+    animation: fadeInDown 1s ease-in-out;
+  }
+  
+  .questionsBlock {
+    animation: fadeInLeft 1s ease-in-out;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: justify;
+  }
+  .btn:hover { 
+    animation: effect 0.3s infinite; 
+} 
+  
+  /* Анимации */
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes fadeInRight {
+    from {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes effect { 
+    0% { 
+        transform: translateX(0px) rotate(0deg); 
+    } 
+
+    20% { 
+        transform: translateX(-2px) rotate(-2deg); 
+    } 
+
+    40% { 
+        transform: translateX(-1px) rotate(-1deg); 
+    } 
+
+    60% { 
+        transform: translateX(2px) rotate(2deg); 
+    } 
+
+    80% { 
+        transform: translateX(1px) rotate(1deg); 
+    } 
+
+    100% { 
+        transform: translateX(0px) rotate(0deg); 
+    } 
+} 
+  
+  /* Темная тема */
+  .darkMode {
+    background-color: #1f1f1f;
+    color: #ffffff;
+  }
+  

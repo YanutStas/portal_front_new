@@ -1,0 +1,21 @@
+.formContainer {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+
+
+.submitButton:disabled {
+  background: #ccc !important;
+  cursor: not-allowed;
+}
+
+.columnHeader {
+  display: flex;
+  align-items: center;
+}
+
+.tooltipIcon {
+  margin-left: 5px;
+  font-size: 14px;
+}

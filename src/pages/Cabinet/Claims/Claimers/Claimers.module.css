@@ -1,0 +1,81 @@
+.styleLink {
+  display: block;
+  width: calc(33% - 8px);
+  /* min-height: 250px; */
+  transition: transform ease 0.5s;
+}
+.filters {
+  display: block;
+  width: 300px;
+  margin-top: 130px;
+}
+
+/* .styleCard {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+} */
+.cardImage {
+  position: absolute;
+  right: 5%;
+  bottom: 5%;
+  z-index: 5;
+  opacity: 0.3;
+}
+.cardContent {
+  position: relative;
+  z-index: 10;
+  padding-bottom: 80px;
+}
+/* .chainFlex {
+  margin: 20px 0;
+} */
+
+/* .claimsContainer {
+  padding: 20px;
+} */
+
+.cardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.styleCard {
+  /* width: 300px; */
+  margin-bottom: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: box-shadow 0.3s;
+  height: 100%;
+  min-height: 200px;
+}
+
+.styleCard:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 1900px) {
+  .styleLink {
+    width: calc(50% - 10px);
+  }
+}
+@media (max-width: 1199px) {
+  .styleLink {
+    width: 100%;
+  }
+}
+@media (max-width: 991px) {
+  .styleLink {
+    width: 100%;
+  }
+  .filters {
+    display: none;
+  }
+  .chainFlex {
+    flex-direction: column;
+  }
+}
+@media (max-width: 575px) {
+}

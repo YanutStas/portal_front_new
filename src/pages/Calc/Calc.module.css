@@ -1,0 +1,98 @@
+.totalPower {
+  margin-top: 20px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup .ant-form-item {
+  margin-bottom: 0;
+}
+
+.calculateButton {
+  margin-top: 16px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 16px;
+}
+
+.table {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+}
+
+.totalPowerContainer {
+  text-align: center;
+}
+
+.sectionHeader {
+  white-space: nowrap;
+}
+
+.buttonContainer {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.downloadButton {
+  margin-top: 5%;
+}
+
+.documentsSection ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.customForm {
+  max-width: none;
+}
+
+.columnHeader {
+  display: inline-flex;
+  align-items: center;
+}
+
+.tooltipIcon {
+  margin-left: 5px;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    display: none;
+  }
+  .mobileMessage {
+    display: block;
+    text-align: center;
+    font-size: 1.2em;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 20px;
+    font-weight: 600;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobileMessage {
+    display: none;
+  }
+}

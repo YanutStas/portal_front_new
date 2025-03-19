@@ -1,0 +1,45 @@
+.markdown{
+	width: 100%;
+}
+.code{
+	white-space: pre-wrap;
+}
+.table {
+	width: 100%;
+	margin-bottom: 20px;
+	border-collapse: collapse; 
+}
+.table th {
+	font-weight: bold;
+	padding: 5px;
+    color: rgba(0, 0, 0, 0.88);
+	background: #efefef;
+	border: 1px solid #dddddd;
+}
+.table td {
+	border: 1px solid #dddddd;
+	padding: 5px;
+}
+.table tr td:first-child, .table tr th:first-child {
+	border-left: none;
+}
+.table tr td:last-child, .table tr th:last-child {
+	border-right: none;
+}
+.para{
+	text-indent: 20px;
+	
+}
+
+
+.tableDescription tr td:last-child, .tableDescription tr th:last-child {
+	width: 120px;
+}
+.tableDescription tr td:nth-last-child(2), .tableDescription tr th:nth-last-child(2) {
+	width: 120px;
+}
+@media (max-width:500px) {
+    .tableDescription tr td:nth-last-child(2), .tableDescription tr th:nth-last-child(2) {
+        width: inherit;
+    }
+}
