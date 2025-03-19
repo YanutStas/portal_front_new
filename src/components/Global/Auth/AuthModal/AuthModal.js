@@ -5,14 +5,18 @@ import AuthRegForm from "../Registration/AuthRegForm/AuthRegForm";
 import useAuth from "../../../../stores/useAuth";
 
 const AuthModal = () => {
-  const { isAuthModalOpen, toggleModal, authTab, setAuthTab } = useAuth(
-    (state) => ({
-      isAuthModalOpen: state.isAuthModalOpen,
-      toggleModal: state.toggleModal,
-      authTab: state.authTab,
-      setAuthTab: state.setAuthTab,
-    })
-  );
+  // const { isAuthModalOpen, toggleModal, authTab, setAuthTab } = useAuth(
+  //   (state) => ({
+  //     isAuthModalOpen: state.isAuthModalOpen,
+  //     toggleModal: state.toggleModal,
+  //     authTab: state.authTab,
+  //     setAuthTab: state.setAuthTab,
+  //   }),
+  // );
+  const isAuthModalOpen = useAuth((state) => state.isAuthModalOpen);
+  const toggleModal = useAuth((state) => state.toggleModal);
+  const authTab = useAuth((state) => state.authTab);
+  const setAuthTab = useAuth((state) => state.setAuthTab);
 
   const tabItems = [
     {
