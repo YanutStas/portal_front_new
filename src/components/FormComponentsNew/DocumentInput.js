@@ -26,7 +26,6 @@ export default function DocumentInput({
     setDocumentModalVisible(true);
   };
 
-
   const handlerDocumentSelected = (document) => {
     console.log(
       `Пользователь выбрал документ для категории ${selectedCategory}:`,
@@ -36,10 +35,9 @@ export default function DocumentInput({
     setDocumentModalVisible(false);
   };
 
-
   // Функция для открытия документа в новой вкладке
   const openDocument = useCallback((document) => {
-    const backServer = import.meta.env.VITE_APP_BACK_BACK_SERVER;
+    const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
     const newWindow = window.open("", "_blank");
     let fileUrl;
 
@@ -70,10 +68,8 @@ export default function DocumentInput({
       });
   }, []);
 
-
   const attachedDocument = form.getFieldValue(name);
   const isAttached = !!attachedDocument;
-
 
   const formElement = (
     <div style={{ height: "100%" }}>
@@ -109,7 +105,6 @@ export default function DocumentInput({
             />
           )}
 
-
           {/* Верхняя часть карточки */}
           <div style={{ flex: 1 }}>
             {/* Заголовок с иконкой */}
@@ -124,7 +119,6 @@ export default function DocumentInput({
               }
               title={<div style={{ whiteSpace: "normal" }}>{label}</div>}
               style={{ marginBottom: 16 }}
-
             />
             {/* Отображение названия выбранного документа */}
             {isAttached && (

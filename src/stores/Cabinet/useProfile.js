@@ -6,7 +6,6 @@ const useProfile = create((set, get) => ({
   profile: {},
   isLoadingProfile: false,
 
-
   fetchProfile: async () => {
     try {
       set({ isLoadingProfile: true });
@@ -50,7 +49,7 @@ const useProfile = create((set, get) => ({
       throw error;
     }
   },
-  
+
   updatePassword: async (password) => {
     try {
       const token = localStorage.getItem("jwt");

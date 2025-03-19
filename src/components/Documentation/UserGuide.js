@@ -3,7 +3,7 @@ import pdf from "../../img/docs/pdf.svg";
 import axios from "axios";
 import styles from "./Law.module.css";
 
-const siteMosoblServer = import.meta.env.VITE_APP_BACK_SITE_MOSOBLENERGO_SERVER;
+const siteMosoblServer = import.meta.env.VITE_BACK_SITE_MOSOBLENERGO_SERVER;
 
 export default function UserGuide() {
   const [docs, setDocs] = useState([]);

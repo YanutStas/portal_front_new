@@ -26,7 +26,7 @@ const Documents = ({ categoryKey, onSelectDocument, isModal }) => {
   }, [categoryKey, fetchDocuments]);
 
   const openDocument = useCallback((document) => {
-    const backServer = import.meta.env.VITE_APP_BACK_BACK_SERVER;
+    const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
     const newWindow = window.open("", "_blank");
     let fileUrl;
 
@@ -64,9 +64,7 @@ const Documents = ({ categoryKey, onSelectDocument, isModal }) => {
     } else {
       openDocument(document);
     }
-
   };
-
 
   const confirmDelete = useCallback(
     (id) => {
@@ -104,20 +102,18 @@ const Documents = ({ categoryKey, onSelectDocument, isModal }) => {
       <div key={indexcategory}>
         <Typography.Title level={3}>{category.Description}</Typography.Title>
         <Flex gap={20} wrap="wrap">
-
           {category.docs.map((doc, indexdoc) => (
-            
             <DocumentCard
-            key={indexdoc}
+              key={indexdoc}
               document={doc}
               isModal={isModal}
               handleDocumentClick={handleDocumentClick}
               confirmDelete={confirmDelete}
               openDocument={openDocument}
-              />
-            ))}
+            />
+          ))}
         </Flex>
-            <Divider />
+        <Divider />
       </div>
     ));
   }, [documents, isModal, handleDocumentClick, confirmDelete, openDocument]);
@@ -127,9 +123,13 @@ const Documents = ({ categoryKey, onSelectDocument, isModal }) => {
     <div>
       <AppHelmet title={"Документы"} desc={"Документы"} />
       <Flex align="center" justify="space-between">
-
         <Title level={1}>Документы</Title>
-        <Button type="primary" onClick={!isModalOpen ? handleAddDocument : undefined}>Добавить документ</Button>
+        <Button
+          type="primary"
+          onClick={!isModalOpen ? handleAddDocument : undefined}
+        >
+          Добавить документ
+        </Button>
       </Flex>
       {loadingDocuments && <SceletonCard />}
       {/* <Card
@@ -149,7 +149,6 @@ const Documents = ({ categoryKey, onSelectDocument, isModal }) => {
       </Card> */}
       {documentCards}
       <ModalAddDocument
-
         visible={openModalAdd}
         onClose={handleCloseModal}
         categoryKey={modalCategoryKey}

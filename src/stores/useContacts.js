@@ -8,8 +8,8 @@ export const useContacts = () => {
   const [loading, setLoading] = useState(true);
 
   // Получаем адреса серверов из переменных окружения
-  const backServer = import.meta.env.VITE_APP_BACK_BACK_SERVER;
-  const backPhotoServer = import.meta.env.VITE_APP_BACK_API_SERVER;
+  const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
+  const backPhotoServer = import.meta.env.VITE_BACK_API_SERVER;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,7 +21,6 @@ export const useContacts = () => {
           },
           withCredentials: true,
         });
-      
 
         if (Array.isArray(response.data)) {
           // Обрабатываем данные и добавляем изображения и координаты
@@ -30,12 +29,12 @@ export const useContacts = () => {
 
             const images = center.photos
               ? center.photos.map((photo) => {
-                return {
-                  src: `${backPhotoServer}/${photo.ПутьКФайлу}`,
-                  width: photo.width || 800,
-                  height: photo.height || 600,
-                }
-              })
+                  return {
+                    src: `${backPhotoServer}/${photo.ПутьКФайлу}`,
+                    width: photo.width || 800,
+                    height: photo.height || 600,
+                  };
+                })
               : [];
 
             // Парсим координаты из строк в числа
@@ -43,8 +42,7 @@ export const useContacts = () => {
             const longitude = parseFloat(center.longitude);
 
             // Проверяем, есть ли валидные координаты
-            const hasCoordinates =
-              !isNaN(latitude) && !isNaN(longitude);
+            const hasCoordinates = !isNaN(latitude) && !isNaN(longitude);
 
             return {
               ...center,

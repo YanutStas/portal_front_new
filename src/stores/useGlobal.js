@@ -16,7 +16,6 @@ const useGlobal = create((set) => ({
     });
   },
 
-
   toggleDarkMode: () => {
     set((state) => {
       localStorage.setItem("darkMode", !state.darkMode ? 1 : 0);

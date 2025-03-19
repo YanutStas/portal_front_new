@@ -38,7 +38,7 @@ export default function SelectInput({
       style={{ maxWidth: "100%", overflow: "hidden" }}
       initialValue={defaultValue}
     >
-      <Select
+      <Select      
         style={{ width: "100%" }}
         showSearch
         optionFilterProp="label"

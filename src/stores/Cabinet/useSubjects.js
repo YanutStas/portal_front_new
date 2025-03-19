@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import axios from "axios";
-const backServer = import.meta.env.VITE_APP_BACK_BACK_SERVER
+const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 const useSubjects = create((set, get) => ({
   subjects: [],
   subject: null,
@@ -55,14 +55,11 @@ const useSubjects = create((set, get) => ({
     try {
       set({ isLoadingSubjects: true });
       const token = localStorage.getItem("jwt");
-      const response = await axios.get(
-        `${backServer}/api/cabinet/subjects`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${backServer}/api/cabinet/subjects`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       set({ subjects: response.data, isLoadingSubjects: false });
     } catch (error) {
       console.log(error);

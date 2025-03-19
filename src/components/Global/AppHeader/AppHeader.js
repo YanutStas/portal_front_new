@@ -171,7 +171,7 @@ export default function AppHeader() {
         closeMenuDrawer={closeMenuDrawer}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        itemsMobile={itemsMobile}
+        itemsMobile={items}
         colorText={colorText}
         darkMode={darkMode}
         handlerDarkMode={handlerDarkMode}

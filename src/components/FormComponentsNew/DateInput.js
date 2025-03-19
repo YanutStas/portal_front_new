@@ -41,13 +41,14 @@ export default function DateInput({
         initialValue={defaultValue}
       >
         {part === "Дата" && (
-          <DatePicker format={"DD.MM.YYYY"} placeholder={placeholder} />
+          <DatePicker format={"DD.MM.YYYY"} placeholder={placeholder} required={required}/>
         )}
         {part === "МесяцГод" && (
           <DatePicker
             format={"MM.YYYY"}
             placeholder={placeholder}
             picker="month"
+            required={required}
           />
         )}
         {part === "ДатаВремя" && (
@@ -55,10 +56,11 @@ export default function DateInput({
             format={"DD.MM.YYYY HH:mm"}
             showTime
             placeholder={placeholder}
+            required={required}
           />
         )}
         {part === "Время" && (
-          <TimePicker format={"HH:mm"} placeholder={placeholder} />
+          <TimePicker format={"HH:mm"} placeholder={placeholder} required={required}/>
         )}
       </Form.Item>
     </ConfigProvider>

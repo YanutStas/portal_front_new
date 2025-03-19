@@ -26,7 +26,7 @@ const DocumentAttachments = ({ form, categoriesFiles }) => {
 
   // Функция для открытия документа в новой вкладке
   const openDocument = useCallback((document) => {
-    const backServer = import.meta.env.VITE_APP_BACK_BACK_SERVER;
+    const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
     const newWindow = window.open("", "_blank");
     let fileUrl;
 

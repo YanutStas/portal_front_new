@@ -51,7 +51,7 @@ export const itemsMobile = [
     key: "/contacts",
   },
   {
-    label: <Link to="/docs">Документация</Link>,
+    label: <Link to="/docs">Информация</Link>,
     key: "/docs",
   },
   {

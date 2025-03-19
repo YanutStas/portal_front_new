@@ -11,8 +11,9 @@ const AuthModal = () => {
   //     toggleModal: state.toggleModal,
   //     authTab: state.authTab,
   //     setAuthTab: state.setAuthTab,
-  //   }),
+  //   })
   // );
+
   const isAuthModalOpen = useAuth((state) => state.isAuthModalOpen);
   const toggleModal = useAuth((state) => state.toggleModal);
   const authTab = useAuth((state) => state.authTab);

@@ -15,7 +15,7 @@ const type = {
   xls,
   rtf,
 };
-const siteMosoblServer = import.meta.env.VITE_APP_BACK_SITE_MOSOBLENERGO_SERVER;
+const siteMosoblServer = import.meta.env.VITE_BACK_SITE_MOSOBLENERGO_SERVER;
 
 export default function Law() {
   const [docs, setDocs] = useState([]);
@@ -24,7 +24,7 @@ export default function Law() {
       .get(`${siteMosoblServer}/api/tp-normativno-pravovye-akty?populate=*`)
       .then((response) => {
         if (response.data) {
-          console.log(response.data)
+          console.log(response.data);
           setDocs(response.data.data.docs);
         }
       })
@@ -37,10 +37,7 @@ export default function Law() {
       <div className="row-docs-age">
         {docs.length > 0 &&
           docs
-            .sort(
-              (a, b) =>
-                Number(a.caption) - Number(b.caption)
-            )
+            .sort((a, b) => Number(a.caption) - Number(b.caption))
             .map((item, index) => (
               <a
                 key={index}
@@ -57,9 +54,7 @@ export default function Law() {
                   />
                 </div>
                 <div className="docLine__wrapText">
-                  <span className={styles.docLine__name}>
-                    {item.name}
-                  </span>
+                  <span className={styles.docLine__name}>{item.name}</span>
                   <span className={styles.docLine__fileInfo}>
                     {Number(item.size) > 1000
                       ? `${(item.size / 1000).toFixed(2)} МБ`

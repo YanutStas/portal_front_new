@@ -1,5 +1,5 @@
 import axios from "axios";
-const backServer = import.meta.env.VITE_APP_BACK_BACK_SERVER;
+const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
 export const sendMessageToGigachat = async (message) => {
   try {

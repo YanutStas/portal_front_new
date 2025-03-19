@@ -2,7 +2,7 @@ import { create } from "zustand";
 import axios from "axios";
 import { message } from "antd";
 
-const backServer = import.meta.env.VITE_APP_BACK_BACK_SERVER;
+const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
 const useDocuments = create((set, get) => ({
   documents: [],
@@ -20,45 +20,50 @@ const useDocuments = create((set, get) => ({
     try {
       let url = `${backServer}/api/cabinet/documents`;
 
-      const response = await Promise.all([axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`
-        },
-        withCredentials: true,
-      }), axios.get(
-        `${backServer}/api/cabinet/documents/categories`,
-        {
+      const response = await Promise.all([
+        axios.get(url, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jwt")}`,
           },
           withCredentials: true,
-        }
-      )])
+        }),
+        axios.get(`${backServer}/api/cabinet/documents/categories`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          },
+          withCredentials: true,
+        }),
+      ]);
 
       if (response[0].data.documents && categoryKey) {
         response[0].data.documents = response[0].data.documents.filter(
           (document) => document.ВидФайла_Key === categoryKey
         );
       }
-      const docsForCategory = []
-      response[0].data.documents.forEach(document => {
-        const category = response[1].data.categories.find(category => category.Ref_Key === document.ВидФайла_Key)
-        const docsForCategoryIndex = docsForCategory.findIndex(category => category.Ref_Key === document.ВидФайла_Key)
-        console.log(docsForCategoryIndex)
+      const docsForCategory = [];
+      response[0].data.documents.forEach((document) => {
+        const category = response[1].data.categories.find(
+          (category) => category.Ref_Key === document.ВидФайла_Key
+        );
+        const docsForCategoryIndex = docsForCategory.findIndex(
+          (category) => category.Ref_Key === document.ВидФайла_Key
+        );
+        console.log(docsForCategoryIndex);
         if (category && docsForCategoryIndex !== -1) {
-          docsForCategory[docsForCategoryIndex].docs.push(document)
-        }else{
-          docsForCategory.push(category)
-          docsForCategory[docsForCategory.length-1].docs = []
-          docsForCategory[docsForCategory.length-1].docs.push(document)
+          docsForCategory[docsForCategoryIndex].docs.push(document);
+        } else {
+          docsForCategory.push(category);
+          docsForCategory[docsForCategory.length - 1].docs = [];
+          docsForCategory[docsForCategory.length - 1].docs.push(document);
         }
-        
-      })
-console.log(docsForCategory);
+      });
+      console.log(docsForCategory);
 
-
-
-set({ documents: docsForCategory, categories: response[1].data.categories, loadingDocuments: false });
+      set({
+        documents: docsForCategory,
+        categories: response[1].data.categories,
+        loadingDocuments: false,
+      });
     } catch (error) {
       set({
         loadingDocuments: false,

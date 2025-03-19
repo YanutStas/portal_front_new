@@ -5,7 +5,7 @@ import useTemp from "../../stores/Cabinet/useTemp";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
 
-const backServer = import.meta.env.VITE_APP_BACK_BACK_SERVER;
+const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
 export default function PriceInput({
   name = "name",

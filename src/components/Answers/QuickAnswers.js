@@ -1,4 +1,13 @@
-import { Button, Col, Collapse, Divider, Image, Row, Tooltip, Typography } from "antd";
+import {
+  Button,
+  Col,
+  Collapse,
+  Divider,
+  Image,
+  Row,
+  Tooltip,
+  Typography,
+} from "antd";
 import React, { useState, useEffect } from "react";
 import ModalBot from "../Global/ModalBot";
 import useGlobal from "../../stores/useGlobal";
@@ -8,7 +17,7 @@ import mosoblikImage from "../../img/answers/mosoblik.png";
 import mosoblikDarkImage from "../../img/answers/mosoblik_dark.png";
 import styles from "./QuickAnswers.module.css";
 
-const backServer = import.meta.env.VITE_APP_BACK_BACK_SERVER;
+const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
 export default function QuickAnswers() {
   const [questions, setQuestions] = useState([]);
@@ -46,7 +55,6 @@ export default function QuickAnswers() {
             .map((section, index) => (
               <div key={index}>
                 <Typography.Title level={3}>
-
                   {section.Description ? section.Description : "Прочие вопросы"}
                 </Typography.Title>
 

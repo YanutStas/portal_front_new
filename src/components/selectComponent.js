@@ -7,6 +7,7 @@ import DividerForm from "./FormComponentsNew/DividerForm";
 import DocumentInput from "./FormComponentsNew/DocumentInput";
 import FormulaInput from "./FormComponentsNew/FormulaInput";
 import GroupInput from "./FormComponentsNew/GroupInput";
+import HiddenInput from "./FormComponentsNew/HiddenInput";
 import InnInput from "./FormComponentsNew/InnInput";
 import NumberInput from "./FormComponentsNew/NumberInput";
 import PhoneInput from "./FormComponentsNew/phoneComponent/PhoneInput";
@@ -269,6 +270,18 @@ export default function selectComponent(item, index) {
   if (item.component?.Ref_Type?.includes("FileInput"))
     return (
       <DocumentInput
+        key={index}
+        {...item.component}
+        {...item}
+        fullDescription={item.name?.fullDescription}
+        name={item.idLine}
+        dependOf={item.dependIdLine}
+        howDepend={item.dependСondition}
+      />
+    );
+  if (item.component?.Ref_Type?.includes("HiddenInput"))
+    return (
+      <HiddenInput
         key={index}
         {...item.component}
         {...item}

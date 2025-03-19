@@ -57,28 +57,40 @@ export default function NewClaim() {
   };
 
   const onFinish = async (values) => {
-    for (const [key, value] of Object.entries(values)) {
-      if (Array.isArray(value)) {
-        values[key].forEach((element) => {
-          for (const [key, value] of Object.entries(element)) {
-            if (typeof value === "object" && Object.hasOwn(value, "$d")) {
-              element[key] = moment(value).format();
-            }
-          }
-        });
-      }
+    let newValues = {}
 
+    const addNewValue = (value) => {
       if (typeof value === "object" && Object.hasOwn(value, "$d")) {
-        values[key] = moment(value).format();
+        return moment(value).format();
+      } else if (!Array.isArray(value)) {
+        return value;
       }
     }
+
+
+    for (const [key, value] of Object.entries(values)) {
+      if (Array.isArray(value)) {
+        // addNewValueArray(value,key)
+        newValues[key] = values[key].map((element) => {
+          let newElement = {}
+          for (const [key, value] of Object.entries(element)) {
+            newElement[key] = addNewValue(value)
+          }
+          return newElement
+        });
+      } else {
+        newValues[key] = addNewValue(value);
+      }
+
+
+    }
     try {
-      console.log("Данные для создания заявки: ", values);
+      console.log("Данные для создания заявки: ", newValues);
 
       await createClaim({
         versionId: serviceItem.versionId,
         serviceId: serviceItem.Ref_Key,
-        values,
+        values: newValues,
       });
 
     } catch (err) {
@@ -91,7 +103,7 @@ export default function NewClaim() {
       event.preventDefault();
     }
   };
-
+  console.log(serviceItem)
   return (
     <div style={{ maxWidth: "100%", margin: "0 auto" }}>
       <AppHelmet

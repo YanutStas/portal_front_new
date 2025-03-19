@@ -1,7 +1,7 @@
 [
   { "name": "postal_code", "label": "Почтовый индекс" },
   { "name": "country", "label": "Страна" },
-  { "name": "region", "label": "Регион" },
+  { "name": "region", "label": "Регион/Область" },
   { "name": "area", "label": "Район" },
   { "name": "city", "label": "Город" },
   { "name": "settlement", "label": "Населенный пункт" },

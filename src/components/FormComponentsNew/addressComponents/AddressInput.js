@@ -8,7 +8,7 @@ import { EditOutlined } from "@ant-design/icons";
 import WrapperComponent from "../WrapperComponent";
 import InfoDrawer from "../../InfoDrawer";
 
-const backServer = import.meta.env.VITE_APP_BACK_BACK_SERVER;
+const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
 const AddressInput = ({
   name = "name",
@@ -24,9 +24,16 @@ const AddressInput = ({
   span = false,
   fullDescription = false,
   stylesField_key = false,
+  country = false,
+  region = false,
+  area = false,
+  city = false,
+  settlement = false,
+  street = false,
+  fullAddress = false,
 }) => {
   const { token } = theme.useToken();
-  // console.log(theme.useToken().token)
+  // console.log(country)
   const form = Form.useFormInstance();
   // let fieldDepends = Form.useWatch(dependOf, form)
   const [options, setOptions] = useState([]);
@@ -59,7 +66,18 @@ const AddressInput = ({
           console.log("response.data", response.data);
           setOptions(
             response.data.data.map((item) => ({
-              label: item.value,
+              label: (
+                <div
+                  style={{
+                    maxWidth: "100%",
+                    whiteSpace: "break-spaces",
+                    paddingBottom: 5,
+                    borderBottom: `1px solid rgba(133,133,133,.2)`,
+                  }}
+                >
+                  {item.value}
+                </div>
+              ),
               value: item.unrestricted_value,
               data: item.data,
               // unrestricted_value: item.unrestricted_value,
@@ -79,7 +97,7 @@ const AddressInput = ({
   const onSelect = (value, option) => {
     const updatedAddress = { ...option.data };
     let updateObject = {};
-    console.log(option);
+    // console.log(option);
     // Сохраняем полный адрес под капотом
     setAddress(updatedAddress);
     updateObject.fullAddress = value;
@@ -165,11 +183,12 @@ const AddressInput = ({
                 ]}
                 style={{ flex: 1, minWidth: 300 }}
                 labelAlign="left"
+                initialValue={fullAddress}
               >
                 <AutoComplete
                   options={options}
                   onSelect={(value, option) => onSelect(value, option)}
-                  onSearch={(text) => fetchSuggestions(text, "АдресПолный")}
+                  onSearch={(text) => fetchSuggestions(text, "fullAddress")}
                   placeholder={placeholder}
                 >
                   <Input.TextArea />
@@ -193,6 +212,7 @@ const AddressInput = ({
               onSave={handleModalSave}
               onCancel={() => setModalVisible(false)}
               name={name}
+              defaultValue={{ country, region, area, city, settlement, street }}
             />
           </>
         )}
