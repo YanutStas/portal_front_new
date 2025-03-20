@@ -1,12 +1,15 @@
 import { useState } from "react";
 import pdfMake from "pdfmake/build/pdfmake";
 import calcData from "../pages/Calc/calcData.json";
+import { Parser } from "expr-eval";
 
 const usageCoefficients = {
   "Электроприборы инженерного назначения": 0.6,
   "Электроприборы бытового назначения": 0.3,
   "Прочие электроприборы": 0.3,
 };
+
+const parser = new Parser();
 
 export default function useCalc() {
   const [totalPower, setTotalPower] = useState(0);
@@ -18,6 +21,38 @@ export default function useCalc() {
     let total = 0;
     const newCalculatedData = {};
 
+    // calcData.sections.forEach((section, sectionIndex) => {
+    //   section.items.forEach((item, itemIndex) => {
+    //     const key = `${sectionIndex}-${itemIndex}`;
+    //     const inputValue = parseFloat(values[key].value);
+    //     const countValue = parseInt(values[key].count, 10) || 0;
+    //     const usageCoefficient =
+    //       parseFloat(values[key].usageCoefficient) ||
+    //       usageCoefficients[section.section] ||
+    //       0.3;
+
+    //     const formula = item.formula;
+
+    //     if (!isNaN(inputValue) && formula && countValue > 0) {
+    //       // Подставляем все переменные в формулу
+    //       const expr = formula
+    //         .replace("count", countValue)
+    //         .replace("value", inputValue)
+    //         .replace("usageCoefficient", usageCoefficient);
+
+    //       // Выполняем формулу
+    //       const result = eval(expr);
+    //       const consumedPower = result; // теперь formula уже учитывает usageCoefficient
+
+    //       total += consumedPower;
+    //       newCalculatedData[key] = {
+    //         consumedPower: consumedPower.toFixed(2),
+    //         usageCoefficient: usageCoefficient.toFixed(2),
+    //       };
+    //     }
+    //   });
+    // });
+
     calcData.sections.forEach((section, sectionIndex) => {
       section.items.forEach((item, itemIndex) => {
         const key = `${sectionIndex}-${itemIndex}`;
@@ -28,22 +63,17 @@ export default function useCalc() {
           usageCoefficients[section.section] ||
           0.3;
 
-        const formula = item.formula;
+        if (!isNaN(inputValue) && item.formula && countValue > 0) {
+          const parsedExpr = parser.parse(item.formula);
+          const result = parsedExpr.evaluate({
+            count: countValue,
+            value: inputValue,
+            usageCoefficient,
+          });
 
-        if (!isNaN(inputValue) && formula && countValue > 0) {
-          // Подставляем все переменные в формулу
-          const expr = formula
-            .replace("count", countValue)
-            .replace("value", inputValue)
-            .replace("usageCoefficient", usageCoefficient);
-
-          // Выполняем формулу
-          const result = eval(expr);
-          const consumedPower = result; // теперь formula уже учитывает usageCoefficient
-
-          total += consumedPower;
+          total += result;
           newCalculatedData[key] = {
-            consumedPower: consumedPower.toFixed(2),
+            consumedPower: result.toFixed(2),
             usageCoefficient: usageCoefficient.toFixed(2),
           };
         }
