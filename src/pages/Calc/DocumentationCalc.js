@@ -6,19 +6,26 @@ import Children from "rc-tween-one/lib/plugin/ChildrenPlugin";
 import lawStyles from "../../components/Documentation/Law.module.css";
 import pdf from "../../../src/img/pdf.svg";
 
+//ДОБАВИЛ ИМПОРТЫ.
+// Пометка на потом: "require — это синтаксис CommonJS, который не поддерживается нативно в браузере.
+// Vite работает поверх ESM-модулей (ECMAScript Modules), где используется import/export."
+import doc1 from "./LegalActs/1.pdf";
+import doc2 from "./LegalActs/2.pdf";
+import doc3 from "./LegalActs/3.pdf";
+
 TweenOne.plugins.push(Children);
 
 const { Title } = Typography;
 
 export default function DocumentationCalc() {
   return (
-
     <div className={lawStyles.documentsSection}>
       <Title level={4}>Нормативные документы:</Title>
       <div className={lawStyles.rowDocsAge}>
         <a
           className={lawStyles.docLine}
-          href={require("./LegalActs/1.pdf")}
+          // href={require("./LegalActs/1.pdf")}
+          href={doc1}
           download
         >
           <div className={lawStyles.docLine__wrapIcon}>
@@ -34,7 +41,9 @@ export default function DocumentationCalc() {
         </a>
         <a
           className={lawStyles.docLine}
-          href={require("./LegalActs/2.pdf")}
+          // href={require("./LegalActs/2.pdf")}
+          // download
+          href={doc2}
           download
         >
           <div className={lawStyles.docLine__wrapIcon}>
@@ -51,7 +60,9 @@ export default function DocumentationCalc() {
         </a>
         <a
           className={lawStyles.docLine}
-          href={require("./LegalActs/3.pdf")}
+          // href={require("./LegalActs/3.pdf")}
+          // download
+          href={doc3}
           download
         >
           <div className={lawStyles.docLine__wrapIcon}>
@@ -68,6 +79,5 @@ export default function DocumentationCalc() {
         </a>
       </div>
     </div>
-
   );
 }
