@@ -1,4 +1,3 @@
-// File: /src/components/Global/Auth/Registration/Step_1/PhoneVerification/PhoneVerification.jsx
 import React, { useState, useEffect, useCallback } from "react";
 import { Button, Form, Space, theme } from "antd";
 import { IMaskInput } from "react-imask";
@@ -11,7 +10,6 @@ const PhoneVerification = React.memo(() => {
   const { colorBorderBg, colorText } = theme.useToken().token;
   const [form] = Form.useForm();
 
-  // Используем Zustand для хранения номера
   const phone = useRegistration((state) => state.phone);
   const setPhone = useRegistration((state) => state.setPhone);
   const submitPhone = useRegistration((state) => state.submitPhone);
@@ -39,7 +37,6 @@ const PhoneVerification = React.memo(() => {
     return () => clearInterval(interval);
   }, [timer]);
 
-  // Забираем номер из состояния (не из формы) при сабмите
   const onFinish = useCallback(async () => {
     const formattedPhone = phone.replace(/[^\d]/g, "");
     await submitPhone(formattedPhone);
@@ -48,11 +45,9 @@ const PhoneVerification = React.memo(() => {
     setHasAttempted(true);
   }, [phone, submitPhone, setCodeRequested]);
 
-  // Обработчик onAccept для IMaskInput
   const handleChange = useCallback(
     (value) => {
       setPhone(value);
-      // Для маски "+7 (000) 000-00-00" должно быть 11 цифр (7 + 10 цифр)
       const digits = value.replace(/\D/g, "");
       setIsPhoneValid(digits.length === 11);
     },
