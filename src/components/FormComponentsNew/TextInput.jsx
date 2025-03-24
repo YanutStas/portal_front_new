@@ -47,87 +47,18 @@ export default function TextInput({
   const { profile } = useProfile();
   const emailFromProfile = profile.email || "";
 
-  // Основная функция для получения подсказок от DaData
-  // const fetchSuggestions = async (searchText) => {
-  //   if (searchText) {
-  //     try {
-  //       const params = { type, query: searchText };
-
-  //       // Если это поле "Улица" или "Город", добавляем зависимости от страны, региона и города
-  //       if (type === "Улица" || type === "Город") {
-  //         // Получаем значения страны и региона из формы (или используем значения по умолчанию)
-  //         const country = form.getFieldValue("Страна") || "Россия";
-  //         const region = form.getFieldValue("Регион") || "Московская";
-
-  //         // Если это улица, добавляем fias_id города (если он есть)
-  //         const cityFias = form.getFieldValue("cityFiasHidden");
-
-  //         // Формируем объект locations для запроса к DaData
-  //         params.locations = [{ country, region }];
-  //         if (type === "Улица" && cityFias) {
-  //           params.locations[0].fias_id = cityFias; // Добавляем fias_id города для улиц
-  //         }
-  //       }
-
-  //       // Добавляем логику для поиска районов по выбранному региону
-  //       if (type === "Район") {
-  //         // Получаем значения страны и региона из формы
-  //         const country = form.getFieldValue("Страна") || "Россия";
-  //         const region = form.getFieldValue("Регион") || "Московская";
-
-  //         // Формируем объект locations для фильтрации районов по стране и региону
-  //         params.locations = [{ country, region }];
-  //       }
-
-  //       // Делаем запрос к серверу для получения подсказок
-  //       const response = await axios.get(
-  //         `${backServer}/api/cabinet/getDaData`,
-  //         {
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-  //           },
-  //           withCredentials: true,
-  //           params,
-  //         }
-  //       );
-
-  //       // Преобразуем ответ в формат, подходящий для AutoComplete
-  //       setSuggestions(
-  //         response.data.data.map((suggestion) => ({
-  //           label: suggestion.value,
-  //           value: suggestion.value,
-  //           fiasId: suggestion.data?.fias_id, // Сохраняем fias_id для городов
-  //         }))
-  //       );
-  //     } catch (error) {
-  //       console.error("Error fetching suggestions:", error);
-  //     }
-  //   } else {
-  //     setSuggestions([]); // Если поисковой запрос пустой, очищаем подсказки
-  //   }
-  // };
 
   const fetchSuggestions = async (searchText) => {
     if (searchText) {
-      // console.log(name)
-      // console.log(JSON.parse(serviceItem.properties)?.externalService?.DaData)
       try {
         const params = { type, query: searchText };
-
-        // Если это поле "Улица" или "Город", добавляем зависимости от страны, региона и города
         if (type === "Улица" || type === "Город") {
-          // Получаем значения страны и региона из формы (или используем значения по умолчанию)
           const country = form.getFieldValue("Страна") || "Россия";
           const region = form.getFieldValue("Регион") || "Московская";
-
-          // Если это улица, добавляем fias_id города (если он есть)
           const cityFias = form.getFieldValue("cityFiasHidden");
-
-          // Формируем объект locations для запроса к DaData
           params.locations = [{ country, region }];
           if (type === "Улица" && cityFias) {
-            params.locations[0].fias_id = cityFias; // Добавляем fias_id города для улиц
+            params.locations[0].fias_id = cityFias;
           }
         }
 
@@ -287,125 +218,3 @@ export default function TextInput({
     </WrapperComponent>
   );
 }
-
-// import { Form, Input, AutoComplete } from "antd";
-// import { useState, useEffect, useCallback } from "react";
-// import { debounce } from "lodash";
-// import axios from "axios";
-
-// import WrapperComponent from "./WrapperComponent";
-// import InfoDrawer from "../InfoDrawer";
-// import useServices from "../../stores/useServices";
-// import useProfile from "../../stores/Cabinet/useProfile";
-
-// const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
-
-// // Условимся: для автокомплита DaData достаточно двух типов: "Город" и "Улица"
-// // (если у вас ещё "Страна" и т.д., просто расширьте проверку).
-// const isDaDataType = (type) =>
-//   [
-//     "Фамилия",
-//     "Имя",
-//     "Отчество",
-//     "АдресПолный",
-//     "Страна",
-//     "Регион",
-//     "Город",
-//     "Улица",
-//     "Район",
-//   ].includes(type);
-
-// export default function TextInput(props) {
-//   const {
-//     name = "name",
-//     label = "",
-//     specialField: type = "", // "Город" или "Улица"
-//     required = false,
-//     placeholder = "",
-//     disabled = false,
-//     length = false,
-//     span = false,
-//     ...rest
-//   } = props;
-
-//   const form = Form.useFormInstance();
-//   const [value, setValue] = useState("");
-//   const [suggestions, setSuggestions] = useState([]);
-
-//   // Запрос к бэку getDaData. Добавляем fias_id, если поле "Улица"
-//   const fetchSuggestions = async (query) => {
-//     if (!query) return setSuggestions([]);
-//     try {
-//       const params = { type, query };
-//       // Если улица — добавляем fias_id из скрытого поля:
-//       if (type === "Улица") {
-//         const cityFias = form.getFieldValue("cityFiasHidden");
-//         if (cityFias) {
-//           params.locations = [{ fias_id: cityFias }];
-//         }
-//       }
-//       const res = await axios.get(`${backServer}/api/cabinet/getDaData`, {
-//         params,
-//         headers: {
-//           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-//         },
-//       });
-//       setSuggestions(res.data?.data || []);
-//     } catch (e) {
-//       console.error("fetchSuggestions error:", e);
-//       setSuggestions([]);
-//     }
-//   };
-
-//   const debouncedFetch = useCallback(debounce(fetchSuggestions, 400), []);
-
-//   useEffect(() => {
-//     if (isDaDataType(type)) debouncedFetch(value);
-//     else setSuggestions([]);
-//   }, [value]);
-
-//   // onSelect — если "Город", сохраняем fias_id в hidden-поле
-//   const onSelect = (val, opt) => {
-//     setValue(val);
-//     if (type === "Город" && opt?.fiasId) {
-//       // Запомним fiasId в поле "cityFiasHidden" (вы обязаны создать это поле в своей форме)
-//       form.setFieldValue("cityFiasHidden", opt.fiasId);
-//     }
-//   };
-
-//   return (
-//     <WrapperComponent span={span} name={name} {...rest}>
-//       <Form.Item
-//         name={name}
-//         label={label}
-//         rules={[{ required, message: "Обязательное поле" }]}
-//       >
-//         {isDaDataType(type) ? (
-//           <AutoComplete
-//             options={suggestions.map((s) => ({
-//               label: s.value,
-//               value: s.value,
-//               fiasId: s.data?.fias_id,
-//             }))}
-//             onChange={setValue}
-//             onSelect={onSelect}
-//             value={value}
-//             placeholder={placeholder}
-//             disabled={disabled}
-//             maxLength={length || undefined}
-//           />
-//         ) : (
-//           <Input
-//             value={value}
-//             onChange={(e) => setValue(e.target.value)}
-//             placeholder={placeholder}
-//             disabled={disabled}
-//             maxLength={length || undefined}
-//           />
-//         )}
-//       </Form.Item>
-//     </WrapperComponent>
-//   );
-// }
-
-//
