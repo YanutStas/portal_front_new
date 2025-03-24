@@ -23,21 +23,21 @@ import TextInput from "./FormComponentsNew/TextInput";
 export default function selectComponent(item, index) {
   if (item.component?.Ref_Type?.includes("Divider"))
     return <DividerForm key={index} {...item.component} label={item.label} />;
-  if (
-    item.component?.Ref_Type?.includes("TextInput") &&
-    item.component?.specialField === "Телефон"
-  )
-    return (
-      <PhoneInput
-        key={index}
-        {...item.component}
-        {...item}
-        fullDescription={item.name?.fullDescription}
-        name={item.idLine}
-        dependOf={item.dependIdLine}
-        howDepend={item.dependСondition}
-      />
-    );
+  // if (
+  //   item.component?.Ref_Type?.includes("TextInput") &&
+  //   item.component?.specialField === "Телефон"
+  // )
+  //   return (
+  //     <PhoneInput
+  //       key={index}
+  //       {...item.component}
+  //       {...item}
+  //       fullDescription={item.name?.fullDescription}
+  //       name={item.idLine}
+  //       dependOf={item.dependIdLine}
+  //       howDepend={item.dependСondition}
+  //     />
+  //   );
   if (
     item.component?.Ref_Type?.includes("TextInput") &&
     item.component?.specialField === "ИНН"
