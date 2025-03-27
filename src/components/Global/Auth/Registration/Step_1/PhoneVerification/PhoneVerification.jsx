@@ -1,21 +1,21 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Button, Form, Space, theme } from "antd";
+import { IMaskInput } from "react-imask";
 import useRegistration from "../../../../../../stores/useRegistration";
-import InputMask from "react-input-mask";
 import PhoneCodeVerification from "../PhoneCodeVerification";
-import { formItemLayout, tailFormItemLayout } from '../../../../../../components/configSizeForm'
-import styles from './PhoneVerification.module.css'
+import { formItemLayout, tailFormItemLayout } from "../../../../../../components/configSizeForm";
+import styles from "./PhoneVerification.module.css";
 
-const PhoneVerification = React.memo(({ submitPhoneCode }) => {
+const PhoneVerification = React.memo(() => {
   const { colorBorderBg, colorText } = theme.useToken().token;
   const [form] = Form.useForm();
-  const { phone, setPhone, submitPhone, codeRequested, setCodeRequested } = useRegistration((state) => ({
-    phone: state.phone,
-    setPhone: state.setPhone,
-    submitPhone: state.submitPhone,
-    codeRequested: state.codeRequested,
-    setCodeRequested: state.setCodeRequested,
-  }));
+
+  const phone = useRegistration((state) => state.phone);
+  const setPhone = useRegistration((state) => state.setPhone);
+  const submitPhone = useRegistration((state) => state.submitPhone);
+  const codeRequested = useRegistration((state) => state.codeRequested);
+  const setCodeRequested = useRegistration((state) => state.setCodeRequested);
+
   const [isPhoneValid, setIsPhoneValid] = useState(false);
   const [timer, setTimer] = useState(0);
   const [hasAttempted, setHasAttempted] = useState(false);
@@ -30,53 +30,44 @@ const PhoneVerification = React.memo(({ submitPhoneCode }) => {
   useEffect(() => {
     let interval;
     if (timer > 0) {
-      interval = setInterval(() => setTimer((prevTimer) => prevTimer - 1), 1000);
-    } else {
-      clearInterval(interval);
+      interval = setInterval(() => {
+        setTimer((prev) => (prev > 0 ? prev - 1 : 0));
+      }, 1000);
     }
     return () => clearInterval(interval);
   }, [timer]);
 
-  const onFinish = useCallback(async (values) => {
-    const formattedPhone = values.phone.replace(/[^\d]/g, "");
-    setCodeRequested(false);
+  const onFinish = useCallback(async () => {
+    const formattedPhone = phone.replace(/[^\d]/g, "");
     await submitPhone(formattedPhone);
     setCodeRequested(true);
     setTimer(10);
     setHasAttempted(true);
-  }, [submitPhone]);
+  }, [phone, submitPhone, setCodeRequested]);
 
-
-  const onPhoneChange = useCallback((event) => {
-    const value = event.target.value;
-    const isComplete = !value.includes("_");
-    setIsPhoneValid(isComplete);
-    setPhone(value);
-  }, [setPhone]);
+  const handleChange = useCallback(
+    (value) => {
+      setPhone(value);
+      const digits = value.replace(/\D/g, "");
+      setIsPhoneValid(digits.length === 11);
+    },
+    [setPhone]
+  );
 
   return (
     <div>
-      <Form
-        {...formItemLayout}
-        form={form}
-        onFinish={onFinish} >
-        <Form.Item
-        label="Номер"
-          name="phone"
-          rules={[{ required: true, message: "Пожалуйста, введите ваш номер телефона!" }]}
-        >
-          <InputMask
-            mask="+7(999)999-99-99"
+      <Form {...formItemLayout} form={form} onFinish={onFinish}>
+        <Form.Item label="Номер">
+          <IMaskInput
+            mask="+7 (000) 000-00-00"
             value={phone}
-            onChange={onPhoneChange}
-            placeholder="+7(xxx)xxx-xx-xx"
+            onAccept={(val) => handleChange(val)}
+            placeholder="+7 (xxx) xxx-xx-xx"
             className={styles.inputMask}
             style={{ backgroundColor: colorBorderBg, color: colorText }}
           />
         </Form.Item>
-        <Form.Item
-          {...tailFormItemLayout}
-        >
+        <Form.Item {...tailFormItemLayout}>
           <Space>
             <Button type="primary" htmlType="submit" disabled={!isPhoneValid || timer > 0}>
               {buttonText}

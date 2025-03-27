@@ -11,9 +11,7 @@ import { LockTwoTone, MailTwoTone, PhoneTwoTone } from "@ant-design/icons";
 const { Step } = Steps;
 
 const AuthRegForm = () => {
-  const { registrationStep } = useRegistration((state) => ({
-    registrationStep: state.registrationStep,
-  }));
+  const registrationStep = useRegistration((state) => state.registrationStep);
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -49,9 +47,11 @@ const AuthRegForm = () => {
           status={registrationStep === 2 ? "process" : "wait"}
         />
       </Steps>
+
       {registrationStep === 0 && <PhoneVerification />}
       {registrationStep === 1 && <EmailVerification />}
       {registrationStep === 2 && <PasswordRegForm />}
+
       <Button type="link" onClick={handleClick}>
         Инструкция по регистрации
       </Button>

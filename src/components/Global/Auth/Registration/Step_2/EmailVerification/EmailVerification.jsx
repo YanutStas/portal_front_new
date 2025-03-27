@@ -4,19 +4,17 @@ import EmailCodeVerification from "../EmailCodeVerification";
 
 const EmailVerification = () => {
   const [form] = Form.useForm();
-  const { email, setEmail, submitEmail, codeRequestedEmail } = useRegistration(
-    (state) => ({
-      email: state.email,
-      setEmail: state.setEmail,
-      submitEmail: state.submitEmail,
-      codeRequestedEmail: state.codeRequestedEmail,
-    })
+
+  const email = useRegistration((state) => state.email);
+  const setEmail = useRegistration((state) => state.setEmail);
+  const submitEmail = useRegistration((state) => state.submitEmail);
+  const codeRequestedEmail = useRegistration(
+    (state) => state.codeRequestedEmail
   );
 
   const onFinish = async (values) => {
     const result = await submitEmail(values.email);
-    if (result && result.status === "ok") {
-    }
+    if (result && result.status === "ok") {}
   };
 
   const onEmailChange = (event) => {
