@@ -1,5 +1,6 @@
 import AddressInput from "./FormComponentsNew/addressComponents/AddressInput";
 import BikInput from "./FormComponentsNew/BikInput";
+import CodePodrazdelInput from "./FormComponentsNew/CodePodrazdelInput";
 import CommentInput from "./FormComponentsNew/CommentInput";
 import ConfirmationDocumentNewInput from "./FormComponentsNew/confirmationDocumentComponents/ConfirmationDocumentNewInput";
 import DateInput from "./FormComponentsNew/DateInput";
@@ -84,21 +85,36 @@ export default function selectComponent(item, index) {
       />
     );
 
-    if (
-      item.component?.Ref_Type?.includes("TextInput") &&
-      item.component.specialField === "СНИЛС"
-    )
-      return (
-        <SnilsInput
-          key={index}
-          {...item.component}
-          {...item}
-          fullDescription={item.name?.fullDescription}
-          name={item.idLine}
-          dependOf={item.dependIdLine}
-          howDepend={item.dependСondition}
-        />
-      );
+  if (
+    item.component?.Ref_Type?.includes("TextInput") &&
+    item.component.specialField === "СНИЛС"
+  )
+    return (
+      <SnilsInput
+        key={index}
+        {...item.component}
+        {...item}
+        fullDescription={item.name?.fullDescription}
+        name={item.idLine}
+        dependOf={item.dependIdLine}
+        howDepend={item.dependСondition}
+      />
+    );
+  if (
+    item.component?.Ref_Type?.includes("TextInput") &&
+    item.component.specialField === "КодПодразделенияДокумента"
+  )
+    return (
+      <CodePodrazdelInput
+        key={index}
+        {...item.component}
+        {...item}
+        fullDescription={item.name?.fullDescription}
+        name={item.idLine}
+        dependOf={item.dependIdLine}
+        howDepend={item.dependСondition}
+      />
+    );
   if (item.component?.Ref_Type?.includes("TextInput"))
     return (
       <TextInput
