@@ -27,7 +27,9 @@ export default function InnInput({
   const objProperties = properties.externalService;
 
   const fetchSuggestions = debounce((inn) => {
+    if(/\D{1,}/.test(inn)) return false
     const params = { type: "ИНН", query: inn };
+    console.log(params);
     axios
       .get(`${backServer}/api/cabinet/getDaData`, {
         headers: {
@@ -39,7 +41,7 @@ export default function InnInput({
       })
       .then((response) => {
         if (response.data && response.data.data) {
-          console.log(response.data.data);
+          console.log(response.data);
           setOptions(
             response.data.data.map((item) => ({
               value: item.value,
@@ -69,9 +71,9 @@ export default function InnInput({
           (nestedObj, key) => (nestedObj || {})[key],
           currentData
         );
-        console.log("value", value);
+        // console.log("value", value);
         form.setFieldValue(objProperties[key], value);
-        console.log("objProperties[key][1]", objProperties[key]);
+        // console.log("objProperties[key][1]", objProperties[key]);
       }
     }
 
@@ -95,28 +97,32 @@ export default function InnInput({
       }}
 
     >
-      {/* <AutoComplete
+      <AutoComplete
         options={options}
         onSelect={(value, option) => onSelect(value, option)}
         onSearch={(text) => fetchSuggestions(text)}
         placeholder={placeholder}
         style={{ fontSize: 18 }}
-        onChange={(event) => {
-          console.log(event);
-        }}
         maxLength={12}
         value={value}
-      /> */}
-      <InputNumber
+      >
+        <Input
+          controls={false}
+          onChange={(e) => {
+            let value = e.target.value.replace(/[^0-9]/g, "");
+            e.target.value = value;
+            form.setFieldValue(name, value);
+          }}
+        />
+      </AutoComplete>
+      {/* <InputNumber
         style={{ fontSize: 18, width: '100%' }}
-        controls={false}
         maxLength={12}
         onChange={(event) => {
-          event.preventDefault()
           console.log(event.currentTarget.value);
         }}
         // value={value}
-      />
+      /> */}
     </Form.Item>
   );
 
