@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AutoComplete, Form } from "antd";
+import { AutoComplete, Form, Input, InputNumber } from "antd";
 import debounce from "lodash/debounce";
 import axios from "axios";
 import WrapperComponent from "./WrapperComponent";
@@ -21,6 +21,7 @@ export default function InnInput({
   fullDescription = false,
   stylesField_key = false,
 }) {
+  const [value, setValue] = useState('');
   const form = Form.useFormInstance();
   const [options, setOptions] = useState([]);
   const objProperties = properties.externalService;
@@ -92,13 +93,29 @@ export default function InnInput({
         minWidth: 300,
         // marginRight: "20px"
       }}
+
     >
-      <AutoComplete
+      {/* <AutoComplete
         options={options}
         onSelect={(value, option) => onSelect(value, option)}
-        onSearch={(text) => fetchSuggestions(text, "АдресПолный")}
+        onSearch={(text) => fetchSuggestions(text)}
         placeholder={placeholder}
         style={{ fontSize: 18 }}
+        onChange={(event) => {
+          console.log(event);
+        }}
+        maxLength={12}
+        value={value}
+      /> */}
+      <InputNumber
+        style={{ fontSize: 18, width: '100%' }}
+        controls={false}
+        maxLength={12}
+        onChange={(event) => {
+          event.preventDefault()
+          console.log(event.currentTarget.value);
+        }}
+        // value={value}
       />
     </Form.Item>
   );
