@@ -1,4 +1,4 @@
-import { Form, Input, AutoComplete } from "antd";
+import { Form, Input, AutoComplete, InputNumber } from "antd";
 import { useState, useEffect, useCallback } from "react";
 import { debounce } from "lodash";
 import axios from "axios";
@@ -178,6 +178,30 @@ export default function TextInput({
     </Form.Item>
   );
 
+  // Рендерим поле ввода серии документа
+  const passportInput = (
+    <Form.Item
+      name={name}
+      label={
+        fullDescription ? (
+          <InfoDrawer fullDescription={fullDescription}>{label}</InfoDrawer>
+        ) : (
+          label
+        )
+      }
+      rules={formItemRules}
+      initialValue={defaultValue}
+    >
+      <InputNumber
+        placeholder={placeholder}
+        maxLength={length || undefined}
+        disabled={disabled}
+        autoSize={{ minRows: 1, maxRows: 4 }}
+        controls={false}
+      />
+    </Form.Item>
+  );
+
   // Рендерим текстовое поле для остальных случаев
   const simpleInput = (
     <Form.Item
@@ -205,6 +229,7 @@ export default function TextInput({
   let formElement = simpleInput;
   if (listTypeForDadata.includes(type)) formElement = autoComplete;
   if (type === "ЭлектронныйАдрес") formElement = email;
+  if (type === "СерияДокумента" || type === "НомерДокумента") formElement = passportInput;
 
   return (
     <WrapperComponent

@@ -84,24 +84,24 @@ export default function selectComponent(item, index) {
       />
     );
 
+    if (
+      item.component?.Ref_Type?.includes("TextInput") &&
+      item.component.specialField === "СНИЛС"
+    )
+      return (
+        <SnilsInput
+          key={index}
+          {...item.component}
+          {...item}
+          fullDescription={item.name?.fullDescription}
+          name={item.idLine}
+          dependOf={item.dependIdLine}
+          howDepend={item.dependСondition}
+        />
+      );
   if (item.component?.Ref_Type?.includes("TextInput"))
     return (
       <TextInput
-        key={index}
-        {...item.component}
-        {...item}
-        fullDescription={item.name?.fullDescription}
-        name={item.idLine}
-        dependOf={item.dependIdLine}
-        howDepend={item.dependСondition}
-      />
-    );
-  if (
-    item.component?.Ref_Type?.includes("TextInput") &&
-    item.component.specialField === "СНИЛС"
-  )
-    return (
-      <SnilsInput
         key={index}
         {...item.component}
         {...item}
