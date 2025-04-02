@@ -17,6 +17,7 @@ import AppHelmet from "../../components/Global/AppHelmet";
 import moment from "moment";
 import Preloader from "../../components/Main/Preloader";
 import ErrorModal from "../../components/ErrorModal";
+import SubmitModal from "../../components/FormComponentsNew/SubmitModal";
 import { motion } from "framer-motion";
 
 import selectComponent from "../../components/selectComponent";
@@ -57,7 +58,7 @@ export default function NewClaim() {
   };
 
   const onFinish = async (values) => {
-    let newValues = {}
+    let newValues = {};
 
     const addNewValue = (value) => {
       if (typeof value === "object" && Object.hasOwn(value, "$d")) {
@@ -65,24 +66,21 @@ export default function NewClaim() {
       } else if (!Array.isArray(value)) {
         return value;
       }
-    }
-
+    };
 
     for (const [key, value] of Object.entries(values)) {
       if (Array.isArray(value)) {
         // addNewValueArray(value,key)
         newValues[key] = values[key].map((element) => {
-          let newElement = {}
+          let newElement = {};
           for (const [key, value] of Object.entries(element)) {
-            newElement[key] = addNewValue(value)
+            newElement[key] = addNewValue(value);
           }
-          return newElement
+          return newElement;
         });
       } else {
         newValues[key] = addNewValue(value);
       }
-
-
     }
     try {
       console.log("Данные для создания заявки: ", newValues);
@@ -92,7 +90,6 @@ export default function NewClaim() {
         serviceId: serviceItem.Ref_Key,
         values: newValues,
       });
-
     } catch (err) {
       console.log(err.message || "Ошибка при создании заявки.");
     }
@@ -103,7 +100,7 @@ export default function NewClaim() {
       event.preventDefault();
     }
   };
-  console.log(serviceItem)
+  console.log(serviceItem);
   return (
     <div style={{ maxWidth: "100%", margin: "0 auto" }}>
       <AppHelmet
@@ -203,7 +200,7 @@ export default function NewClaim() {
               </div>
             </Form>
           </ConfigProvider>
-          <Drawer
+          {/* <Drawer
             title="Поля формы"
             placement="bottom"
             closable={false}
@@ -219,8 +216,16 @@ export default function NewClaim() {
                 <Paragraph>Данные по заявке в консоле</Paragraph>
               </>
             )}
-          </Drawer>
+          </Drawer> */}
         </>
+      )}
+
+      {newClaim && (
+        <SubmitModal
+          visible={!!newClaim}
+          claim={{ ...newClaim, Code: serviceItem.Code }}
+          onClose={onClose}
+        />
       )}
 
       {error && <ErrorModal visible={!!error} error={error} />}
