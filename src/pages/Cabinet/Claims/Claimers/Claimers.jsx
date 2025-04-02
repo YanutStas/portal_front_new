@@ -65,7 +65,7 @@ export default function Claimers() {
                   hoverable
                   title={<Flex wrap={"wrap"} align="center" justify="space-between">
                     <Typography.Text>Заявка №{item.number}</Typography.Text>
-                    <div><Typography.Text style={{ color: token.colorTextDescription }}>от: </Typography.Text><Typography.Text>{moment(item.create).format('DD.MM.YYYY HH:mm')}</Typography.Text></div>
+                    <div><Typography.Text style={{ color: token.colorTextDescription }}>от: </Typography.Text><Typography.Text>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Typography.Text></div>
                     </Flex>}
                   style={{
                     border: `1px solid ${token.colorPrimary}`,

@@ -22,6 +22,7 @@ const SubmitModal = ({ visible, claim, onClose }) => {
       <Result
         status="success"
         icon={<CheckCircleFilled style={{ fontSize: 72, color: "#52c41a" }} />}
+        // Не знаю тот ли это номер заявки6 но путь будет он :)
         title={`Ваша заявка № ${claim?.Code || "XXXXXX"} принята.`}
         extra={[
           <Button key="submit" type="primary" onClick={handleOk}>
