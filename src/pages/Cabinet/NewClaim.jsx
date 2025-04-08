@@ -85,6 +85,7 @@ export default function NewClaim() {
     try {
       console.log("Данные для создания заявки: ", newValues);
 
+
       await createClaim({
         versionId: serviceItem.versionId,
         serviceId: serviceItem.Ref_Key,

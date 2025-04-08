@@ -35,7 +35,7 @@ export default function Claimers() {
   useEffect(() => {
     fetchClaims();
   }, [fetchClaims]);
-  // console.log("claims",claims)
+  console.log("claims",claims)
   // console.log("token",token)
   return (
     <>
