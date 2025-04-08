@@ -79,7 +79,7 @@ export default function NumberInput({
       ]}
       initialValue={defaultValue ? defaultValue : min}
     >
-      <InputNumber
+      <InputNumber      
         min={min}
         max={max}
         step={stepMain}
