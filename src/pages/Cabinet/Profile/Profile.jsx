@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import {
   Avatar,
   Card,
@@ -13,7 +12,6 @@ import {
   Flex,
   Modal,
 } from "antd";
-
 import { UserOutlined } from "@ant-design/icons";
 import AppHelmet from "../../../components/Global/AppHelmet";
 import useProfile from "../../../stores/Cabinet/useProfile";
@@ -40,6 +38,9 @@ export default function Profile() {
   const [leftPanelVisible, setLeftPanelVisible] = useState(false);
   const [rightPanelVisible, setRightPanelVisible] = useState(false);
 
+  // инстанс модалки, которая будет учитывать динамическую тему
+  const [modal, modalContextHolder] = Modal.useModal();
+
   useEffect(() => {
     fetchProfile();
     setTimeout(() => setLeftPanelVisible(true), 300);
@@ -47,7 +48,7 @@ export default function Profile() {
   }, [fetchProfile]);
 
   const handleLogout = () => {
-    Modal.confirm({
+    modal.confirm({
       title: "Подтверждение",
       content: "Вы уверены, что хотите пройти регистрацию заново?",
       okText: "Да",
@@ -62,112 +63,123 @@ export default function Profile() {
   };
 
   return (
-    <div
-      className={`${styles.container} ${darkMode ? styles.dark : styles.light}`}
+    <ConfigProvider
+      theme={{
+        token: {
+          fontSize: 18,
+        },
+      }}
     >
-      <AppHelmet title="Профиль" desc="Профиль пользователя" />
-      <Row gutter={[16, 16]} justify="center">
-        <Col xs={24} md={8}>
-          <TweenOne
-            animation={{
-              opacity: leftPanelVisible ? 1 : 0,
-              translateX: leftPanelVisible ? 0 : -50,
-              duration: 800,
-              ease: "easeOutCubic",
-            }}
-            style={{
-              opacity: 0,
-              transform: "translateX(-50px)",
-              height: "100%",
-            }}
-          >
-            <Card className={styles.profileCard} bordered={false}>
-              <TweenOne
-                animation={{
-                  opacity: leftPanelVisible ? 1 : 0,
-                  translateY: leftPanelVisible ? 0 : -20,
-                  duration: 500,
-                  delay: 200,
-                  ease: "easeOutCubic",
-                }}
-                style={{ opacity: 0, transform: "translateY(-20px)" }}
-              >
-                <Avatar
-                  size={120}
-                  icon={<UserOutlined />}
-                  className={styles.avatar}
-                />
-                {profile.email && (
-                  <Title level={3} className={styles.emailTitle}>
-                    {profile.email}
-                  </Title>
-                )}
-                {profile.dateСreate && (
-                  <Paragraph
-                    style={{ fontSize: 18, color: token.colorTextPlaceholder }}
-                  >
-                    Профиль создан:{" "}
-                    {moment(profile.dateСreate).format("DD.MM.YYYY")}
-                  </Paragraph>
-                )}
-              </TweenOne>
-            </Card>
-          </TweenOne>
-        </Col>
-
-        <Col xs={24} md={14}>
-          <TweenOne
-            animation={{
-              opacity: rightPanelVisible ? 1 : 0,
-              translateX: rightPanelVisible ? 0 : 50,
-              duration: 800,
-              ease: "easeOutCubic",
-            }}
-            style={{
-              opacity: 0,
-              transform: "translateX(50px)",
-              height: "100%",
-            }}
-          >
-            <Card
-              className={styles.profileCard}
-              bordered={false}
-              styles={{ body: { height: "100%" } }}
+      {modalContextHolder}
+      <div
+        className={`${styles.container} ${
+          darkMode ? styles.dark : styles.light
+        }`}
+      >
+        <AppHelmet title="Профиль" desc="Профиль пользователя" />
+        <Row gutter={[16, 16]} justify="center">
+          <Col xs={24} md={8}>
+            <TweenOne
+              animation={{
+                opacity: leftPanelVisible ? 1 : 0,
+                translateX: leftPanelVisible ? 0 : -50,
+                duration: 800,
+                ease: "easeOutCubic",
+              }}
+              style={{
+                opacity: 0,
+                transform: "translateX(-50px)",
+                height: "100%",
+              }}
             >
-              <ConfigProvider
-                theme={{
-                  token: {
-                    fontSize: 18,
-                  },
-                }}
+              <Card className={styles.profileCard} bordered={false}>
+                <TweenOne
+                  animation={{
+                    opacity: leftPanelVisible ? 1 : 0,
+                    translateY: leftPanelVisible ? 0 : -20,
+                    duration: 500,
+                    delay: 200,
+                    ease: "easeOutCubic",
+                  }}
+                  style={{ opacity: 0, transform: "translateY(-20px)" }}
+                >
+                  <Avatar
+                    size={120}
+                    icon={<UserOutlined />}
+                    className={styles.avatar}
+                  />
+                  {profile.email && (
+                    <Title level={3} className={styles.emailTitle}>
+                      {profile.email}
+                    </Title>
+                  )}
+                  {profile.dateСreate && (
+                    <Paragraph
+                      style={{
+                        fontSize: 18,
+                        color: token.colorTextPlaceholder,
+                      }}
+                    >
+                      Профиль создан:{" "}
+                      {moment(profile.dateСreate).format("DD.MM.YYYY")}
+                    </Paragraph>
+                  )}
+                </TweenOne>
+              </Card>
+            </TweenOne>
+          </Col>
+
+          <Col xs={24} md={14}>
+            <TweenOne
+              animation={{
+                opacity: rightPanelVisible ? 1 : 0,
+                translateX: rightPanelVisible ? 0 : 50,
+                duration: 800,
+                ease: "easeOutCubic",
+              }}
+              style={{
+                opacity: 0,
+                transform: "translateX(50px)",
+                height: "100%",
+              }}
+            >
+              <Card
+                className={styles.profileCard}
+                bordered={false}
+                styles={{ body: { height: "100%" } }}
               >
-                <Flex style={{ height: "100%" }} vertical justify="center">
-                  <Row gutter={16} align="middle">
-
-                    <Col span={24}>
-                      <Text strong>Телефон: </Text>
-                      <Text>{profile.phone || ""}</Text>
-                    </Col>
-
-                    <Col span={24} style={{ marginTop: "20px" }}>
-                      <Paragraph>
-                        Если вы хотите{" "}
-                        <strong>изменить телефон или пароль</strong>, повторно
-                        пройдите регистрацию с тем же адресом электронной почты,
-                        нажав на кнопку ниже.
-                      </Paragraph>
-
-                      <Button type="primary" onClick={handleLogout}>
-                        Регистрация
-                      </Button>
-                    </Col>
-                  </Row>
-                </Flex>
-              </ConfigProvider>
-            </Card>
-          </TweenOne>
-        </Col>
-      </Row>
-    </div>
+                <ConfigProvider
+                  theme={{
+                    token: {
+                      fontSize: 18,
+                    },
+                  }}
+                >
+                  <Flex style={{ height: "100%" }} vertical justify="center">
+                    <Row gutter={16} align="middle">
+                      <Col span={24}>
+                        <Text strong>Телефон: </Text>
+                        <Text>{profile.phone || ""}</Text>
+                      </Col>
+                      <Col span={24} style={{ marginTop: "20px" }}>
+                        <Paragraph>
+                          Если вы хотите{" "}
+                          <strong>изменить телефон или пароль</strong>, повторно
+                          пройдите регистрацию с тем же адресом электронной
+                          почты, нажав на кнопку ниже.
+                        </Paragraph>
+                        <Button type="primary" onClick={handleLogout}>
+                          Регистрация
+                        </Button>
+                      </Col>
+                    </Row>
+                  </Flex>
+                </ConfigProvider>
+              </Card>
+            </TweenOne>
+          </Col>
+        </Row>
+      </div>
+    </ConfigProvider>
   );
 }
