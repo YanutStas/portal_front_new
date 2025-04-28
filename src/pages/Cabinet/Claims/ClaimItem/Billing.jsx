@@ -103,25 +103,16 @@ export default function Billing({ zakaz }) {
       </Button>
 
       <Typography.Title level={5} style={{ marginTop: 16 }}>
-        Обязательно используйте тестовую карту для Сбер
+        https://ecomtest.sberbank.ru/doc#section/Obshaya-informaciya/Testovye-karty
       </Typography.Title>
-      <Descriptions
-        bordered
-        size="small"
-        column={1}
-        style={{ maxWidth: 400, marginBottom: 16 }}
-      >
-        <Descriptions.Item label="Номер карты">
-          <Typography.Text copyable>2202 2050 0001 2424</Typography.Text>
-        </Descriptions.Item>
-        <Descriptions.Item label="Срок действия">
+
+      {/* <Descriptions.Item label="Срок действия">
           <Typography.Text copyable>05/35</Typography.Text>
         </Descriptions.Item>
         <Descriptions.Item label="CVC / CVV">
           <Typography.Text copyable>669</Typography.Text>
-        </Descriptions.Item>
-      </Descriptions>
-      
+        </Descriptions.Item> */}
+
       <Divider />
       {docsBilling.map((item, index) => (
         <FileForDownload
