@@ -13,6 +13,7 @@ import moment from "moment";
 import "moment/locale/ru";
 
 import MarkDownText from "../MarkDownText/MarkDownText";
+import GigaChatLogo from "../../img/answers/GigaChat.svg";
 
 const ModalBot = ({ visible, onClose }) => {
   const [chatMessages, setChatMessages] = useState([
@@ -79,7 +80,39 @@ const ModalBot = ({ visible, onClose }) => {
 
   return (
     <Modal
-      title="Помощник"
+      title={
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            padding: "8px 16px",
+            margin: "-16px -24px", // Компенсируем стандартные отступы модалки
+            borderBottom: `1px solid ${token.colorBorderSecondary}`,
+          }}
+        >
+          <span
+            style={{
+              fontSize: token.fontSizeHeading4,
+              fontWeight: token.fontWeightStrong,
+              color: token.colorTextHeading,
+            }}
+          >
+            Помощник
+          </span>
+          <img
+            src={GigaChatLogo}
+            alt="GigaChat"
+            style={{
+              width: 150,
+              // height: 150,
+              filter:
+                "invert(56%) sepia(11%) saturate(746%) hue-rotate(178deg) brightness(93%) contrast(88%)",
+            }}
+          />
+        </div>
+      }
+      // title="Помощник"
       open={visible}
       onCancel={onClose}
       footer={null}
