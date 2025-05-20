@@ -13,8 +13,8 @@ import ModalBot from "../Global/ModalBot";
 import useGlobal from "../../stores/useGlobal";
 import axios from "axios";
 import MarkDownText from "../MarkDownText/MarkDownText";
-import mosoblikImage from "../../img/answers/energetic1.png";
-import mosoblikDarkImage from "../../img/answers/energetic1_dark.png";
+import mosoblikImage from "../../img/answers/energetic20.png";
+import mosoblikDarkImage from "../../img/answers/energetic20_dark.png";
 // import mosoblikImage from "../../img/answers/mosoblik.png";
 // import mosoblikDarkImage from "../../img/answers/mosoblik_dark.png";
 import styles from "./QuickAnswers.module.css";
@@ -87,7 +87,10 @@ export default function QuickAnswers() {
             <Button
               type="primary"
               onClick={() => setChatModalVisible(true)}
-              style={darkMode && { border: "0px", boxShadow: "0px 0px 60px 60px rgba(255, 255, 255, 0.2),  0px 0px 40px 40px rgba(255, 255, 255, 0.5),  0px 0px 20px 20px rgba(255, 255, 255, 0.6),  inset 0px 0px 5px 2px rgba(255, 255, 255, 0.6)" }}
+              style={darkMode && { 
+                border: "0px", 
+                boxShadow: "  0px 0px 10px 5px rgba(255, 255, 255, 0.3)" 
+                }}
               size="large"
               className={styles.btn}
             >
