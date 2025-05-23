@@ -1,4 +1,4 @@
-import { Card, Descriptions, Flex, theme, Typography } from 'antd'
+import { Card, Descriptions, Flex, Tag, theme, Typography } from 'antd'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styles from "./Claimers/Claimers.module.css";
@@ -19,6 +19,7 @@ export default function CardClaim({ item, borderColor }) {
                 </Flex>}
                 style={{
                     border: `1px solid ${borderColor ? borderColor : token.colorPrimary}`,
+                    position:"relative"
                     // background: "linear-gradient(00deg, rgba(0,97,170,.1) 0%, rgba(255,255,255,0) 30%)",
                 }}
             // extra={<div><Typography.Text style={{ color: token.colorTextDescription }}>От: </Typography.Text><Typography.Text>{moment(item.create).format('DD.MM.YYYY HH:mm')}</Typography.Text></div>}
@@ -32,6 +33,7 @@ export default function CardClaim({ item, borderColor }) {
                         {item.service.description}
                     </Descriptions.Item>
                 </Descriptions>
+                <Tag style={{position:"absolute",bottom:10,right:10}} color="geekblue">Текущий статус</Tag>
             </Card>
         </Link>
     )
