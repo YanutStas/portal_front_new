@@ -6,6 +6,7 @@ import useClaims from "../../../../stores/Cabinet/useClaims";
 import styles from "./Claimers.module.css";
 import { motion } from "framer-motion";
 import moment from "moment/moment";
+import CardClaim from "../CardClaim";
 
 const { Title } = Typography;
 
@@ -15,14 +16,14 @@ const listLK = [
     Description: "ИП Попов Иван Сидорович",
     create: "2024-07-12 18:23",
     activeClaims: 12,
-    finishedClaims:20
+    finishedClaims: 20
   },
   {
     Ref_Key: "kn66df-sdfff555-sdfs2-235664",
     Description: "Савельев Егор Васильевич",
     create: "2024-09-23 10:29",
     activeClaims: 1,
-    finishedClaims:3
+    finishedClaims: 3
   },
 ]
 
@@ -35,7 +36,7 @@ export default function Claimers() {
   useEffect(() => {
     fetchClaims();
   }, [fetchClaims]);
-  console.log("claims",claims)
+  console.log("claims", claims)
   // console.log("token",token)
   return (
     <>
@@ -50,42 +51,6 @@ export default function Claimers() {
         </div>
       ) : (
         <div className={styles.claimsContainer}>
-          {claims.claimsProject?.length > 0 &&
-            <Divider orientation="left">Заявки на проверке</Divider>
-          }
-          <Flex wrap={"wrap"} gap={20} >
-            {claims.claimsProject?.map((item, index) => (
-              <Link
-                key={index}
-                to={`/cabinet/claimers/${item.Ref_Key}`}
-                className={styles.styleLink}
-              >
-                <Card
-                  className={styles.styleCard}
-                  hoverable
-                  title={<Flex wrap={"wrap"} align="center" justify="space-between">
-                    <Typography.Text>Заявка №{item.number}</Typography.Text>
-                    <div><Typography.Text style={{ color: token.colorTextDescription }}>от: </Typography.Text><Typography.Text>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Typography.Text></div>
-                    </Flex>}
-                  style={{
-                    border: `1px solid ${token.colorPrimary}`,
-                    // background: "linear-gradient(00deg, rgba(0,97,170,.1) 0%, rgba(255,255,255,0) 30%)",
-                  }}
-                  // extra={<div><Typography.Text style={{ color: token.colorTextDescription }}>От: </Typography.Text><Typography.Text>{moment(item.create).format('DD.MM.YYYY HH:mm')}</Typography.Text></div>}
-
-                >
-                  <Descriptions column={1}>
-                    {/* <Descriptions.Item label="Создана">
-                        {moment(item.date).format('DD.MM.YYYY HH:mm')}
-                      </Descriptions.Item> */}
-                    <Descriptions.Item label="По услуге">
-                      {item.service.description}
-                    </Descriptions.Item>
-                  </Descriptions>
-                </Card>
-              </Link>
-            ))}
-          </Flex>
           <Divider orientation="left">Личные кабинеты</Divider>
           <Flex wrap={"wrap"} gap={20} >
 
@@ -99,23 +64,23 @@ export default function Claimers() {
                   className={styles.styleCard}
                   hoverable
                   title={<Flex wrap={"wrap"} align="center" justify="space-between">
-                  <Typography.Text>{item.Description}</Typography.Text>
-                  {/* <div><Typography.Text style={{ color: token.colorTextDescription }}>От: </Typography.Text><Typography.Text>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Typography.Text></div> */}
+                    <Typography.Text>{item.Description}</Typography.Text>
+                    {/* <div><Typography.Text style={{ color: token.colorTextDescription }}>От: </Typography.Text><Typography.Text>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Typography.Text></div> */}
                   </Flex>}
                   style={{
                     border: `1px solid ${token.colorInfo}`,
                     // background: "linear-gradient(0deg, rgba(243, 112, 33,.1) 0%, rgba(255,255,255,0) 30%)",
                   }}
-                  // extra={<div><Typography.Text style={{ color: token.colorTextDescription }}>Создан: </Typography.Text><Typography.Text>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Typography.Text></div>}
+                // extra={<div><Typography.Text style={{ color: token.colorTextDescription }}>Создан: </Typography.Text><Typography.Text>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Typography.Text></div>}
                 >
                   <Descriptions column={1}>
                     {/* <Descriptions.Item label="Создана">
                         {moment(item.date).format('DD.MM.YYYY HH:mm')}
                         </Descriptions.Item> */}
-                    <Descriptions.Item label="Активных заявок" contentStyle={{color:"green",fontWeight:700}}>
+                    <Descriptions.Item label="Заявок в работе" contentStyle={{ color: "green", fontWeight: 700 }}>
                       {item.activeClaims}
                     </Descriptions.Item>
-                    <Descriptions.Item label="Завершенных заявок">
+                    <Descriptions.Item label="Выполнено заявок">
                       {item.finishedClaims}
                     </Descriptions.Item>
                   </Descriptions>
@@ -123,6 +88,21 @@ export default function Claimers() {
               </Link>
             ))}
           </Flex>
+
+          {/* -------------------------------------------------------- */}
+
+
+          {claims.claimsProject?.length > 0 &&
+            <Divider orientation="left">Заявки на проверке</Divider>
+          }
+          <Flex wrap={"wrap"} gap={20} >
+            {claims.claimsProject?.map((item, index) => (
+              <CardClaim item={item} key={index} />
+            ))}
+          </Flex>
+
+          <Divider orientation="left">Отклоненные заявки</Divider>
+
         </div>
       )}
     </>

@@ -33,6 +33,7 @@ import Test from "./pages/Test";
 
 import useGlobal from "./stores/useGlobal";
 import useAuth from "./stores/useAuth";
+import Lk from "./pages/Cabinet/Lk/Lk";
 
 const { Content } = Layout;
 
@@ -133,6 +134,7 @@ export default function App() {
                   <Route path="documents" element={<Documents />} />
                   <Route path="checking" element={<Checking />} />
                   <Route path="claimers" element={<Claimers />} />
+                  <Route path="lk/:id" element={<Lk />} />
                   <Route path="claimers/:id" element={<ClaimItem />} />
                   <Route path="archives" element={<Archives />} />
                 </Route>
