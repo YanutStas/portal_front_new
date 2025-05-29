@@ -1,20 +1,28 @@
-import { Button, Collapse, Descriptions, Divider, Drawer, Flex, theme, Typography } from 'antd';
+import { Button, Collapse, Descriptions, Divider, Drawer, Flex, List, theme, Typography } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import CardClaim from '../Claims/CardClaim';
+import usePersonalAccounts from '../../../stores/Cabinet/usePersonalAccount';
 
 export default function Lk() {
     const [openDrawer, setOpenDrawer] = useState(false)
-    const [lk, setLk] = useState(null)
+    // const [lk, setLk] = useState(null)
     const [listClaims, setListClaims] = useState(null)
     const [listCompletedClaims, setListCompletedClaims] = useState(null)
     const { token } = theme.useToken();
+    const {
+        personalAccount,
+        fetchPersonalAccountItem,
+        claimsByPersonalAccount,
+        fetchClaimsByPersonalAccount,
+        loadingPersonalAccounts,
+        loadingPersonalAccount,
+        loadingClaimsByPersonalAccount,
+    } = usePersonalAccounts(state => state)
+    const { id } = useParams();
     useEffect(() => {
-        setLk({
-            name: "ООО Красный октябрь",
-            inn: "7856942776",
-            kpp: "5661668766"
-        })
+        fetchPersonalAccountItem(id)
+        fetchClaimsByPersonalAccount(id)
         setListClaims([
             {
                 Ref_Key: "c416e302-98df-11ef-9501-5ef3fcb042f8",
@@ -56,46 +64,51 @@ export default function Lk() {
         {
             key: '1',
             label: 'Выполненные заявки',
-            children: <Flex gap={10} style={{ marginBottom: 10 }}>{listCompletedClaims && listCompletedClaims.map((item, index) => <CardClaim item={item} key={index} borderColor={"red"}/>)}</Flex>,
+            children: <Flex gap={10} style={{ marginBottom: 10 }}>{listCompletedClaims && listCompletedClaims.map((item, index) => <CardClaim item={item} key={index} borderColor={"red"} />)}</Flex>,
         },
     ]
-    console.log(token)
-    const { id } = useParams();
+    // console.log(token)
     return (
         <div>
-            <Typography.Title style={{ margin: 0 }}>{lk?.name}</Typography.Title>
+            <Typography.Title style={{ margin: 0 }}>{personalAccount?.name}</Typography.Title>
             <Flex gap={10} style={{ marginBottom: 10 }}>
 
-                {lk?.inn &&
-                    <Typography.Text style={{ color: token.colorTextDescription }}>ИНН:{lk?.inn}</Typography.Text>
+                {personalAccount?.inn &&
+                    <Typography.Text style={{ color: token.colorTextDescription }}>ИНН:{personalAccount?.inn}</Typography.Text>
                 }
-                {lk?.kpp &&
-                    <Typography.Text style={{ color: token.colorTextDescription }}>КПП:{lk?.kpp}</Typography.Text>
+                {personalAccount?.kpp &&
+                    <Typography.Text style={{ color: token.colorTextDescription }}>КПП:{personalAccount?.kpp}</Typography.Text>
                 }
             </Flex>
 
             <Button onClick={() => { setOpenDrawer(true) }}>Подробнее о компании</Button>
             <Divider orientation='left'>В работе</Divider>
             <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20 }}>
-                {listClaims && listClaims.map((item, index) =>
+                {claimsByPersonalAccount && claimsByPersonalAccount.map((item, index) =>
                     <CardClaim item={item} key={index} />)}
             </Flex>
             <Collapse items={collap} />
 
             <Drawer
-                title={lk?.name}
+                title={personalAccount?.name}
                 open={openDrawer}
                 onClose={() => { setOpenDrawer(false) }}
             >
                 <Typography.Paragraph>
-                    Подробная информация о заявителе
-                    включая файлы со сканами документов
-                    по заявителю.
+                    Всего заявок в личном кабинете: {personalAccount?.totalClaims}
                 </Typography.Paragraph>
                 <Typography.Paragraph>
-                    И показать представителей, которые имеют
-                    доступ к этому заявителю
+                    Пользователи, которые имеют доступ к текущему личному кабинету:
                 </Typography.Paragraph>
+                <List
+                    bordered
+                    dataSource={personalAccount?.profiles.map(item => item.email)}
+                    renderItem={item => (
+                        <List.Item>
+                            <Typography.Text>{item}</Typography.Text>
+                        </List.Item>
+                    )}
+                />
 
             </Drawer>
         </div>

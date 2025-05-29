@@ -7,6 +7,7 @@ import styles from "./Claimers.module.css";
 import { motion } from "framer-motion";
 import moment from "moment/moment";
 import CardClaim from "../CardClaim";
+import usePersonalAccounts from "../../../../stores/Cabinet/usePersonalAccount";
 
 const { Title } = Typography;
 
@@ -30,11 +31,14 @@ const listLK = [
 export default function Claimers() {
   const claims = useClaims((state) => state.claims);
   const fetchClaims = useClaims((state) => state.fetchClaims);
+  const personalAccounts = usePersonalAccounts((state) => state.personalAccounts);
+  const fetchPersonalAccounts = usePersonalAccounts((state) => state.fetchPersonalAccounts);
 
   const { token } = theme.useToken();
 
   useEffect(() => {
     fetchClaims();
+    fetchPersonalAccounts();
   }, [fetchClaims]);
   console.log("claims", claims)
   // console.log("token",token)
@@ -51,20 +55,20 @@ export default function Claimers() {
         </div>
       ) : (
         <div className={styles.claimsContainer}>
-          <Divider orientation="left">Личные кабинеты</Divider>
+          {personalAccounts &&<Divider orientation="left">Личные кабинеты</Divider>}
           <Flex wrap={"wrap"} gap={20} >
 
-            {listLK.map((item, index) => (
+            {personalAccounts && personalAccounts.map((item, index) => (
               <Link
                 key={index}
-                to={`/cabinet/lk/${item.Ref_Key}`}
+                to={`/cabinet/lk/${item.id}`}
                 className={styles.styleLink}
               >
                 <Card
                   className={styles.styleCard}
                   hoverable
                   title={<Flex wrap={"wrap"} align="center" justify="space-between">
-                    <Typography.Text>{item.Description}</Typography.Text>
+                    <Typography.Text>{item.name}</Typography.Text>
                     {/* <div><Typography.Text style={{ color: token.colorTextDescription }}>От: </Typography.Text><Typography.Text>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Typography.Text></div> */}
                   </Flex>}
                   style={{
@@ -78,7 +82,7 @@ export default function Claimers() {
                         {moment(item.date).format('DD.MM.YYYY HH:mm')}
                         </Descriptions.Item> */}
                     <Descriptions.Item label="Заявок в работе" contentStyle={{ color: "green", fontWeight: 700 }}>
-                      {item.activeClaims}
+                      {item.totalClaims}
                     </Descriptions.Item>
                     <Descriptions.Item label="Выполнено заявок">
                       {item.finishedClaims}
@@ -101,7 +105,7 @@ export default function Claimers() {
             ))}
           </Flex>
 
-          <Divider orientation="left">Отклоненные заявки</Divider>
+          {/* <Divider orientation="left">Отклоненные заявки</Divider> */}
 
         </div>
       )}
