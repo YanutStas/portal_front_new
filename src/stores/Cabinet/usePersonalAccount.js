@@ -17,9 +17,10 @@ const usePersonalAccounts = create((set) => ({
       },
       withCredentials: true,
     });
+    console.log(res.data);
     set((state) => {
       return {
-        personalAccounts: res.data,
+        personalAccounts: res.data.data,
         loadingPersonalAccounts: false
       };
     });
@@ -32,11 +33,11 @@ const usePersonalAccounts = create((set) => ({
       },
       withCredentials: true,
     });
-    console.log(res.data);
+    // console.log(res.data);
     
     set((state) => {
       return {
-        claimsByPersonalAccount: res.data.claimsProject,
+        claimsByPersonalAccount: res.data.data,
         loadingClaimsByPersonalAccount: false
       };
     });
@@ -49,10 +50,11 @@ const usePersonalAccounts = create((set) => ({
       },
       withCredentials: true,
     });
+    console.log(res.data);
     set((state) => {
       // console.log(res.data);
       return {
-        personalAccount: res.data,
+        personalAccount: res.data.data,
         loadingPersonalAccount: false
       };
     });

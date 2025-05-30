@@ -102,7 +102,7 @@ export default function Lk() {
                 </Typography.Paragraph>
                 <List
                     bordered
-                    dataSource={personalAccount?.profiles.map(item => item.email)}
+                    dataSource={personalAccount?.profiles?.map(item => item.email)}
                     renderItem={item => (
                         <List.Item>
                             <Typography.Text>{item}</Typography.Text>
