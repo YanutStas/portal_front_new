@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Typography, Button, Steps, message, Tabs, Modal, Result } from "antd";
+import { Typography, Button, Steps, message, Tabs, Modal, Result, Flex } from "antd";
 import { useParams, useSearchParams } from "react-router-dom";
 import pdfMake from "pdfmake/build/pdfmake";
 import useClaims from "../../../../stores/Cabinet/useClaims";
@@ -11,6 +11,7 @@ import Story from "./Story";
 import Docs from "./Docs";
 import Billing from "./Billing";
 import Appeals from "./Appeals";
+import moment from "moment";
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -120,10 +121,14 @@ export default function ClaimItem() {
         </div>
       ) : (
         <>
-          <div className={styles.header}>
-            <Title level={1} className={styles.title}>
-              Заявка №{claim.Number}
-            </Title>
+          <Flex justify="space-between" align="center" style={{marginBottom:20}}>
+            <Flex vertical>
+
+              <Title level={1} className={styles.title} style={{ marginBottom: 0 }}>
+                Заявка №{claim.number}
+              </Title>
+              <Typography.Text style={{color:"gray"}}>от {moment(claim.date).format("DD.MM.YYYY")}</Typography.Text>
+            </Flex>
             <a target="_blank" href={zayavka}>
               <Button
                 type="primary"
@@ -134,7 +139,7 @@ export default function ClaimItem() {
                 Просмотреть заявку
               </Button>
             </a>
-          </div>
+          </Flex>
 
           {/* Статусы заявки */}
           <Steps
@@ -151,7 +156,7 @@ export default function ClaimItem() {
             items={tabs}
           />
 
-          <Modal 
+          <Modal
             open={openSuccessPay}
             footer={false}>
             <Result
@@ -166,11 +171,11 @@ export default function ClaimItem() {
             />
           </Modal>
 
-          <Modal 
+          <Modal
             open={openFailPay}
             footer={false}
           >
-             <Result
+            <Result
               status="error"
               title="Ошибка оплаты"
               subTitle="При оплате чтото пошло не так."
