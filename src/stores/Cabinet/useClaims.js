@@ -2,7 +2,7 @@ import { create } from "zustand";
 import axios from "axios";
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 const useNewClaim = create((set) => ({
-  claims: [],
+  claims: null,
   claim: null,
   newClaim: null,
   clearNewClaim: () => {
@@ -16,9 +16,10 @@ const useNewClaim = create((set) => ({
       },
       withCredentials: true,
     });
+    console.log(res.data.data);
     set((state) => {
       return {
-        claims: res.data,
+        claims: res.data.data,
       };
     });
   },
@@ -30,10 +31,10 @@ const useNewClaim = create((set) => ({
       },
       withCredentials: true,
     });
+    console.log("fetchClaimItem",res.data.data);
     set((state) => {
-      console.log(res.data);
       return {
-        claim: res.data,
+        claim: res.data.data,
       };
     });
   },
@@ -53,7 +54,7 @@ const useNewClaim = create((set) => ({
     set((state) => {
       // console.log(res.data);
       return {
-        newClaim: res.data,
+        newClaim: res.data.data,
       };
     });
   },

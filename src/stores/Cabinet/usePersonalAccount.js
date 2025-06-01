@@ -17,7 +17,7 @@ const usePersonalAccounts = create((set) => ({
       },
       withCredentials: true,
     });
-    console.log(res.data);
+    // console.log(res.data);
     set((state) => {
       return {
         personalAccounts: res.data.data,
@@ -50,7 +50,7 @@ const usePersonalAccounts = create((set) => ({
       },
       withCredentials: true,
     });
-    console.log(res.data);
+    // console.log(res.data);
     set((state) => {
       // console.log(res.data);
       return {

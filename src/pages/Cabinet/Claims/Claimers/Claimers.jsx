@@ -96,11 +96,11 @@ export default function Claimers() {
           {/* -------------------------------------------------------- */}
 
 
-          {claims.claimsProject?.length > 0 &&
+          {claims?.length > 0 &&
             <Divider orientation="left">Заявки на проверке</Divider>
           }
           <Flex wrap={"wrap"} gap={20} >
-            {claims.claimsProject?.map((item, index) => (
+            {claims?.map((item, index) => (
               <CardClaim item={item} key={index} />
             ))}
           </Flex>
