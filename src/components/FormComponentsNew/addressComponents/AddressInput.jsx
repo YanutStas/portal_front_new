@@ -31,6 +31,7 @@ const AddressInput = ({
   settlement = false,
   street = false,
   fullAddress = false,
+  read = false
 }) => {
   const { token } = theme.useToken();
   // console.log(country)
@@ -227,6 +228,7 @@ const AddressInput = ({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read={read}
     >
       {formElement}
     </WrapperComponent>

@@ -16,7 +16,7 @@ const useNewClaim = create((set) => ({
       },
       withCredentials: true,
     });
-    console.log(res.data.data);
+    // console.log(res.data.data);
     set((state) => {
       return {
         claims: res.data.data,
@@ -31,7 +31,7 @@ const useNewClaim = create((set) => ({
       },
       withCredentials: true,
     });
-    console.log("fetchClaimItem",res.data.data);
+    // console.log("fetchClaimItem",res.data.data);
     set((state) => {
       return {
         claim: res.data.data,

@@ -21,9 +21,9 @@ import TableInput from "./FormComponentsNew/TableInput";
 import TextConcatenation from "./FormComponentsNew/TextConcatenation";
 import TextInput from "./FormComponentsNew/TextInput";
 
-export default function selectComponent(item, index) {
+export default function selectComponent(item, index, read = false) {
   if (item.component?.Ref_Type?.includes("Divider"))
-    return <DividerForm key={index} {...item.component} label={item.label} />;
+    return <DividerForm key={index} {...item.component} label={item.label} read={read}/>;
   if (
     item.component?.Ref_Type?.includes("TextInput") &&
     item.component?.specialField === "Телефон"
@@ -37,6 +37,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
   if (
@@ -52,6 +53,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
   if (
@@ -67,6 +69,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
   if (
@@ -82,6 +85,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
 
@@ -98,6 +102,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
   if (
@@ -113,6 +118,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
   if (item.component?.Ref_Type?.includes("TextInput"))
@@ -125,6 +131,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
 
@@ -138,6 +145,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
 
@@ -151,6 +159,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
 
@@ -168,6 +177,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
 
@@ -181,6 +191,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
 
@@ -194,6 +205,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
 
@@ -207,6 +219,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
   if (item.component?.Ref_Type?.includes("AddressInput"))
@@ -219,6 +232,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
 
@@ -232,6 +246,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
 
@@ -245,6 +260,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
   if (item.component?.Ref_Type?.includes("PriceInput"))
@@ -257,6 +273,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
   if (item.component?.Ref_Type?.includes("componentsFormula"))
@@ -269,6 +286,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
   if (item.component?.Ref_Type?.includes("TextConcatenation"))
@@ -281,6 +299,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
   if (item.component?.Ref_Type?.includes("FileInput"))
@@ -293,6 +312,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
   if (item.component?.Ref_Type?.includes("HiddenInput"))
@@ -305,6 +325,7 @@ export default function selectComponent(item, index) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
+        read={read}
       />
     );
 }

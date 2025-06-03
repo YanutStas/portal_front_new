@@ -12,6 +12,7 @@ export default function SnilsInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
+  read = false
 }) {
   const form = Form.useFormInstance();
 
@@ -103,6 +104,7 @@ export default function SnilsInput({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read={read}
     >
       {formElement}
     </WrapperComponent>

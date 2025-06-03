@@ -17,6 +17,7 @@ function DividerForm({
   dependOf = false,
   howDepend = false,
   stylesField_key = false,
+  read = false
 }) {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const { token } = theme.useToken();
@@ -88,6 +89,7 @@ function DividerForm({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read = {read}
     >
       {formElement}
     </WrapperComponent>

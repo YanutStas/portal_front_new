@@ -10,6 +10,7 @@ export default function HiddenInput({
   howDepend = false,
   span = false,
   stylesField_key = false,
+  read = false
 }) {
   if (defaultValue && defaultValue === "true") {
     defaultValue = true;
@@ -20,7 +21,7 @@ export default function HiddenInput({
 
   const formElement = (
     <Form.Item
-      name={name}      
+      name={name}
       initialValue={defaultValue}
       hidden
     >
@@ -35,6 +36,7 @@ export default function HiddenInput({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read={read}
     >
       {formElement}
     </WrapperComponent>

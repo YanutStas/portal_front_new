@@ -14,6 +14,7 @@ export default function TextConcatenation({
   formula = "",
   span = false,
   stylesField_key = false,
+  read = false
 }) {
   const [auto, setAuto] = useState(true);
 
@@ -100,6 +101,7 @@ export default function TextConcatenation({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read={read}
     >
       {formElement}
     </WrapperComponent>

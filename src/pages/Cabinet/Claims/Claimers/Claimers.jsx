@@ -9,24 +9,24 @@ import moment from "moment/moment";
 import CardClaim from "../CardClaim";
 import usePersonalAccounts from "../../../../stores/Cabinet/usePersonalAccount";
 
-const { Title } = Typography;
+// const { Title } = Typography;
 
-const listLK = [
-  {
-    Ref_Key: "kns6df-sdf67235-sdfs2-234234",
-    Description: "ИП Попов Иван Сидорович",
-    create: "2024-07-12 18:23",
-    activeClaims: 12,
-    finishedClaims: 20
-  },
-  {
-    Ref_Key: "kn66df-sdfff555-sdfs2-235664",
-    Description: "Савельев Егор Васильевич",
-    create: "2024-09-23 10:29",
-    activeClaims: 1,
-    finishedClaims: 3
-  },
-]
+// const listLK = [
+//   {
+//     Ref_Key: "kns6df-sdf67235-sdfs2-234234",
+//     Description: "ИП Попов Иван Сидорович",
+//     create: "2024-07-12 18:23",
+//     activeClaims: 12,
+//     finishedClaims: 20
+//   },
+//   {
+//     Ref_Key: "kn66df-sdfff555-sdfs2-235664",
+//     Description: "Савельев Егор Васильевич",
+//     create: "2024-09-23 10:29",
+//     activeClaims: 1,
+//     finishedClaims: 3
+//   },
+// ]
 
 export default function Claimers() {
   const claims = useClaims((state) => state.claims);

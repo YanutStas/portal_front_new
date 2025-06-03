@@ -12,6 +12,7 @@ import Docs from "./Docs";
 import Billing from "./Billing";
 import Appeals from "./Appeals";
 import moment from "moment";
+import FieldsClaim from "./FieldsClaim";
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -20,6 +21,7 @@ const { Step } = Steps;
 
 
 export default function ClaimItem() {
+  const [openModalFields, setOpenModalFields] = useState(false);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [openFailPay, setOpenFailPay] = useState(false);
   const [openSuccessPay, setOpenSuccessPay] = useState(false);
@@ -52,12 +54,12 @@ export default function ClaimItem() {
     {
       key: 1,
       label: `История`,
-      children: <Story />,
+      children: <Story statuses={claim?.statuses} />,
     },
     {
       key: 2,
-      label: `Документы`,
-      children: <Docs />,
+      label: `Файлы`,
+      children: <Docs files={claim?.files}/>,
     },
     {
       key: 3,
@@ -73,8 +75,11 @@ export default function ClaimItem() {
   // Текущий статус заявки (для примера выбираем 2-й статус)
   const currentStatusIndex = 2; // Индекс текущего статуса в массиве статусов
 
+  const handlerViewFields = () => {
+
+  }
   // Функция для генерации и открытия PDF с заглушкой
-  const handleViewPDF = useCallback(() => {
+  const handlerViewPDF = useCallback(() => {
     setPdfLoading(true);
     try {
       const documentDefinition = {
@@ -121,24 +126,32 @@ export default function ClaimItem() {
         </div>
       ) : (
         <>
-          <Flex justify="space-between" align="center" style={{marginBottom:20}}>
+          <Flex justify="space-between" align="center" style={{ marginBottom: 20 }}>
             <Flex vertical>
-
               <Title level={1} className={styles.title} style={{ marginBottom: 0 }}>
                 Заявка №{claim.number}
               </Title>
-              <Typography.Text style={{color:"gray"}}>от {moment(claim.date).format("DD.MM.YYYY")}</Typography.Text>
+              <Typography.Text style={{ color: "gray" }}>от {moment(claim.date).format("DD.MM.YYYY")}</Typography.Text>
             </Flex>
-            <a target="_blank" href={zayavka}>
+            <Flex gap={20}>
               <Button
                 type="primary"
-                icon={<FileTextOutlined />}
-                loading={pdfLoading}
-              // onClick={handleViewPDF}
+                onClick={() => { setOpenModalFields(true) }}
               >
-                Просмотреть заявку
+                Просмотреть поля заявки
               </Button>
-            </a>
+
+              <a target="_blank" href={zayavka}>
+                <Button
+                  type="primary"
+                  icon={<FileTextOutlined />}
+                  loading={pdfLoading}
+                // onClick={handlerViewPDF}
+                >
+                  Печатная форма заявки
+                </Button>
+              </a>
+            </Flex>
           </Flex>
 
           {/* Статусы заявки */}
@@ -155,10 +168,20 @@ export default function ClaimItem() {
             type="card"
             items={tabs}
           />
+          <Modal
+            open={openModalFields}
+            footer={false}
+            onCancel={()=>{setOpenModalFields(false)}}
+            width={"100%"}
+            title={"Поля заявки"}
+          >
+            <FieldsClaim template={claim?.template} values={claim?.values} />
+          </Modal>
 
           <Modal
             open={openSuccessPay}
-            footer={false}>
+            footer={false}
+          >
             <Result
               status="success"
               title="Успешная оплата"

@@ -37,6 +37,7 @@ export default function TextInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
+  read = false
 }) {
   const serviceItem = useServices((state) => state.serviceItem);
 
@@ -238,6 +239,7 @@ export default function TextInput({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read={read}
     >
       {formElement}
     </WrapperComponent>

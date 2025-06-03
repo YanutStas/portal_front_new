@@ -5,13 +5,14 @@ import selectComponent from "../selectComponent";
 import WrapperComponent from "./WrapperComponent";
 
 export default function GroupInput({
-  name = "name",
+  name = "nameGroupInput",
   label = "",
   dependOf = false,
   howDepend = false,
   fields: Fields = [],
   stylesField_key = false,
   span = false,
+  read = false
 }) {
   const { colorBgContainer, colorBorder } = theme.useToken().token;
 
@@ -30,7 +31,7 @@ export default function GroupInput({
       </Typography.Title>
 
       <Row gutter={[20, 20]} align={"stretch"}>
-        {Fields.map(selectComponent)}
+        {Fields.map((item, index) => selectComponent(item, index, read))}
       </Row>
     </div>
   );
@@ -42,6 +43,7 @@ export default function GroupInput({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read={read}
     >
       {formElement}
     </WrapperComponent>

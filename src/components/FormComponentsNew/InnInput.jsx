@@ -10,7 +10,6 @@ const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 export default function InnInput({
   name = "name",
   label = "",
-
   placeholder = "",
   required = false,
   dependOf = false,
@@ -20,6 +19,7 @@ export default function InnInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
+  read = false
 }) {
   const [value, setValue] = useState('');
   const form = Form.useFormInstance();
@@ -133,6 +133,7 @@ export default function InnInput({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read={read}
     >
       {formElement}
     </WrapperComponent>
