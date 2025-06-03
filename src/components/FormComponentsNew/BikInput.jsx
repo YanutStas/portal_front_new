@@ -19,6 +19,7 @@ export default function BikInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
+  read=false
 }) {
   const form = Form.useFormInstance();
   const [options, setOptions] = useState([]);
@@ -106,6 +107,7 @@ export default function BikInput({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read={read}
     >
       {formElement}
     </WrapperComponent>

@@ -14,7 +14,8 @@ export default function SwitchInput({
   fullDescription = false,
   stylesField_key = false,
   requiredTrue = false,
-  requiredMessage = "***"
+  requiredMessage = "***",
+  read = false
 }) {
   const [error, setError] = useState(false)
   
@@ -76,6 +77,7 @@ export default function SwitchInput({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read={read}
     >
       {formElement}
     </WrapperComponent>

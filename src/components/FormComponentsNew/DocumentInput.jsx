@@ -13,6 +13,7 @@ export default function DocumentInput({
   category_key = null,
   span = false,
   stylesField_key = false,
+  read = false
 }) {
   const [documentModalVisible, setDocumentModalVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -158,6 +159,7 @@ export default function DocumentInput({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read={read}
     >
       {formElement}
     </WrapperComponent>

@@ -19,6 +19,7 @@ export default function FormulaInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
+  read = false
 }) {
   const { colorTextHeading } = theme.useToken().token;
   const form = Form.useFormInstance();
@@ -121,6 +122,7 @@ export default function FormulaInput({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read={read}
     >
       {formElement}
     </WrapperComponent>

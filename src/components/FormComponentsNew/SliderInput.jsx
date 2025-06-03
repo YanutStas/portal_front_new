@@ -8,6 +8,7 @@ export default function SliderInput({
   min = 0,
   max = 100,
   step = 1,
+  read = false
 }) {
   const form = Form.useFormInstance();
   const [inputValue, setInputValue] = useState(min);

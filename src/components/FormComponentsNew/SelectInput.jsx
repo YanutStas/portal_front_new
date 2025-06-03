@@ -3,6 +3,7 @@ import { Form, Select, Typography } from "antd";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
 import useServices from "../../stores/useServices";
+import useClaims from "../../stores/Cabinet/useClaims";
 
 export default function SelectInput({
   name = "name",
@@ -15,9 +16,13 @@ export default function SelectInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
+  read = false
 }) {
+  console.log("selectInput read", read);
+
   const serviceItem = useServices((state) => state.serviceItem);
-  const options = serviceItem.links[Ref_Key]?.options;
+  const claim = useClaims((state) => state.claim);
+  const options = read ? claim.template.portalFields.links[Ref_Key]?.options : serviceItem.links[Ref_Key]?.options;
 
   const formElement = (
     <Form.Item
@@ -38,7 +43,7 @@ export default function SelectInput({
       style={{ maxWidth: "100%", overflow: "hidden" }}
       initialValue={defaultValue}
     >
-      <Select      
+      <Select
         style={{ width: "100%" }}
         showSearch
         optionFilterProp="label"
@@ -63,6 +68,7 @@ export default function SelectInput({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read={read}
     >
       {formElement}
     </WrapperComponent>

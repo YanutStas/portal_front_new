@@ -178,7 +178,7 @@ export default function NewClaim() {
                 {serviceItem.fields
                   ?.sort((a, b) => a.lineNum - b.lineNum)
 
-                  .map(selectComponent)}
+                  .map((item, index) => selectComponent(item, index))}
               </Row>
 
               <div

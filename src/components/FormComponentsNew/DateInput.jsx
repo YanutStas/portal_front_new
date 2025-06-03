@@ -20,6 +20,7 @@ export default function DateInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
+  read = false
 }) {
   const formElement = (
     <ConfigProvider locale={locale}>
@@ -73,6 +74,7 @@ export default function DateInput({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read={read}
     >
       {formElement}
     </WrapperComponent>

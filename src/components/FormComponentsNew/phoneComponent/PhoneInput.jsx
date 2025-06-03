@@ -17,6 +17,7 @@ export default function PhoneInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
+  read = false
 }) {
   const { colorBorderBg, colorText, colorBorder } = theme.useToken().token;
   const { profile } = useProfile();
@@ -31,6 +32,7 @@ export default function PhoneInput({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read={read}
     >
       <Form.Item noStyle shouldUpdate>
         {(formInstance) => {

@@ -226,7 +226,7 @@ export default function NewClaimTest() {
               validateTrigger={["onSubmit", "onChange"]}
             >
               <Row gutter={[20, 20]} align="stretch">
-                {(steps[currentStep]?.fields || []).map(selectComponent)}
+                {(steps[currentStep]?.fields || []).map((item,index)=>selectComponent(item,index))}
               </Row>
 
               <div

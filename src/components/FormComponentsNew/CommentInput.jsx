@@ -12,6 +12,7 @@ export default function CommentInput({
   howDepend = false,
   span = false,
   stylesField_key = false,
+  read = false
 }) {
   const formElement = (
     <Form.Item
@@ -39,6 +40,7 @@ export default function CommentInput({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read={read}
     >
       {formElement}
     </WrapperComponent>

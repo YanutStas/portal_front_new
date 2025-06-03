@@ -17,6 +17,7 @@ export default function PriceInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
+  read = false
 }) {
   const { colorTextHeading } = theme.useToken().token;
 
@@ -85,6 +86,7 @@ export default function PriceInput({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read={read}
     >
       {formElement}
     </WrapperComponent>

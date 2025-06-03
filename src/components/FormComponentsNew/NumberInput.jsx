@@ -22,6 +22,7 @@ export default function NumberInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
+  read = false
 }) {
   const [stepMain, setStepMain] = useState(step);
   const serviceItem = useServices((state) => state.serviceItem);
@@ -104,6 +105,7 @@ export default function NumberInput({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read={read}
     >
       {formElement}
     </WrapperComponent>

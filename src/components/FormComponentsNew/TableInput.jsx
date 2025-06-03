@@ -16,7 +16,7 @@ import WrapperComponent from "./WrapperComponent";
 import TableResults from "./TableResults";
 
 export default function TableInput({
-  name = "name",
+  name = "nameTableInput",
   label = "Поле",
   required = false,
   dependOf = false,
@@ -24,6 +24,7 @@ export default function TableInput({
   fields: Fields = [],
   span = false,
   stylesField_key = false,
+  read = false
 }) {
   const { colorBorder, colorBgContainer } = theme.useToken().token;
   const nameTable = name;
@@ -49,6 +50,7 @@ export default function TableInput({
                 key: 0,
                 isListField: true,
                 fieldKey: 0,
+                read:read
               });
             return (
               <>
@@ -87,6 +89,7 @@ export default function TableInput({
                             key={index}
                             {...item.component}
                             label={item.label}
+                            read={read}
                           />
                         );
                       if (
@@ -106,6 +109,7 @@ export default function TableInput({
 
                             }
                             howDepend={item.dependСondition}
+                            read={read}
                           />
                         );
                       if (item.component.Ref_Type.includes("TextInput"))
@@ -121,6 +125,7 @@ export default function TableInput({
                                 : false
                             }
                             howDepend={item.dependСondition}
+                            read={read}
                           />
                         );
                       if (item.component.Ref_Type.includes("NumberInput"))
@@ -136,6 +141,7 @@ export default function TableInput({
                                 : false
                             }
                             howDepend={item.dependСondition}
+                            read={read}
                           />
                         );
                       if (item.component.Ref_Type.includes("SliderInput"))
@@ -151,6 +157,7 @@ export default function TableInput({
                                 : false
                             }
                             howDepend={item.dependСondition}
+                            read={read}
                           />
                         );
                       if (
@@ -170,6 +177,7 @@ export default function TableInput({
                                 : false
                             }
                             howDepend={item.dependСondition}
+                            read={read}
                           />
                         );
                       if (item.component.Ref_Type.includes("DateInput"))
@@ -185,6 +193,7 @@ export default function TableInput({
                                 : false
                             }
                             howDepend={item.dependСondition}
+                            read={read}
                           />
                         );
                       if (item.component.Ref_Type.includes("SwitchInput"))
@@ -200,6 +209,7 @@ export default function TableInput({
                                 : false
                             }
                             howDepend={item.dependСondition}
+                            read={read}
                           />
                         );
                       if (item.component.Ref_Type.includes("PriceInput"))
@@ -215,6 +225,7 @@ export default function TableInput({
                                 : false
                             }
                             howDepend={item.dependСondition}
+                            read={read}
                           />
                         );
                       if (item.component.Ref_Type.includes("componentsFormula"))
@@ -230,6 +241,7 @@ export default function TableInput({
                                 : false
                             }
                             howDepend={item.dependСondition}
+                            read={read}
                           />
                         );
                     })}
@@ -294,6 +306,7 @@ export default function TableInput({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
+      read={read}
     >
       {formElement}
     </WrapperComponent>
