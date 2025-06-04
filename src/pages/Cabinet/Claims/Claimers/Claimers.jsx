@@ -40,7 +40,7 @@ export default function Claimers() {
     fetchClaims();
     fetchPersonalAccounts();
   }, [fetchClaims]);
-  console.log("claims", claims)
+  // console.log("claims", claims)
   // console.log("token",token)
   return (
     <>

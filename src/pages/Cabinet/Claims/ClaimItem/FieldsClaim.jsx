@@ -13,27 +13,27 @@ export default function FieldsClaim({ template, values }) {
         return <div key={index} style={{ width: "100%" }}><Flex gap={10}><Typography.Text style={{ color: "grey" }}>{label}: </Typography.Text><Typography.Text>{value}</Typography.Text></Flex></div>
     }
     const getField = (index, label, idLine, linkInput = false, valItem = false) => {
-        console.log("valItem", valItem);
-
+        // console.log("valItem", valItem);
         let value = valItem ? valItem[idLine] : values[idLine]
         if (linkInput) {
             value = template.portalFields.links[linkInput]?.options?.find(item => item.value === value)?.label
         }
         return singleTextField(index, label, value)
     }
-    const getSwitch = (index, label, idLine) => {
-        let value = values[idLine]
+    const getSwitch = (index, label, idLine, valItem = false) => {
+        let value = valItem ? valItem[idLine] : values[idLine]
         return singleTextField(index, label, value ? "да" : "нет")
     }
-    const getDate = (index, label, idLine) => {
-        let value = "не указана"
-        if (values[idLine]) {
-            value = moment(values[idLine]).format("DD.MM.YYYY hh:mm")
+    const getDate = (index, label, idLine, valItem = false) => {
+        let value = valItem ? valItem[idLine] : values[idLine]
+        let date = "не указана"
+        if (value) {
+            date = moment(value).format("DD.MM.YYYY hh:mm")
         }
-        return singleTextField(index, label, value)
+        return singleTextField(index, label, date)
     }
-    const getAddress = (index, label, idLine) => {
-        let value = values[idLine]?.fullAddress
+    const getAddress = (index, label, idLine, valItem = false) => {
+        let value = valItem ? valItem[idLine]?.fullAddress : values[idLine]?.fullAddress
         return singleTextField(index, label, value)
     }
     const getDivider = (index, label) => {
@@ -51,7 +51,7 @@ export default function FieldsClaim({ template, values }) {
         return <Card key={index} title={field.label} style={{ flexGrow: 1 }}>
             <Flex wrap="wrap" gap={10}>
                 {valuesTable.map((valItem, index) =>
-                    <Card title={index+1} key={index} style={{ flexGrow: 1 }}>
+                    <Card title={index + 1} key={index} style={{ flexGrow: 1 }}>
                         {getFields(field.component.fields, true, valItem)}
                     </Card>
                 )}
@@ -91,7 +91,7 @@ export default function FieldsClaim({ template, values }) {
             ) {
                 console.log("valItem", valItem);
 
-                return getField(index, field.label, field.idLine, false,valItem)
+                return getField(index, field.label, field.idLine, false, valItem)
             }
         })}
         </Flex>
@@ -113,7 +113,8 @@ export default function FieldsClaim({ template, values }) {
             </Form> */}
             {/* <Descriptions  bordered items={items} column={1} /> */}
 
-            {getFields(template.portalFields.fields)}
+            {!template.portalFields.fields && <Typography.Paragraph>Полей не существует</Typography.Paragraph>}
+            {template.portalFields.fields && getFields(template.portalFields.fields)}
             {/* {template.portalFields.} */}
 
         </div>

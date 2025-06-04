@@ -73,7 +73,7 @@ export default function ClaimItem() {
     },
   ]
   // Текущий статус заявки (для примера выбираем 2-й статус)
-  const currentStatusIndex = 2; // Индекс текущего статуса в массиве статусов
+  const currentStatusIndex = 3; // Индекс текущего статуса в массиве статусов
 
   const handlerViewFields = () => {
 

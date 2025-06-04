@@ -48,7 +48,7 @@ const useDocuments = create((set, get) => ({
         const docsForCategoryIndex = docsForCategory.findIndex(
           (category) => category.Ref_Key === document.ВидФайла_Key
         );
-        console.log(docsForCategoryIndex);
+        // console.log(docsForCategoryIndex);
         if (category && docsForCategoryIndex !== -1) {
           docsForCategory[docsForCategoryIndex].docs.push(document);
         } else {
@@ -57,7 +57,7 @@ const useDocuments = create((set, get) => ({
           docsForCategory[docsForCategory.length - 1].docs.push(document);
         }
       });
-      console.log(docsForCategory);
+      // console.log(docsForCategory);
 
       set({
         documents: docsForCategory,
