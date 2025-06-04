@@ -18,7 +18,7 @@ export default function SelectInput({
   stylesField_key = false,
   read = false
 }) {
-  console.log("selectInput read", read);
+  // console.log("selectInput read", read);
 
   const serviceItem = useServices((state) => state.serviceItem);
   const claim = useClaims((state) => state.claim);
