@@ -33,7 +33,7 @@ export default function CardClaim({ item, borderColor }) {
                         {item.service.description}
                     </Descriptions.Item>
                 </Descriptions>
-                {item.currentStatus?.label && <Tag style={{ position: "absolute", bottom: 10, right: 10 }} color="geekblue">{item.currentStatus.label}</Tag>}
+                {item.currentStatus?.label && <div style={{ position: "absolute", bottom: 10, right: 10 }}> <Tag  color="geekblue">{item.currentStatus.label}</Tag> <Typography.Text style={{color:"gray"}}>от {moment(item.currentStatus.data).format("DD.MM.YYYY")}</Typography.Text></div>}
             </Card>
         </Link>
     )
