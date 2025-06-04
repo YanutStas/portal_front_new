@@ -126,14 +126,14 @@ export default function ClaimItem() {
         </div>
       ) : (
         <>
-          <Flex justify="space-between" align="center" style={{ marginBottom: 20 }}>
+          <Flex justify="space-between" align="center" style={{ marginBottom: 20 }} wrap="wrap">
             <Flex vertical>
               <Title level={1} className={styles.title} style={{ marginBottom: 0 }}>
                 Заявка №{claim.number}
               </Title>
               <Typography.Text style={{ color: "gray" }}>от {moment(claim.date).format("DD.MM.YYYY")}</Typography.Text>
             </Flex>
-            <Flex gap={20}>
+            <Flex gap={20} wrap={"wrap"}>
               <Button
                 type="primary"
                 onClick={() => { setOpenModalFields(true) }}

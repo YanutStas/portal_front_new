@@ -24,6 +24,12 @@ export default function FieldsClaim({ template, values }) {
         let value = valItem ? valItem[idLine] : values[idLine]
         return singleTextField(index, label, value ? "да" : "нет")
     }
+    const getFile = (index, label, idLine, valItem = false) => {
+        let value = valItem ? valItem[idLine] : values[idLine]
+        console.log("getFile",value);
+        
+        return singleTextField(index, label, value ? <a href={`/api/uploads/${value.Ref_Key}`} target='_blank'>{value.Description}</a> : "нет")
+    }
     const getDate = (index, label, idLine, valItem = false) => {
         let value = valItem ? valItem[idLine] : values[idLine]
         let date = "не указана"
@@ -75,6 +81,9 @@ export default function FieldsClaim({ template, values }) {
             if (field.component.Ref_Type === "componentsSwitchInput") {
                 return getSwitch(index, field.label, field.idLine)
             }
+            if (field.component.Ref_Type === "componentsFileInput") {
+                return getFile(index, field.label, field.idLine)
+            }
             if (field.component.Ref_Type === "componentsGroupFieldsInput") {
                 return getGroupFields(index, field)
             }
@@ -89,7 +98,7 @@ export default function FieldsClaim({ template, values }) {
                 field.component.Ref_Type !== "componentsDivider" &&
                 field.component.Ref_Type !== "componentsAddressInput"
             ) {
-                console.log("valItem", valItem);
+                // console.log("valItem", valItem);
 
                 return getField(index, field.label, field.idLine, false, valItem)
             }
