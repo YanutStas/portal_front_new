@@ -12,13 +12,16 @@ export default function FieldsClaim({ template, values }) {
     const singleTextField = (index, label, value) => {
         return <div key={index} style={{ width: "100%" }}><Flex gap={10}><Typography.Text style={{ color: "grey" }}>{label}: </Typography.Text><Typography.Text>{value}</Typography.Text></Flex></div>
     }
-    const getField = (index, label, idLine, linkInput = false, valItem = false) => {
-        // console.log("valItem", valItem);
-        let value = valItem ? valItem[idLine] : values[idLine]
+    const getField = (index, field, linkInput = false, valItem = false) => {
+        if (field.dependСondition && values[field.dependIdLine]) {
+            let result = field.dependСondition.options.reduce((sum, current) => current.value === values[field.dependIdLine], false);
+            if(!result) return false
+        }
+        let value = valItem ? valItem[field.idLine] : values[field.idLine]
         if (linkInput) {
             value = template.portalFields.links[linkInput]?.options?.find(item => item.value === value)?.label
         }
-        return singleTextField(index, label, value)
+        return singleTextField(index, field.label, value)
     }
     const getSwitch = (index, label, idLine, valItem = false) => {
         let value = valItem ? valItem[idLine] : values[idLine]
@@ -26,8 +29,6 @@ export default function FieldsClaim({ template, values }) {
     }
     const getFile = (index, label, idLine, valItem = false) => {
         let value = valItem ? valItem[idLine] : values[idLine]
-        console.log("getFile",value);
-        
         return singleTextField(index, label, value ? <a href={`/api/uploads/${value.Ref_Key}`} target='_blank'>{value.Description}</a> : "нет")
     }
     const getDate = (index, label, idLine, valItem = false) => {
@@ -46,14 +47,17 @@ export default function FieldsClaim({ template, values }) {
         return <Divider key={index} orientation='left'>{label}</Divider>
     }
     const getGroupFields = (index, field) => {
+        if (field.dependСondition && values[field.dependIdLine]) {
+            let result = field.dependСondition.options.reduce((sum, current) => current.value === values[field.dependIdLine], false);
+            if(!result) return false
+        }
+
         return <Card key={index} title={field.label} style={{ flexGrow: 1 }}>
             {getFields(field.component.fields, true)}
         </Card>
     }
     const getTable = (index, field) => {
-        // console.log("table", field)
         const valuesTable = values[field.idLine]
-        // console.log("valuesTable", valuesTable)
         return <Card key={index} title={field.label} style={{ flexGrow: 1 }}>
             <Flex wrap="wrap" gap={10}>
                 {valuesTable.map((valItem, index) =>
@@ -91,16 +95,14 @@ export default function FieldsClaim({ template, values }) {
                 return getTable(index, field)
             }
             if (field.component.Ref_Type === "componentsLinkInput") {
-                return getField(index, field.label, field.idLine, field.component.Ref_Key)
+                return getField(index, field, field.component.Ref_Key)
             }
             if (field.component.Ref_Type !== "componentsGroupFieldsInput" &&
                 field.component.Ref_Type !== "componentsTableInput" &&
                 field.component.Ref_Type !== "componentsDivider" &&
                 field.component.Ref_Type !== "componentsAddressInput"
             ) {
-                // console.log("valItem", valItem);
-
-                return getField(index, field.label, field.idLine, false, valItem)
+                return getField(index, field, false, valItem)
             }
         })}
         </Flex>

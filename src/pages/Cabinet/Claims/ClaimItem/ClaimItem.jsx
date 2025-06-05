@@ -138,7 +138,7 @@ export default function ClaimItem() {
                 type="primary"
                 onClick={() => { setOpenModalFields(true) }}
               >
-                Просмотреть поля заявки
+                Подаваемые данные по заявке
               </Button>
 
               <a target="_blank" href={zayavka}>

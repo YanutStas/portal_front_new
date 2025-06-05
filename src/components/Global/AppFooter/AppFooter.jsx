@@ -78,7 +78,7 @@ export default function AppFooter() {
 
         {/* Текущая информация о сайте */}
         <Typography.Text>
-          Copyright ©{" "}
+          
           <Link
             href="https://mosoblenergo.ru/"
             target="_blank"
@@ -86,7 +86,7 @@ export default function AppFooter() {
           >
             АО «Мособлэнерго»
           </Link>{" "}
-          | Разработка сайта - Шишкин & Януть | 2023 -{" "}
+          | 2023 -{" "}
           {new Date().getFullYear()}
         </Typography.Text>
       </Space>
