@@ -173,7 +173,7 @@ export default function ClaimItem() {
             footer={false}
             onCancel={()=>{setOpenModalFields(false)}}
             width={"100%"}
-            title={"Поля заявки"}
+            title={`Поля заявки №${claim.number}`}
           >
             <FieldsClaim template={claim?.template} values={claim?.values} />
           </Modal>
