@@ -10,12 +10,20 @@ export default function FieldsClaim({ template, values }) {
     console.log(values);
 
     const singleTextField = (index, label, value) => {
-        return <div key={index} style={{ width: "100%" }}><Flex gap={10}><Typography.Text style={{ color: "grey" }}>{label}: </Typography.Text><Typography.Text>{value}</Typography.Text></Flex></div>
+        if (!value) {
+            return false
+        }
+        return <div key={index} style={{ width: "100%" }}>
+            <Flex gap={10} wrap={"wrap"}>
+                {label && <Typography.Text style={{ color: "gray" }}>{label}: </Typography.Text>}
+                <Typography.Text>{value}</Typography.Text>
+            </Flex>
+        </div>
     }
     const getField = (index, field, linkInput = false, valItem = false) => {
         if (field.dependСondition && values[field.dependIdLine]) {
             let result = field.dependСondition.options.reduce((sum, current) => current.value === values[field.dependIdLine], false);
-            if(!result) return false
+            if (!result) return false
         }
         let value = valItem ? valItem[field.idLine] : values[field.idLine]
         if (linkInput) {
@@ -44,24 +52,24 @@ export default function FieldsClaim({ template, values }) {
         return singleTextField(index, label, value)
     }
     const getDivider = (index, label) => {
-        return <Divider key={index} orientation='left'>{label}</Divider>
+        return <Divider key={index} orientation='left' style={{ whiteSpace: "normal" }}>{label}</Divider>
     }
     const getGroupFields = (index, field) => {
         if (field.dependСondition && values[field.dependIdLine]) {
             let result = field.dependСondition.options.reduce((sum, current) => current.value === values[field.dependIdLine], false);
-            if(!result) return false
+            if (!result) return false
         }
 
-        return <Card key={index} title={field.label} style={{ flexGrow: 1 }}>
+        return <Card key={index} title={field.label} style={{ flexGrow: 1 }} styles={{ title: { whiteSpace: "normal" } }}>
             {getFields(field.component.fields, true)}
         </Card>
     }
     const getTable = (index, field) => {
         const valuesTable = values[field.idLine]
-        return <Card key={index} title={field.label} style={{ flexGrow: 1 }}>
+        return <Card key={index} title={field.label} style={{ flexGrow: 1 }} styles={{ title: { whiteSpace: "normal" } }}>
             <Flex wrap="wrap" gap={10}>
                 {valuesTable.map((valItem, index) =>
-                    <Card title={index + 1} key={index} style={{ flexGrow: 1 }}>
+                    <Card title={<Typography.Text style={{ color: "gray" }}>{index + 1}</Typography.Text>} key={index} style={{ flexGrow: 1 }}>
                         {getFields(field.component.fields, true, valItem)}
                     </Card>
                 )}
@@ -108,7 +116,7 @@ export default function FieldsClaim({ template, values }) {
         </Flex>
     }
     return (
-        <div>
+        <div style={{ paddingBottom: 30 }}>
             {/* <Form
                 disabled
                 form={form}
