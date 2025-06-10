@@ -68,7 +68,7 @@ export default function FieldsClaim({ template, values }) {
         const valuesTable = values[field.idLine]
         return <Card key={index} title={field.label} style={{ flexGrow: 1 }} styles={{ title: { whiteSpace: "normal" } }}>
             <Flex wrap="wrap" gap={10}>
-                {valuesTable.map((valItem, index) =>
+                {valuesTable && valuesTable.map((valItem, index) =>
                     <Card title={<Typography.Text style={{ color: "gray" }}>{index + 1}</Typography.Text>} key={index} style={{ flexGrow: 1 }}>
                         {getFields(field.component.fields, true, valItem)}
                     </Card>
