@@ -59,7 +59,7 @@ export default function ClaimItem() {
     {
       key: 2,
       label: `Файлы`,
-      children: <Docs files={claim?.files}/>,
+      children: <Docs files={claim?.files} />,
     },
     {
       key: 3,
@@ -171,8 +171,9 @@ export default function ClaimItem() {
           <Modal
             open={openModalFields}
             footer={false}
-            onCancel={()=>{setOpenModalFields(false)}}
-            width={"100%"}
+            onCancel={() => { setOpenModalFields(false) }}
+            // width={1600}
+            width={{ xxl: 1600, xl: 1200, lg: 992, md: 768, sm: 576, xs: 350 }}
             title={`Поля заявки №${claim.number}`}
           >
             <FieldsClaim template={claim?.template} values={claim?.values} />
