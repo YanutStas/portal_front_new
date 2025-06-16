@@ -9,12 +9,29 @@ import ModalAddDocument from "../../../components/Cabinet/Documents/ModalAddDocu
 import DocumentCard from "./DocumentCard";
 
 const { Title } = Typography;
+const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
+  const byteCharacters = atob(b64Data);
+  // console.log("byteCharacters",byteCharacters);
+
+  const byteArrays = [];
+  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+    const slice = byteCharacters.slice(offset, offset + sliceSize);
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+  const blob = new Blob(byteArrays, { type: contentType });
+  return blob;
+}
 
 const Documents = ({ categoryKey, onSelectDocument, isModal }) => {
   const [modalCategoryKey, setModalCategoryKey] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const documents = useDocuments((state) => state.documents);
-  const categories = useDocuments((state) => state.categories);
+  // const categories = useDocuments((state) => state.categories);
   const loadingDocuments = useDocuments((state) => state.loadingDocuments);
   const openModalAdd = useDocuments((state) => state.openModalAdd);
   const setOpenModalAdd = useDocuments((state) => state.setOpenModalAdd);
@@ -34,7 +51,7 @@ const Documents = ({ categoryKey, onSelectDocument, isModal }) => {
       const fileName = document.ПутьКФайлу.split("/")[1];
       fileUrl = `${backServer}/api/cabinet/get-file/by-filename/${fileName}`;
     } else {
-      const fileId = document.Ref_Key;
+      const fileId = document.id;
       fileUrl = `${backServer}/api/cabinet/get-file/by-id/${fileId}`;
     }
 
@@ -43,17 +60,21 @@ const Documents = ({ categoryKey, onSelectDocument, isModal }) => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
         },
-        responseType: "blob",
+        // responseType: "blob",
         withCredentials: true,
       })
       .then((response) => {
-        const file = new Blob([response.data], { type: "application/pdf" });
+        // console.log("response.data", response.data)
+        // const file = atob(response.data.data.base64);
+        const file = b64toBlob(response.data.data.base64, "application/pdf")
+        // const file = new Blob([response.data.data.base64], { type: "application/pdf" });
         const fileURL = URL.createObjectURL(file);
+        // console.log(fileURL)
         newWindow.location.href = fileURL;
       })
       .catch((error) => {
         console.error("Ошибка при открытии документа:", error);
-        newWindow.document.write("<p>Не удалось загрузить документ.</p>");
+        // newWindow.document.write("<p>Не удалось загрузить документ.</p>");
       });
   }, []);
 
@@ -100,7 +121,7 @@ const Documents = ({ categoryKey, onSelectDocument, isModal }) => {
   const documentCards = useMemo(() => {
     return documents.map((category, indexcategory) => (
       <div key={indexcategory}>
-        <Typography.Title level={3}>{category.Description}</Typography.Title>
+        <Typography.Title level={3}>{category.label}</Typography.Title>
         <Flex gap={20} wrap="wrap">
           {category.docs.map((doc, indexdoc) => (
             <DocumentCard
