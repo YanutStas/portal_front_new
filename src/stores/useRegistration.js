@@ -53,7 +53,7 @@ const useRegistration = create((set, get) => ({
       if (response.data.status === "ok") {
         get().setPhoneVerified(true);
         set(() => ({
-          registrationStep: 1,
+          registrationStep: 2,
           codeRequested: false,
         }));
       } else {
@@ -95,7 +95,7 @@ const useRegistration = create((set, get) => ({
       if (response.data.status === "ok") {
         get().setEmailVerified(true);
         set(() => ({
-          registrationStep: 2,
+          registrationStep: 1,
           codeRequestedEmail: false,
         }));
       } else {
