@@ -34,19 +34,19 @@ const useDocuments = create((set, get) => ({
           withCredentials: true,
         }),
       ]);
-
-      if (response[0].data.documents && categoryKey) {
-        response[0].data.documents = response[0].data.documents.filter(
-          (document) => document.ВидФайла_Key === categoryKey
+      // console.log(response[0].data.data)
+      if (response[0].data.data && categoryKey) {
+        // console.log("categoryKey",categoryKey);        
+        response[0].data.data = response[0].data.data.filter(
+          (document) => document.typeFile.id === categoryKey
         );
       }
       const docsForCategory = [];
-      response[0].data.documents.forEach((document) => {
-        const category = response[1].data.categories.find(
-          (category) => category.Ref_Key === document.ВидФайла_Key
-        );
+
+      response[0].data.data.forEach(document => {
+        const category = document.typeFile
         const docsForCategoryIndex = docsForCategory.findIndex(
-          (category) => category.Ref_Key === document.ВидФайла_Key
+          (category) => category.id === document.typeFile.id
         );
         // console.log(docsForCategoryIndex);
         if (category && docsForCategoryIndex !== -1) {
@@ -56,7 +56,25 @@ const useDocuments = create((set, get) => ({
           docsForCategory[docsForCategory.length - 1].docs = [];
           docsForCategory[docsForCategory.length - 1].docs.push(document);
         }
-      });
+
+      })
+
+      // response[0].data.documents.forEach((document) => {
+      //   const category = response[1].data.categories.find(
+      //     (category) => category.Ref_Key === document.ВидФайла_Key
+      //   );
+      //   const docsForCategoryIndex = docsForCategory.findIndex(
+      //     (category) => category.Ref_Key === document.ВидФайла_Key
+      //   );
+      //   // console.log(docsForCategoryIndex);
+      //   if (category && docsForCategoryIndex !== -1) {
+      //     docsForCategory[docsForCategoryIndex].docs.push(document);
+      //   } else {
+      //     docsForCategory.push(category);
+      //     docsForCategory[docsForCategory.length - 1].docs = [];
+      //     docsForCategory[docsForCategory.length - 1].docs.push(document);
+      //   }
+      // });
       // console.log(docsForCategory);
 
       set({

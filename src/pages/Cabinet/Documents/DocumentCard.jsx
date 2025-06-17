@@ -39,7 +39,7 @@ const DocumentCard = React.memo(
             style={{ position: "absolute", top: 10, right: 10 }}
             onClick={(e) => {
               e.stopPropagation();
-              confirmDelete(document.Ref_Key);
+              confirmDelete(document.id);
             }}
           />
         )}
@@ -62,13 +62,13 @@ const DocumentCard = React.memo(
           Название:
         </Text>
         <Title level={5} style={{ margin: "8px 0" }}>
-          {document.Description}
+          {document.name}
         </Title>
         <div style={{ margin: "8px 0" }}>
           <FilePdfOutlined style={{ fontSize: "48px", color: "#e37020" }} />
         </div>
         <Text type="secondary">
-          Размер файла: {Math.round(document.Размер / 1024)} КБ
+          Размер файла: {Math.round(document.size / 1024)} КБ
         </Text>
       </Card>
     );
