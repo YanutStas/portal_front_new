@@ -32,34 +32,34 @@ export default function Appeals() {
     return (
         <div>
             {appeals.map((item, index) =>
-                <>
-                    <Card
-                        title={`Обращение №${item.number}`}
-                        style={{ maxWidth: "100%", marginBottom: 20, border: `1px solid ${token.colorIcon}` }}
-                        styles={{
-                            body: {
-                                padding: 0
-                            }
-                        }}
-                        extra={item.answer?<Tag color="green">Отвечено</Tag>:<Tag color="blue">В обработке</Tag>}
-                    >
-                        <Flex vertical>
-                            <div style={{ padding: 10, paddingLeft: 24 }}>
-                                <Typography.Title level={5} style={{ marginTop: 0 }}>Вопрос:</Typography.Title>
-                                <Typography.Paragraph>{item.question}</Typography.Paragraph>
-                                <Meta description={moment(item.question_datetime).format('DD.MM.YYYY hh:mm')} />
+
+                <Card
+                    key={index}
+                    title={`Обращение №${item.number}`}
+                    style={{ maxWidth: "100%", marginBottom: 20, border: `1px solid ${token.colorIcon}` }}
+                    styles={{
+                        body: {
+                            padding: 0
+                        }
+                    }}
+                    extra={item.answer ? <Tag color="green">Отвечено</Tag> : <Tag color="blue">В обработке</Tag>}
+                >
+                    <Flex vertical>
+                        <div style={{ padding: 10, paddingLeft: 24 }}>
+                            <Typography.Title level={5} style={{ marginTop: 0 }}>Вопрос:</Typography.Title>
+                            <Typography.Paragraph>{item.question}</Typography.Paragraph>
+                            <Meta description={moment(item.question_datetime).format('DD.MM.YYYY hh:mm')} />
+                        </div>
+                        {item.answer &&
+                            <div style={{ padding: 10, paddingLeft: 24, backgroundColor: "rgba(0,255,0,.4)" }}>
+                                <Typography.Title level={5} style={{ marginTop: 0 }}>Ответ:</Typography.Title>
+                                <Typography.Paragraph>{item.answer}</Typography.Paragraph>
+                                <Meta description={moment(item.answer_datetime).format('DD.MM.YYYY hh:mm')} />
                             </div>
-                            {item.answer &&
-                                <div style={{ padding: 10, paddingLeft: 24, backgroundColor: "rgba(0,255,0,.4)" }}>
-                                    <Typography.Title level={5} style={{ marginTop: 0 }}>Ответ:</Typography.Title>
-                                    <Typography.Paragraph>{item.answer}</Typography.Paragraph>
-                                    <Meta description={moment(item.answer_datetime).format('DD.MM.YYYY hh:mm')} />
-                                </div>
-                            }
-                        </Flex>
-                    </Card>
-                    {/* <Divider /> */}
-                </>
+                        }
+                    </Flex>
+                </Card>
+
             )}
             <Button type='primary'>Подать обращение</Button>
         </div>

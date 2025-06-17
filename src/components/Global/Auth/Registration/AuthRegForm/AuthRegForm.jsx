@@ -26,19 +26,19 @@ const AuthRegForm = () => {
         direction="vertical"
       >
         <Step
-          title="Номер мобильного телефона"
-          icon={<PhoneTwoTone />}
+          title="Электронная почта"
+          icon={<MailTwoTone />}
           status={registrationStep === 0 ? "process" : "finish"}
         />
         <Step
-          title="Электронная почта"
-          icon={<MailTwoTone />}
+          title="Номер мобильного телефона"
+          icon={<PhoneTwoTone />}
           status={
             registrationStep === 1
               ? "process"
               : registrationStep <= 1
-              ? "wait"
-              : "finish"
+                ? "wait"
+                : "finish"
           }
         />
         <Step
@@ -48,8 +48,8 @@ const AuthRegForm = () => {
         />
       </Steps>
 
-      {registrationStep === 0 && <PhoneVerification />}
-      {registrationStep === 1 && <EmailVerification />}
+      {registrationStep === 1 && <PhoneVerification />}
+      {registrationStep === 0 && <EmailVerification />}
       {registrationStep === 2 && <PasswordRegForm />}
 
       <Button type="link" onClick={handleClick}>
