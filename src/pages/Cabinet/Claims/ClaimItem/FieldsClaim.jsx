@@ -1,13 +1,57 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import selectComponent from '../../../../components/selectComponent'
 import { Badge, Card, Descriptions, Divider, Flex, Form, Typography } from 'antd'
 import moment from 'moment';
+import axios from 'axios';
+
+const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
+    const byteCharacters = atob(b64Data);
+    // console.log("byteCharacters",byteCharacters);
+
+    const byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        const slice = byteCharacters.slice(offset, offset + sliceSize);
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+    }
+    const blob = new Blob(byteArrays, { type: contentType });
+    return blob;
+}
 
 export default function FieldsClaim({ template, values }) {
     const [form] = Form.useForm();
     // form.setFieldsValue(values)
-    console.log(template);
-    console.log(values);
+    // console.log(template);
+    // console.log(values);
+
+    const openDocument = useCallback((fileId) => {
+        const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
+        const fileUrl = `${backServer}/api/cabinet/get-file/by-id/${fileId}`;
+        axios
+            .get(fileUrl, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+                },
+                // responseType: "blob",
+                withCredentials: true,
+            })
+            .then((response) => {
+                console.log(response.data.data  );
+
+                const file = b64toBlob(response.data.data.base64, "application/pdf")
+                const fileURL = URL.createObjectURL(file);
+                const newWindow = window.open("", "_blank");
+                newWindow.location.href = fileURL;
+            })
+            .catch((error) => {
+                console.error("Ошибка при открытии документа:", error);
+            });
+    }, []);
+
 
     const singleTextField = (index, label, value) => {
         if (!value) {
@@ -37,7 +81,13 @@ export default function FieldsClaim({ template, values }) {
     }
     const getFile = (index, label, idLine, valItem = false) => {
         let value = valItem ? valItem[idLine] : values[idLine]
-        return singleTextField(index, label, value ? <a href={`/api/uploads/${value.Ref_Key}`} target='_blank'>{value.Description}</a> : "нет")
+        return singleTextField(index, label, value ? <a
+            // href={`/api/cabinet/get-file/by-id/${value.Ref_Key}`}
+            // target='_blank'
+            onClick={() => {
+                openDocument(value.Ref_Key)
+            }}
+        >{value.Description}</a> : "нет")
     }
     const getDate = (index, label, idLine, valItem = false) => {
         let value = valItem ? valItem[idLine] : values[idLine]
