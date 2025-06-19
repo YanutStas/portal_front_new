@@ -33,6 +33,7 @@ export default function NewClaim() {
   const createClaim = useClaims((state) => state.createClaim);
   const newClaim = useClaims((state) => state.newClaim);
   const clearNewClaim = useClaims((state) => state.clearNewClaim);
+  const blockButtonNewClaim = useClaims((state) => state.blockButtonNewClaim);
   const { id } = useParams();
   const [form] = Form.useForm();
 
@@ -82,18 +83,19 @@ export default function NewClaim() {
         newValues[key] = addNewValue(value);
       }
     }
+
     try {
       console.log("Данные для создания заявки: ", newValues);
 
-
-      await createClaim({
-        versionId: serviceItem.versionId,
-        serviceId: serviceItem.Ref_Key,
-        values: newValues,
-      });
+      // await createClaim({
+      //   versionId: serviceItem.versionId,
+      //   serviceId: serviceItem.Ref_Key,
+      //   values: newValues,
+      // });
     } catch (err) {
       console.log(err.message || "Ошибка при создании заявки.");
     }
+
   };
 
   const handleKeyDown = (event) => {
@@ -193,7 +195,7 @@ export default function NewClaim() {
                     whileHover={{ scale: 1.1 }}
                     transition={{ type: "spring", stiffness: 400, damping: 10 }}
                   >
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" disabled={blockButtonNewClaim}>
                       {serviceItem.buttonText || "Подать заявку на услугу"}
                     </Button>
                   </motion.div>

@@ -7,6 +7,7 @@ const DocumentSelectModal = ({
   onClose,
   categoryKey,
   onSelectDocument,
+  label
 }) => {
   return (
 
@@ -16,10 +17,12 @@ const DocumentSelectModal = ({
       footer={null}
       width="80%"
       keyboard={false}
+      title={"Выбор документа"}
     >
 
       <Documents
         categoryKey={categoryKey}
+        label={label}
         onSelectDocument={onSelectDocument}
         isModal={true}
       />

@@ -6,6 +6,7 @@ import ConfirmationDocumentNewInput from "./FormComponentsNew/confirmationDocume
 import DateInput from "./FormComponentsNew/DateInput";
 import DividerForm from "./FormComponentsNew/DividerForm";
 import DocumentInput from "./FormComponentsNew/DocumentInput";
+import FileInput from "./FormComponentsNew/FileInput";
 import FormulaInput from "./FormComponentsNew/FormulaInput";
 import GroupInput from "./FormComponentsNew/GroupInput";
 import HiddenInput from "./FormComponentsNew/HiddenInput";
@@ -23,7 +24,7 @@ import TextInput from "./FormComponentsNew/TextInput";
 
 export default function selectComponent(item, index, read = false) {
   if (item.component?.Ref_Type?.includes("Divider"))
-    return <DividerForm key={index} {...item.component} label={item.label} read={read}/>;
+    return <DividerForm key={index} {...item.component} label={item.label} read={read} />;
   if (
     item.component?.Ref_Type?.includes("TextInput") &&
     item.component?.specialField === "Телефон"
@@ -292,6 +293,19 @@ export default function selectComponent(item, index, read = false) {
   if (item.component?.Ref_Type?.includes("TextConcatenation"))
     return (
       <TextConcatenation
+        key={index}
+        {...item.component}
+        {...item}
+        fullDescription={item.name?.fullDescription}
+        name={item.idLine}
+        dependOf={item.dependIdLine}
+        howDepend={item.dependСondition}
+        read={read}
+      />
+    );
+  if (item.component?.Ref_Type?.includes("FileInput") && !item.component?.saveToProfile)
+    return (
+      <FileInput
         key={index}
         {...item.component}
         {...item}

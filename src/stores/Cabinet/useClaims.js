@@ -5,6 +5,13 @@ const useNewClaim = create((set) => ({
   claims: null,
   claim: null,
   newClaim: null,
+  blockButtonNewClaim: false,
+  addBlockButtonNewClaim: () => {
+    set({ blockButtonNewClaim: true });
+  },
+  removeBlockButtonNewClaim: () => {
+    set({ blockButtonNewClaim: false });
+  },
   clearNewClaim: () => {
     set({ newClaim: null });
   },

@@ -113,6 +113,7 @@ export default function ModalAddDocument({ visible, onClose, categoryKey }) {
       formData.append("category", values.category);
       formData.append("documentName", values.documentName);
       formData.append("categoryKey", values.categoryKey);
+      formData.append("saveToProfile", true);
 
       files.forEach((file) => {
         formData.append("files", file.originFileObj);

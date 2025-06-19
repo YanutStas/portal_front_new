@@ -64,7 +64,7 @@ const AddressInput = ({
       })
       .then((response) => {
         if (response.data && response.data.data) {
-          console.log("response.data", response.data);
+          // console.log("response.data", response.data);
           setOptions(
             response.data.data.map((item) => ({
               label: (

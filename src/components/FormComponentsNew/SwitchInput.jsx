@@ -48,7 +48,7 @@ export default function SwitchInput({
           {
             validator: (rule, value) => {
               // console.log("rule:", rule);
-              console.log("value:", value);
+              // console.log("value:", value);
 
 
               if (requiredTrue && !value) {
