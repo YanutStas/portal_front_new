@@ -11,7 +11,7 @@ import useProfile from "../../../stores/Cabinet/useProfile";
 import styles from "./AppHeader.module.css";
 import ErrorModal from "../../ErrorModal";
 import { items, itemsMobile, RightMenuArea } from "./AppHeaderMenus";
-import { MobileMenuDrawer, NotificationDrawer } from "./AppHeaderDrawers"; 
+import { MobileMenuDrawer, NotificationDrawer } from "./AppHeaderDrawers";
 
 const { Header } = Layout;
 
@@ -23,6 +23,25 @@ export default function AppHeader() {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const [current, setCurrent] = useState()
+  useEffect(() => {
+    if (location.pathname.includes("/services")) {
+      return setCurrent("/services")
+    }
+    if (location.pathname.includes("/about")) {
+      return setCurrent("/about")
+    }
+    if (location.pathname.includes("/calc")) {
+      return setCurrent("/calc")
+    }
+    if (location.pathname.includes("/contacts")) {
+      return setCurrent("/contacts")
+    }
+    if (location.pathname.includes("/docs")) {
+      return setCurrent("/docs")
+    }    
+    return setCurrent()
+  }, [location])
 
   const [menuDrawerVisible, setMenuDrawerVisible] = useState(false);
   const [notificationDrawerVisible, setNotificationDrawerVisible] =
@@ -37,14 +56,14 @@ export default function AppHeader() {
     }
   }, [auth, fetchProfile]);
 
-  useEffect(() => {
-    const matchingItem = items.find((item) => item.key === location.pathname);
-    if (matchingItem) {
-      setCurrentPage(location.pathname);
-    } else {
-      setCurrentPage("");
-    }
-  }, [location.pathname, setCurrentPage]);
+  // useEffect(() => {
+  //   const matchingItem = items.find((item) => item.key === location.pathname);
+  //   if (matchingItem) {
+  //     setCurrentPage(location.pathname);
+  //   } else {
+  //     setCurrentPage("");
+  //   }
+  // }, [location.pathname, setCurrentPage]);
 
   const handleLogout = () => {
     try {
@@ -134,7 +153,7 @@ export default function AppHeader() {
           className={styles.mainMenu}
           theme="light"
           mode="horizontal"
-          selectedKeys={[currentPage]}
+          selectedKeys={[current]}
           onClick={({ key }) => {
             setCurrentPage(key);
           }}
@@ -169,7 +188,7 @@ export default function AppHeader() {
       <MobileMenuDrawer
         menuDrawerVisible={menuDrawerVisible}
         closeMenuDrawer={closeMenuDrawer}
-        currentPage={currentPage}
+        currentPage={current}
         setCurrentPage={setCurrentPage}
         itemsMobile={items}
         colorText={colorText}

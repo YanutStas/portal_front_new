@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Flex, Menu, Typography, ConfigProvider } from "antd";
 import {
   ProfileOutlined,
@@ -8,7 +8,7 @@ import {
   FileOutlined,
 } from "@ant-design/icons";
 import styles from "./CabinetMenu.module.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import useGlobal from "../../stores/useGlobal";
 
@@ -16,6 +16,23 @@ const { Text } = Typography;
 
 export default function CabinetMenu() {
   const { currentPage, setCurrentPage } = useGlobal();
+  const [current, setCurrent] = useState()
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname.includes("/services")) {
+      return setCurrent("/services")
+    }
+    if (location.pathname.includes("/cabinet/claimers")) {
+      return setCurrent("/cabinet/claimers")
+    }
+    if (location.pathname.includes("/cabinet/documents")) {
+      return setCurrent("/cabinet/documents")
+    }
+    if (location.pathname.includes("/cabinet/profile")) {
+      return setCurrent("/cabinet/profile")
+    }
+    return setCurrent()
+  }, [location])
   const iconStyle = {
     color: "gray",
   };
@@ -152,7 +169,7 @@ export default function CabinetMenu() {
               items={menuItems}
               onClick={handlerMenu}
               className={styles.menu}
-              selectedKeys={[currentPage]}
+              selectedKeys={[current]}
             />
           </Flex>
         </div>

@@ -27,7 +27,7 @@ const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
   return blob;
 }
 
-const Documents = ({ categoryKey, onSelectDocument, isModal }) => {
+const Documents = ({ categoryKey, onSelectDocument, isModal, label = false }) => {
   const [modalCategoryKey, setModalCategoryKey] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const documents = useDocuments((state) => state.documents);
@@ -44,9 +44,8 @@ const Documents = ({ categoryKey, onSelectDocument, isModal }) => {
 
   const openDocument = useCallback((document) => {
     const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
-    const newWindow = window.open("", "_blank");
     let fileUrl;
-
+    
     if (document.ПутьКФайлу) {
       const fileName = document.ПутьКФайлу.split("/")[1];
       fileUrl = `${backServer}/api/cabinet/get-file/by-filename/${fileName}`;
@@ -64,12 +63,9 @@ const Documents = ({ categoryKey, onSelectDocument, isModal }) => {
         withCredentials: true,
       })
       .then((response) => {
-        // console.log("response.data", response.data)
-        // const file = atob(response.data.data.base64);
         const file = b64toBlob(response.data.data.base64, "application/pdf")
-        // const file = new Blob([response.data.data.base64], { type: "application/pdf" });
         const fileURL = URL.createObjectURL(file);
-        // console.log(fileURL)
+        const newWindow = window.open("", "_blank");
         newWindow.location.href = fileURL;
       })
       .catch((error) => {
@@ -115,7 +111,7 @@ const Documents = ({ categoryKey, onSelectDocument, isModal }) => {
   const handleCloseModal = () => {
     setOpenModalAdd(false);
     setIsModalOpen(false);
-    setModalCategoryKey(null);
+    // setModalCategoryKey(null);
   };
 
   const documentCards = useMemo(() => {
@@ -144,7 +140,10 @@ const Documents = ({ categoryKey, onSelectDocument, isModal }) => {
     <div>
       <AppHelmet title={"Документы"} desc={"Документы"} />
       <Flex align="center" justify="space-between">
-        <Title level={1}>Документы</Title>
+        <Flex wrap={"wrap"} align="center" justify="center" gap={20}>
+          {!label && <Title level={1} style={{ margin: 0 }}>Мои документы</Title>}
+          <Title level={2} style={{ color: "gray", margin: 0 }}>{label}</Title>
+        </Flex>
         <Button
           type="primary"
           onClick={!isModalOpen ? handleAddDocument : undefined}
