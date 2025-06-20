@@ -52,7 +52,11 @@ const FileInput = ({
             setFileList([]);
             // message.success('upload successfully.');
             if (res.data?.fileId) {
-                form.setFieldValue(name, res.data.fileId)
+                form.setFieldValue(name, {
+                    fileId: res.data.fileId,
+                    category_key,
+                    label
+                })
             }
         }).catch(() => {
             console.error('upload failed.');
@@ -78,7 +82,7 @@ const FileInput = ({
     };
 
     const attachedDocument = form.getFieldValue(name);
-    console.log(attachedDocument);
+    // console.log(attachedDocument);
 
     const isAttached = !!attachedDocument;
 
@@ -121,7 +125,7 @@ const FileInput = ({
             >
             </Form.Item>
             {!isAttached &&
-                <Flex gap={10} vertical justify='center' style={{height:"100%"}}>
+                <Flex gap={10} vertical justify='center' style={{ height: "100%" }}>
                     <Upload {...props} style={{ display: "", width: "100%" }}>
                         <Button icon={<UploadOutlined />} type='primary'>Выбрать файлы</Button>
                     </Upload>

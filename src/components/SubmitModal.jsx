@@ -1,9 +1,9 @@
 import React from "react";
-import { Modal, Result, Button } from "antd";
+import { Modal, Result, Button, Typography,Flex} from "antd";
 import { useNavigate } from "react-router-dom";
 import { CheckCircleFilled } from "@ant-design/icons";
 
-const SubmitModal = ({ visible, claim, onClose }) => {
+const SubmitModal = ({ open, claim, onClose }) => {
   const navigate = useNavigate();
 
   const handleOk = () => {
@@ -13,7 +13,7 @@ const SubmitModal = ({ visible, claim, onClose }) => {
 
   return (
     <Modal
-      visible={visible}
+      open={open}
       footer={null}
       closable={false}
       maskClosable={false}
@@ -23,8 +23,12 @@ const SubmitModal = ({ visible, claim, onClose }) => {
         status="success"
         icon={<CheckCircleFilled style={{ fontSize: 72, color: "#52c41a" }} />}
         // Не знаю тот ли это номер заявки6 но путь будет он :)
-        title={`Ваша заявка № ${claim?.Code || "XXXXXX"} принята.`}
+        title={`Ваша заявка с предварительным номером ${claim.number || "XXXXXX"} принята.`}
         extra={[
+          <Flex gap={10} wrap="wrap">
+            <Typography.Text>Услуга:</Typography.Text>
+            <Typography.Text>{claim.service?.description}</Typography.Text>
+          </Flex>,
           <Button key="submit" type="primary" onClick={handleOk}>
             К списку заявок
           </Button>,

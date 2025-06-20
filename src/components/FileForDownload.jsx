@@ -9,6 +9,7 @@ import svg from "../img/docs/svg.svg";
 import png from "../img/docs/png.svg";
 import noext from "../img/docs/noext.svg";
 import styles from "./FileForDownload.module.css";
+import openDocs from "./Cabinet/openDocument";
 const typeFile = {
   pdf,
   doc,
@@ -21,16 +22,19 @@ const typeFile = {
   noext
 };
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
-export default function FileForDownload({ type, url, name, size }) {
-  console.log(url);
+export default function FileForDownload({ type, id, name, size }) {
+  // console.log(url);
   
   return (
     <a
       className={styles.docLine}
-      href={`${backServer}/uploads/${url}`}
-      download=""
-      rel="noopener noreferrer"
-      target="_blank"
+      // href={`${backServer}/uploads/${url}`}
+      // download=""
+      // rel="noopener noreferrer"
+      // target="_blank"
+      onClick={()=>{
+        openDocs(id)
+      }}
     >
       <div className={styles.docLine__wrapIcon}>
         <img src={typeFile[type]?typeFile[type]:typeFile.noext} alt={`icon ${type}`} />

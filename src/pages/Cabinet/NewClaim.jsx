@@ -17,7 +17,7 @@ import AppHelmet from "../../components/Global/AppHelmet";
 import moment from "moment";
 import Preloader from "../../components/Main/Preloader";
 import ErrorModal from "../../components/ErrorModal";
-import SubmitModal from "../../components/FormComponentsNew/SubmitModal";
+import SubmitModal from "../../components/SubmitModal";
 import { motion } from "framer-motion";
 
 import selectComponent from "../../components/selectComponent";
@@ -33,7 +33,7 @@ export default function NewClaim() {
   const createClaim = useClaims((state) => state.createClaim);
   const newClaim = useClaims((state) => state.newClaim);
   const clearNewClaim = useClaims((state) => state.clearNewClaim);
-  const blockButtonNewClaim = useClaims((state) => state.blockButtonNewClaim);
+  const { blockButtonNewClaim, addBlockButtonNewClaim, removeBlockButtonNewClaim } = useClaims((state) => state);
   const { id } = useParams();
   const [form] = Form.useForm();
 
@@ -45,6 +45,8 @@ export default function NewClaim() {
 
   useEffect(() => {
     if (newClaim) {
+      console.log("newClaim", newClaim);
+
       showDrawer();
     }
   }, [newClaim]);
@@ -86,14 +88,17 @@ export default function NewClaim() {
 
     try {
       console.log("Данные для создания заявки: ", newValues);
-
+      addBlockButtonNewClaim()
       await createClaim({
         versionId: serviceItem.versionId,
         serviceId: serviceItem.Ref_Key,
         values: newValues,
       });
+      removeBlockButtonNewClaim()
     } catch (err) {
+      
       console.log(err.message || "Ошибка при создании заявки.");
+      removeBlockButtonNewClaim()
     }
 
   };
@@ -225,8 +230,8 @@ export default function NewClaim() {
 
       {newClaim && (
         <SubmitModal
-          visible={!!newClaim}
-          claim={{ ...newClaim, Code: serviceItem.Code }}
+          open={!!newClaim}
+          claim={{ ...newClaim.data }}
           onClose={onClose}
         />
       )}
