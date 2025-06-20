@@ -27,7 +27,7 @@ export default function Docs({files}) {
     return (
         <div>
             {files.map((item, index) =>
-                <FileForDownload key={index} type={item.ext} name={item.name} url={item.id} size={item.size} />
+                <FileForDownload key={index} type={item.ext} name={item.name} id={item.id} size={item.size} />
             )}
         </div>
     )

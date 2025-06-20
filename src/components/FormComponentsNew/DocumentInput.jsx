@@ -53,7 +53,12 @@ export default function DocumentInput({
       `Пользователь выбрал документ для категории ${selectedCategory}:`,
       document
     );
-    form.setFieldValue(name, document.id);
+    form.setFieldValue(name, {
+      fileId: document.id,
+      category_key: document.typeFile.id,
+      label: document.name,
+      fromProfile: true
+    });
     setDocumentModalVisible(false);
   };
 
@@ -86,7 +91,7 @@ export default function DocumentInput({
       >
         <Form.Item name={name} style={{ height: "100%" }} required={required}>
         </Form.Item>
-        <Flex gap={10} vertical justify='center' style={{height:"100%"}}>
+        <Flex gap={10} vertical justify='center' style={{ height: "100%" }}>
 
           {/* Иконка глаза в верхнем правом углу */}
           {isAttached && (

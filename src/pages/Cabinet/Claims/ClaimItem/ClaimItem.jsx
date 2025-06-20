@@ -13,6 +13,7 @@ import Billing from "./Billing";
 import Appeals from "./Appeals";
 import moment from "moment";
 import FieldsClaim from "./FieldsClaim";
+import openDocs from "../../../../components/Cabinet/openDocument";
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -22,7 +23,7 @@ const { Step } = Steps;
 
 export default function ClaimItem() {
   const [openModalFields, setOpenModalFields] = useState(false);
-  const [pdfLoading, setPdfLoading] = useState(false);
+  const [pdf, setPdf] = useState(false);
   const [openFailPay, setOpenFailPay] = useState(false);
   const [openSuccessPay, setOpenSuccessPay] = useState(false);
   const [searchParams] = useSearchParams()
@@ -35,6 +36,11 @@ export default function ClaimItem() {
   useEffect(() => {
     fetchClaimItem(id);
   }, [fetchClaimItem, id]);
+  useEffect(() => {
+    if (claim) {
+      setPdf(claim.files.find(item => item.isPrintForm))
+    }
+  }, [claim]);
 
   useEffect(() => {
     if (searchParams.get('pay') === "success") setOpenSuccessPay(true)
@@ -75,48 +81,49 @@ export default function ClaimItem() {
   // Текущий статус заявки (для примера выбираем 2-й статус)
   const currentStatusIndex = 3; // Индекс текущего статуса в массиве статусов
 
-  const handlerViewFields = () => {
+  // const handlerViewFields = () => {
 
-  }
+  // }
   // Функция для генерации и открытия PDF с заглушкой
-  const handlerViewPDF = useCallback(() => {
-    setPdfLoading(true);
-    try {
-      const documentDefinition = {
-        content: [
-          { text: `Заявка №${claim.Number}`, style: "header" },
-          {
-            text: "Здесь будет отображаться информация о заявке.",
-            margin: [0, 20, 0, 0],
-          },
-          {
-            text: "Содержимое заявки:",
-            style: "subheader",
-            margin: [0, 20, 0, 10],
-          },
-          // Добавьте необходимое содержимое
-          { text: "Это заглушка для демонстрации PDF-файла." },
-        ],
-        styles: {
-          header: {
-            fontSize: 18,
-            bold: true,
-          },
-          subheader: {
-            fontSize: 14,
-            bold: true,
-          },
-        },
-      };
+  // const handlerViewPDF = useCallback(() => {
+  //   setPdfLoading(true);
+  //   try {
+  //     const documentDefinition = {
+  //       content: [
+  //         { text: `Заявка №${claim.Number}`, style: "header" },
+  //         {
+  //           text: "Здесь будет отображаться информация о заявке.",
+  //           margin: [0, 20, 0, 0],
+  //         },
+  //         {
+  //           text: "Содержимое заявки:",
+  //           style: "subheader",
+  //           margin: [0, 20, 0, 10],
+  //         },
+  //         // Добавьте необходимое содержимое
+  //         { text: "Это заглушка для демонстрации PDF-файла." },
+  //       ],
+  //       styles: {
+  //         header: {
+  //           fontSize: 18,
+  //           bold: true,
+  //         },
+  //         subheader: {
+  //           fontSize: 14,
+  //           bold: true,
+  //         },
+  //       },
+  //     };
 
-      pdfMake.createPdf(documentDefinition).open();
-    } catch (error) {
-      console.error("Ошибка при генерации PDF:", error);
-      message.error("Не удалось сгенерировать заявку.");
-    } finally {
-      setPdfLoading(false);
-    }
-  }, [claim]);
+  //     pdfMake.createPdf(documentDefinition).open();
+  //   } catch (error) {
+  //     console.error("Ошибка при генерации PDF:", error);
+  //     message.error("Не удалось сгенерировать заявку.");
+  //   } finally {
+  //     setPdfLoading(false);
+  //   }
+  // }, [claim]);
+  // console.log("claim", claim);
 
   return (
     <>
@@ -132,6 +139,7 @@ export default function ClaimItem() {
                 Заявка №{claim.number}
               </Title>
               <Typography.Text style={{ color: "gray" }}>от {moment(claim.date).format("DD.MM.YYYY")}</Typography.Text>
+              <Typography.Text style={{ color: "gray" }}>По услуге: {claim.template.label}</Typography.Text>
             </Flex>
             <Flex gap={20} wrap={"wrap"}>
               <Button
@@ -141,16 +149,15 @@ export default function ClaimItem() {
                 Подаваемые данные по заявке
               </Button>
 
-              <a target="_blank" href={zayavka}>
-                <Button
-                  type="primary"
-                  icon={<FileTextOutlined />}
-                  loading={pdfLoading}
-                // onClick={handlerViewPDF}
-                >
-                  Печатная форма заявки
-                </Button>
-              </a>
+
+              <Button
+                type="primary"
+                icon={<FileTextOutlined />}
+                onClick={() => { openDocs(pdf?.id) }}
+              >
+                Печатная форма заявки
+              </Button>
+
             </Flex>
           </Flex>
 

@@ -77,7 +77,7 @@ const Documents = ({ categoryKey, onSelectDocument, isModal, label = false }) =>
   const handleDocumentClick = (document) => {
     if (onSelectDocument) {
       onSelectDocument(document);
-      console.log("onSelectDocument", onSelectDocument);
+      // console.log("onSelectDocument", onSelectDocument);
     } else {
       openDocument(document);
     }
