@@ -114,7 +114,7 @@ export default function Billing({ zakaz }) {
         </Descriptions.Item> */}
 
       <Divider />
-      {docsBilling.map((item, index) => (
+      {/* {docsBilling.map((item, index) => (
         <FileForDownload
           key={index}
           type={item.type}
@@ -122,7 +122,7 @@ export default function Billing({ zakaz }) {
           url={item.url}
           size={item.size}
         />
-      ))}
+      ))} */}
     </div>
   );
 }

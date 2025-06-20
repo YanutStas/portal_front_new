@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Typography, Button, Steps, message, Tabs, Modal, Result, Flex } from "antd";
+import { Typography, Button, Steps, message, Tabs, Modal, Result, Flex, Popover, Badge } from "antd";
 import { useParams, useSearchParams } from "react-router-dom";
 import pdfMake from "pdfmake/build/pdfmake";
 import useClaims from "../../../../stores/Cabinet/useClaims";
@@ -14,6 +14,8 @@ import Appeals from "./Appeals";
 import moment from "moment";
 import FieldsClaim from "./FieldsClaim";
 import openDocs from "../../../../components/Cabinet/openDocument";
+import ServiceItem from "../../../ServiceItem/ServiceItem";
+import StepsClaim from "./StepsClaim";
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -23,6 +25,7 @@ const { Step } = Steps;
 
 export default function ClaimItem() {
   const [openModalFields, setOpenModalFields] = useState(false);
+  const [openDescService, setOpenDescService] = useState(false);
   const [pdf, setPdf] = useState(false);
   const [openFailPay, setOpenFailPay] = useState(false);
   const [openSuccessPay, setOpenSuccessPay] = useState(false);
@@ -48,32 +51,60 @@ export default function ClaimItem() {
   }, [searchParams]);
 
   // Моковые статусы заявки
-  const statuses = [
-    "Заявка на проверке",
-    "Заявка принята",
-    "Подпишите и/или оплатите договор ТП",
-    "Ожидание оплаты",
-    "Договор заключен",
-    "Акт о ТП",
+  const steps = [
+    {
+      label: <Typography.Text>20.06.2025 <span style={{ color: "gray" }}>08:12</span></Typography.Text>,
+      children: 'Заявка на проверке',
+    },
+    {
+      label: <Typography.Text>20.06.2025 <span style={{ color: "gray" }}>09:12</span></Typography.Text>,
+      children: 'Заявка принята',
+    },
+    {
+      label: <Typography.Text>20.06.2025 <span style={{ color: "gray" }}>10:23</span></Typography.Text>,
+      children: 'Подпишите и/или оплатите договор ТП',
+      color: "red"
+    },
+    {
+      label: <Typography.Text>21.06.2025 <span style={{ color: "gray" }}>10:25</span></Typography.Text>,
+      children: 'Ожидание оплаты',
+      color: "green"
+    },
+    {
+      // label: <Typography.Text>22.06.2025 <span style={{ color: "gray" }}>15:12</span></Typography.Text>,
+      children: 'Договор заключен',
+      color: "gray"
+    },
+    {
+      // label: <Typography.Text>23.06.2025 <span style={{ color: "gray" }}>19:12</span></Typography.Text>,
+      children: 'Акт о ТП',
+      color: "gray"
+    },
   ];
+
   const tabs = [
     {
       key: 1,
-      label: `История`,
-      children: <Story statuses={claim?.statuses} />,
+      label: `Этапы`,
+      children: <StepsClaim steps={steps} />,
+    },
+    {
+      key: 4,
+      label: <Typography.Text><Badge count={1} offset={[5,0]} size="small"><span>Задачи</span></Badge></Typography.Text>,
+      children: <Billing zakaz={claim?.Ref_Key} />,
     },
     {
       key: 2,
+      label: `Статусы`,
+      children: <Story statuses={claim?.statuses} />,
+    },
+    {
+      key: 3,
       label: `Файлы`,
       children: <Docs files={claim?.files} />,
     },
     {
-      key: 3,
-      label: `Взаиморасчеты`,
-      children: <Billing zakaz={claim?.Ref_Key} />,
-    },
-    {
-      key: 4,
+      key: 5,
       label: `Обращения`,
       children: <Appeals />,
     },
@@ -123,7 +154,7 @@ export default function ClaimItem() {
   //     setPdfLoading(false);
   //   }
   // }, [claim]);
-  // console.log("claim", claim);
+  console.log("claim", claim);
 
   return (
     <>
@@ -133,13 +164,14 @@ export default function ClaimItem() {
         </div>
       ) : (
         <>
-          <Flex justify="space-between" align="center" style={{ marginBottom: 20 }} wrap="wrap">
-            <Flex vertical>
+          <Flex justify="space-between" align="center" style={{ marginBottom: 20 }} wrap="wrap" gap={20}>
+            <Flex vertical >
               <Title level={1} className={styles.title} style={{ marginBottom: 0 }}>
                 Заявка №{claim.number}
               </Title>
               <Typography.Text style={{ color: "gray" }}>от {moment(claim.date).format("DD.MM.YYYY")}</Typography.Text>
               <Typography.Text style={{ color: "gray" }}>По услуге: {claim.template.label}</Typography.Text>
+              <Typography.Text style={{ color: "gray", marginTop: 5 }}><Button onClick={() => { setOpenDescService(true) }}>Описание услуги</Button></Typography.Text>
             </Flex>
             <Flex gap={20} wrap={"wrap"}>
               <Button
@@ -149,20 +181,21 @@ export default function ClaimItem() {
                 Подаваемые данные по заявке
               </Button>
 
-
-              <Button
-                type="primary"
-                icon={<FileTextOutlined />}
-                onClick={() => { openDocs(pdf?.id) }}
-              >
-                Печатная форма заявки
-              </Button>
+              {pdf &&
+                <Button
+                  type="primary"
+                  icon={<FileTextOutlined />}
+                  onClick={() => { openDocs(pdf?.id) }}
+                >
+                  Печатная форма заявки
+                </Button>
+              }
 
             </Flex>
           </Flex>
 
           {/* Статусы заявки */}
-          <Steps
+          {/* <Steps
             current={currentStatusIndex}
             className={styles.steps}
             progressDot
@@ -170,10 +203,12 @@ export default function ClaimItem() {
             {statuses.map((status, index) => (
               <Step key={index} title={status} />
             ))}
-          </Steps>
+          </Steps> */}
           <Tabs
             type="card"
             items={tabs}
+            tabBarGutter={5}
+          // centered
           />
           <Modal
             open={openModalFields}
@@ -216,6 +251,16 @@ export default function ClaimItem() {
                 </Button>,
               ]}
             />
+          </Modal>
+
+          <Modal
+            // style={{ width: "max(1600px, 100%)" }}
+            open={openDescService}
+            footer={false}
+            onCancel={() => { setOpenDescService(false) }}
+            width={"min(1600px, 100%)"}
+          >
+            <ServiceItem currentKey={claim.template?.id} />
           </Modal>
 
 

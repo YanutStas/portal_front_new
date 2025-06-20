@@ -22,7 +22,7 @@ import ErrorModal from "../../components/ErrorModal";
 
 const { Title, Text, Paragraph } = Typography;
 
-export default function ServiceItem() {
+export default function ServiceItem({ currentKey }) {
   const [open, setOpen] = useState(false);
   const [openDrawerSteps, setOpenDrawerSteps] = useState(false);
   const { colorPrimary } = theme.useToken().token;
@@ -37,7 +37,7 @@ export default function ServiceItem() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await fetchServiceItem(key, { withChain: true, withFields: false });
+        await fetchServiceItem(currentKey || key, { withChain: true, withFields: false });
       } catch (err) {
         setError(
           err.message || "Произошла ошибка при загрузке данных об услуге"
@@ -55,7 +55,7 @@ export default function ServiceItem() {
   const onClose = () => {
     setOpen(false);
   };
-  // console.log(serviceItem);
+  console.log(serviceItem);
   return (
     <div>
       {serviceItem && (
@@ -198,19 +198,20 @@ export default function ServiceItem() {
               },
             ]}
           />
-
-          <Flex align="center" justify="center" style={{ padding: "20px" }}>
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              <Link to={`/cabinet/new-claim/${serviceItem.Ref_Key}`}>
-                <Button type="primary" size="large" onClick={showDrawer}>
-                  {"Заполнить заявку"}
-                </Button>
-              </Link>
-            </motion.div>
-          </Flex>
+          {!currentKey &&
+            <Flex align="center" justify="center" style={{ padding: "20px" }}>
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                <Link to={`/cabinet/new-claim/${serviceItem.Ref_Key}`}>
+                  <Button type="primary" size="large" onClick={showDrawer}>
+                    Заполнить заявку
+                  </Button>
+                </Link>
+              </motion.div>
+            </Flex>
+          }
 
           <Drawer
             title="Вы почти подали заявку"
