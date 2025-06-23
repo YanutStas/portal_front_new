@@ -5,9 +5,9 @@ import useClaims from "../../stores/Cabinet/useClaims";
 
 export default function WrapperComponent({
   children,
-  dependOf,
-  name,
-  howDepend,
+  dependOf = false,
+  name = false,
+  howDepend = false,
   stylesField_key,
   read = false
 }) {
