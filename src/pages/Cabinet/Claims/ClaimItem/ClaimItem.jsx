@@ -133,7 +133,7 @@ export default function ClaimItem() {
     {
       key: 1,
       label: `Этапы`,
-      children: <StepsClaim steps={claim.steps} />,
+      children: <StepsClaim steps={claim?.steps} />,
     },
     {
       key: 4,
