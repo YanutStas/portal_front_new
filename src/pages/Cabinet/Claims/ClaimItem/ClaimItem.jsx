@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Typography, Button, Steps, message, Tabs, Modal, Result, Flex, Popover, Badge } from "antd";
+import { Typography, Button, Steps,  Tabs, Modal, Result, Flex,  Badge,  } from "antd";
 import { useParams, useSearchParams } from "react-router-dom";
-import pdfMake from "pdfmake/build/pdfmake";
+// import pdfMake from "pdfmake/build/pdfmake";
 import useClaims from "../../../../stores/Cabinet/useClaims";
-import ChatComponent from "../ChatComponent/ChatComponent";
+// import ChatComponent from "../ChatComponent/ChatComponent";
 import styles from "./ClaimItem.module.css";
-import { FileTextOutlined } from "@ant-design/icons";
-import zayavka from "../../../../assets/zayavka.pdf";
+import {  FileTextOutlined,  } from "@ant-design/icons";
+// import zayavka from "../../../../assets/zayavka.pdf";
 import Story from "./Story";
 import Docs from "./Docs";
 import Billing from "./Billing";
@@ -50,37 +50,82 @@ export default function ClaimItem() {
     if (searchParams.get('pay') === "fail") setOpenFailPay(true)
   }, [searchParams]);
 
+  // Стартовые данные
+
   // Моковые статусы заявки
   const steps = [
     {
-      label: <Typography.Text>20.06.2025 <span style={{ color: "gray" }}>08:12</span></Typography.Text>,
-      children: 'Заявка на проверке',
+      type: "status",
+      name: "Начал обработку Яковлев С.П.",
+      date: "2023-12-22 09:14",
+      shortDescription: "Короткое описание",
+      description: "Полное описание в формате Markdown",
+      color:"#52c41a",
     },
     {
-      label: <Typography.Text>20.06.2025 <span style={{ color: "gray" }}>09:12</span></Typography.Text>,
-      children: 'Заявка принята',
+      type: "step",
+      current: false,
+      completed: true,
+      name: "Согласование договора",
+      shortDescription: "Короткое описание",
+      description: "Полное описание в формате Markdown",
+      color:"#52c41a",
     },
     {
-      label: <Typography.Text>20.06.2025 <span style={{ color: "gray" }}>10:23</span></Typography.Text>,
-      children: 'Подпишите и/или оплатите договор ТП',
-      color: "red"
+      type: "status",
+      name: "Согласовал Белугин М.А.",
+      date: "2023-12-22 09:15",
+      shortDescription: "Короткое описание",
+      description: "Полное описание в формате Markdown",
+      color:"#52c41a",
     },
     {
-      label: <Typography.Text>21.06.2025 <span style={{ color: "gray" }}>10:25</span></Typography.Text>,
-      children: 'Ожидание оплаты',
-      color: "green"
+      type: "step",
+      current: false,
+      completed: true,
+      name: "Подписание договора",
+      shortDescription: "Короткое описание",
+      description: "Полное описание в формате Markdown",
+      color:"#52c41a",
     },
     {
-      // label: <Typography.Text>22.06.2025 <span style={{ color: "gray" }}>15:12</span></Typography.Text>,
-      children: 'Договор заключен',
-      color: "gray"
+      type: "status",
+      name: "Подписал Федоров О.П",
+      date: "2023-12-22 09:16",
+      shortDescription: "Короткое описание",
+      description: "Полное описание в формате Markdown",
+      color:"#52c41a",
     },
     {
-      // label: <Typography.Text>23.06.2025 <span style={{ color: "gray" }}>19:12</span></Typography.Text>,
-      children: 'Акт о ТП',
-      color: "gray"
+      type: "step",
+      current: true,
+      completed: false,
+      name: "Согласование и подписание у контрагента",
+      shortDescription: "Короткое описание",
+      description: "Полное описание в формате Markdown Согласование и подписание у контрагента",
+      color:"#0000ff",
     },
-  ];
+    {
+      type: "step",
+      current: false,
+      completed: false,
+      name: "Регистрация",
+      shortDescription: "Короткое описание",
+      description: "Полное описание в формате Markdown Регистрация",
+      color:"#cccccc",
+    },
+    {
+      type: "step",
+      current: false,
+      completed: false,
+      name: "Сканирование и передача на учет",
+      shortDescription: "Короткое описание",
+      description: "Полное описание в формате Markdown Сканирование и передача на учет",
+      color:"#cccccc",
+    },
+  ]
+
+
 
   const tabs = [
     {
@@ -90,7 +135,7 @@ export default function ClaimItem() {
     },
     {
       key: 4,
-      label: <Typography.Text><Badge count={1} offset={[5,0]} size="small"><span>Задачи</span></Badge></Typography.Text>,
+      label: <Typography.Text><Badge count={1} offset={[5, 0]} size="small"><span>Задачи</span></Badge></Typography.Text>,
       children: <Billing zakaz={claim?.Ref_Key} />,
     },
     {
@@ -204,12 +249,14 @@ export default function ClaimItem() {
               <Step key={index} title={status} />
             ))}
           </Steps> */}
-          <Tabs
-            type="card"
-            items={tabs}
-            tabBarGutter={5}
-          // centered
-          />
+         
+
+            <Tabs
+              type="card"
+              items={tabs}
+              // tabBarGutter={5}
+            // centered
+            />
           <Modal
             open={openModalFields}
             footer={false}
