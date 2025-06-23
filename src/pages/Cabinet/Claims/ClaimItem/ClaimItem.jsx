@@ -133,18 +133,18 @@ export default function ClaimItem() {
     {
       key: 1,
       label: `Этапы`,
-      children: <StepsClaim steps={steps} />,
+      children: <StepsClaim steps={claim.steps} />,
     },
     {
       key: 4,
       label: <Typography.Text><Badge count={1} offset={[5, 0]} size="small"><span>Задачи</span></Badge></Typography.Text>,
       children: <Billing zakaz={claim?.Ref_Key} />,
     },
-    {
-      key: 2,
-      label: `Статусы`,
-      children: <Story statuses={claim?.statuses} />,
-    },
+    // {
+    //   key: 2,
+    //   label: `Статусы`,
+    //   children: <Story statuses={claim?.statuses} />,
+    // },
     {
       key: 3,
       label: `Файлы`,
@@ -225,7 +225,7 @@ export default function ClaimItem() {
                 type="primary"
                 onClick={() => { setOpenModalFields(true) }}
               >
-                Подаваемые данные по заявке
+                Предоставленная информация
               </Button>
 
               {pdf &&
@@ -265,16 +265,16 @@ export default function ClaimItem() {
             onCancel={() => { setOpenModalFields(false) }}
             // width={1600}
             width={{ xxl: 1600, xl: 1200, lg: 992, md: 768, sm: 576, xs: 350 }}
-            title={`Поля заявки №${claim.number}`}
+            title={`Предоставленная информация по заявке №${claim.number}`}
             styles={{
-              content:{
+              content: {
                 backgroundColor: token.colorBgLayout,
               },
-              header:{
+              header: {
                 backgroundColor: token.colorBgLayout,
               },
               body: {
-                marginTop:20,
+                marginTop: 20,
                 backgroundColor: token.colorBgLayout,
                 padding: 10,
               }
