@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import selectComponent from '../../../../components/selectComponent'
-import { Badge, Card, Descriptions, Divider, Flex, Form, Typography } from 'antd'
+import { Badge, Card, Col, Descriptions, Divider, Flex, Form, Row, Typography, theme } from 'antd'
 import moment from 'moment';
 import axios from 'axios';
 
@@ -23,10 +23,11 @@ const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
 }
 
 export default function FieldsClaim({ template, values }) {
-    const [form] = Form.useForm();
+    const token = theme.useToken().token
+    // const [form] = Form.useForm();
     // form.setFieldsValue(values)
-    // console.log(template);
-    // console.log(values);
+    console.log(template);
+    console.log(values);
 
     const openDocument = useCallback((fileId) => {
         const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
@@ -40,7 +41,7 @@ export default function FieldsClaim({ template, values }) {
                 withCredentials: true,
             })
             .then((response) => {
-                console.log(response.data.data  );
+                console.log(response.data.data);
 
                 const file = b64toBlob(response.data.data.base64, "application/pdf")
                 const fileURL = URL.createObjectURL(file);
@@ -57,7 +58,7 @@ export default function FieldsClaim({ template, values }) {
         if (!value) {
             return false
         }
-        return <div key={index} style={{ width: "100%" }}>
+        return <div key={index} style={{ width: "100%", paddingLeft: 10 }}>
             <Flex gap={10} wrap={"wrap"}>
                 {label && <Typography.Text style={{ color: "gray" }}>{label}: </Typography.Text>}
                 <Typography.Text>{value}</Typography.Text>
@@ -102,32 +103,40 @@ export default function FieldsClaim({ template, values }) {
         return singleTextField(index, label, value)
     }
     const getDivider = (index, label) => {
-        return <Divider key={index} orientation='left' style={{ whiteSpace: "normal" }}>{label}</Divider>
+        return <Divider key={index} orientation='left' style={{ margin: 10, whiteSpace: "normal" }}>{label}</Divider>
     }
     const getGroupFields = (index, field) => {
+        // console.log("field", field)
+        const styles = template?.portalFields?.styles[field.stylesField_key]
         if (field.dependСondition && values[field.dependIdLine]) {
             let result = field.dependСondition.options.reduce((sum, current) => current.value === values[field.dependIdLine], false);
             if (!result) return false
         }
 
-        return <Card key={index} title={field.label} style={{ flexGrow: 1 }} styles={{ title: { whiteSpace: "normal" } }}>
-            {getFields(field.component.fields, true)}
-        </Card>
+        return <Col {...styles} xxl={styles?.span ? styles.span : 24} xs={24}>
+            <Card className="formElement groupInput" key={index} title={field.label} style={{ borderColor: token.colorBorder, color: token.colorBorder, }} styles={{ title: { whiteSpace: "normal" } }}>
+                {getFields(field.component.fields, true)}
+            </Card>
+        </Col>
     }
     const getTable = (index, field) => {
+        const styles = template?.portalFields?.styles[field.stylesField_key]
         const valuesTable = values[field.idLine]
-        return <Card key={index} title={field.label} style={{ flexGrow: 1 }} styles={{ title: { whiteSpace: "normal" } }}>
-            <Flex wrap="wrap" gap={10}>
-                {valuesTable && valuesTable.map((valItem, index) =>
-                    <Card title={<Typography.Text style={{ color: "gray" }}>{index + 1}</Typography.Text>} key={index} style={{ flexGrow: 1 }}>
-                        {getFields(field.component.fields, true, valItem)}
-                    </Card>
-                )}
-            </Flex>
-        </Card>
+        return <Col {...styles} xxl={styles?.span ? styles.span : 24} xs={24}>
+
+            <Card className="formElement groupInput" style={{ borderColor: token.colorBorder, color: token.colorBorder, }} key={index} title={field.label} styles={{ title: { whiteSpace: "normal", } }} >
+                <Flex wrap="wrap" gap={10}>
+                    {valuesTable && valuesTable.map((valItem, index) =>
+                        <Card className="formElement groupInput" title={<Typography.Text style={{ color: "gray" }}>{index + 1}</Typography.Text>} key={index} style={{ flexGrow: 1, border: "1px solid", borderColor: token.colorBorder, color: token.colorBorder, }}>
+                            {getFields(field.component.fields, true, valItem)}
+                        </Card>
+                    )}
+                </Flex>
+            </Card>
+        </Col>
     }
     const getFields = (fields, inGroup = false, valItem) => {
-        return <Flex gap={10} wrap={"wrap"} vertical={inGroup}>{fields.map((field, index) => {
+        return <Row gutter={[10, 10]} align={"stretch"}>{fields.map((field, index) => {
             if (field.component.Ref_Type === "componentsHiddenInput") {
                 return false
             }
@@ -163,7 +172,7 @@ export default function FieldsClaim({ template, values }) {
                 return getField(index, field, false, valItem)
             }
         })}
-        </Flex>
+        </Row>
     }
     return (
         <div style={{ paddingBottom: 30 }}>

@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Typography, Button, Steps,  Tabs, Modal, Result, Flex,  Badge,  } from "antd";
+import { Typography, Button, Steps, Tabs, Modal, Result, Flex, Badge, theme, } from "antd";
 import { useParams, useSearchParams } from "react-router-dom";
 // import pdfMake from "pdfmake/build/pdfmake";
 import useClaims from "../../../../stores/Cabinet/useClaims";
 // import ChatComponent from "../ChatComponent/ChatComponent";
 import styles from "./ClaimItem.module.css";
-import {  FileTextOutlined,  } from "@ant-design/icons";
+import { FileTextOutlined, } from "@ant-design/icons";
 // import zayavka from "../../../../assets/zayavka.pdf";
 import Story from "./Story";
 import Docs from "./Docs";
@@ -34,6 +34,8 @@ export default function ClaimItem() {
   const claim = useClaims((state) => state.claim);
   const fetchClaimItem = useClaims((state) => state.fetchClaimItem);
   const { id } = useParams();
+
+  const token = theme.useToken().token
   // console.log("searchParams", searchParams);
 
   useEffect(() => {
@@ -60,7 +62,7 @@ export default function ClaimItem() {
       date: "2023-12-22 09:14",
       shortDescription: "Короткое описание",
       description: "Полное описание в формате Markdown",
-      color:"#52c41a",
+      color: "#52c41a",
     },
     {
       type: "step",
@@ -69,7 +71,7 @@ export default function ClaimItem() {
       name: "Согласование договора",
       shortDescription: "Короткое описание",
       description: "Полное описание в формате Markdown",
-      color:"#52c41a",
+      color: "#52c41a",
     },
     {
       type: "status",
@@ -77,7 +79,7 @@ export default function ClaimItem() {
       date: "2023-12-22 09:15",
       shortDescription: "Короткое описание",
       description: "Полное описание в формате Markdown",
-      color:"#52c41a",
+      color: "#52c41a",
     },
     {
       type: "step",
@@ -86,7 +88,7 @@ export default function ClaimItem() {
       name: "Подписание договора",
       shortDescription: "Короткое описание",
       description: "Полное описание в формате Markdown",
-      color:"#52c41a",
+      color: "#52c41a",
     },
     {
       type: "status",
@@ -94,7 +96,7 @@ export default function ClaimItem() {
       date: "2023-12-22 09:16",
       shortDescription: "Короткое описание",
       description: "Полное описание в формате Markdown",
-      color:"#52c41a",
+      color: "#52c41a",
     },
     {
       type: "step",
@@ -103,7 +105,7 @@ export default function ClaimItem() {
       name: "Согласование и подписание у контрагента",
       shortDescription: "Короткое описание",
       description: "Полное описание в формате Markdown Согласование и подписание у контрагента",
-      color:"#0000ff",
+      color: "#0000ff",
     },
     {
       type: "step",
@@ -112,7 +114,7 @@ export default function ClaimItem() {
       name: "Регистрация",
       shortDescription: "Короткое описание",
       description: "Полное описание в формате Markdown Регистрация",
-      color:"#cccccc",
+      color: "#cccccc",
     },
     {
       type: "step",
@@ -121,7 +123,7 @@ export default function ClaimItem() {
       name: "Сканирование и передача на учет",
       shortDescription: "Короткое описание",
       description: "Полное описание в формате Markdown Сканирование и передача на учет",
-      color:"#cccccc",
+      color: "#cccccc",
     },
   ]
 
@@ -249,14 +251,14 @@ export default function ClaimItem() {
               <Step key={index} title={status} />
             ))}
           </Steps> */}
-         
 
-            <Tabs
-              type="card"
-              items={tabs}
-              // tabBarGutter={5}
-            // centered
-            />
+
+          <Tabs
+            type="card"
+            items={tabs}
+          // tabBarGutter={5}
+          // centered
+          />
           <Modal
             open={openModalFields}
             footer={false}
@@ -264,6 +266,19 @@ export default function ClaimItem() {
             // width={1600}
             width={{ xxl: 1600, xl: 1200, lg: 992, md: 768, sm: 576, xs: 350 }}
             title={`Поля заявки №${claim.number}`}
+            styles={{
+              content:{
+                backgroundColor: token.colorBgLayout,
+              },
+              header:{
+                backgroundColor: token.colorBgLayout,
+              },
+              body: {
+                marginTop:20,
+                backgroundColor: token.colorBgLayout,
+                padding: 10,
+              }
+            }}
           >
             <FieldsClaim template={claim?.template} values={claim?.values} />
           </Modal>
