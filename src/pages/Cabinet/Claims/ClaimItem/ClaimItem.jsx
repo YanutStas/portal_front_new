@@ -16,6 +16,7 @@ import FieldsClaim from "./FieldsClaim";
 import openDocs from "../../../../components/Cabinet/openDocument";
 import ServiceItem from "../../../ServiceItem/ServiceItem";
 import StepsClaim from "./StepsClaim";
+import Preloader from "../../../../components/Main/Preloader";
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -32,6 +33,7 @@ export default function ClaimItem() {
   const [searchParams] = useSearchParams()
 
   const claim = useClaims((state) => state.claim);
+  const loadingClaim = useClaims((state) => state.loadingClaim);
   const fetchClaimItem = useClaims((state) => state.fetchClaimItem);
   const { id } = useParams();
 
@@ -51,83 +53,6 @@ export default function ClaimItem() {
     if (searchParams.get('pay') === "success") setOpenSuccessPay(true)
     if (searchParams.get('pay') === "fail") setOpenFailPay(true)
   }, [searchParams]);
-
-  // Стартовые данные
-
-  // Моковые статусы заявки
-  const steps = [
-    {
-      type: "status",
-      name: "Начал обработку Яковлев С.П.",
-      date: "2023-12-22 09:14",
-      shortDescription: "Короткое описание",
-      description: "Полное описание в формате Markdown",
-      color: "#52c41a",
-    },
-    {
-      type: "step",
-      current: false,
-      completed: true,
-      name: "Согласование договора",
-      shortDescription: "Короткое описание",
-      description: "Полное описание в формате Markdown",
-      color: "#52c41a",
-    },
-    {
-      type: "status",
-      name: "Согласовал Белугин М.А.",
-      date: "2023-12-22 09:15",
-      shortDescription: "Короткое описание",
-      description: "Полное описание в формате Markdown",
-      color: "#52c41a",
-    },
-    {
-      type: "step",
-      current: false,
-      completed: true,
-      name: "Подписание договора",
-      shortDescription: "Короткое описание",
-      description: "Полное описание в формате Markdown",
-      color: "#52c41a",
-    },
-    {
-      type: "status",
-      name: "Подписал Федоров О.П",
-      date: "2023-12-22 09:16",
-      shortDescription: "Короткое описание",
-      description: "Полное описание в формате Markdown",
-      color: "#52c41a",
-    },
-    {
-      type: "step",
-      current: true,
-      completed: false,
-      name: "Согласование и подписание у контрагента",
-      shortDescription: "Короткое описание",
-      description: "Полное описание в формате Markdown Согласование и подписание у контрагента",
-      color: "#0000ff",
-    },
-    {
-      type: "step",
-      current: false,
-      completed: false,
-      name: "Регистрация",
-      shortDescription: "Короткое описание",
-      description: "Полное описание в формате Markdown Регистрация",
-      color: "#cccccc",
-    },
-    {
-      type: "step",
-      current: false,
-      completed: false,
-      name: "Сканирование и передача на учет",
-      shortDescription: "Короткое описание",
-      description: "Полное описание в формате Markdown Сканирование и передача на учет",
-      color: "#cccccc",
-    },
-  ]
-
-
 
   const tabs = [
     {
@@ -156,60 +81,17 @@ export default function ClaimItem() {
       children: <Appeals />,
     },
   ]
-  // Текущий статус заявки (для примера выбираем 2-й статус)
-  const currentStatusIndex = 3; // Индекс текущего статуса в массиве статусов
 
-  // const handlerViewFields = () => {
-
-  // }
-  // Функция для генерации и открытия PDF с заглушкой
-  // const handlerViewPDF = useCallback(() => {
-  //   setPdfLoading(true);
-  //   try {
-  //     const documentDefinition = {
-  //       content: [
-  //         { text: `Заявка №${claim.Number}`, style: "header" },
-  //         {
-  //           text: "Здесь будет отображаться информация о заявке.",
-  //           margin: [0, 20, 0, 0],
-  //         },
-  //         {
-  //           text: "Содержимое заявки:",
-  //           style: "subheader",
-  //           margin: [0, 20, 0, 10],
-  //         },
-  //         // Добавьте необходимое содержимое
-  //         { text: "Это заглушка для демонстрации PDF-файла." },
-  //       ],
-  //       styles: {
-  //         header: {
-  //           fontSize: 18,
-  //           bold: true,
-  //         },
-  //         subheader: {
-  //           fontSize: 14,
-  //           bold: true,
-  //         },
-  //       },
-  //     };
-
-  //     pdfMake.createPdf(documentDefinition).open();
-  //   } catch (error) {
-  //     console.error("Ошибка при генерации PDF:", error);
-  //     message.error("Не удалось сгенерировать заявку.");
-  //   } finally {
-  //     setPdfLoading(false);
-  //   }
-  // }, [claim]);
-  console.log("claim", claim);
+  // console.log("claim", claim);
 
   return (
     <>
-      {!claim ? (
-        <div>
-          <Title level={1}>Заявка</Title>
-        </div>
-      ) : (
+      {loadingClaim &&
+        <Preloader />
+      }
+      {!loadingClaim && !claim && (<Flex justify="center"><Typography.Title level={5}>Заявка не найдена</Typography.Title></Flex>)}
+
+      {!loadingClaim && claim && (
         <>
           <Flex justify="space-between" align="center" style={{ marginBottom: 20 }} wrap="wrap" gap={20}>
             <Flex vertical >

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Card, Flex, Form, message, Tag, Typography, Upload } from 'antd';
+import { Button, Card, Flex, Form, message, notification, Tag, Typography, Upload } from 'antd';
 import InfoDrawer from "../InfoDrawer";
 import WrapperComponent from "./WrapperComponent";
 import axios from 'axios';
@@ -23,13 +23,19 @@ const FileInput = ({
     stylesField_key = false,
     read = false
 }) => {
+    const [api, contextHolder] = notification.useNotification();
     const { removeBlockButtonNewClaim, addBlockButtonNewClaim } = useNewClaim(state => state)
     const form = Form.useFormInstance();
     const token = localStorage.getItem("jwt");
     const [fileList, setFileList] = useState([]);
     const [uploading, setUploading] = useState(false);
     const [reload, setReload] = useState(false);
-
+    const openNotification = (message) => {
+        api.info({
+            message: `${message}`,
+            placement: "top",
+        });
+    };
     const handleUpload = async () => {
         const formData = new FormData();
         formData.append("documentName", label);
@@ -58,8 +64,9 @@ const FileInput = ({
                     label
                 })
             }
-        }).catch(() => {
-            console.error('upload failed.');
+        }).catch((err) => {
+            console.error('upload failed.', err);
+            openNotification(err.response?.data?.message)
         }).finally(() => {
             setUploading(false);
             removeBlockButtonNewClaim()
@@ -91,7 +98,9 @@ const FileInput = ({
         setReload(!reload)
     }
     const viewDocs = () => {
-        openDocs(attachedDocument)
+        console.log("Preview",attachedDocument);
+        
+        openDocs(attachedDocument.fileId)
     }
 
     const formElement = (
@@ -114,6 +123,7 @@ const FileInput = ({
             }}
             extra={isAttached ? <Tag color='green'>Добавлен</Tag> : <Tag color='red'>НЕ добавлен</Tag>}
         >
+            {contextHolder}
             <Form.Item
                 name={name}
                 rules={[
