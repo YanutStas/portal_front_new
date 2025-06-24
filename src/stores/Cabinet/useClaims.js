@@ -4,6 +4,8 @@ const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 const useNewClaim = create((set) => ({
   claims: null,
   claim: null,
+  loadingClaim: false,
+  loadingClaims: false,
   newClaim: null,
   blockButtonNewClaim: false,
   addBlockButtonNewClaim: () => {
@@ -16,7 +18,7 @@ const useNewClaim = create((set) => ({
     set({ newClaim: null });
   },
   fetchClaims: async (key) => {
-    set((state) => ({ claims: null }));
+    set((state) => ({ claims: null, loadingClaims: true }));
     const res = await axios.get(`${backServer}/api/cabinet/claims`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -31,19 +33,25 @@ const useNewClaim = create((set) => ({
     });
   },
   fetchClaimItem: async (key) => {
-    set((state) => ({ claim: null }));
-    const res = await axios.get(`${backServer}/api/cabinet/claims/${key}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-      },
-      withCredentials: true,
-    });
-    // console.log("fetchClaimItem",res.data.data);
-    set((state) => {
-      return {
-        claim: res.data.data,
-      };
-    });
+    try {
+
+
+      set((state) => ({ claim: null, loadingClaim: true }));
+      const res = await axios.get(`${backServer}/api/cabinet/claims/${key}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        },
+        withCredentials: true,
+      });
+      if (res.data?.data && Object.keys(res.data.data).length === 0) {
+        // console.log("fetchClaimItem", res.data.data);
+        return   set((state) => ({  loadingClaim: false }));
+      }
+      set({ claim: res.data.data, loadingClaim: false });
+    } catch (error) {
+      console.log(error)
+      set({ loadingClaim: false });
+    }
   },
   createClaim: async (data) => {
     const res = await axios.post(
