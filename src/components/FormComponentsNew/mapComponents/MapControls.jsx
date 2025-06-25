@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Radio, Space, Row, Col } from "antd";
+import { Button, Radio, Space, Row, Col, Flex } from "antd";
 
 const MapControls = ({
   mode,
@@ -9,11 +9,14 @@ const MapControls = ({
   onChangeMapType,
   showSavePdfButton,
   onSavePdf,
+  mapState
 }) => {
+
   return (
-    <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-      <Row gutter={[16, 16]}>
-        <Col xs={24} sm={12}>
+    <Flex gap={10} justify="space-between" wrap="wrap">
+      <Flex vertical gap={10} >
+
+        <Flex>
           <Radio.Group
             onChange={(e) => onModeChange(e.target.value)}
             value={mode}
@@ -22,40 +25,57 @@ const MapControls = ({
             <Radio.Button value="polygon">Область на карте</Radio.Button>
             <Radio.Button value="areaAndPoint">Область + точка</Radio.Button>
           </Radio.Group>
-        </Col>
-        <Col xs={24} sm={12} style={{ display: "flex", alignItems: "center" }}>
+        </Flex>
+
+        <Flex align="end">
           {mode === "point" && (
             <Button onClick={onClearPoint} danger>
-              Сбросить точку
+              Убрать точку
             </Button>
           )}
-          {(mode === "polygon" || mode === "areaAndPoint") && (
+          {(mode === "polygon") && (
             <Button onClick={onClearPolygon} danger>
-              Очистить область
+              Убрать область
             </Button>
           )}
-        </Col>
-      </Row>
-      <Row gutter={[16, 16]}>
-        <Col>
-          <Button onClick={() => onChangeMapType("yandex#map")}>
-            Стандартный вид
-          </Button>
-        </Col>
-        <Col>
-          <Button onClick={() => onChangeMapType("yandex#hybrid")}>
-            Спутниковый вид
-          </Button>
-        </Col>
+          {(mode === "areaAndPoint") && (
+            <Flex gap={5}>
+              <Button onClick={onClearPoint} danger>
+                Убрать точку
+              </Button>
+              <Button onClick={onClearPolygon} danger>
+                Убрать область
+              </Button>
+            </Flex>
+          )}
+        </Flex>
+
+      </Flex>
+      <Flex gap={5} align="end" wrap="wrap">
         {showSavePdfButton && (
-          <Col>
-            <Button type="primary" onClick={onSavePdf}>
-              Сохранить в PDF
-            </Button>
-          </Col>
+          <Button type="primary" onClick={onSavePdf}>
+            Сохранить в PDF
+          </Button>
         )}
-      </Row>
-    </Space>
+
+        <Radio.Group
+          onChange={(e) => onChangeMapType(e.target.value)}
+          value={mapState?.type}
+        >
+          <Radio.Button value="yandex#map">Стандартный вид</Radio.Button>
+          <Radio.Button value="yandex#hybrid">Спутниковый вид</Radio.Button>
+        </Radio.Group>
+
+
+
+        {/* <Button type={mapState?.type === "yandex#map" && "primary"} onClick={() => onChangeMapType("yandex#map")}>
+          Стандартный вид
+        </Button>
+        <Button onClick={() => onChangeMapType("yandex#hybrid")}>
+          Спутниковый вид
+        </Button> */}
+      </Flex>
+    </Flex>
   );
 };
 
