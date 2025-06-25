@@ -41,7 +41,7 @@ const PhoneVerification = React.memo(() => {
     const formattedPhone = phone.replace(/[^\d]/g, "");
     await submitPhone(formattedPhone);
     setCodeRequested(true);
-    setTimer(10);
+    setTimer(60);
     setHasAttempted(true);
   }, [phone, submitPhone, setCodeRequested]);
 

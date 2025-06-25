@@ -107,6 +107,7 @@ const MapModal = ({ visible, initialValue, onSave, onCancel }) => {
         onSavePdf={() =>
           generatePDF(mode, selectedPoint, polygonPoints, mapRef, mapState)
         }
+        mapState={mapState}
       />
       <div style={{ marginTop: "16px" }}>
         <MapDisplay
