@@ -1,0 +1,8 @@
+.modal{
+
+}
+@media (max-width:750px){
+    .modal{
+        padding-bottom: 80px;
+    }
+}
