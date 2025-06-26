@@ -25,7 +25,7 @@ import selectComponent from "../../components/selectComponent";
 const { Title, Paragraph } = Typography;
 
 export default function NewClaim() {
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const chain = useServices((state) => state.chain);
   const serviceItem = useServices((state) => state.serviceItem);
   const fetchServiceItem = useServices((state) => state.fetchServiceItem);
@@ -47,17 +47,17 @@ export default function NewClaim() {
     if (newClaim) {
       console.log("newClaim", newClaim);
 
-      showDrawer();
+      // showDrawer();
     }
   }, [newClaim]);
 
-  const showDrawer = () => {
-    setOpen(true);
-  };
+  // const showDrawer = () => {
+  //   setOpen(true);
+  // };
 
   const onClose = () => {
     clearNewClaim();
-    setOpen(false);
+    // setOpen(false);
   };
 
   const onFinish = async (values) => {
@@ -231,7 +231,7 @@ export default function NewClaim() {
       {newClaim && (
         <SubmitModal
           open={!!newClaim}
-          claim={{ ...newClaim.data }}
+          claim={{ ...newClaim }}
           onClose={onClose}
         />
       )}

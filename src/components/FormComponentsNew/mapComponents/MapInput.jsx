@@ -1,53 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Button, Typography, Modal } from "antd";
+import { Button, Typography, Modal, Card, Tag, Form, Flex } from "antd";
 import { useMap } from "../../../stores/useMap";
 import MapControls from "./MapControls";
 import MapDisplay from "./MapDisplay";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
-pdfMake.vfs = pdfFonts.vfs;
+import WrapperComponent from "../WrapperComponent";
+import CoordinatesDisplay from "./CoordinatesDisplay";
 
+pdfMake.vfs = pdfFonts.vfs;
 const { Paragraph, Text } = Typography;
 
-const formatCoordinate = (coord) => Number(coord).toFixed(5);
 
-const CoordinatesDisplay = ({ coordinates }) => {
-  if (!coordinates) return null;
 
-  return (
-    <div style={{ marginTop: 16 }}>
-      {coordinates.point && (
-        <div style={{ marginBottom: 16 }}>
-          <Text strong style={{ display: "block", marginBottom: 4 }}>
-            Координаты точки:
-          </Text>
-          <Text code>
-            {formatCoordinate(coordinates.point[0])},{" "}
-            {formatCoordinate(coordinates.point[1])}
-          </Text>
-        </div>
-      )}
 
-      {coordinates.polygon?.length > 0 && (
-        <div>
-          <Text strong style={{ display: "block", marginBottom: 4 }}>
-            Координаты вершин области:
-          </Text>
-          {coordinates.polygon.map(([lat, lon], index) => (
-            <div key={index} style={{ marginBottom: 4 }}>
-              <Text type="secondary" style={{ marginRight: 8 }}>
-                Точка {index + 1}:
-              </Text>
-              <Text code>
-                {formatCoordinate(lat)}, {formatCoordinate(lon)}
-              </Text>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
 
 const MapModal = ({ visible, initialValue, onSave, onCancel }) => {
   const mapRef = React.useRef(null);
@@ -123,21 +89,71 @@ const MapModal = ({ visible, initialValue, onSave, onCancel }) => {
   );
 };
 
-export default function MapInput({ value = {}, onChange }) {
+export default function MapInput({
+  name = "name",
+  label = "Поле",
+  defaultValue = false,
+  placeholder = "",
+  category_key = null,
+  required = false,
+  dependOf = false,
+  howDepend = false,
+  span = false,
+  fullDescription = false,
+  stylesField_key = false,
+  read = false
+}) {
+  const form = Form.useFormInstance()
   const [modalVisible, setModalVisible] = useState(false);
-  const [coordinates, setCoordinates] = useState(value);
+  const [coordinates, setCoordinates] = useState(null);
 
-  useEffect(() => {
-    onChange?.(coordinates);
-  }, [coordinates, onChange]);
+  // useEffect(() => {
+  //   onChange?.(coordinates);
+  // }, [coordinates, onChange]);
 
   const handleSave = (data) => {
     setCoordinates(data);
+    form.setFieldValue(name, {
+      point: { lat: data.point[0], lon: data.point[1] },
+      polygon: data.polygon?.map(item => ({ lat: item[0], lon: item[1] }))
+    })
     setModalVisible(false);
   };
-
-  return (
-    <div style={{ padding: "16px" }}>
+  const handlerDel = () => {
+    setCoordinates(null);
+    form.setFieldValue(name, null)
+  }
+  const isAttached = !!coordinates;
+  const formElement = (
+    <Card
+      title={label}
+      style={{
+        borderColor: isAttached ? "green" : "red",
+        minHeight: 300,
+        height: "100%"
+      }}
+      styles={{
+        title: {
+          whiteSpace: "break-spaces"
+        },
+        body: {
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        },
+      }}
+      extra={isAttached ? <Tag color='green'>Добавлены</Tag> : <Tag color='red'>НЕ добавлены</Tag>}
+    >
+      <Form.Item
+        name={name}
+        rules={[
+          {
+            required: required,
+            message: "Это поле обязательное",
+          },
+        ]}
+      >
+      </Form.Item>
       <Button type="primary" onClick={() => setModalVisible(true)}>
         Координаты на карте
       </Button>
@@ -149,7 +165,25 @@ export default function MapInput({ value = {}, onChange }) {
         onCancel={() => setModalVisible(false)}
       />
 
-      <CoordinatesDisplay coordinates={coordinates} />
-    </div>
+      <Flex vertical gap={10}>
+
+        <CoordinatesDisplay coordinates={coordinates} />
+        {isAttached &&
+          <Button onClick={handlerDel} danger>Удалить координаты</Button>
+        }
+      </Flex>
+    </Card>
   );
+  return (
+    <WrapperComponent
+      span={span}
+      stylesField_key={stylesField_key}
+      dependOf={dependOf}
+      howDepend={howDepend}
+      name={name}
+      read={read}
+    >
+      {formElement}
+    </WrapperComponent>
+  )
 }

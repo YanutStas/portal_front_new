@@ -11,6 +11,7 @@ import FormulaInput from "./FormComponentsNew/FormulaInput";
 import GroupInput from "./FormComponentsNew/GroupInput";
 import HiddenInput from "./FormComponentsNew/HiddenInput";
 import InnInput from "./FormComponentsNew/InnInput";
+import MapInput from "./FormComponentsNew/mapComponents/MapInput";
 import NumberInput from "./FormComponentsNew/NumberInput";
 import PhoneInput from "./FormComponentsNew/phoneComponent/PhoneInput";
 import PriceInput from "./FormComponentsNew/PriceInput";
@@ -332,6 +333,19 @@ export default function selectComponent(item, index, read = false) {
   if (item.component?.Ref_Type?.includes("HiddenInput"))
     return (
       <HiddenInput
+        key={index}
+        {...item.component}
+        {...item}
+        fullDescription={item.name?.fullDescription}
+        name={item.idLine}
+        dependOf={item.dependIdLine}
+        howDepend={item.dependСondition}
+        read={read}
+      />
+    );
+  if (item.component?.Ref_Type?.includes("MapInput"))
+    return (
+      <MapInput
         key={index}
         {...item.component}
         {...item}
