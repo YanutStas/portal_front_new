@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Card, Typography, Skeleton, Descriptions, theme, Divider, Flex } from "antd";
+import { FileSearchOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import AppHelmet from "../../../../components/Global/AppHelmet";
 import useClaims from "../../../../stores/Cabinet/useClaims";
@@ -55,7 +56,12 @@ export default function Claimers() {
         </div>
       ) : (
         <div className={styles.claimsContainer}>
-          {personalAccounts &&<Divider orientation="left">Личные кабинеты</Divider>}
+          {personalAccounts && <Divider orientation="left">
+            <Flex gap={10} align="center">
+              <UserOutlined style={{ fontSize: 24 }} />
+              <Typography.Text>Личные кабинеты</Typography.Text>
+            </Flex>
+          </Divider>}
           <Flex wrap={"wrap"} gap={20} >
 
             {personalAccounts && personalAccounts.map((item, index) => (
@@ -65,7 +71,16 @@ export default function Claimers() {
                 className={styles.styleLink}
               >
                 <Card
+                  extra={<UserOutlined style={{ fontSize: 24, color: "gray" }} />}
                   className={styles.styleCard}
+                  styles={{
+                    body: {
+                      // backgroundImage: "url('https://grizly.club/uploads/posts/2023-02/1675895570_grizly-club-p-lichnii-kabinet-klipart-25.png')",
+                      // backgroundRepeat:"no-repeat",
+                      // backgroundSize:"15%",
+                      // backgroundPosition:"right 25px bottom 50%"
+                    }
+                  }}
                   hoverable
                   title={<Flex wrap={"wrap"} align="center" justify="space-between">
                     <Typography.Text>{item.name}</Typography.Text>
@@ -97,7 +112,12 @@ export default function Claimers() {
 
 
           {claims?.length > 0 &&
-            <Divider orientation="left">Заявки на проверке</Divider>
+            <Divider orientation="left">
+              <Flex gap={10} align="center">
+                <FileSearchOutlined style={{ fontSize: 24 }} />
+                <Typography.Text>Заявки на проверке</Typography.Text>
+              </Flex>
+            </Divider>
           }
           <Flex wrap={"wrap"} gap={20} >
             {claims?.map((item, index) => (

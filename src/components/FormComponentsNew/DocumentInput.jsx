@@ -74,7 +74,8 @@ export default function DocumentInput({
         title={label}
         style={{
           borderColor: isAttached ? "green" : "red",
-          height: "min(300px, 100%)",
+          minHeight: 300,
+          height: "100%"
         }}
         styles={{
           title: {

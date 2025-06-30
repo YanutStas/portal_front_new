@@ -4,10 +4,10 @@ import pdfMake from "pdfmake/build/pdfmake";
 export const useMap = (initialValue = {}) => {
   const [mode, setMode] = useState("point");
   const [selectedPoint, setSelectedPoint] = useState(
-    initialValue.point || null
+    initialValue?.point || null
   );
   const [polygonPoints, setPolygonPoints] = useState(
-    initialValue.polygon || []
+    initialValue?.polygon || []
   );
   const [mapState, setMapState] = useState({
     center: [55.75, 37.62],

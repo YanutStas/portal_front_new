@@ -20,7 +20,7 @@ const MapDisplay = ({
       <Map
         state={mapState}
         width="100%"
-        height="400px"
+        height="70vh"
         onClick={onClick}
         instanceRef={mapRef}
       >

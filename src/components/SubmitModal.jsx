@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Result, Button, Typography,Flex} from "antd";
+import { Modal, Result, Button, Typography, Flex } from "antd";
 import { useNavigate } from "react-router-dom";
 import { CheckCircleFilled } from "@ant-design/icons";
 
@@ -10,6 +10,7 @@ const SubmitModal = ({ open, claim, onClose }) => {
     if (onClose) onClose();
     navigate("/cabinet/claimers");
   };
+  console.log(claim);
 
   return (
     <Modal
@@ -23,16 +24,22 @@ const SubmitModal = ({ open, claim, onClose }) => {
         status="success"
         icon={<CheckCircleFilled style={{ fontSize: 72, color: "#52c41a" }} />}
         // Не знаю тот ли это номер заявки6 но путь будет он :)
-        title={`Ваша заявка с предварительным номером ${claim.number || "XXXXXX"} принята.`}
-        extra={[
-          <Flex gap={10} wrap="wrap">
-            <Typography.Text>Услуга:</Typography.Text>
-            <Typography.Text>{claim.service?.description}</Typography.Text>
-          </Flex>,
-          <Button key="submit" type="primary" onClick={handleOk}>
-            К списку заявок
-          </Button>,
-        ]}
+        title={claim.number ? <Flex vertical>
+          <Typography.Text style={{fontSize:20,fontWeight:600}}>Заявка принята.</Typography.Text>
+          <Typography.Text>Предварительный номер:</Typography.Text>
+          <Typography.Text style={{fontSize:24,fontWeight:600}}> {claim.number} </Typography.Text>
+        </Flex> : `Ваша заявка принята.`}
+        extra={claim.service?.description ?
+          <Flex gap={10} vertical>
+            <Flex gap={10} wrap="wrap">
+              <Typography.Text style={{fontWeight:600}}>Услуга:</Typography.Text>
+              <Typography.Text>{claim.service?.description}</Typography.Text>
+            </Flex>
+            <Button key="submit" type="primary" onClick={handleOk}>
+              К списку заявок
+            </Button>
+          </Flex> : false
+        }
       />
     </Modal>
   );

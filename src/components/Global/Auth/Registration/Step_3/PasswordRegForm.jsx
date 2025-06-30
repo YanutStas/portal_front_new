@@ -30,7 +30,7 @@ export default function PasswordRegForm() {
     <div>
       <Form form={form} onFinish={onFinish}>
         <Paragraph>
-          Пароль должен содержать минимум 8 символов, заглавную букву, цифры,
+          Пароль должен содержать минимум 10 символов, заглавную букву, цифры,
           латинские буквы.
         </Paragraph>
         <Form.Item

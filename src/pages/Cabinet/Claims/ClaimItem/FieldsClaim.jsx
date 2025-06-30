@@ -3,6 +3,7 @@ import selectComponent from '../../../../components/selectComponent'
 import { Badge, Card, Col, Descriptions, Divider, Flex, Form, Row, Typography, theme } from 'antd'
 import moment from 'moment';
 import axios from 'axios';
+import CoordinatesDisplay from '../../../../components/FormComponentsNew/mapComponents/CoordinatesDisplay';
 
 const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
     const byteCharacters = atob(b64Data);
@@ -105,6 +106,30 @@ export default function FieldsClaim({ template, values }) {
     const getDivider = (index, label) => {
         return <Divider key={index} orientation='left' style={{ margin: 10, whiteSpace: "normal" }}>{label}</Divider>
     }
+    const getMap = (index, label, idLine, valItem = false) => {
+        // console.log("index", index);
+        let value = valItem ? valItem[idLine] : values[idLine]
+        console.log("value", value);
+
+        return <div key={index} style={{ width: "100%", paddingLeft: 10 }}>
+            <Flex gap={10} wrap={"wrap"}>
+                {label && <Typography.Text style={{ color: "gray" }}>{label}: </Typography.Text>}
+                <div style={{marginTop:-16}}>
+
+                <CoordinatesDisplay coordinates={{
+                    point: value.point ? [value.point.lat, value.point.lon] : null,
+                    polygon: value.polygon ? value.polygon.map(item => ([item.lat, item.lon])) : null,
+                }} />
+                </div>
+            </Flex>
+        </div>
+        // let date = "не указана"
+        // if (value) {
+        //     date = moment(value).format("DD.MM.YYYY hh:mm")
+        // }
+        // return singleTextField(index, label, date)
+        // return <Divider key={index} orientation='left' style={{ margin: 10, whiteSpace: "normal" }}>{label}</Divider>
+    }
     const getGroupFields = (index, field) => {
         // console.log("field", field)
         const styles = template?.portalFields?.styles[field.stylesField_key]
@@ -164,10 +189,14 @@ export default function FieldsClaim({ template, values }) {
             if (field.component.Ref_Type === "componentsLinkInput") {
                 return getField(index, field, field.component.Ref_Key)
             }
+            if (field.component.Ref_Type === "componentsMapInput") {
+                return getMap(index, field.label, field.idLine)
+            }
             if (field.component.Ref_Type !== "componentsGroupFieldsInput" &&
                 field.component.Ref_Type !== "componentsTableInput" &&
                 field.component.Ref_Type !== "componentsDivider" &&
-                field.component.Ref_Type !== "componentsAddressInput"
+                field.component.Ref_Type !== "componentsAddressInput" &&
+                field.component.Ref_Type !== "componentsMapInput"
             ) {
                 return getField(index, field, false, valItem)
             }

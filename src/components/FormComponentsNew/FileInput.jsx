@@ -98,8 +98,8 @@ const FileInput = ({
         setReload(!reload)
     }
     const viewDocs = () => {
-        console.log("Preview",attachedDocument);
-        
+        console.log("Preview", attachedDocument);
+
         openDocs(attachedDocument.fileId)
     }
 
@@ -109,7 +109,8 @@ const FileInput = ({
             title={label}
             style={{
                 borderColor: isAttached ? "green" : "red",
-                height: "min(300px, 100%)",
+                minHeight: 300,
+                height: "100%"
             }}
             styles={{
                 title: {
