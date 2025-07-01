@@ -25,6 +25,7 @@ export default function Services() {
   const isLoading = useServices((state) => state.isLoading);
   const services = useServices((state) => state.services);
   const chain = useServices((state) => state.chain);
+  const path = useServices((state) => state.path);
   const error = useServices((state) => state.error);
   const fetchServiceChain = useServices((state) => state.fetchServiceChain);
   const serviceItem = useServices((state) => state.serviceItem);
@@ -41,40 +42,43 @@ export default function Services() {
     };
 
     fetchData();
-  }, [level2, fetchServices, fetchServiceChain]);
+  }, [level2, fetchServices]);
+  // console.log("services", services);
+  // console.log("path", path);
+
   return (
     <>
       <AppHelmet
         title={
           location.pathname === "/services" ||
-          location.pathname === "/services/"
+            location.pathname === "/services/"
             ? "Каталог услуг"
-            : serviceItem?.Description
+            : serviceItem?.name
         }
         desc="Услуги компании"
       />
       <Container>
-        {serviceItem && (
-          <>
-            <Breadcrumb
-              separator=">"
-              itemRender={(currentRoute) => {
-                return <Link to={currentRoute.href}>{currentRoute.title}</Link>;
-              }}
-              items={
-                !(
-                  location.pathname === "/services" ||
-                  location.pathname === "/services/"
-                ) &&
-                chain &&
-                chain.map((item) => ({
-                  href: `/services/${item.Ref_Key}`,
-                  title: item.Description,
-                }))
-              }
-            />
-          </>
-        )}
+        {/* {serviceItem && ( */}
+        <>
+          <Breadcrumb
+            separator=">"
+            itemRender={(currentRoute) => {
+              return <Link to={currentRoute.href}>{currentRoute.title}</Link>;
+            }}
+            items={
+              !(
+                location.pathname === "/services" ||
+                location.pathname === "/services/"
+              ) &&
+              path &&
+              path.map((item) => ({
+                href: `/services/${item.Ref_Key}`,
+                title: item.label,
+              }))
+            }
+          />
+        </>
+        {/* )} */}
         {isLoading ? (
           <Flex style={{ height: "300px" }} align="center" justify="center">
             <Preloader />
@@ -88,11 +92,11 @@ export default function Services() {
         ) : (
           <>
             <Title level={1} className={styles.title}>
-              {serviceItem ? serviceItem.Description : "Каталог услуг"}
+              {path ? path[path.length - 1]?.label : "Каталог услуг"}
             </Title>
             {services.length > 0 ? (
-                <MotionConfig transition={{ duration: 0.2 }}>
-              <Flex wrap="wrap" gap="large" style={{ width: "100%" }} className={styles.flexContainer}>
+              <MotionConfig transition={{ duration: 0.2 }}>
+                <Flex wrap="wrap" gap="large" style={{ width: "100%" }} className={styles.flexContainer}>
                   {services
                     .sort((a, b) => a.order - b.order)
                     .map((item, index) => (
@@ -100,7 +104,7 @@ export default function Services() {
                         <Link
                           key={index}
                           to={
-                            item.IsFolder
+                            item.isFolder
                               ? `/services/${item.Ref_Key}`
                               : `/services/item/${item.Ref_Key}`
                           }
@@ -146,15 +150,15 @@ export default function Services() {
 
                             <Flex
                               justify={
-                                !item.IsFolder ? "space-between" : "flex-end"
+                                !item.isFolder ? "space-between" : "flex-end"
                               }
                               align="flex-start"
                               gap={20}
                               style={{ width: "100%", flex: 1 }}
                             >
-                              {!item.IsFolder && (
+                              {!item.isFolder && (
                                 <Flex vertical gap={10}>
-                                  {item.tags.map((item, index) => (
+                                  {item.tags?.map((item, index) => (
                                     <Tag
                                       key={index}
                                       className={styles.tags}
@@ -169,41 +173,52 @@ export default function Services() {
                                 align="center"
                                 justify="center"
                                 style={{
-                                  width: !item.IsFolder ? "35%" : "35%",
+                                  width: !item.isFolder ? "35%" : "35%",
                                   alignSelf: "flex-end",
                                 }}
                               >
-                                {!item.IsFolder && (
+                                {!item.isFolder && item.codeService && (
+                                  <div className={styles.codeDiv}>
+                                    Код услуги: {item.codeService}
+                                  </div>
+                                )}
+
+                                {!item.isFolder && (
                                   <div className={styles.iconDiv}>
-                                    {index === 0 && (
+                                    {item.picture.name === "IconDocument" && (
                                       <IconDocument
                                         isHover={isHoverCard[index]}
                                       />
                                     )}
-                                    {index === 1 && (
+                                    {item.picture.name === "IconPowerUpArrow" && (
                                       <IconPowerUpArrow
                                         isHover={isHoverCard[index]}
                                       />
                                     )}
-                                    {index === 2 && (
+                                    {item.picture.name === "IconConnectNew" && (
                                       <IconConnectNew
                                         isHover={isHoverCard[index]}
                                       />
                                     )}
 
-                                    {index === 3 && (
+                                    {item.picture.name === "IconPowerUp" && (
                                       <IconPowerUp
                                         isHover={isHoverCard[index]}
                                       />
                                     )}
-                                    {index === 4 && (
+                                    {item.picture.name === "IconService" && (
+                                      <IconService
+                                        isHover={isHoverCard[index]}
+                                      />
+                                    )}
+                                    {item.picture.name === "IconService" && (
                                       <IconService
                                         isHover={isHoverCard[index]}
                                       />
                                     )}
                                   </div>
                                 )}
-                                {item.IsFolder && (
+                                {item.isFolder && (
                                   <div className={styles.iconDiv}>
                                     <IconFolder isHover={isHoverCard[index]} />
                                   </div>
@@ -214,8 +229,8 @@ export default function Services() {
                         </Link>
                       </motion.div>
                     ))}
-              </Flex>
-                </MotionConfig>
+                </Flex>
+              </MotionConfig>
             ) : (
               <Title
                 level={2}

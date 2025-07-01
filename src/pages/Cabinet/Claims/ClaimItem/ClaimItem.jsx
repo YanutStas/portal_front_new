@@ -39,6 +39,7 @@ export default function ClaimItem() {
 
   const token = theme.useToken().token
   // console.log("searchParams", searchParams);
+  // console.log("claim", claim);
 
   useEffect(() => {
     fetchClaimItem(id);
@@ -63,7 +64,7 @@ export default function ClaimItem() {
     {
       key: 4,
       label: <Typography.Text><Badge count={1} offset={[5, 0]} size="small"><span>Задачи</span></Badge></Typography.Text>,
-      children: <Billing zakaz={claim?.Ref_Key} />,
+      children: <Billing zakaz={claim?.id} />,
     },
     // {
     //   key: 2,

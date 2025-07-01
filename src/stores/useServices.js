@@ -1,11 +1,13 @@
 import { create } from "zustand";
 import axios from "axios";
+import { path } from "framer-motion/client";
 
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
 const useServices = create((set, get) => ({
   services: [],
   chain: [],
+  path: [],
   serviceItem: null,
   isLoading: false,
   error: null, // Новое состояние для хранения ошибки
@@ -14,14 +16,21 @@ const useServices = create((set, get) => ({
     set({ services: [], isLoading: true, chain: [], error: null }); // Сбрасываем состояния
 
     try {
-      const res = await Promise.all([
-        axios.get(`${backServer}/api/services/${key}`),
-        axios.get(`${backServer}/api/services/item/${key}?withFields=false`),
-        get().fetchServiceChain(key),
-      ]);
+      // const res = await Promise.all([
+      //   axios.get(`${backServer}/api/services/${key}`),
+      //   axios.get(`${backServer}/api/services/item/${key}?withFields=false`),
+      //   get().fetchServiceChain(key),
+      // ]);
+      const res = await axios.get(`${backServer}/api/services/${key}`)
+      // console.log("res.data", res.data);
+      res.data.data.path.unshift({
+        "Ref_Key": "",
+        "label": "Каталог услуг"
+      })
       set({
-        services: res[0].data.value,
-        serviceItem: res[1].data,
+        services: res.data.data.services,
+        path: res.data.data.path,
+        // serviceItem: res[1].data,
         isLoading: false,
       });
     } catch (error) {
