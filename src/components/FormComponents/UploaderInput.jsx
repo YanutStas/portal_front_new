@@ -15,24 +15,30 @@ export default function UploaderInput({
   maxFileSize = 10,
   loading,
 }) {
+  
+  maxFileSize = 10
   const [fileList, setFileList] = useState([]);
   const { colorPrimaryText } = theme.useToken().token;
   const form = Form.useFormInstance();
-  const allowedExtensions = ["JPEG", "JPG", "PDF", "HREF", "PNG"];
+  const allowedExtensions = [".jpeg", ".jpg", ".pdf", ".png"];
 
   const uploadProps = {
     multiple: true,
     disabled: loading,
     beforeUpload: (file) => {
-      const fileExtension = file.name.split(".").pop().toUpperCase();
-      const isSupported = allowedExtensions.includes(fileExtension);
+      const fileExtension = file.name.split(".").pop().toLowerCase();
+      console.log("fileExtension",fileExtension);
+      const isSupported = allowedExtensions.includes(`.${fileExtension}`);
 
       if (!isSupported) {
+        console.log("isSupported");
+        
         message.error(`${file.name} не поддерживается`);
         return Upload.LIST_IGNORE;
       }
       const isSizeOk = file.size / 1024 / 1024 < maxFileSize;
       if (!isSizeOk) {
+        console.log("isSizeOk");
         message.error(
           `${file.name} превышает максимальный размер ${maxFileSize} МБ`
         );
@@ -75,7 +81,7 @@ export default function UploaderInput({
       ]}
     >
       {!read && (
-        <Dragger {...uploadProps}>
+        <Dragger {...uploadProps} accept={allowedExtensions.join(',')}>
           <div>
             <InboxOutlined
               style={{ color: colorPrimaryText, fontSize: "48px" }}

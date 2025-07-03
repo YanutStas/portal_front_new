@@ -11,6 +11,7 @@ import {
   theme,
   Breadcrumb,
   Tag,
+  Descriptions,
 } from "antd";
 import styles from "./ServicesItem.module.css";
 import { motion } from "framer-motion";
@@ -73,9 +74,17 @@ export default function ServiceItem({ currentKey }) {
               }))
             }
           />
-          <Title level={1} style={{ marginTop: "10px" }}>
+          <Title level={1} style={{ marginTop: "10px",marginBottom:0 }}>
             {serviceItem.Description}
           </Title>
+           <Descriptions style={{marginBottom:10}} size={"small"} column={1} items={[
+                {
+                  key: '1',
+                  label: 'Код услуги',
+                  children: serviceItem.codeService,
+                },
+              
+              ]} />
           <Flex gap={5} style={{ marginBottom: "1.2rem" }} wrap={"wrap"}>
             {serviceItem.tags.map((item, index) => (
               <Tag

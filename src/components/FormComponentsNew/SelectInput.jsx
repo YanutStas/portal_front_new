@@ -8,7 +8,8 @@ import useClaims from "../../stores/Cabinet/useClaims";
 export default function SelectInput({
   name = "name",
   label = "",
-  defaultValue = false,
+  placeholder="-",
+  defaultValue = undefined,
   required = false,
   Ref_Key = false,
   dependOf = false,
@@ -45,6 +46,7 @@ export default function SelectInput({
     >
       <Select
         style={{ width: "100%" }}
+        placeholder={placeholder}
         showSearch
         optionFilterProp="label"
         options={options}

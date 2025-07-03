@@ -6,23 +6,23 @@ import DocumentSelectModal from "./DocumentSelectModal";
 import WrapperComponent from "./WrapperComponent";
 import openDocs from "../Cabinet/openDocument";
 
-const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
-  const byteCharacters = atob(b64Data);
-  // console.log("byteCharacters",byteCharacters);
+// const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
+//   const byteCharacters = atob(b64Data);
+//   // console.log("byteCharacters",byteCharacters);
 
-  const byteArrays = [];
-  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-    const slice = byteCharacters.slice(offset, offset + sliceSize);
-    const byteNumbers = new Array(slice.length);
-    for (let i = 0; i < slice.length; i++) {
-      byteNumbers[i] = slice.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    byteArrays.push(byteArray);
-  }
-  const blob = new Blob(byteArrays, { type: contentType });
-  return blob;
-}
+//   const byteArrays = [];
+//   for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+//     const slice = byteCharacters.slice(offset, offset + sliceSize);
+//     const byteNumbers = new Array(slice.length);
+//     for (let i = 0; i < slice.length; i++) {
+//       byteNumbers[i] = slice.charCodeAt(i);
+//     }
+//     const byteArray = new Uint8Array(byteNumbers);
+//     byteArrays.push(byteArray);
+//   }
+//   const blob = new Blob(byteArrays, { type: contentType });
+//   return blob;
+// }
 
 export default function DocumentInput({
   name = "name",
@@ -66,14 +66,16 @@ export default function DocumentInput({
 
   const attachedDocument = form.getFieldValue(name);
   const isAttached = !!attachedDocument;
-
+// console.log(token);
+console.log(form.getFieldError(name));
+// form.getFieldError(name)
   const formElement = (
     <>
       {/* {saveToProfile && <Typography.Text>Сохранять в профиль</Typography.Text>} */}
       <Card
         title={label}
         style={{
-          borderColor: isAttached ? "green" : "red",
+          borderColor: isAttached ? "green" : token.colorPrimary,
           minHeight: 300,
           height: "100%"
         }}
@@ -87,49 +89,29 @@ export default function DocumentInput({
             justifyContent: "center",
           },
         }}
-        extra={isAttached ? <Tag color='green'>Выбран</Tag> : <Tag color='red'>НЕ выбран</Tag>}
+        extra={isAttached ? <Tag color='green'>Выбран</Tag> : <Tag color='blue'>НЕ выбран</Tag>}
       // className={"formElement"}
       >
-        <Form.Item name={name} style={{ height: "100%" }} required={required}>
+        <Form.Item
+          name={name}
+          style={{ height: "100%" }}
+          rules={[
+            {
+              required: required,
+              message: "Этот документ обязателен",
+            },
+          ]}
+        >
         </Form.Item>
         <Flex gap={10} vertical justify='center' style={{ height: "100%" }}>
 
           {/* Иконка глаза в верхнем правом углу */}
           {isAttached && (
             <Button
-              // type="primary"
-              // shape="circle"
-              // // icon={<EyeOutlined />}
-              // size="small"
-              // style={{ position: "absolute", top: 10, right: 10 }}
+             
               onClick={() => openDocs(attachedDocument)}
             >Посмотреть документ</Button>
           )}
-
-          {/* Верхняя часть карточки */}
-
-          {/* Заголовок с иконкой */}
-          {/* <Card.Meta
-              avatar={
-                <FileTextOutlined
-                  style={{
-                    fontSize: "24px",
-                    color: token.colorPrimary,
-                    }}
-                    />
-              }
-              title={<div style={{ whiteSpace: "normal" }}>{label}</div>}
-              style={{ marginBottom: 16 }}
-            /> */}
-          {/* Отображение названия выбранного документа */}
-          {/* {isAttached && (
-              <div style={{ color: token.colorText }}>
-              <strong>Документ:</strong> {attachedDocument.Description}
-              </div>
-            )} */}
-
-          {/* Нижняя часть карточки с плашкой и кнопкой */}
-
 
           <Button
             type="primary"
