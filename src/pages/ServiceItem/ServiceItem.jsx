@@ -20,6 +20,7 @@ import MarkDownText from "../../components/MarkDownText/MarkDownText";
 import Preloader from "../../components/Main/Preloader";
 import Law from "../../components/Documentation/Law";
 import ErrorModal from "../../components/ErrorModal";
+import ListDocs from "../../components/ServiceItem/ListDocs";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -67,15 +68,15 @@ export default function ServiceItem({ currentKey }) {
               return <Link to={currentRoute.href}>{currentRoute.title}</Link>;
             }}
             items={
-              chain &&
-              chain.map((item) => ({
+              serviceItem.path &&
+              serviceItem.path.map((item) => ({
                 href: `/services/${item.Ref_Key}`,
-                title: item.Description,
+                title: item.label,
               }))
             }
           />
           <Title level={1} style={{ marginTop: "10px",marginBottom:0 }}>
-            {serviceItem.Description}
+            {serviceItem.label}
           </Title>
            <Descriptions style={{marginBottom:10}} size={"small"} column={1} items={[
                 {
@@ -90,9 +91,9 @@ export default function ServiceItem({ currentKey }) {
               <Tag
                 key={index}
                 style={{ fontSize: "1.2rem", lineHeight: "1.8rem" }}
-                color={item.tag?.color?.Имя}
+                color={item.color?.name}
               >
-                {item.tag?.Description}
+                {item.name}
               </Tag>
             ))}
           </Flex>
@@ -203,7 +204,7 @@ export default function ServiceItem({ currentKey }) {
               {
                 key: "4",
                 label: "Нормативные акты и законодательство",
-                children: <Law />,
+                children: <ListDocs docs={serviceItem.files}/>,
               },
             ]}
           />
@@ -214,7 +215,7 @@ export default function ServiceItem({ currentKey }) {
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 <Link to={`/cabinet/new-claim/${serviceItem.Ref_Key}`}>
-                  <Button type="primary" size="large" onClick={showDrawer}>
+                  <Button type="primary" size="large" >
                     Заполнить заявку
                   </Button>
                 </Link>

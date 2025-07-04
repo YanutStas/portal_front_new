@@ -24,8 +24,8 @@ export default function Services() {
   const { token } = theme.useToken();
   const isLoading = useServices((state) => state.isLoading);
   const services = useServices((state) => state.services);
-  const chain = useServices((state) => state.chain);
-  const path = useServices((state) => state.path);
+  // const chain = useServices((state) => state.chain);
+  // const path = useServices((state) => state.path);
   const error = useServices((state) => state.error);
   const fetchServiceChain = useServices((state) => state.fetchServiceChain);
   const serviceItem = useServices((state) => state.serviceItem);
@@ -43,7 +43,7 @@ export default function Services() {
 
     fetchData();
   }, [level2, fetchServices]);
-  // console.log("services", services);
+  console.log("services", services);
   // console.log("path", path);
 
   return (
@@ -70,8 +70,8 @@ export default function Services() {
                 location.pathname === "/services" ||
                 location.pathname === "/services/"
               ) &&
-              path &&
-              path.map((item) => ({
+              services.path &&
+              services.path.map((item) => ({
                 href: `/services/${item.Ref_Key}`,
                 title: item.label,
               }))
@@ -92,12 +92,12 @@ export default function Services() {
         ) : (
           <>
             <Title level={1} className={styles.title}>
-              {path ? path[path.length - 1]?.label : "Каталог услуг"}
+              {services && services.path ? services.path[services.path.length - 1]?.label : "Каталог услуг"}
             </Title>
-            {services.length > 0 ? (
+            {services && services.services?.length > 0 ? (
               <MotionConfig transition={{ duration: 0.2 }}>
                 <Flex wrap="wrap" gap="large" style={{ width: "100%" }} className={styles.flexContainer}>
-                  {services
+                  {services.services
                     .sort((a, b) => a.order - b.order)
                     .map((item, index) => (
                       <motion.div key={index} className={styles.styleLink}>
@@ -185,33 +185,33 @@ export default function Services() {
 
                                 {!item.isFolder && (
                                   <div className={styles.iconDiv}>
-                                    {item.picture.name === "IconDocument" && (
+                                    {item.picture?.name === "IconDocument" && (
                                       <IconDocument
                                         isHover={isHoverCard[index]}
                                       />
                                     )}
-                                    {item.picture.name === "IconPowerUpArrow" && (
+                                    {item.picture?.name === "IconPowerUpArrow" && (
                                       <IconPowerUpArrow
                                         isHover={isHoverCard[index]}
                                       />
                                     )}
-                                    {item.picture.name === "IconConnectNew" && (
+                                    {item.picture?.name === "IconConnectNew" && (
                                       <IconConnectNew
                                         isHover={isHoverCard[index]}
                                       />
                                     )}
 
-                                    {item.picture.name === "IconPowerUp" && (
+                                    {item.picture?.name === "IconPowerUp" && (
                                       <IconPowerUp
                                         isHover={isHoverCard[index]}
                                       />
                                     )}
-                                    {item.picture.name === "IconService" && (
+                                    {item.picture?.name === "IconService" && (
                                       <IconService
                                         isHover={isHoverCard[index]}
                                       />
                                     )}
-                                    {item.picture.name === "IconService" && (
+                                    {item.picture?.name === "IconService" && (
                                       <IconService
                                         isHover={isHoverCard[index]}
                                       />

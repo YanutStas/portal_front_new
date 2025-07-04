@@ -28,8 +28,8 @@ const useServices = create((set, get) => ({
         "label": "Каталог услуг"
       })
       set({
-        services: res.data.data.services,
-        path: res.data.data.path,
+        services: res.data.data,
+        // path: res.data.data.path,
         // serviceItem: res[1].data,
         isLoading: false,
       });
@@ -44,19 +44,17 @@ const useServices = create((set, get) => ({
 
   fetchServiceItem: async (
     key,
-    property = { withChain: true, withFields: true }
+    property = { withFields: true }
   ) => {
     // console.log(property)
     set({ serviceItem: null, isLoading: true, chain: [], error: null }); // Сбрасываем состояния
     try {
-      const res = await Promise.all([
-        axios.get(
-          `${backServer}/api/services/item/${key}?withFields=${property.withFields}`
-        ),
-        property.withChain ? get().fetchServiceChain(key) : false,
-      ]);
+      const res = await axios.get(`${backServer}/api/services/item/${key}?withFields=${property.withFields}`)
+      // property.withChain ? get().fetchServiceChain(key) : false,)
+      // console.log(res);
+
       set({
-        serviceItem: res[0].data,
+        serviceItem: res.data?.data,
         isLoading: false,
       });
     } catch (error) {
@@ -68,40 +66,40 @@ const useServices = create((set, get) => ({
     }
   },
 
-  fetchServiceChain: (key) => {
-    return new Promise(async (resolve, reject) => {
-      let chain = [];
-      async function getService(key) {
-        const res = await axios.get(
-          `${backServer}/api/services/item/${key}?withFields=false`
-        );
-        chain.push({
-          Description: res.data.Description,
-          Ref_Key: res.data.Ref_Key,
-        });
-        if (
-          res.data.Parent_Key &&
-          res.data.Parent_Key !== "00000000-0000-0000-0000-000000000000"
-        ) {
-          await getService(res.data.Parent_Key);
-        }
-      }
-      try {
-        await getService(key);
-        chain.push({ Description: "Каталог услуг", Ref_Key: "" });
-        chain.reverse().pop();
-        resolve({ chain });
-        set({ chain });
-      } catch (error) {
-        console.log(error);
-        set({
-          error:
-            error.message || "Произошла ошибка при построении цепочки услуг",
-        }); // Устанавливаем ошибку
-        reject(error);
-      }
-    });
-  },
+  // fetchServiceChain: (key) => {
+  //   return new Promise(async (resolve, reject) => {
+  //     let chain = [];
+  //     async function getService(key) {
+  //       const res = await axios.get(
+  //         `${backServer}/api/services/item/${key}?withFields=false`
+  //       );
+  //       chain.push({
+  //         Description: res.data.Description,
+  //         Ref_Key: res.data.Ref_Key,
+  //       });
+  //       if (
+  //         res.data.Parent_Key &&
+  //         res.data.Parent_Key !== "00000000-0000-0000-0000-000000000000"
+  //       ) {
+  //         await getService(res.data.Parent_Key);
+  //       }
+  //     }
+  //     try {
+  //       await getService(key);
+  //       chain.push({ Description: "Каталог услуг", Ref_Key: "" });
+  //       chain.reverse().pop();
+  //       resolve({ chain });
+  //       set({ chain });
+  //     } catch (error) {
+  //       console.log(error);
+  //       set({
+  //         error:
+  //           error.message || "Произошла ошибка при построении цепочки услуг",
+  //       }); // Устанавливаем ошибку
+  //       reject(error);
+  //     }
+  //   });
+  // },
 
   clearError: () => {
     set({ error: null }); // Метод для сброса состояния ошибки
