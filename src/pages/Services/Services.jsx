@@ -8,6 +8,8 @@ import styles from "./Services.module.css";
 import Container from "../../components/Container";
 import Preloader from "../../components/Main/Preloader";
 import ErrorModal from "../../components/ErrorModal";
+import folderPic from "../../img/catalog/folder.png";
+import docPic from "../../img/catalog/doc.png";
 
 import { IconPowerUp } from "../../components/icons/IconPowerUp";
 import { IconPowerUpArrow } from "../../components/icons/IconPowerUpArrow";
@@ -64,77 +66,77 @@ export default function Services() {
 
   const getPicture = async (fileId) => {
     const url = await getPublicFile(fileId)
-    setSrcPictures(prev => ({...prev, [fileId]: url}))
-}
-useEffect(() => {
-  services.services?.forEach(item => {
-    console.log(item.picture?.id);
-    if (!samePictureName(item.picture?.name))
-      
-      getPicture(item.picture?.id)
-  })
-}, [services])
-useEffect(() => {
-  console.log("srcPictures",srcPictures);
-  
-}, [srcPictures])
+    setSrcPictures(prev => ({ ...prev, [fileId]: url }))
+  }
+  useEffect(() => {
+    services.services?.forEach(item => {
+      console.log(item.picture?.id);
+      if (!samePictureName(item.picture?.name))
+
+        getPicture(item.picture?.id)
+    })
+  }, [services])
+  useEffect(() => {
+    console.log("srcPictures", srcPictures);
+
+  }, [srcPictures])
 
 
-return (
-  <>
-    <AppHelmet
-      title={
-        location.pathname === "/services" ||
-          location.pathname === "/services/"
-          ? "Каталог услуг"
-          : serviceItem?.name
-      }
-      desc="Услуги компании"
-    />
-    <Container>
-      {/* {serviceItem && ( */}
-      <>
-        <Breadcrumb
-          separator=">"
-          itemRender={(currentRoute) => {
-            return <Link to={currentRoute.href}>{currentRoute.title}</Link>;
-          }}
-          items={
-            !(
-              location.pathname === "/services" ||
-              location.pathname === "/services/"
-            ) &&
-            services.path &&
-            services.path.map((item) => ({
-              href: `/services/${item.Ref_Key}`,
-              title: item.label,
-            }))
-          }
-        />
-      </>
-      {/* )} */}
-      {isLoading ? (
-        <Flex style={{ height: "300px" }} align="center" justify="center">
-          <Preloader />
-        </Flex>
-      ) : error ? (
-        <ErrorModal
-          visible={!!error}
-          error={error}
-          onClose={() => error(null)}
-        />
-      ) : (
+  return (
+    <>
+      <AppHelmet
+        title={
+          location.pathname === "/services" ||
+            location.pathname === "/services/"
+            ? "Каталог услуг"
+            : serviceItem?.name
+        }
+        desc="Услуги компании"
+      />
+      <Container>
+        {/* {serviceItem && ( */}
         <>
-          <Title level={1} className={styles.title}>
-            {services && services.path ? services.path[services.path.length - 1]?.label : "Каталог услуг"}
-          </Title>
-          {services && services.services?.length > 0 ? (
-            <MotionConfig transition={{ duration: 0.2 }}>
-              <Flex wrap="wrap" gap="large" style={{ width: "100%" }} className={styles.flexContainer}>
-                {services.services
-                  .sort((a, b) => a.order - b.order)
-                  .map((item, index) => (
-                    <motion.div key={index} className={styles.styleLink}>
+          <Breadcrumb
+            separator=">"
+            itemRender={(currentRoute) => {
+              return <Link to={currentRoute.href}>{currentRoute.title}</Link>;
+            }}
+            items={
+              !(
+                location.pathname === "/services" ||
+                location.pathname === "/services/"
+              ) &&
+              services.path &&
+              services.path.map((item) => ({
+                href: `/services/${item.Ref_Key}`,
+                title: item.label,
+              }))
+            }
+          />
+        </>
+        {/* )} */}
+        {isLoading ? (
+          <Flex style={{ height: "300px" }} align="center" justify="center">
+            <Preloader />
+          </Flex>
+        ) : error ? (
+          <ErrorModal
+            visible={!!error}
+            error={error}
+            onClose={() => error(null)}
+          />
+        ) : (
+          <>
+            <Title level={1} className={styles.title}>
+              {services && services.path ? services.path[services.path.length - 1]?.label : "Каталог услуг"}
+            </Title>
+            {services && services.services?.length > 0 ? (
+              <MotionConfig transition={{ duration: 0.2 }}>
+                <Flex wrap="wrap" gap="large" style={{ width: "100%" }} className={styles.flexContainer}>
+                  {services.services
+                    .sort((a, b) => a.order - b.order)
+                    .map((item, index) => (
+                      // <motion.div key={index} className={styles.styleLink}>
                       <Link
                         key={index}
                         to={
@@ -142,6 +144,8 @@ return (
                             ? `/services/${item.Ref_Key}`
                             : `/services/item/${item.Ref_Key}`
                         }
+
+                        className={styles.styleCard}
                       >
                         <Card
                           onMouseEnter={() =>
@@ -162,25 +166,45 @@ return (
                               [index]: false,
                             }))
                           }
-                          className={styles.styleCard}
+
                           style={{
-                            border: `1px solid ${token.colorBorder}`,
+                            // border: `1px solid ${token.colorBorder}`,
+                            // width:"32%"
+                            height: "100%"
                           }}
                           styles={{
-                            body: {
-                              display: "flex",
-                              flexDirection: "column",
-                              justifyContent: "space-between",
-                              height: "100%",
-                              background:
-                                "linear-gradient(-30deg, rgba(0,97,170,.1) 0%, rgba(255,255,255,0) 50%)",
-                            },
+                            // body: {
+                            //   display: "flex",
+                            //   flexDirection: "column",
+                            //   justifyContent: "space-between",
+                            //   height: "100%",
+                            //   backgroundColor: item.isFolder ? "rgba(0,0,255,0.1)" : "rgba(255, 123, 0, 0.1)",
+                            //   // background: "linear-gradient(-30deg, rgba(0,97,170,.1) 0%, rgba(255,255,255,0) 50%)",
+                            // },
                           }}
                           hoverable
+                          // title={item.label}
+                          cover={<Image style={{
+                            // background: item.isFolder && `url(${folderPic})`,
+                            backgroundSize: "contain",
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "center",
+                          }}
+                            // width={300}
+                            preview={false}
+                            alt="услуга"
+                            src={item.picture?.id ? srcPictures[item.picture?.id] || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" : (item.isFolder ? folderPic : docPic)}
+                          // src="https://hammernail.ru/wp-content/uploads/2023/11/muzhchina_0.png"
+                          />}
                         >
-                          <Title level={4} className={styles.cardTitle}>
-                            {item.label}
-                          </Title>
+                          <Card.Meta
+                            title={<Typography.Text className={styles.styleCardTitle} style={{ whiteSpace: "break-spaces" }} >{item.label}</Typography.Text>}
+                            description={!item.isFolder && item.codeService && (
+                              `Код услуги: ${item.codeService}`
+                            )} />
+                          {/* <Title level={4} className={styles.cardTitle}>
+                              {item.label}
+                            </Title> */}
 
                           <Flex
                             justify={
@@ -211,74 +235,74 @@ return (
                                 alignSelf: "flex-end",
                               }}
                             >
-                              {!item.isFolder && item.codeService && (
+                              {/* {!item.isFolder && item.codeService && (
                                 <div className={styles.codeDiv}>
                                   Код услуги: {item.codeService}
                                 </div>
-                              )}
+                              )} */}
 
-                              {!item.isFolder && (
-                                <div className={styles.iconDiv}>
-                                  {item.picture?.name === "IconDocument" && (
-                                    <IconDocument
-                                      isHover={isHoverCard[index]}
-                                    />
-                                  )}
-                                  {item.picture?.name === "IconPowerUpArrow" && (
-                                    <IconPowerUpArrow
-                                      isHover={isHoverCard[index]}
-                                    />
-                                  )}
-                                  {item.picture?.name === "IconConnectNew" && (
-                                    <IconConnectNew
-                                      isHover={isHoverCard[index]}
-                                    />
-                                  )}
-                                  {item.picture?.name === "IconPowerUp" && (
-                                    <IconPowerUp
-                                      isHover={isHoverCard[index]}
-                                    />
-                                  )}
-                                  {item.picture?.name === "IconService" && (
-                                    <IconService
-                                      isHover={isHoverCard[index]}
-                                    />
-                                  )}
+                              {/* {!item.isFolder && (
+                                  <div className={styles.iconDiv}>
+                                    {item.picture?.name === "IconDocument" && (
+                                      <IconDocument
+                                        isHover={isHoverCard[index]}
+                                      />
+                                    )}
+                                    {item.picture?.name === "IconPowerUpArrow" && (
+                                      <IconPowerUpArrow
+                                        isHover={isHoverCard[index]}
+                                      />
+                                    )}
+                                    {item.picture?.name === "IconConnectNew" && (
+                                      <IconConnectNew
+                                        isHover={isHoverCard[index]}
+                                      />
+                                    )}
+                                    {item.picture?.name === "IconPowerUp" && (
+                                      <IconPowerUp
+                                        isHover={isHoverCard[index]}
+                                      />
+                                    )}
+                                    {item.picture?.name === "IconService" && (
+                                      <IconService
+                                        isHover={isHoverCard[index]}
+                                      />
+                                    )}
 
-                                  {!samePictureName(item.picture?.name) && (
-                                    <Image
-                                    width={"100%"}
-                                      preview={false}
-                                      src={srcPictures[item.picture?.id]}
-                                    />
-                                  )}
-                                </div>
-                              )}
-                              {item.isFolder && (
-                                <div className={styles.iconDiv}>
-                                  <IconFolder isHover={isHoverCard[index]} />
-                                </div>
-                              )}
+                                    {!samePictureName(item.picture?.name) && (
+                                      <Image
+                                        width={"100%"}
+                                        preview={false}
+                                        src={srcPictures[item.picture?.id]}
+                                      />
+                                    )}
+                                  </div>
+                                )}
+                                {item.isFolder && (
+                                  <div className={styles.iconDiv}>
+                                    <IconFolder isHover={isHoverCard[index]} />
+                                  </div>
+                                )} */}
                             </Flex>
                           </Flex>
                         </Card>
                       </Link>
-                    </motion.div>
-                  ))}
-              </Flex>
-            </MotionConfig>
-          ) : (
-            <Title
-              level={2}
-              className={styles.title}
-              style={{ color: "#999" }}
-            >
-              Услуг в данной категории не найдено
-            </Title>
-          )}
-        </>
-      )}
-    </Container>
-  </>
-);
+                      // </motion.div>
+                    ))}
+                </Flex>
+              </MotionConfig>
+            ) : (
+              <Title
+                level={2}
+                className={styles.title}
+                style={{ color: "#999" }}
+              >
+                Услуг в данной категории не найдено
+              </Title>
+            )}
+          </>
+        )}
+      </Container>
+    </>
+  );
 }
