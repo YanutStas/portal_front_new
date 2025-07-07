@@ -156,15 +156,15 @@ export default function NewClaim() {
               },
             }}
           >
-            <Title>{serviceItem.Description}</Title>
+            <Title>{serviceItem.label}</Title>
             <Flex gap={10} style={{ marginBottom: "1.2rem" }} wrap="wrap">
               {serviceItem.tags.map((item, index) => (
                 <Tag
                   key={index}
                   style={{ fontSize: "1.2rem", lineHeight: "1.8rem" }}
-                  color={item.tag?.color?.Имя}
+                  color={item.color?.name}
                 >
-                  {item.tag?.Description}
+                  {item.name}
                 </Tag>
               ))}
             </Flex>
