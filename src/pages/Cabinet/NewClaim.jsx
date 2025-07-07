@@ -64,8 +64,10 @@ export default function NewClaim() {
     let newValues = {};
 
     const addNewValue = (value) => {
+      // console.log(moment(value.$d).format());
+      
       if (typeof value === "object" && Object.hasOwn(value, "$d")) {
-        return moment(value).format();
+        return moment(value.$d).format();
       } else if (!Array.isArray(value)) {
         return value;
       }

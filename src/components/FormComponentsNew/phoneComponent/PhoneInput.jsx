@@ -62,7 +62,7 @@ export default function PhoneInput({
               help={hasError ? errors[0] : undefined}
             >
               <IMaskInput
-                mask="+7 (000) 000-00-00"
+                mask="+7 (900) 000-00-00"
                 disabled={disabled}
                 placeholder={placeholder}
                 className={`ant-input ant-input-outlined ${styles.inputMask}`}

@@ -14,6 +14,7 @@ import PhoneInput from "./phoneComponent/PhoneInput";
 import styles from "./GroupInput.module.css";
 import WrapperComponent from "./WrapperComponent";
 import TableResults from "./TableResults";
+import CadastrInput from "./CadastrInput";
 
 export default function TableInput({
   name = "nameTableInput",
@@ -50,7 +51,7 @@ export default function TableInput({
                 key: 0,
                 isListField: true,
                 fieldKey: 0,
-                read:read
+                read: read
               });
             return (
               <>
@@ -101,6 +102,27 @@ export default function TableInput({
                             key={index}
                             {...item.component}
                             {...item}
+                            name={[name, item.idLine]}
+                            dependOf={
+                              item.dependIdLine
+                                ? [name, item.dependIdLine]
+                                : false
+
+                            }
+                            howDepend={item.dependСondition}
+                            read={read}
+                          />
+                        );
+                      if (
+                        item.component?.Ref_Type?.includes("TextInput") &&
+                        item.component.specialField === "КадастровыйНомер"
+                      )
+                        return (
+                          <CadastrInput
+                            key={index}
+                            {...item.component}
+                            {...item}
+                            fullDescription={item.name?.fullDescription}
                             name={[name, item.idLine]}
                             dependOf={
                               item.dependIdLine

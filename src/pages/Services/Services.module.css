@@ -96,6 +96,17 @@
     stroke-width: 5;
     fill: none;
  }
+ .codeDiv{
+   position: absolute;
+   bottom: 0;
+   left: 0;
+   text-align: center;
+   /* width: 150px; */
+   /* height: 150px; */
+   opacity: .8;
+   padding: 10px;  
+   color: gray; 
+ }
  .iconDiv{
    position: absolute;
    bottom: 0;
@@ -104,8 +115,7 @@
    width: 150px;
    height: 150px;
    opacity: .8;
-   padding: 10px;
-   
+   padding: 10px;   
  }
 
  @media (max-width: 1900px) {

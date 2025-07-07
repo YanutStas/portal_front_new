@@ -13,7 +13,15 @@
 .steps {
   margin-bottom: 20px; 
 }
+.desc{
+  width: 50%;
+}
 
+@media (max-width: 1200px) {  
+  .desc{
+    width: 100%;
+  }
+}
 @media (max-width: 768px) {
   .header {
     flex-direction: column;

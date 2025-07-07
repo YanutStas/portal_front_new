@@ -1,5 +1,6 @@
 import AddressInput from "./FormComponentsNew/addressComponents/AddressInput";
 import BikInput from "./FormComponentsNew/BikInput";
+import CadastrInput from "./FormComponentsNew/CadastrInput";
 import CodePodrazdelInput from "./FormComponentsNew/CodePodrazdelInput";
 import CommentInput from "./FormComponentsNew/CommentInput";
 import ConfirmationDocumentNewInput from "./FormComponentsNew/confirmationDocumentComponents/ConfirmationDocumentNewInput";
@@ -113,6 +114,22 @@ export default function selectComponent(item, index, read = false) {
   )
     return (
       <CodePodrazdelInput
+        key={index}
+        {...item.component}
+        {...item}
+        fullDescription={item.name?.fullDescription}
+        name={item.idLine}
+        dependOf={item.dependIdLine}
+        howDepend={item.dependСondition}
+        read={read}
+      />
+    );
+  if (
+    item.component?.Ref_Type?.includes("TextInput") &&
+    item.component.specialField === "КадастровыйНомер"
+  )
+    return (
+      <CadastrInput
         key={index}
         {...item.component}
         {...item}

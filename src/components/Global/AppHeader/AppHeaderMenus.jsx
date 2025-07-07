@@ -88,19 +88,19 @@ export function RightMenuArea({
         checked={darkMode}
         style={{ background: !darkMode && colorText }}
       />
-      <Badge count={getUnreadCount()} overflowCount={9}>
+      {/* <Badge count={getUnreadCount()} overflowCount={9}>
         <BellOutlined
           style={{ fontSize: "20px", cursor: "pointer", color: colorText }}
           onClick={showNotificationDrawer}
         />
-      </Badge>
+      </Badge> */}
       {auth ? (
         <div className={styles.userInfo}>
-          <Tooltip title={profile.email ? profile.email : "Пользователь"}>
+          {/* <Tooltip title={profile.email ? profile.email : "Пользователь"}>
             <UserOutlined
               style={{ fontSize: "20px", color: colorText, cursor: "pointer" }}
             />
-          </Tooltip>
+          </Tooltip> */}
           <Button type="primary" onClick={handleLogout}>
             Выйти
           </Button>

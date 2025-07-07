@@ -16,7 +16,7 @@ export default function WrapperComponent({
   // console.log("WrapperComponent children", children);
   const serviceItem = useServices((state) => state.serviceItem);
   const claim = useClaims((state) => state.claim);
-  const styles = read ? claim?.template?.portalFields?.styles[stylesField_key] : serviceItem.styles[stylesField_key];
+  const styles = read ? claim?.template?.portalFields?.styles[stylesField_key] : (serviceItem.styles && serviceItem.styles[stylesField_key]);
 
   const mainForm = Form.useFormInstance();
   let fieldDepends = Form.useWatch(dependOf, mainForm);

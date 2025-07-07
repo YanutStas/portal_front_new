@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Card, Flex, Form, message, notification, Tag, Typography, Upload } from 'antd';
-import InfoDrawer from "../InfoDrawer";
+import { Button, Card, Flex, Form, notification, Tag, Upload, theme } from 'antd';
+// import InfoDrawer from "../InfoDrawer";
 import WrapperComponent from "./WrapperComponent";
 import axios from 'axios';
 import useNewClaim from '../../stores/Cabinet/useClaims';
@@ -12,7 +12,7 @@ const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 const FileInput = ({
     name = "name",
     label = "Поле",
-    defaultValue = false,
+    defaultValue = undefined,
     placeholder = "",
     category_key = null,
     required = false,
@@ -26,10 +26,12 @@ const FileInput = ({
     const [api, contextHolder] = notification.useNotification();
     const { removeBlockButtonNewClaim, addBlockButtonNewClaim } = useNewClaim(state => state)
     const form = Form.useFormInstance();
-    const token = localStorage.getItem("jwt");
+    const tokenJWT = localStorage.getItem("jwt");
     const [fileList, setFileList] = useState([]);
     const [uploading, setUploading] = useState(false);
     const [reload, setReload] = useState(false);
+    const { token } = theme.useToken();
+
     const openNotification = (message) => {
         api.info({
             message: `${message}`,
@@ -50,7 +52,7 @@ const FileInput = ({
         axios.post(`${backServer}/api/cabinet/upload-file`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${tokenJWT}`,
             },
             withCredentials: true,
         }).then((res) => {
@@ -102,13 +104,14 @@ const FileInput = ({
 
         openDocs(attachedDocument.fileId)
     }
+    console.log("required", required);
 
     const formElement = (
 
         <Card
             title={label}
             style={{
-                borderColor: isAttached ? "green" : "red",
+                borderColor: isAttached ? "green" : token.colorPrimary,
                 minHeight: 300,
                 height: "100%"
             }}
@@ -122,10 +125,11 @@ const FileInput = ({
                     justifyContent: "center",
                 },
             }}
-            extra={isAttached ? <Tag color='green'>Добавлен</Tag> : <Tag color='red'>НЕ добавлен</Tag>}
+            extra={isAttached ? <Tag color='green'>Добавлен</Tag> : <Tag color={'blue'}>НЕ добавлен</Tag>}
         >
             {contextHolder}
             <Form.Item
+                required
                 name={name}
                 rules={[
                     {

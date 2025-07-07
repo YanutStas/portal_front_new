@@ -63,6 +63,7 @@ export default function StepsClaim({ steps = false }) {
                     <ClockCircleOutlined className="timeline-clock-icon" style={{ color: item.color || (item.current ? "blue" : "gray"), fontSize: 30 }} />
                 }
               }
+              return undefined
             })}
           />
 

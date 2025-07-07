@@ -117,8 +117,8 @@ export default function FieldsClaim({ template, values }) {
                 <div style={{marginTop:-16}}>
 
                 <CoordinatesDisplay coordinates={{
-                    point: value.point ? [value.point.lat, value.point.lon] : null,
-                    polygon: value.polygon ? value.polygon.map(item => ([item.lat, item.lon])) : null,
+                    point: value?.point ? [value.point?.lat, value.point?.lon] : null,
+                    polygon: value?.polygon ? value.polygon.map(item => ([item.lat, item.lon])) : null,
                 }} />
                 </div>
             </Flex>

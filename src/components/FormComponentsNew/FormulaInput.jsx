@@ -10,8 +10,8 @@ export default function FormulaInput({
   label = "",
   dependOf = false,
   howDepend = false,
-  min = 0,
-  max = 100,
+  min = false,
+  max = false,
   properties = false,
   formula = "",
   ractionDigits = undefined,
@@ -19,7 +19,8 @@ export default function FormulaInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
-  read = false
+  read = false,
+  required = false
 }) {
   const { colorTextHeading } = theme.useToken().token;
   const form = Form.useFormInstance();
@@ -37,7 +38,7 @@ export default function FormulaInput({
   // console.log("keys:", keys)
   // console.log("properties:", properties)
   // console.log("formula:", formula)
-  
+
   Form.useWatch((values) => {
     const temp = { formula };
 
@@ -50,11 +51,11 @@ export default function FormulaInput({
         Number(values[item]) || 0
       );
     });
-    
+
     // console.log("temp:", temp)
     try {
       const evalu = evaluate(temp.formula).toFixed(ractionDigits);
-      
+
       // console.log("evalu:", evalu)
       if (!isNaN(evalu) && evalu !== values[name]) {
         form.setFieldValue(name, evalu);
@@ -71,6 +72,7 @@ export default function FormulaInput({
 
   const formElement = (
     <Form.Item
+      required={required}
       name={name}
       label={
         fullDescription ? (
@@ -82,18 +84,31 @@ export default function FormulaInput({
       rules={
         valueValidate
           ? [
-              () => ({
-                validator(_, value) {
-                  if (value >= min && value <= max) {
-                    console.log("Сработал валидатор");
-                    return Promise.resolve();
-                  }
+            () => ({
+              validator(_, value) {
+                if (required && value && value == 0) {
                   return Promise.reject(
-                    new Error(`Значение должно быть между ${min} и ${max}`)
+                    new Error(`Значение не должно быть равно 0`)
                   );
-                },
-              }),
-            ]
+                }
+                if (min && max && value >= min && value <= max) {
+                  return Promise.resolve();
+                }
+                if (min && !max && value >= min) {
+                  return Promise.resolve();
+                }
+                if (max && !min && value <= max) {
+                  return Promise.resolve();
+                }
+                if (!required && !min && !max) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(
+                  new Error(`Значение должно быть между ${min} и ${max}`)
+                );
+              },
+            }),
+          ]
           : null
       }
     >

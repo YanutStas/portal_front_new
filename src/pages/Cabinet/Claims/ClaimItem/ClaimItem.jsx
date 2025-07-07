@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Typography, Button, Steps, Tabs, Modal, Result, Flex, Badge, theme, } from "antd";
+import { Typography, Button, Steps, Tabs, Modal, Result, Flex, Badge, theme, Descriptions, ConfigProvider, } from "antd";
 import { useParams, useSearchParams } from "react-router-dom";
 // import pdfMake from "pdfmake/build/pdfmake";
 import useClaims from "../../../../stores/Cabinet/useClaims";
@@ -39,6 +39,7 @@ export default function ClaimItem() {
 
   const token = theme.useToken().token
   // console.log("searchParams", searchParams);
+  console.log("claim", claim);
 
   useEffect(() => {
     fetchClaimItem(id);
@@ -63,7 +64,7 @@ export default function ClaimItem() {
     {
       key: 4,
       label: <Typography.Text><Badge count={1} offset={[5, 0]} size="small"><span>Задачи</span></Badge></Typography.Text>,
-      children: <Billing zakaz={claim?.Ref_Key} />,
+      children: <Billing zakaz={claim?.id} />,
     },
     // {
     //   key: 2,
@@ -94,12 +95,39 @@ export default function ClaimItem() {
       {!loadingClaim && claim && (
         <>
           <Flex justify="space-between" align="center" style={{ marginBottom: 20 }} wrap="wrap" gap={20}>
-            <Flex vertical >
-              <Title level={1} className={styles.title} style={{ marginBottom: 0 }}>
-                Заявка №{claim.number}
-              </Title>
-              <Typography.Text style={{ color: "gray" }}>от {moment(claim.date).format("DD.MM.YYYY")}</Typography.Text>
-              <Typography.Text style={{ color: "gray" }}>По услуге: {claim.template.label}</Typography.Text>
+            <Flex vertical className={styles.desc}>
+              <Title level={1} className={styles.title} style={{ marginBottom: 0, marginRight: 0 }}>Заявка №{claim.number}</Title>
+              {/* <Typography.Text style={{ color: "gray" }}>от {moment(claim.date).format("DD.MM.YYYY")}</Typography.Text> */}
+              <ConfigProvider
+                theme={{
+                  components: {
+                    Descriptions: {
+                      itemPaddingBottom:0
+                    },
+                  },
+                }}
+              >
+
+                <Descriptions  column={1} items={[
+                  {
+                    key: '1',
+                    label: 'от',
+                    children: moment(claim.date).format("DD.MM.YYYY"),
+                  },
+                  {
+                    key: '2',
+                    label: 'По услуге',
+                    children: claim.template.label,
+                  },
+                  {
+                    key: '3',
+                    label: 'Код услуги',
+                    children: claim.template.codeService,
+                  },
+                ]} />
+              </ConfigProvider>
+              {/* <Typography.Text style={{ color: "gray" }}>По услуге: {claim.template.label}</Typography.Text>
+              <Typography.Text style={{ color: "gray" }}>Код услуги: {claim.template.codeService}</Typography.Text> */}
               <Typography.Text style={{ color: "gray", marginTop: 5 }}><Button onClick={() => { setOpenDescService(true) }}>Описание услуги</Button></Typography.Text>
             </Flex>
             <Flex gap={20} wrap={"wrap"}>
