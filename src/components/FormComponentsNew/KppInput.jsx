@@ -2,12 +2,13 @@ import React from 'react'
 import { Input, Form } from "antd";
 import WrapperComponent from "./WrapperComponent";
 
-export default function CadastrInput({
-    name = "cadastr",
+export default function KppInput({
+    name = "kpp",
     label = "",
     required = false,
     dependOf = false,
     howDepend = false,
+    placeholder = false,
     span = false,
     fullDescription = false,
     stylesField_key = false,
@@ -27,13 +28,7 @@ export default function CadastrInput({
             }
             name={name}
             normalize={(value) => {
-                let newvalue = value.replace(/[^\d,:]/g, "");
-                if (newvalue.length === 2) {
-                    newvalue = `${newvalue}:`;
-                }
-                if (newvalue.length === 5) {
-                    newvalue = `${newvalue}:`;
-                }
+                let newvalue = value.replace(/[^\d]/g, "");
                 return newvalue
             }}
             rules={[
@@ -45,8 +40,8 @@ export default function CadastrInput({
             ]}
         >
             <Input
-                placeholder={"XX:XX:XXXXXXX:XXXXXXXXX"}
-                maxLength={23}
+                placeholder={placeholder}
+                maxLength={9}
             />
         </Form.Item>
     );

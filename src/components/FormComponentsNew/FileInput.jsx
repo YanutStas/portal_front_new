@@ -104,7 +104,7 @@ const FileInput = ({
 
         openDocs(attachedDocument.fileId)
     }
-    console.log("required", required);
+    // console.log("required", required);
 
     const formElement = (
 
