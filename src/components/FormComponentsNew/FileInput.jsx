@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { UploadOutlined } from "@ant-design/icons";
-import { EyeOutlined, DeleteOutlined } from "@ant-design/icons";
+import { EyeOutlined, DeleteOutlined, FilePdfOutlined } from "@ant-design/icons";
 import {
   Button,
   Card,
@@ -10,6 +10,7 @@ import {
   Tag,
   Upload,
   theme,
+  Modal,
 } from "antd";
 import { Space } from "antd";
 // import InfoDrawer from "../InfoDrawer";
@@ -17,6 +18,8 @@ import WrapperComponent from "./WrapperComponent";
 import axios from "axios";
 import useNewClaim from "../../stores/Cabinet/useClaims";
 import openDocs from "../Cabinet/openDocument";
+import { CloseOutlined } from '@ant-design/icons';
+import pdfIcon from '../../img/docs/pdf.svg';
 
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
@@ -31,16 +34,25 @@ const MiniThumb = ({ file, onPreview, onRemove }) => (
       marginBottom: 8,
     }}
   >
-    <img
-      src={URL.createObjectURL(file)}
-      alt={file.name}
-      style={{
-        height: 60,
-        maxWidth: 90,
-        objectFit: "cover",
-        borderRadius: 4,
-      }}
-    />
+    {file.type === 'application/pdf' ? (
+      <img
+        src={pdfIcon}
+        alt="PDF icon"
+        style={{ width: 60, height: 'auto', marginRight: 12 }}
+      />
+    ) : (
+      <img
+        src={URL.createObjectURL(file)}
+        alt={file.name}
+        style={{
+          height: 60,
+          maxWidth: 90,
+          objectFit: "cover",
+          borderRadius: 4,
+          marginRight: 12,
+        }}
+      />
+    )}
     <div
       style={{
         flex: 1,
@@ -90,6 +102,9 @@ const FileInput = ({
   const [fileList, setFileList] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [reload, setReload] = useState(false);
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [previewFileUrl, setPreviewFileUrl] = useState(null);
+  const [previewFileType, setPreviewFileType] = useState(null);
   const { token } = theme.useToken();
 
   const openNotification = (message) => {
@@ -170,8 +185,12 @@ const FileInput = ({
   };
   // console.log("required", required);
 
-  const previewFile = (file) =>
-    window.open(URL.createObjectURL(file), "_blank");
+  const previewFile = (file) => {
+    const url = URL.createObjectURL(file);
+    setPreviewFileUrl(url);
+    setPreviewFileType(file.type);
+    setPreviewVisible(true);
+  };
   const removeItem = (file) =>
     setFileList((prev) => prev.filter((f) => f !== file));
 
@@ -263,16 +282,44 @@ const FileInput = ({
   );
 
   return (
-    <WrapperComponent
-      span={span}
-      stylesField_key={stylesField_key}
-      dependOf={dependOf}
-      howDepend={howDepend}
-      name={name}
-      read={read}
-    >
-      {formElement}
-    </WrapperComponent>
+    <>
+      <WrapperComponent
+        span={span}
+        stylesField_key={stylesField_key}
+        dependOf={dependOf}
+        howDepend={howDepend}
+        name={name}
+        read={read}
+      >
+        {formElement}
+      </WrapperComponent>
+      <Modal
+        visible={previewVisible}
+        onCancel={() => setPreviewVisible(false)}
+        closeIcon={<CloseOutlined style={{ color: '#ff4d4f', fontSize: 28 }} />}
+        footer={null}
+        bodyStyle={{ padding: 0 }}
+        width={previewFileType === 'application/pdf' ? '80%' : 'auto'}
+        style={{ textAlign: 'center' }}
+      >
+        {previewFileType === 'application/pdf' ? (
+          <object
+            data={previewFileUrl}
+            type="application/pdf"
+            width="100%"
+            height="600px"
+          >
+            <p>Ваш браузер не поддерживает просмотр PDF. <a href={previewFileUrl} target="_blank">Скачать PDF</a></p>
+          </object>
+        ) : (
+          <img
+            alt="Preview"
+            src={previewFileUrl}
+            style={{ width: '100%', display: 'block' }}
+          />
+        )}
+      </Modal>
+    </>
   );
 };
 export default FileInput;
