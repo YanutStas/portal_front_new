@@ -69,23 +69,29 @@ export default function ServiceItem({ currentKey }) {
             }}
             items={
               serviceItem.path &&
-              serviceItem.path.map((item) => ({
-                href: `/services/${item.Ref_Key}`,
-                title: item.label,
-              }))
+              serviceItem.path.map((item,index) => {
+                if (serviceItem.path.length - 1 === index) {
+                  return {
+                  }
+                }
+                return {
+                  href: `/services/${item.Ref_Key}`,
+                  title: item.label,
+                }
+              })
             }
           />
-          <Title level={1} style={{ marginTop: "10px",marginBottom:0 }}>
+          <Title level={1} style={{ marginTop: "10px", marginBottom: 0 }}>
             {serviceItem.label}
           </Title>
-           <Descriptions style={{marginBottom:10}} size={"small"} column={1} items={[
-                {
-                  key: '1',
-                  label: 'Код услуги',
-                  children: serviceItem.codeService,
-                },
-              
-              ]} />
+          <Descriptions style={{ marginBottom: 10 }} size={"small"} column={1} items={[
+            {
+              key: '1',
+              label: 'Код услуги',
+              children: serviceItem.codeService,
+            },
+
+          ]} />
           <Flex gap={5} style={{ marginBottom: "1.2rem" }} wrap={"wrap"}>
             {serviceItem.tags.map((item, index) => (
               <Tag
@@ -204,7 +210,7 @@ export default function ServiceItem({ currentKey }) {
               {
                 key: "4",
                 label: "Нормативные акты и законодательство",
-                children: <ListDocs docs={serviceItem.files}/>,
+                children: <ListDocs docs={serviceItem.files} />,
               },
             ]}
           />

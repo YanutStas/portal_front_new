@@ -56,15 +56,15 @@ export default function CabinetMenu() {
       ),
     },
 
-    {
-      key: "/cabinet/documents",
-      icon: <FileOutlined className={styles.icon} style={iconStyle} />,
-      label: (
-        <Link to={"/cabinet/documents"} className={styles.labelSizeMobile}>
-          Мои документы
-        </Link>
-      ),
-    },
+    // {
+    //   key: "/cabinet/documents",
+    //   icon: <FileOutlined className={styles.icon} style={iconStyle} />,
+    //   label: (
+    //     <Link to={"/cabinet/documents"} className={styles.labelSizeMobile}>
+    //       Мои документы
+    //     </Link>
+    //   ),
+    // },
 
     {
       key: "/cabinet/profile",

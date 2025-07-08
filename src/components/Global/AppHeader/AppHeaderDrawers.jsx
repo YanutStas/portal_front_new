@@ -19,10 +19,11 @@ export function MobileMenuDrawer({
 }) {
   return (
     <Drawer
-      title="Меню"
-      placement="left"
+      // title="Меню"
+      placement="right"
       onClose={closeMenuDrawer}
       open={menuDrawerVisible}
+      // width={300}
     >
       <Menu
         mode="inline"

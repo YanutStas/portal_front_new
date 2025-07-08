@@ -25,7 +25,8 @@ export default async function getPublicFile(fileId) {
             return false
         }
     } catch (error) {
-        console.error("Ошибка при открытии документа:", error);
+        console.error("Ошибка при получении публичного файла:", error);
+        return false
     }
 
 }

@@ -39,8 +39,10 @@ export default function TextInput({
   stylesField_key = false,
   read = false
 }) {
-  const serviceItem = useServices((state) => state.serviceItem);
-
+  // const serviceItem = useServices((state) => state.serviceItem);
+  // if (label === "Номер записи в ЕГРЮЛ") {
+  //   console.log("Номер записи в ЕГРЮЛ",length)
+  // }
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const form = Form.useFormInstance();

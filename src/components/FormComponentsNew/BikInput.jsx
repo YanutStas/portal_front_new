@@ -8,7 +8,7 @@ import InfoDrawer from "../InfoDrawer";
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
 export default function BikInput({
-  name = "name",
+  name = "bik",
   label = "",
   placeholder = "",
   required = false,
@@ -19,7 +19,7 @@ export default function BikInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
-  read=false
+  read = false
 }) {
   const form = Form.useFormInstance();
   const [options, setOptions] = useState([]);
@@ -68,13 +68,13 @@ export default function BikInput({
           (nestedObj, key) => (nestedObj || {})[key],
           currentData
         );
-        console.log("value", value);
+        // console.log("value", value);
         form.setFieldValue(objProperties[key], value);
-        console.log("objProperties[key][1]", objProperties[key]);
+        // console.log("objProperties[key][1]", objProperties[key]);
       }
     }
-
-    form.setFieldValue(name, currentData.data.inn);
+// console.log(currentData)
+    form.setFieldValue(name, currentData.data.bic);
   };
   const formElement = (
     <Form.Item
@@ -91,8 +91,13 @@ export default function BikInput({
         flex: 1,
         minWidth: 300,
       }}
+      normalize={(value) => {
+        let newvalue = value.replace(/[^\d,:]/g, "");        
+        return newvalue
+      }}
     >
       <AutoComplete
+      maxLength={9}
         options={options}
         onSelect={(value, option) => onSelect(value, option)}
         onSearch={(text) => fetchSuggestions(text, "АдресПолный")}

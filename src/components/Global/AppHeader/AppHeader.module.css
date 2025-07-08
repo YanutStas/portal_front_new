@@ -20,17 +20,45 @@
   display: none;
 }
 
+.mobileMenuCatalog {
+  display: none;
+  color: gray;
+}
+
+.logoDesktop {
+  display: block;
+}
+
+.logoMobile {
+  display: none;
+}
+
 @media (max-width: 991px) {
   .rightMenu {
     display: none;
   }
+
   .mainMenu {
     display: none;
   }
+
   .mobileMenu {
     display: block;
   }
+
+  .mobileMenuCatalog {
+    display: flex;
+  }
+
   .header {
     padding: 0 10px;
+  }
+
+  .logoDesktop {
+    display: none;
+  }
+
+  .logoMobile {
+    display: block;
   }
 }
