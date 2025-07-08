@@ -20,6 +20,11 @@
   display: none;
 }
 
+.mobileMenuCatalog {
+  display: none;
+  color: gray;
+}
+
 .logoDesktop {
   display: block;
 }
@@ -39,6 +44,10 @@
 
   .mobileMenu {
     display: block;
+  }
+
+  .mobileMenuCatalog {
+    display: flex;
   }
 
   .header {

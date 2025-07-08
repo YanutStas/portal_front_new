@@ -20,7 +20,7 @@ export function MobileMenuDrawer({
   return (
     <Drawer
       // title="Меню"
-      placement="right  "
+      placement="right"
       onClose={closeMenuDrawer}
       open={menuDrawerVisible}
       // width={300}

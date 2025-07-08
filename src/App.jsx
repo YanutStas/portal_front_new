@@ -96,7 +96,7 @@ export default function App() {
           <CodeModal />
           <AppHeader />
           <Layout>
-            {/* {auth && <CabinetMenu />} */}
+            {auth && <CabinetMenu />}
             <Content className={`${auth ? "mainContentAuth" : "mainContent"}`}>
               <Routes>
                 <Route path="/" element={<Main />} />

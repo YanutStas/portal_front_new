@@ -68,13 +68,13 @@ export default function BikInput({
           (nestedObj, key) => (nestedObj || {})[key],
           currentData
         );
-        console.log("value", value);
+        // console.log("value", value);
         form.setFieldValue(objProperties[key], value);
-        console.log("objProperties[key][1]", objProperties[key]);
+        // console.log("objProperties[key][1]", objProperties[key]);
       }
     }
-
-    form.setFieldValue(name, currentData.data.inn);
+// console.log(currentData)
+    form.setFieldValue(name, currentData.data.bic);
   };
   const formElement = (
     <Form.Item

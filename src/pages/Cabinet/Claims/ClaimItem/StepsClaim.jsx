@@ -40,7 +40,7 @@ export default function StepsClaim({ steps = false }) {
             style={{ fontSize: 30, marginTop: 10 }}
             // mode='alternate'
             items={steps.map(item => {
-              if (item.type === "status") {
+              if (item.type === "status"||item.type === "statua") {
                 return {
                   children: <Flex vertical justify='center' style={{ marginBottom: 10, }}>
                     <Typography.Text style={{ color: "gray", fontSize: 14 }}>{moment(item.date).format('DD.MM.YYYY hh:mm')}</Typography.Text>
