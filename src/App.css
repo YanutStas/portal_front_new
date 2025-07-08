@@ -147,30 +147,36 @@ button,
   height: 100%;
   transition: box-shadow 0.3s ease-in-out;
 }
+
 .formElement:hover {
   /* transform: scale(1.01); */
   box-shadow: 4px 4px 8px 0px;
 }
+
 .formElement .formElement {
   padding: 10px;
   border-radius: 10px;
 }
+
 .formElement .formElement:hover {
   transform: none;
   box-shadow: none;
 }
+
 .groupInput {
   border-width: 1px;
   border-style: solid;
 }
+
 .groupInput .formElement {
   border-width: inherit;
   border-style: solid;
 }
+
 @media (max-width: 1800px) {
-  .formElement {
-  }
+  .formElement {}
 }
+
 @media (max-width: 1300px) {
   .formElement {
     width: 100%;
@@ -201,6 +207,13 @@ button,
 @media (max-width: 750px) {
   html {
     font-size: 10px;
+  }
+
+  .mainContent {
+    padding: 10px 10px;
+  }
+  .mainContentAuth {
+    padding: 10px 10px;
   }
 
   .content {

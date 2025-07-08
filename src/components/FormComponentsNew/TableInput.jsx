@@ -103,6 +103,7 @@ export default function TableInput({
                             {...item.component}
                             {...item}
                             name={[name, item.idLine]}
+                            fullDescription={item.name_fullDescription}
                             dependOf={
                               item.dependIdLine
                                 ? [name, item.dependIdLine]
@@ -122,7 +123,7 @@ export default function TableInput({
                             key={index}
                             {...item.component}
                             {...item}
-                            fullDescription={item.name?.fullDescription}
+                            fullDescription={item.name_fullDescription}
                             name={[name, item.idLine]}
                             dependOf={
                               item.dependIdLine
@@ -141,6 +142,7 @@ export default function TableInput({
                             {...item.component}
                             {...item}
                             name={[name, item.idLine]}
+                            fullDescription={item.name_fullDescription}
                             dependOf={
                               item.dependIdLine
                                 ? [name, item.dependIdLine]
@@ -157,6 +159,7 @@ export default function TableInput({
                             {...item.component}
                             {...item}
                             name={[name, item.idLine]}
+                            fullDescription={item.name_fullDescription}
                             dependOf={
                               item.dependIdLine
                                 ? [name, item.dependIdLine]
@@ -173,6 +176,7 @@ export default function TableInput({
                             {...item.component}
                             {...item}
                             name={[name, item.idLine]}
+                            fullDescription={item.name_fullDescription}
                             dependOf={
                               item.dependIdLine
                                 ? [name, item.dependIdLine]
@@ -193,6 +197,7 @@ export default function TableInput({
                             {...item.component}
                             {...item}
                             name={[name, item.idLine]}
+                            fullDescription={item.name_fullDescription}
                             dependOf={
                               item.dependIdLine
                                 ? [nameTable, name, item.dependIdLine]
@@ -209,6 +214,7 @@ export default function TableInput({
                             {...item.component}
                             {...item}
                             name={[name, item.idLine]}
+                            fullDescription={item.name_fullDescription}
                             dependOf={
                               item.dependIdLine
                                 ? [name, item.dependIdLine]
@@ -225,6 +231,7 @@ export default function TableInput({
                             {...item.component}
                             {...item}
                             name={[name, item.idLine]}
+                            fullDescription={item.name_fullDescription}
                             dependOf={
                               item.dependIdLine
                                 ? [name, item.dependIdLine]
@@ -241,6 +248,7 @@ export default function TableInput({
                             {...item.component}
                             {...item}
                             name={[name, item.idLine]}
+                            fullDescription={item.name_fullDescription}
                             dependOf={
                               item.dependIdLine
                                 ? [name, item.dependIdLine]
@@ -257,6 +265,7 @@ export default function TableInput({
                             {...item.component}
                             {...item}
                             name={[name, item.idLine]}
+                            fullDescription={item.name_fullDescription}
                             dependOf={
                               item.dependIdLine
                                 ? [name, item.dependIdLine]

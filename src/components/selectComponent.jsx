@@ -38,7 +38,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -54,7 +54,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -70,7 +70,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -86,7 +86,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -102,7 +102,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -120,7 +120,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -137,7 +137,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -153,7 +153,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -169,7 +169,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -182,7 +182,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -196,7 +196,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -210,7 +210,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -228,7 +228,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -242,7 +242,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -256,7 +256,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -270,7 +270,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -283,7 +283,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -297,7 +297,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -311,7 +311,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -324,7 +324,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -337,7 +337,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -350,7 +350,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -363,7 +363,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -376,7 +376,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -389,7 +389,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
@@ -402,7 +402,7 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name?.fullDescription}
+        fullDescription={item.name_fullDescription}
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}

@@ -20,17 +20,36 @@
   display: none;
 }
 
+.logoDesktop {
+  display: block;
+}
+
+.logoMobile {
+  display: none;
+}
+
 @media (max-width: 991px) {
   .rightMenu {
     display: none;
   }
+
   .mainMenu {
     display: none;
   }
+
   .mobileMenu {
     display: block;
   }
+
   .header {
     padding: 0 10px;
+  }
+
+  .logoDesktop {
+    display: none;
+  }
+
+  .logoMobile {
+    display: block;
   }
 }

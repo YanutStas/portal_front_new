@@ -129,6 +129,12 @@
    font-size: 24px;
 }
 
+.flexContainer {
+   gap: 20px;
+}
+
+
+
 @media (max-width: 1900px) {
    .styleLink {
       width: 45%;
@@ -141,9 +147,7 @@
 }
 
 @media (max-width: 1199px) {
-   .flexContainer {
-      justify-content: center;
-   }
+
 
    .styleLink {
       width: 100%;
@@ -152,9 +156,7 @@
 }
 
 @media (max-width: 991px) {
-   .flexContainer {
-      justify-content: center;
-   }
+
 
    .styleLink {
       width: 100%;
@@ -170,17 +172,33 @@
    }
 
    .styleCard {
-      width: 100%;
+      width: 48%;
    }
 
+   .bodyCard {
+      padding: 10px !important;
+   }
+
+   .flexContainer {
+      gap: 10px;
+   }
 }
 
 @media (max-width: 575px) {
    .iconDiv {
       width: 100px;
    }
+
    .styleCardTitle {
-      font-size: 20px;
+      font-size: 14px;
+   }
+
+   .styleCardMeta {
+      line-height: 1;
+   }
+
+   .styleCard {
+      width: 48%;
    }
 
 }

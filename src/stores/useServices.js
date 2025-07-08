@@ -27,6 +27,7 @@ const useServices = create((set, get) => ({
         "Ref_Key": "",
         "label": "Каталог услуг"
       })
+      // res.data.data.path.pop()
       set({
         services: res.data.data,
         // path: res.data.data.path,
@@ -52,7 +53,10 @@ const useServices = create((set, get) => ({
       const res = await axios.get(`${backServer}/api/services/item/${key}?withFields=${property.withFields}`)
       // property.withChain ? get().fetchServiceChain(key) : false,)
       // console.log(res);
-
+      res.data.data.path.unshift({
+        "Ref_Key": "",
+        "label": "Каталог услуг"
+      })
       set({
         serviceItem: res.data?.data,
         isLoading: false,
