@@ -108,7 +108,6 @@ const FileInput = ({
     });
     setUploading(true);
     addBlockButtonNewClaim();
-    // You can use any AJAX library you like
     axios
       .post(`${backServer}/api/cabinet/upload-file`, formData, {
         headers: {
@@ -140,6 +139,7 @@ const FileInput = ({
   };
   const props = {
     multiple: true,
+    showUploadList: false,
     onRemove: (file) => {
       const index = fileList.indexOf(file);
       const newFileList = fileList.slice();
@@ -219,15 +219,7 @@ const FileInput = ({
               Выбрать файлы
             </Button>
           </Upload>
-          <Button
-            type="primary"
-            onClick={handleUpload}
-            disabled={fileList.length === 0}
-            loading={uploading}
-            style={{ marginTop: 16 }}
-          >
-            {uploading ? "Загрузка..." : "Добавить документ"}
-          </Button>
+
 
           <div
             style={{
@@ -246,6 +238,17 @@ const FileInput = ({
               />
             ))}
           </div>
+
+          <Button
+            type="primary"
+            onClick={handleUpload}
+            disabled={fileList.length === 0}
+            loading={uploading}
+            style={{ marginTop: 16 }}
+          >
+            {uploading ? "Загрузка..." : "Добавить документ"}
+          </Button>
+
         </Flex>
       )}
       {isAttached && (
