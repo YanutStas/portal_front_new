@@ -1,6 +1,7 @@
 import React from 'react'
 import { Input, Form } from "antd";
 import WrapperComponent from "./WrapperComponent";
+import InfoDrawer from "../InfoDrawer";
 
 export default function SchetInput({
     name = "schet",

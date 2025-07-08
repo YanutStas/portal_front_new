@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, Card, Flex, Form, notification, Tag, Upload, theme } from 'antd';
-// import InfoDrawer from "../InfoDrawer";
 import WrapperComponent from "./WrapperComponent";
 import axios from 'axios';
 import useNewClaim from '../../stores/Cabinet/useClaims';

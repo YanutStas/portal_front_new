@@ -1,7 +1,6 @@
 import React from "react";
 import { Form, Input, Switch } from "antd";
 import WrapperComponent from "./WrapperComponent";
-import InfoDrawer from "../InfoDrawer";
 
 export default function HiddenInput({
   name = "name",
