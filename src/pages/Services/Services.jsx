@@ -21,6 +21,7 @@ import { IconService } from "../../components/icons/IconService";
 import getPublicFile from "../../lib/getPublicFile";
 
 const { Title } = Typography;
+const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
 export default function Services() {
   const [srcPictures, setSrcPictures] = useState({})
@@ -51,20 +52,23 @@ export default function Services() {
   console.log("services", services);
   // console.log("path", path);
 
-  const getPicture = async (fileId) => {
-    const url = await getPublicFile(fileId)
-    console.log("url",url);
-    if (!url) {
-      return setSrcPictures(prev => ({ ...prev, [fileId]: noImage }))
-    }
-    setSrcPictures(prev => ({ ...prev, [fileId]: url }))
+  const getPicture = async (fileId, ext) => {
+    const url = await getPublicFile(fileId, ext)
+    // console.log("url", url);
+    return url
+    // if (!url) {
+    //   return setSrcPictures(prev => ({ ...prev, [fileId]: noImage }))
+    // }
+    // setSrcPictures(prev => ({ ...prev, [fileId]: url }))
   }
   useEffect(() => {
-    services.services?.forEach(item => {
-      console.log("picture?.id", item.picture?.id);
-      // if (!samePictureName(item.picture?.name))
-      getPicture(item.picture?.id)
-    })
+    // services.services?.forEach(item => {
+    //   // console.log("picture?.id", item.picture?.id);
+    //   // if (!samePictureName(item.picture?.name))
+    //   if (item.picture?.id) {
+    //     getPicture(item.picture?.id, item.picture?.ext)
+    //   }
+    // })
   }, [services])
   useEffect(() => {
     console.log("srcPictures", srcPictures);
@@ -157,10 +161,33 @@ export default function Services() {
                         }}
                           preview={false}
                           alt="услуга"
-                          src={item.picture?.id ? srcPictures[item.picture?.id] || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" : (item.isFolder ? folderPic : docPic)}
+                          // src="https://avatars.mds.yandex.net/i?id=922dae47138a6505b8b2aea02eda9f39501ddf28-5231505-images-thumbs&n=13"
+                          src={item.picture?.id ? `${backServer}/uploads/${item.picture?.id}.${item.picture?.ext}`:(item.isFolder ? folderPic : docPic)}
+                          onError={async ({ currentTarget }) => {
+                            console.log(`${backServer}/uploads/${item.picture?.id}.${item.picture?.ext}`);
+
+                            currentTarget.onerror = null; // prevents looping
+                            currentTarget.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D"
+                            currentTarget.src = item.picture?.id ? await getPicture(item.picture?.id,item.picture?.ext) || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" : (item.isFolder ? folderPic : docPic)
+                          }}
+                        // src={item.picture?.id ? srcPictures[item.picture?.id] || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" : (item.isFolder ? folderPic : docPic)}
                         // src="https://hammernail.ru/wp-content/uploads/2023/11/muzhchina_0.png"
                         />}
                       >
+                        {/* <img
+                          src={`${backServer}/uploads/${item.picture?.id}.${item.picture?.ext}`}
+                          onError={({ currentTarget }) => {
+                            currentTarget.onerror = null; // prevents looping
+                            currentTarget.src = item.picture?.id ? srcPictures[item.picture?.id] || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" : (item.isFolder ? folderPic : docPic)
+                          }}
+                          alt=""
+                        /> */}
+                        {/* <img src={`${backServer}/uploads/${item.picture?.id}.${item.picture?.ext}`} alt="" onerror="this.style.display='none'" />
+                        <img src={item.picture?.id ? srcPictures[item.picture?.id] || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" : (item.isFolder ? folderPic : docPic)} alt="" onerror="this.style.display='none'" /> */}
+                        {/* <picture>
+                            <source srcset={`${backServer}/uploads/${item.picture?.id}.${item.picture?.ext}`} />
+                            <img src="mdn-logo-narrow.png" alt="MDN" />
+                          </picture> */}
                         <Card.Meta
                           className={styles.styleCardMeta}
                           title={<Typography.Text className={styles.styleCardTitle} style={{ whiteSpace: "normal" }} >{item.label}</Typography.Text>}
