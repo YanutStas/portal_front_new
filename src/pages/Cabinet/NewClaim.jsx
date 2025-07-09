@@ -12,7 +12,6 @@ import {
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import * as Router from "react-router-dom";
 import useClaims from "../../stores/Cabinet/useClaims";
 import useServices from "../../stores/useServices";
 import AppHelmet from "../../components/Global/AppHelmet";
@@ -27,7 +26,6 @@ import selectComponent from "../../components/selectComponent";
 const { Title, Paragraph } = Typography;
 
 export default function NewClaim() {
-  // const [open, setOpen] = useState(false);
   const chain = useServices((state) => state.chain);
   const serviceItem = useServices((state) => state.serviceItem);
   const fetchServiceItem = useServices((state) => state.fetchServiceItem);
@@ -40,44 +38,17 @@ export default function NewClaim() {
   const [form] = Form.useForm();
 
   const [error, setError] = useState(null);
-  // Отслеживаем, изменял ли пользователь данные формы
   const [isDirty, setIsDirty] = useState(false);
 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (isDirty) {
         e.preventDefault();
-        // Chrome/Edge/Safari показывают дефолтный текст, но строка должна быть непустая
-        e.returnValue = "Вы уверены, что хотите покинуть страницу?";
       }
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [isDirty]);
-
-  // 2) Блокируем внутреннюю навигацию, если библиотека поддерживает useBlocker
-  const dummyBlocker = {
-    state: "unblocked",
-    proceed: () => {},
-    reset: () => {},
-  };
-  const useBlockerCompat = Router.unstable_useBlocker
-    ? Router.unstable_useBlocker
-    : () => dummyBlocker;
-  const blocker = useBlockerCompat(isDirty);
-
-  useEffect(() => {
-    if (blocker.state === "blocked") {
-      Modal.confirm({
-        title: "Незавершённая заявка",
-        content: "Вы уверены, что хотите прервать заполнение заявки?",
-        okText: "Выйти",
-        cancelText: "Остаться",
-        onOk: () => blocker.proceed(),
-        onCancel: () => blocker.reset(),
-      });
-    }
-  }, [blocker]);
 
   useEffect(() => {
     fetchServiceItem(id, { withChain: true, withFields: true });
@@ -86,27 +57,18 @@ export default function NewClaim() {
   useEffect(() => {
     if (newClaim) {
       console.log("newClaim", newClaim);
-
-      // showDrawer();
     }
   }, [newClaim]);
-
-  // const showDrawer = () => {
-  //   setOpen(true);
-  // };
 
   const onClose = () => {
     clearNewClaim();
     setIsDirty(false);
-    // setOpen(false);
   };
 
   const onFinish = async (values) => {
     let newValues = {};
 
     const addNewValue = (value) => {
-      // console.log(moment(value.$d).format());
-      
       if (typeof value === "object" && Object.hasOwn(value, "$d")) {
         return moment(value.$d).format();
       } else if (!Array.isArray(value)) {
