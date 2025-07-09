@@ -9,10 +9,10 @@ const getMimeType = (ext) => {
     return mimeType.find(item => item.ext === ext)?.mime || false
 }
 
-export default async function getPublicFile(fileId) {
+export default async function getPublicFile(fileId, ext) {
     try {
         const res = await axios
-            .get(`${backServer}/api/publicFile/${fileId}`, {
+            .get(`${backServer}/api/publicFile/${fileId}/${ext}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("jwt")}`,
                 },
