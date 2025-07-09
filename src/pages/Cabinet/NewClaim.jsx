@@ -8,6 +8,7 @@ import {
   ConfigProvider,
   Row,
   Tag,
+  Modal,
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
@@ -25,7 +26,6 @@ import selectComponent from "../../components/selectComponent";
 const { Title, Paragraph } = Typography;
 
 export default function NewClaim() {
-  // const [open, setOpen] = useState(false);
   const chain = useServices((state) => state.chain);
   const serviceItem = useServices((state) => state.serviceItem);
   const fetchServiceItem = useServices((state) => state.fetchServiceItem);
@@ -38,6 +38,17 @@ export default function NewClaim() {
   const [form] = Form.useForm();
 
   const [error, setError] = useState(null);
+  const [isDirty, setIsDirty] = useState(false);
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (isDirty) {
+        e.preventDefault();
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isDirty]);
 
   useEffect(() => {
     fetchServiceItem(id, { withChain: true, withFields: true });
@@ -46,26 +57,18 @@ export default function NewClaim() {
   useEffect(() => {
     if (newClaim) {
       console.log("newClaim", newClaim);
-
-      // showDrawer();
     }
   }, [newClaim]);
 
-  // const showDrawer = () => {
-  //   setOpen(true);
-  // };
-
   const onClose = () => {
     clearNewClaim();
-    // setOpen(false);
+    setIsDirty(false);
   };
 
   const onFinish = async (values) => {
     let newValues = {};
 
     const addNewValue = (value) => {
-      // console.log(moment(value.$d).format());
-      
       if (typeof value === "object" && Object.hasOwn(value, "$d")) {
         return moment(value.$d).format();
       } else if (!Array.isArray(value)) {
@@ -97,6 +100,7 @@ export default function NewClaim() {
         values: newValues,
       });
       removeBlockButtonNewClaim()
+      setIsDirty(false);
     } catch (err) {
       
       console.log(err.message || "Ошибка при создании заявки.");
@@ -176,6 +180,7 @@ export default function NewClaim() {
               layout="vertical"
               onFinish={onFinish}
               onKeyDown={handleKeyDown}
+              onValuesChange={() => setIsDirty(true)}
               style={{
                 width: "100%",
                 margin: "0 auto",

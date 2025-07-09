@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Radio, Space, Row, Col, Flex } from "antd";
+import { Button, Radio, Flex } from "antd";
 
 const MapControls = ({
   mode,
@@ -9,7 +9,8 @@ const MapControls = ({
   onChangeMapType,
   showSavePdfButton,
   onSavePdf,
-  mapState
+  mapState,
+  allowedModes = ["point", "polygon", "areaAndPoint"],
 }) => {
 
   return (
@@ -21,9 +22,15 @@ const MapControls = ({
             onChange={(e) => onModeChange(e.target.value)}
             value={mode}
           >
-            <Radio.Button value="point">Точка</Radio.Button>
-            <Radio.Button value="polygon">Область на карте</Radio.Button>
-            <Radio.Button value="areaAndPoint">Область + точка</Radio.Button>
+            {allowedModes.includes("point") && (
+              <Radio.Button value="point">Точка</Radio.Button>
+            )}
+            {allowedModes.includes("polygon") && (
+              <Radio.Button value="polygon">Область на карте</Radio.Button>
+            )}
+            {allowedModes.includes("areaAndPoint") && (
+              <Radio.Button value="areaAndPoint">Область + точка</Radio.Button>
+            )}
           </Radio.Group>
         </Flex>
 
@@ -65,15 +72,6 @@ const MapControls = ({
           <Radio.Button value="yandex#map">Стандартный вид</Radio.Button>
           <Radio.Button value="yandex#hybrid">Спутниковый вид</Radio.Button>
         </Radio.Group>
-
-
-
-        {/* <Button type={mapState?.type === "yandex#map" && "primary"} onClick={() => onChangeMapType("yandex#map")}>
-          Стандартный вид
-        </Button>
-        <Button onClick={() => onChangeMapType("yandex#hybrid")}>
-          Спутниковый вид
-        </Button> */}
       </Flex>
     </Flex>
   );

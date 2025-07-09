@@ -8,8 +8,15 @@ import styles from './Map.module.css'
 
 const { Paragraph } = Typography
 
-export default function MapModal({ visible, initialValue, onSave, onCancel }) {
+export default function MapModal({ visible, initialValue, onSave, onCancel, type = null }) {
     const mapRef = React.useRef(null);
+    const allowedModes =
+        type === "point"
+            ? ["point"]
+            : type === "area"
+            ? ["polygon"]
+            : ["point", "polygon", "areaAndPoint"];
+
     const {
         mode,
         selectedPoint,
@@ -23,6 +30,13 @@ export default function MapModal({ visible, initialValue, onSave, onCancel }) {
         generatePDF,
         onPolygonPointDrag,
     } = useMap(initialValue);
+
+    // Ensure the current mode is always within allowedModes
+    React.useEffect(() => {
+        if (!allowedModes.includes(mode)) {
+            handleModeChange(allowedModes[0]);
+        }
+    }, [allowedModes, mode, handleModeChange]);
 
     const showSavePdfButton =
         (mode === "point" && selectedPoint) ||
@@ -69,6 +83,7 @@ export default function MapModal({ visible, initialValue, onSave, onCancel }) {
                     generatePDF(mode, selectedPoint, polygonPoints, mapRef, mapState)
                 }
                 mapState={mapState}
+                allowedModes={allowedModes}
             />
             <div style={{ marginTop: "16px" }}>
                 <MapDisplay
@@ -83,4 +98,3 @@ export default function MapModal({ visible, initialValue, onSave, onCancel }) {
         </Modal>
     );
 };
-
