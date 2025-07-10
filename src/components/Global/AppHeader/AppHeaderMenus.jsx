@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   QuestionCircleOutlined,
@@ -7,14 +7,13 @@ import {
   BellOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Switch, Badge, Tooltip, Button, Space } from "antd";
+import { Switch, Badge, Tooltip, Button, Space, Drawer, Flex, Divider } from "antd";
 import styles from "./AppHeader.module.css";
+import CabinetMenu from "../../Cabinet/CabinetMenu";
+import CabinetMenuNew from "../../Cabinet/CabinetMenuNew";
+import ProfileNew from "../../../pages/Cabinet/Profile/ProfileNew";
 
 export const items = [
-  {
-    key: "/about",
-    label: <Link to={"/about"}>О нас</Link>,
-  },
   {
     key: "/services",
     label: <Link to={"/services"}>Каталог услуг</Link>,
@@ -24,20 +23,20 @@ export const items = [
     label: <Link to={"/calc"}>Калькулятор</Link>,
   },
   {
-    key: "/contacts",
-    label: <Link to={"/contacts"}>Контакты</Link>,
-  },
-  {
     key: "/docs",
     label: <Link to={"/docs"}>Информация</Link>,
+  },
+  {
+    key: "/about",
+    label: <Link to={"/about"}>О нас</Link>,
+  },
+  {
+    key: "/contacts",
+    label: <Link to={"/contacts"}>Контакты</Link>,
   },
 ];
 
 export const itemsMobile = [
-  {
-    label: <Link to="/about">О нас</Link>,
-    key: "/about",
-  },
   {
     label: <Link to="/services">Каталог услуг</Link>,
     key: "/services",
@@ -47,12 +46,16 @@ export const itemsMobile = [
     key: "/calc",
   },
   {
-    label: <Link to="/contacts">Контакты</Link>,
-    key: "/contacts",
-  },
-  {
     label: <Link to="/docs">Информация</Link>,
     key: "/docs",
+  },
+  {
+    label: <Link to="/about">О нас</Link>,
+    key: "/about",
+  },
+  {
+    label: <Link to="/contacts">Контакты</Link>,
+    key: "/contacts",
   },
   {
     type: "divider",
@@ -71,16 +74,10 @@ export function RightMenuArea({
   handlerChangeAuth,
   setCurrentPage,
 }) {
+  const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false)
+
   return (
-    <div className={styles.rightMenu}>
-      <Link to="/answers">
-        <QuestionCircleOutlined
-          onClick={() => {
-            setCurrentPage("/answers");
-          }}
-          style={{ fontSize: "20px", cursor: "pointer", color: colorText }}
-        />
-      </Link>
+    <Flex gap={10} align="center" className={styles.mainMenu}>
       <Switch
         onChange={handlerDarkMode}
         checkedChildren={<SunOutlined />}
@@ -88,29 +85,39 @@ export function RightMenuArea({
         checked={darkMode}
         style={{ background: !darkMode && colorText }}
       />
-      {/* <Badge count={getUnreadCount()} overflowCount={9}>
-        <BellOutlined
-          style={{ fontSize: "20px", cursor: "pointer", color: colorText }}
-          onClick={showNotificationDrawer}
-        />
-      </Badge> */}
       {auth ? (
         <div className={styles.userInfo}>
-          {/* <Tooltip title={profile.email ? profile.email : "Пользователь"}>
-            <UserOutlined
-              style={{ fontSize: "20px", color: colorText, cursor: "pointer" }}
-            />
-          </Tooltip> */}
-          <Button type="primary" onClick={handleLogout}>
-            Выйти
+          <Button
+            type="primary"
+            onClick={() => { setIsOpenProfileMenu(true) }}
+          >
+            {profile.email?.split('@')[0]}
           </Button>
         </div>
       ) : (
-        <Button type="primary" onClick={handlerChangeAuth}>
-          Войти
-        </Button>
+        <Flex justify="center" style={{ width: "100%" }}>
+          <Button type="primary" onClick={handlerChangeAuth}>
+            Войти
+          </Button>
+        </Flex>
       )}
-    </div>
+      <Drawer
+        open={isOpenProfileMenu}
+        onClose={() => { setIsOpenProfileMenu(false) }}
+        // title={<Flex justify="flex-end">
+        //   <Switch
+        //     onChange={handlerDarkMode}
+        //     checkedChildren={<SunOutlined />}
+        //     unCheckedChildren={<MoonOutlined />}
+        //     checked={darkMode}
+        //     style={{ background: !darkMode && colorText }}
+        //   />
+        // </Flex>}
+      >
+
+        <CabinetMenuNew setIsOpenProfileMenu={setIsOpenProfileMenu} />
+      </Drawer>
+    </Flex>
   );
 }
 
@@ -126,52 +133,44 @@ export function MobileExtraMenu({
   setCurrentPage,
 }) {
   return (
-    <div style={{ marginTop: 16 }}>
-      <Space size="middle">
-        <Link
-          to="/answers"
-          onClick={() => {
-            setCurrentPage("/answers");
-            closeMenuDrawer(); // закрываем Drawer
-          }}
-        >
-          <QuestionCircleOutlined
-            style={{
-              fontSize: "20px",
-              cursor: "pointer",
-              color: colorText,
-            }}
-          />
-        </Link>
-
-        <Switch
-          onChange={handlerDarkMode}
-          checkedChildren={<SunOutlined />}
-          unCheckedChildren={<MoonOutlined />}
-          checked={darkMode}
-          style={{ background: !darkMode && colorText }}
-        />
+    <>
+      <Flex gap={10} align="center" className={styles.mobileMenu}>
+        {/* <Switch
+        onChange={handlerDarkMode}
+        checkedChildren={<SunOutlined />}
+        unCheckedChildren={<MoonOutlined />}
+        checked={darkMode}
+        style={{ background: !darkMode && colorText }}
+        /> */}
         {auth ? (
           <>
-            <Tooltip title={profile.email ? profile.email : "Пользователь"}>
+            {/* <Tooltip title={profile.email ? profile.email : "Пользователь"}>
               <UserOutlined
-                style={{
-                  fontSize: "20px",
-                  color: colorText,
-                  cursor: "pointer",
+              style={{
+                fontSize: "20px",
+                color: colorText,
+                cursor: "pointer",
                 }}
-              />
-            </Tooltip>
-            <Button type="primary" onClick={handleLogout}>
+                />
+                </Tooltip> */}
+            <div style={{width:"100%"}}>
+
+              <CabinetMenuNew setIsOpenProfileMenu={closeMenuDrawer} />
+              {/* <Divider /> */}
+            </div>
+            {/* <Button type="primary" onClick={handleLogout}>
               Выйти
-            </Button>
+              </Button> */}
           </>
         ) : (
-          <Button type="primary" onClick={handlerChangeAuth}>
-            Войти
-          </Button>
+          <Flex justify="center" style={{ width: "100%" }}>
+            <Button type="primary" onClick={handlerChangeAuth}>
+              Войти
+            </Button>
+          </Flex>
         )}
-      </Space>
-    </div>
+      </Flex>
+      <Divider />
+    </>
   );
 }
