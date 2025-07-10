@@ -72,7 +72,7 @@ export default function Lk() {
                         <>
                             <Divider orientation='left'>В работе</Divider>
                             <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20 }}>
-                                {claimsByPersonalAccount && claimsByPersonalAccount.map((item, index) =>
+                                {claimsByPersonalAccount && claimsByPersonalAccount.sort((a, b) => b.number - a.number).map((item, index) =>
                                     <CardClaim item={item} key={index} />)}
                             </Flex>
                         </>

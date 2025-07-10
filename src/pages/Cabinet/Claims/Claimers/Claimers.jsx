@@ -120,7 +120,7 @@ export default function Claimers() {
             </Divider>
           }
           <Flex wrap={"wrap"} gap={20} >
-            {claims?.map((item, index) => (
+            {claims?.sort((a, b) => b.number - a.number).map((item, index) => (
               <CardClaim item={item} key={index} />
             ))}
           </Flex>
