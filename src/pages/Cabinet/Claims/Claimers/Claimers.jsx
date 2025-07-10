@@ -59,7 +59,7 @@ export default function Claimers() {
           {personalAccounts && <Divider orientation="left">
             <Flex gap={10} align="center">
               <UserOutlined style={{ fontSize: 24 }} />
-              <Typography.Text>Личные кабинеты</Typography.Text>
+              <Typography.Text>Заявки от:</Typography.Text>
             </Flex>
           </Divider>}
           <Flex wrap={"wrap"} gap={20} >
