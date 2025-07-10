@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import CardClaim from '../Claims/CardClaim';
 import usePersonalAccounts from '../../../stores/Cabinet/usePersonalAccount';
 import Preloader from '../../../components/Main/Preloader'
+import Container from '../../../components/Container';
 
 export default function Lk() {
     const [openDrawer, setOpenDrawer] = useState(false)
@@ -52,7 +53,7 @@ export default function Lk() {
     ]
     // console.log(token)
     return (
-        <>
+        <Container>
             {loadingPersonalAccount && <Preloader />}
             {!loadingPersonalAccount &&
                 <div>
@@ -103,6 +104,6 @@ export default function Lk() {
                     </Drawer>
                 </div>
             }
-        </>
+        </Container>
     )
 }

@@ -17,6 +17,7 @@ import openDocs from "../../../../components/Cabinet/openDocument";
 import ServiceItem from "../../../ServiceItem/ServiceItem";
 import StepsClaim from "./StepsClaim";
 import Preloader from "../../../../components/Main/Preloader";
+import Container from "../../../../components/Container";
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -86,7 +87,7 @@ export default function ClaimItem() {
   // console.log("claim", claim);
 
   return (
-    <>
+    <Container>
       {loadingClaim &&
         <Preloader />
       }
@@ -244,6 +245,6 @@ export default function ClaimItem() {
           /> */}
         </>
       )}
-    </>
+    </Container>
   );
 }

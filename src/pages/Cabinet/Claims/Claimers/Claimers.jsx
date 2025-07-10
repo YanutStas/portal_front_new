@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import moment from "moment/moment";
 import CardClaim from "../CardClaim";
 import usePersonalAccounts from "../../../../stores/Cabinet/usePersonalAccount";
+import Container from "../../../../components/Container";
 
 // const { Title } = Typography;
 
@@ -44,7 +45,7 @@ export default function Claimers() {
   // console.log("claims", claims)
   // console.log("token",token)
   return (
-    <>
+    <Container>
       <AppHelmet title={"Список заявок"} desc={"Список поданных заявок"} />
       {/* <Title level={1}>Заявки</Title> */}
       {!claims ? (
@@ -129,6 +130,6 @@ export default function Claimers() {
 
         </div>
       )}
-    </>
+    </Container>
   );
 }
