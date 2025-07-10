@@ -1,7 +1,14 @@
 import React from "react";
-import { Drawer, Menu } from "antd";
+import { Drawer, Flex, Menu, Switch } from "antd";
 import NotificationList from "../../Notifications/NotificationPanel";
 import { MobileExtraMenu } from "./AppHeaderMenus";
+import {
+  QuestionCircleOutlined,
+  MoonOutlined,
+  SunOutlined,
+  BellOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
 export function MobileMenuDrawer({
   menuDrawerVisible,
@@ -24,16 +31,16 @@ export function MobileMenuDrawer({
       onClose={closeMenuDrawer}
       open={menuDrawerVisible}
       // width={300}
+       title={<Flex justify="flex-end">
+          <Switch
+            onChange={handlerDarkMode}
+            checkedChildren={<SunOutlined />}
+            unCheckedChildren={<MoonOutlined />}
+            checked={darkMode}
+            style={{ background: !darkMode && colorText }}
+          />
+        </Flex>}
     >
-      <Menu
-        mode="inline"
-        selectedKeys={[currentPage]}
-        onClick={({ key }) => {
-          setCurrentPage(key);
-          closeMenuDrawer();
-        }}
-        items={itemsMobile}
-      />
       <MobileExtraMenu
         colorText={colorText}
         darkMode={darkMode}
@@ -44,6 +51,15 @@ export function MobileMenuDrawer({
         handlerChangeAuth={handlerChangeAuth}
         closeMenuDrawer={closeMenuDrawer} 
         setCurrentPage={setCurrentPage} 
+      />
+      <Menu
+        mode="inline"
+        selectedKeys={[currentPage]}
+        onClick={({ key }) => {
+          setCurrentPage(key);
+          closeMenuDrawer();
+        }}
+        items={itemsMobile}
       />
     </Drawer>
   );
