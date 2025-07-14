@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import moment from "moment/moment";
 import CardClaim from "../CardClaim";
 import usePersonalAccounts from "../../../../stores/Cabinet/usePersonalAccount";
+import Container from "../../../../components/Container";
 
 // const { Title } = Typography;
 
@@ -44,7 +45,7 @@ export default function Claimers() {
   // console.log("claims", claims)
   // console.log("token",token)
   return (
-    <>
+    <Container>
       <AppHelmet title={"Список заявок"} desc={"Список поданных заявок"} />
       {/* <Title level={1}>Заявки</Title> */}
       {!claims ? (
@@ -59,7 +60,7 @@ export default function Claimers() {
           {personalAccounts && <Divider orientation="left">
             <Flex gap={10} align="center">
               <UserOutlined style={{ fontSize: 24 }} />
-              <Typography.Text>Личные кабинеты</Typography.Text>
+              <Typography.Text>Заявки от:</Typography.Text>
             </Flex>
           </Divider>}
           <Flex wrap={"wrap"} gap={20} >
@@ -120,7 +121,7 @@ export default function Claimers() {
             </Divider>
           }
           <Flex wrap={"wrap"} gap={20} >
-            {claims?.map((item, index) => (
+            {claims?.sort((a, b) => b.number - a.number).map((item, index) => (
               <CardClaim item={item} key={index} />
             ))}
           </Flex>
@@ -129,6 +130,6 @@ export default function Claimers() {
 
         </div>
       )}
-    </>
+    </Container>
   );
 }
