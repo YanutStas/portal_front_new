@@ -23,9 +23,12 @@ import Rekvizity from "../../components/Contacts/Rekvizity";
 import ContactInfo from "../../components/Contacts/ContactInfo";
 import AppHelmet from "../../components/Global/AppHelmet";
 import Container from "../../components/Container";
+import getPublicFile from "../../lib/getPublicFile";
 
 const { Text, Title } = Typography;
 const { Search } = Input;
+
+const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
 const Contacts = () => {
   const { contactCenters, loading } = useContacts();
@@ -75,7 +78,7 @@ const Contacts = () => {
             <Card
               title={"Центры обслуживания клиентов"}
               style={{ height: "100%" }}
-              className={styles.card} 
+              className={styles.card}
             >
               <p>
                 Центры обслуживания клиентов предоставляют услуги по
@@ -155,7 +158,7 @@ const Contacts = () => {
                         />
                       )}
 
-                      {center.images && center.images.length > 0 ? (
+                      {center.files && center.files.length > 0 ? (
                         <div style={{ margin: "20px 0" }}>
                           <Text strong>Описание маршрута:</Text>
                           <div style={{ width: "100%", overflow: "hidden" }}>
@@ -166,13 +169,21 @@ const Contacts = () => {
                                 gap: "10px",
                               }}
                             >
-                              {center.images.map((item, index) => (
+                              {center.files.map((item, index) => (
                                 <div
                                   className={styles.cardContainer}
                                   key={index}
                                 >
                                   <Image
-                                    src={item.src}
+                                    src={item?.id && `${backServer}/uploads/${item?.checksum}.${item?.ext}` }
+                                    onError={async ({ currentTarget }) => {
+                                      // console.log(`${backServer}/uploads/${item.picture?.id}.${item.picture?.ext}`);
+
+                                      currentTarget.onerror = null; // prevents looping
+                                      currentTarget.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D"
+                                      currentTarget.src = item?.id ? await getPicture(item?.id, item?.ext) || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" : (item.isFolder ? folderPic : docPic)
+                                    }}
+                                    // src={getPublicFile(item.id, item.ext)}
                                     alt={`Фото ${index + 1}`}
                                     height={200}
                                   />
