@@ -54,6 +54,10 @@ const Contacts = () => {
   if (!contactCenters || contactCenters.length === 0) {
     return <div>Нет данных для отображения</div>;
   }
+   const getPicture = async (fileId, ext) => {
+      const url = await getPublicFile(fileId, ext)
+      return url
+    }
 
   return (
     <Container>
