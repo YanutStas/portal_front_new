@@ -165,7 +165,7 @@ export default function Services() {
                           // src="https://avatars.mds.yandex.net/i?id=922dae47138a6505b8b2aea02eda9f39501ddf28-5231505-images-thumbs&n=13"
                           src={item.picture?.id ? `${backServer}/uploads/${item.picture?.checksum}.${item.picture?.ext}`:(item.isFolder ? folderPic : docPic)}
                           onError={async ({ currentTarget }) => {
-                            console.log(`${backServer}/uploads/${item.picture?.id}.${item.picture?.ext}`);
+                            // console.log(`${backServer}/uploads/${item.picture?.id}.${item.picture?.ext}`);
 
                             currentTarget.onerror = null; // prevents looping
                             currentTarget.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D"
