@@ -167,7 +167,7 @@ export default function AppHeader() {
               <CalculatorOutlined  />
               
             </Link>
-            <Link to={"/calc"} style={{ color: "gray",fontSize: 28 }}>
+            <Link to={"/docs"} style={{ color: "gray",fontSize: 28 }}>
               <InfoCircleOutlined  />
             
             </Link>

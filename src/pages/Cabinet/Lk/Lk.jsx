@@ -67,7 +67,7 @@ export default function Lk() {
                         }
                     </Flex>
 
-                    <Button onClick={() => { setOpenDrawer(true) }}>Подробнее о компании</Button>
+                    <Button onClick={() => { setOpenDrawer(true) }}>Подробнее...</Button>
                     {loadingClaimsByPersonalAccount && <Preloader />}
                     {!loadingClaimsByPersonalAccount &&
                         <>

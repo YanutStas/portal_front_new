@@ -18,6 +18,7 @@ import ServiceItem from "../../../ServiceItem/ServiceItem";
 import StepsClaim from "./StepsClaim";
 import Preloader from "../../../../components/Main/Preloader";
 import Container from "../../../../components/Container";
+import InfoClaim from "./InfoClaim";
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -59,19 +60,24 @@ export default function ClaimItem() {
   const tabs = [
     {
       key: 1,
-      label: `Этапы`,
+      label: `Процесс выполнения`,
       children: <StepsClaim steps={claim?.steps} />,
     },
-    {
-      key: 4,
-      label: <Typography.Text><Badge count={1} offset={[5, 0]} size="small"><span>Задачи</span></Badge></Typography.Text>,
-      children: <Billing zakaz={claim?.id} />,
-    },
+    // {
+    //   key: 4,
+    //   label: <Typography.Text><Badge count={1} offset={[5, 0]} size="small"><span>Задачи</span></Badge></Typography.Text>,
+    //   children: <Billing zakaz={claim?.id} />,
+    // },
     // {
     //   key: 2,
     //   label: `Статусы`,
     //   children: <Story statuses={claim?.statuses} />,
     // },
+    {
+      key: 6,
+      label: `Информация по заявке`,
+      children: <InfoClaim template={claim?.template} values={claim?.values} pdf={pdf}/>,
+    },
     {
       key: 3,
       label: `Файлы`,
@@ -131,7 +137,7 @@ export default function ClaimItem() {
               <Typography.Text style={{ color: "gray" }}>Код услуги: {claim.template.codeService}</Typography.Text> */}
               <Typography.Text style={{ color: "gray", marginTop: 5 }}><Button onClick={() => { setOpenDescService(true) }}>Описание услуги</Button></Typography.Text>
             </Flex>
-            <Flex gap={20} wrap={"wrap"}>
+            {/* <Flex gap={20} wrap={"wrap"}>
               <Button
                 type="primary"
                 onClick={() => { setOpenModalFields(true) }}
@@ -149,7 +155,7 @@ export default function ClaimItem() {
                 </Button>
               }
 
-            </Flex>
+            </Flex> */}
           </Flex>
 
           {/* Статусы заявки */}
