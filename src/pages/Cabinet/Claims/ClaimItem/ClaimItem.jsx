@@ -61,7 +61,7 @@ export default function ClaimItem() {
     {
       key: 1,
       label: `Процесс выполнения`,
-      children: <StepsClaim steps={claim?.steps} />,
+      children: <StepsClaim steps={claim?.steps} claimId={claim?.id} versionId={claim?.versionId}/>,
     },
     // {
     //   key: 4,
