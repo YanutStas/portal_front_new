@@ -7,11 +7,12 @@ import {
   BellOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Switch, Badge, Tooltip, Button, Space, Drawer, Flex, Divider } from "antd";
+import { Switch, Badge, Tooltip, Button, Space, Drawer, Flex, Divider, Typography } from "antd";
 import styles from "./AppHeader.module.css";
 import CabinetMenu from "../../Cabinet/CabinetMenu";
 import CabinetMenuNew from "../../Cabinet/CabinetMenuNew";
 import ProfileNew from "../../../pages/Cabinet/Profile/ProfileNew";
+const { Text } = Typography
 
 export const items = [
   {
@@ -77,7 +78,7 @@ export function RightMenuArea({
   const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false)
 
   return (
-    <Flex gap={10} align="center" className={styles.mainMenu}>
+    <Flex gap={20} align="center" className={styles.mainMenu}>
       <Switch
         onChange={handlerDarkMode}
         checkedChildren={<SunOutlined />}
@@ -86,14 +87,17 @@ export function RightMenuArea({
         style={{ background: !darkMode && colorText }}
       />
       {auth ? (
-        <div className={styles.userInfo}>
-          <Button
-            type="primary"
+        <Flex gap={20}>
+          <Link to={"/cabinet/claimers"}>
+            <Button type="primary" className={styles.flipButton}>
+              Заявки
+            </Button>
+          </Link>
+          <UserOutlined style={{ fontSize: 28 }}
             onClick={() => { setIsOpenProfileMenu(true) }}
-          >
-            {profile.email?.split('@')[0]}
-          </Button>
-        </div>
+          />
+
+        </Flex>
       ) : (
         <Flex justify="center" style={{ width: "100%" }}>
           <Button type="primary" onClick={handlerChangeAuth}>
@@ -104,15 +108,15 @@ export function RightMenuArea({
       <Drawer
         open={isOpenProfileMenu}
         onClose={() => { setIsOpenProfileMenu(false) }}
-        // title={<Flex justify="flex-end">
-        //   <Switch
-        //     onChange={handlerDarkMode}
-        //     checkedChildren={<SunOutlined />}
-        //     unCheckedChildren={<MoonOutlined />}
-        //     checked={darkMode}
-        //     style={{ background: !darkMode && colorText }}
-        //   />
-        // </Flex>}
+      // title={<Flex justify="flex-end">
+      //   <Switch
+      //     onChange={handlerDarkMode}
+      //     checkedChildren={<SunOutlined />}
+      //     unCheckedChildren={<MoonOutlined />}
+      //     checked={darkMode}
+      //     style={{ background: !darkMode && colorText }}
+      //   />
+      // </Flex>}
       >
 
         <CabinetMenuNew setIsOpenProfileMenu={setIsOpenProfileMenu} />
@@ -153,7 +157,7 @@ export function MobileExtraMenu({
                 }}
                 />
                 </Tooltip> */}
-            <div style={{width:"100%"}}>
+            <div style={{ width: "100%" }}>
 
               <CabinetMenuNew setIsOpenProfileMenu={closeMenuDrawer} />
               {/* <Divider /> */}
@@ -170,7 +174,7 @@ export function MobileExtraMenu({
           </Flex>
         )}
       </Flex>
-      <Divider />
+      <Divider style={{ margin: 10 }} />
     </>
   );
 }

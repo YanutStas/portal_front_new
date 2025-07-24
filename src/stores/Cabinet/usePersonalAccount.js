@@ -34,7 +34,7 @@ const usePersonalAccounts = create((set) => ({
       withCredentials: true,
     });
     // console.log(res.data);
-    
+
     set((state) => {
       return {
         claimsByPersonalAccount: res.data.data,
@@ -44,20 +44,26 @@ const usePersonalAccounts = create((set) => ({
   },
   fetchPersonalAccountItem: async (key) => {
     set((state) => ({ personalAccount: null, loadingPersonalAccount: true }));
-    const res = await axios.get(`${backServer}/api/cabinet/personalAccounts/${key}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-      },
-      withCredentials: true,
-    });
-    // console.log(res.data);
-    set((state) => {
+    try {
+
+
+      const res = await axios.get(`${backServer}/api/cabinet/personalAccounts/${key}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        },
+        withCredentials: true,
+      });
       // console.log(res.data);
-      return {
-        personalAccount: res.data.data,
-        loadingPersonalAccount: false
-      };
-    });
+      set((state) => {
+        // console.log(res.data);
+        return {
+          personalAccount: res.data.data,
+          loadingPersonalAccount: false
+        };
+      });
+    } catch (error) {
+      set((state) => ({ personalAccount: null, loadingPersonalAccount: false }));
+    }
   },
 }));
 export default usePersonalAccounts;

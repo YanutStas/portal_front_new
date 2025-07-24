@@ -53,20 +53,11 @@ export default function CabinetMenuNew({ setIsOpenProfileMenu }) {
           <Button onClick={() => { setIsOpenModal(true) }}>Сменить пароль</Button>
           <Button type="primary" onClick={() => { setIsOpenModal(true) }}>Выйти</Button>
         </Flex>
-        <Link to={"/cabinet/claimers"} style={{ width: "100%" }}>
-          <Card hoverable onClick={() => {
-            setIsOpenProfileMenu(false)
-          }}
-            style={{ width: "100%",  }}
-            styles={{
-              body: {
-                textAlign: "center"
-              }
-            }}
-          >
-            <Text style={{ fontSize: 20, fontWeight: 500 }}>Заявки</Text>
-          </Card>
-        </Link>
+        <Flex gap={10} vertical>
+          <LinkCard title={"Заявки"} color={"blue"} url={"/cabinet/claimers"} />
+          <LinkCard title={"Задачи"} color={"red"} url={"/cabinet/claimers"} />
+          <LinkCard title={"Обращения"} color={"green"} url={"/cabinet/claimers"} />
+        </Flex>
 
         {/* <Card hoverable onClick={() => { setIsOpenModal(true) }}>
         </Card> */}
@@ -90,3 +81,31 @@ export default function CabinetMenuNew({ setIsOpenProfileMenu }) {
     </>
   );
 }
+function LinkCard({ title, color, url }) {
+  return (
+    <Link to={url} style={{ width: "100%" }}>
+     <Button style={{width:"100%"}} size="large" color={color} variant="filled">{title}</Button>
+
+    </Link>
+  )
+}
+
+//  <Card hoverable onClick={() => {
+//         setIsOpenProfileMenu(false)
+//       }}
+//         style={{ width: "100%", height: "100%", backgroundColor: color }}
+//         styles={{
+//           body: {
+//             padding:10,
+//             // display: "flex",
+//             // justifyItems: "center",
+//             // alignItems: "center",
+//             textAlign:"center"
+//           }
+//         }}
+//       >
+//         {/* <div style={{textAlign:"center"}}> */}
+
+//           <Text style={{ fontSize: 14, fontWeight: 500 }}>{title}</Text>
+//         {/* </div> */}
+//       </Card>
