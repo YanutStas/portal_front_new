@@ -5,6 +5,7 @@ import { color } from 'framer-motion';
 import moment from 'moment';
 import ActionItem from '../../../../components/Cabinet/Action/ActionItem';
 import useClaims from "../../../../stores/Cabinet/useClaims";
+import TaskItem from '../../../../components/Cabinet/Action/TaskItem';
 
 
 export default function StepsClaim({ steps = false, claimId, versionId }) {
@@ -13,6 +14,7 @@ export default function StepsClaim({ steps = false, claimId, versionId }) {
   // console.log(token)
   const [openDrawer, setOpenDrawer] = useState(null)
   const [openModalAction, setOpenModalAction] = useState(false)
+  const [openModalTask, setOpenModalTask] = useState(false)
 
   const handlerOpenDrawer = (title, content) => {
     setOpenDrawer({
@@ -56,11 +58,30 @@ export default function StepsClaim({ steps = false, claimId, versionId }) {
                           <Typography.Text style={{ fontSize: 18 }}>{item.name}</Typography.Text>
                           {item.description && <InfoCircleOutlined style={{ marginBottom: 10, fontSize: 14, color: "gray" }} onClick={() => { handlerOpenDrawer(item.name, item.description) }} />}
                         </Flex>
-                        {item.action &&
+                        {item.action && item.action.type === "plan" &&
                           <Button type='primary' style={{ marginTop: 10, fontSize: 16 }} onClick={() => {
-                            console.log(item.action.id);
+                            // console.log(item.action.id);
                             setOpenModalAction({ id: item.action.id, title: item.action.label, taskBasis: item.action.taskBasis, buttonText: item.action.buttonText })
                           }}>{item.action.label}</Button>}
+                        {item.action && item.action.type === "fact" &&
+                          <Flex gap={1} align='baseline' vertical style={{ borderLeft: `4px solid ${item.action.currentStatus?.color || "#52c41a"}`, paddingLeft: 5, borderRadius: 3, marginLeft:10}}>
+                            <a
+                              style={{ color: "#0061aa" }}
+                              onClick={() => {
+                                console.log(item.action.currentStatus?.id);
+                                setOpenModalTask({ id: item.action.id, title: item.action.typeAction.label, })
+                              }}>{item.action.typeAction.label}</a>
+                            <Typography.Text style={{ color: "gray", fontSize: 14 }}>
+                              {item.action.currentStatus.label}
+                            </Typography.Text>
+                            <Typography.Text style={{ color: "gray", fontSize: 14 }}>
+                              {moment(item.action.date).format("DD.MM.YYYY hh:mm")}
+                            </Typography.Text>
+                            <Typography.Text style={{ color: "gray", fontSize: 14 }}>
+                              №{item.action.number}
+                            </Typography.Text>
+                          </Flex>
+                        }
                       </Flex>
                       <div style={{ position: "absolute", height: "100%", width: 3, borderRadius: 3, backgroundColor: item.color || "#52c41a", top: 0, left: -3 }}></div>
                     </div>,
@@ -110,6 +131,27 @@ export default function StepsClaim({ steps = false, claimId, versionId }) {
               taskBasis={openModalAction.taskBasis}
               onCancel={() => {
                 setOpenModalAction(false)
+              }}
+            />
+          </Modal>
+          <Modal
+            title={openModalTask.title}
+            open={!!openModalTask}
+            onCancel={() => {
+              setOpenModalTask(false)
+              // fetchClaimItem(claimId)
+            }}
+            footer={false}
+            destroyOnClose={true}
+          >
+            <TaskItem
+              taskId={openModalTask.id}
+              // claimId={claimId}
+              // versionId={versionId}
+              // buttonText={openModalAction.buttonText}
+              // taskBasis={openModalAction.taskBasis}
+              onCancel={() => {
+                setOpenModalTask(false)
               }}
             />
           </Modal>
