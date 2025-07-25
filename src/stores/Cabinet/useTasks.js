@@ -5,6 +5,8 @@ const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 const useTasks = create((set, get) => ({
     action: {},
     isLoadingAction: false,
+    task: {},
+    isLoadingTask: false,
 
     fetchActionById: async (id) => {
         try {
@@ -26,6 +28,28 @@ const useTasks = create((set, get) => ({
         } catch (error) {
             console.error("Ошибка при получении задачи:", error);
             set({ isLoadingAction: false });
+        }
+    },
+    fetchTaskById: async (id) => {
+        try {
+            set({ isLoadingProfile: true });
+            const token = localStorage.getItem("jwt");
+            const response = await axios.get(`${backServer}/api/cabinet/action/task/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(response.data);
+
+            if (response.data) {
+                set({ task: response.data, isLoadingTask: false });
+            } else {
+                console.log("Данные задачи не получены.");
+                set({ isLoadingTask: false });
+            }
+        } catch (error) {
+            console.error("Ошибка при получении задачи:", error);
+            set({ isLoadingTask: false });
         }
     },
 

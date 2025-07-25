@@ -1,21 +1,43 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import useTasks from "../../../stores/Cabinet/useTasks";
-import { Button, Flex, Form } from "antd";
+import { Button, Flex, Form, Tabs } from "antd";
 import selectComponent from "../../selectComponent";
 import Preloader from "../../Main/Preloader";
+import FieldsClaim from "../../../pages/Cabinet/Claims/ClaimItem/FieldsClaim";
+import { FileTextOutlined, } from "@ant-design/icons";
+import openDocs from "../openDocument";
+import FileForDownload from "../../FileForDownload";
 
 
 export default function TaskItem({ taskId, claimId, taskBasis, buttonText, versionId, onCancel }) {
-    // const { fetchActionById, isLoadingAction, action, createNewTask } = useTasks(store => store)
+    const { fetchTaskById, isLoadingTask, task, } = useTasks(store => store)
 
-    // useEffect(() => {
-    //     fetchActionById(actionId)
-    // }, [actionId])
-    // useEffect(() => {
-    //     console.log(action);
-    // }, [action])
+    useEffect(() => {
+        fetchTaskById(taskId)
+    }, [taskId])
+    useEffect(() => {
+        console.log(task);
+    }, [task])
+    const items = [
+        {
+            key: '1',
+            label: 'Информация',
+            children: <div>
+                <FieldsClaim template={task?.template} values={task?.values} />
+            </div>,
+        },
+        {
+            key: '2',
+            label: 'Файлы',
+            children: <div>
+                {task?.files.map((item, index) =>
+                    <FileForDownload key={index} type={item.ext} name={item.name} id={item.id} size={item.size} />
+                )}
+            </div>,
+        },
 
+    ]
     // const handlerFinish = (values) => {
     //     console.log(values)
     //     if (createNewTask({
@@ -30,7 +52,8 @@ export default function TaskItem({ taskId, claimId, taskBasis, buttonText, versi
     // }
     return (
         <>
-        {taskId}
+
+            <Tabs defaultActiveKey="1" items={items}  />
             {/* {isLoadingAction && <Preloader />}
             {!isLoadingAction && action?.fields &&
                 <Form onFinish={handlerFinish}>

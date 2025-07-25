@@ -122,6 +122,7 @@ export default function StepsClaim({ steps = false, claimId, versionId }) {
             }}
             footer={false}
             destroyOnClose={true}
+            width={"80%"}
           >
             <ActionItem
               actionId={openModalAction.id}
@@ -143,6 +144,7 @@ export default function StepsClaim({ steps = false, claimId, versionId }) {
             }}
             footer={false}
             destroyOnClose={true}
+            width={"80%"}
           >
             <TaskItem
               taskId={openModalTask.id}
