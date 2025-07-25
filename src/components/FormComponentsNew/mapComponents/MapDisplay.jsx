@@ -30,7 +30,7 @@ const MapDisplay = ({
             geometry={selectedPoint}
             options={{
               draggable: true,
-              preset: "islands#redCircleDotIcon", 
+              preset: "islands#redCircleDotIcon",
             }}
             onDragEnd={(e) => {
               const newCoords = e.get("target").geometry.getCoordinates();

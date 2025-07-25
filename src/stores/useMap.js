@@ -237,5 +237,7 @@ export const useMap = (initialValue = {}) => {
     changeMapType,
     generatePDF,
     onPolygonPointDrag,
+    setPoint: (coords) => setSelectedPoint(coords),
+    setPolygon: (arr) => setPolygonPoints(arr),
   };
 };
