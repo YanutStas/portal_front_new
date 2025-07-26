@@ -24,14 +24,16 @@ export default function TaskItem({ taskId, claimId, taskBasis, buttonText, versi
             key: '1',
             label: 'Информация',
             children: <div>
-                <FieldsClaim template={task?.template} values={task?.values} />
+                {task &&
+                    <FieldsClaim template={task?.template} values={task?.values} />
+                }
             </div>,
         },
         {
             key: '2',
             label: 'Файлы',
             children: <div>
-                {task?.files.map((item, index) =>
+                {task && task?.files.map((item, index) =>
                     <FileForDownload key={index} type={item.ext} name={item.name} id={item.id} size={item.size} />
                 )}
             </div>,
@@ -53,7 +55,7 @@ export default function TaskItem({ taskId, claimId, taskBasis, buttonText, versi
     return (
         <>
 
-            <Tabs defaultActiveKey="1" items={items}  />
+            <Tabs defaultActiveKey="1" items={items} />
             {/* {isLoadingAction && <Preloader />}
             {!isLoadingAction && action?.fields &&
                 <Form onFinish={handlerFinish}>
