@@ -220,8 +220,8 @@ export default function FieldsClaim({ template, values }) {
             </Form> */}
             {/* <Descriptions  bordered items={items} column={1} /> */}
 
-            {!template.portalFields.fields && <Typography.Paragraph>Полей не существует</Typography.Paragraph>}
-            {template.portalFields.fields && getFields(template.portalFields.fields)}
+            {!template?.portalFields?.fields && <Typography.Paragraph>Полей не существует</Typography.Paragraph>}
+            {template?.portalFields?.fields && getFields(template.portalFields.fields)}
             {/* {template.portalFields.} */}
 
         </div>

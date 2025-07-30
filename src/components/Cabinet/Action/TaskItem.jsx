@@ -33,7 +33,7 @@ export default function TaskItem({ taskId, claimId, taskBasis, buttonText, versi
             key: '2',
             label: 'Файлы',
             children: <div>
-                {task && task?.files.map((item, index) =>
+                {task && task?.files?.map((item, index) =>
                     <FileForDownload key={index} type={item.ext} name={item.name} id={item.id} size={item.size} />
                 )}
             </div>,
