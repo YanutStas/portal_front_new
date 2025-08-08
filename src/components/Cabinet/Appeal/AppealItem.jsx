@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import useTasks from "../../../stores/Cabinet/useTasks";
-import { Button, Flex, Form } from "antd";
+import { Button, Empty, Flex, Form, Typography } from "antd";
 import selectComponent from "../../selectComponent";
 import Preloader from "../../Main/Preloader";
 import useDataForForm from "../../../stores/Cabinet/useDataForForm";
@@ -32,8 +32,11 @@ export default function AppealItem({ claimId, appeal, isLoadingAppeal }) {
     return (
         <>
             {isLoadingAppeal && <Preloader />}
-            {!isLoadingAppeal && appeal && appeal?.fields &&
-                <Form onFinish={handlerFinish}>
+            {!isLoadingAppeal && appeal && appeal?.fields && appeal.fields.length > 0 &&
+                <Form
+                    onFinish={handlerFinish}
+                    layout="vertical"
+                >
                     {appeal.fields.map((item, index) => selectComponent(item, index))}
                     <Flex justify="center" style={{ marginTop: 20 }}>
 
@@ -42,6 +45,16 @@ export default function AppealItem({ claimId, appeal, isLoadingAppeal }) {
                         </Form.Item>
                     </Flex>
                 </Form>
+            }
+            {!isLoadingAppeal && appeal && appeal?.fields && !appeal.fields.length > 0 &&
+                <Empty
+                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                    description={
+                        <Typography.Text>
+                            Отсутствует содержимое
+                        </Typography.Text>
+                    }
+                />
             }
         </>
     )
