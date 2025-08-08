@@ -43,7 +43,7 @@ const changeData = (arr) => {
 
 }
 export default function Appeals() {
-    const { setLinks } = useDataForForm((state) => state)
+    const { setLinks,setStyles, clearDataForForm } = useDataForForm((state) => state)
     const { appeals, fetchAppealsAll, isLoadingAppeals, fetchAppealById, isLoadingAppeal, appeal, clearAppeal } = useAppeals(store => store)
     const [isOpenModalAppeals, setIsOpenModalAppeals] = useState(false)
     const [treeData, setTreeData] = useState(false)
@@ -64,6 +64,7 @@ export default function Appeals() {
 
             console.log(appeal);
             setLinks(appeal.links)
+            setStyles(appeal.styles)
         } else {
 
             console.log("appeal пуст");
@@ -129,6 +130,7 @@ export default function Appeals() {
                 open={isOpenModalAppeals}
                 onCancel={() => {
                     clearAppeal()
+                    clearDataForForm()
                     setIsOpenModalAppeals(false)
                 }}
                 footer={false}
