@@ -4,11 +4,12 @@ import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
 import useServices from "../../stores/useServices";
 import useClaims from "../../stores/Cabinet/useClaims";
+import useDataForForm from "../../stores/Cabinet/useDataForForm";
 
 export default function SelectInput({
   name = "name",
   label = "",
-  placeholder="-",
+  placeholder = "-",
   defaultValue = undefined,
   required = false,
   Ref_Key = false,
@@ -21,9 +22,17 @@ export default function SelectInput({
 }) {
   // console.log("selectInput read", read);
 
+  const { links } = useDataForForm((state) => state)
   const serviceItem = useServices((state) => state.serviceItem);
   const claim = useClaims((state) => state.claim);
-  const options = read ? claim.template.portalFields.links[Ref_Key]?.options : serviceItem.links[Ref_Key]?.options;
+  let options = false
+  // console.log(links);
+  
+  if(links){
+    options = links[Ref_Key]?.options;
+  }else{
+    options = read ? claim?.template.portalFields.links[Ref_Key]?.options : serviceItem?.links[Ref_Key]?.options;
+  }
 
   const formElement = (
     <Form.Item

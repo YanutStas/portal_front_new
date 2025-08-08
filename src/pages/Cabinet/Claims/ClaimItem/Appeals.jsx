@@ -1,8 +1,12 @@
-import React, { useState } from 'react'
-import { Card, Divider, Typography, theme, Button, Flex, Tag, Modal, Empty } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { Card, Divider, Typography, theme, Button, Flex, Tag, Modal, Empty, TreeSelect } from 'antd'
 import Meta from 'antd/es/card/Meta'
 import moment from 'moment'
-const appeals = [
+import useAppeals from '../../../../stores/Cabinet/useAppeals'
+import Preloader from '../../../../components/Main/Preloader'
+import AppealItem from '../../../../components/Cabinet/Appeal/AppealItem'
+import useDataForForm from '../../../../stores/Cabinet/useDataForForm'
+const appealsByClaim = [
     // {
     //     number: "123",
     //     question: "Хочу изменить фамилию заявителя с Васильченка на Васильченко",
@@ -25,56 +29,145 @@ const appeals = [
     //     // answer_datetime: "2024-12-06 10:42"
     // },
 ]
+
+const changeData = (arr) => {
+    console.log("changeData", arr);
+    arr.forEach((item, index) => {
+        if (item.children) {
+            arr[index].selectable = false
+            // console.log("arr.children");
+            changeData(item.children)
+        }
+
+    })
+
+}
 export default function Appeals() {
+    const { setLinks } = useDataForForm((state) => state)
+    const { appeals, fetchAppealsAll, isLoadingAppeals, fetchAppealById, isLoadingAppeal, appeal, clearAppeal } = useAppeals(store => store)
     const [isOpenModalAppeals, setIsOpenModalAppeals] = useState(false)
+    const [treeData, setTreeData] = useState(false)
+    const [selectType, setSelectType] = useState(false)
     const token = theme.useToken().token
+
+    useEffect(() => {
+        fetchAppealsAll()
+    }, [])
+    useEffect(() => {
+        if (appeals.length > 0) {
+            changeData(appeals)
+            setTreeData(appeals)
+        }
+    }, [appeals])
+    useEffect(() => {
+        if (appeal) {
+
+            console.log(appeal);
+            setLinks(appeal.links)
+        } else {
+
+            console.log("appeal пуст");
+        }
+    }, [appeal])
+
+    useEffect(() => {
+        // console.log(appeal);
+        if (selectType) {
+
+            fetchAppealById(selectType)
+        } else {
+            clearAppeal()
+        }
+    }, [selectType])
+
+    const onChangeTypeAppeal = (value) => {
+        // console.log(value);
+        setSelectType(value)
+    }
     // console.log(token);
 
     return (
         <div>
-            {(!appeals || appeals.length < 1) && <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            {(!appealsByClaim || appealsByClaim.length < 1) && <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
                 description={
                     <Typography.Text>Нет обращений по данной заявке</Typography.Text>
                 }
             />}
-            {appeals.map((item, index) =>
-                    <Card
-                        key={index}
-                        title={`Обращение №${item.number}`}
-                        style={{ maxWidth: "100%", marginBottom: 20, border: `1px solid ${token.colorIcon}` }}
-                        styles={{
-                            body: {
-                                padding: 0
-                            }
-                        }}
-                        extra={item.answer ? <Tag color="green">Отвечено</Tag> : <Tag color="blue">В обработке</Tag>}
-                    >
-                        <Flex vertical>
-                            <div style={{ padding: 10, paddingLeft: 24 }}>
-                                <Typography.Title level={5} style={{ marginTop: 0 }}>Вопрос:</Typography.Title>
-                                <Typography.Paragraph>{item.question}</Typography.Paragraph>
-                                <Meta description={moment(item.question_datetime).format('DD.MM.YYYY hh:mm')} />
+            {appealsByClaim && appealsByClaim.map((item, index) =>
+                <Card
+                    key={index}
+                    title={`Обращение №${item.number}`}
+                    style={{ maxWidth: "100%", marginBottom: 20, border: `1px solid ${token.colorIcon}` }}
+                    styles={{
+                        body: {
+                            padding: 0
+                        }
+                    }}
+                    extra={item.answer ? <Tag color="green">Отвечено</Tag> : <Tag color="blue">В обработке</Tag>}
+                >
+                    <Flex vertical>
+                        <div style={{ padding: 10, paddingLeft: 24 }}>
+                            <Typography.Title level={5} style={{ marginTop: 0 }}>Вопрос:</Typography.Title>
+                            <Typography.Paragraph>{item.question}</Typography.Paragraph>
+                            <Meta description={moment(item.question_datetime).format('DD.MM.YYYY hh:mm')} />
+                        </div>
+                        {item.answer &&
+                            <div style={{ padding: 10, paddingLeft: 24, backgroundColor: "rgba(0,255,0,.4)" }}>
+                                <Typography.Title level={5} style={{ marginTop: 0 }}>Ответ:</Typography.Title>
+                                <Typography.Paragraph>{item.answer}</Typography.Paragraph>
+                                <Meta description={moment(item.answer_datetime).format('DD.MM.YYYY hh:mm')} />
                             </div>
-                            {item.answer &&
-                                <div style={{ padding: 10, paddingLeft: 24, backgroundColor: "rgba(0,255,0,.4)" }}>
-                                    <Typography.Title level={5} style={{ marginTop: 0 }}>Ответ:</Typography.Title>
-                                    <Typography.Paragraph>{item.answer}</Typography.Paragraph>
-                                    <Meta description={moment(item.answer_datetime).format('DD.MM.YYYY hh:mm')} />
-                                </div>
-                            }
-                        </Flex>
-                    </Card>
+                        }
+                    </Flex>
+                </Card>
 
-                )
+            )
             }
             <Button type='primary' onClick={() => { setIsOpenModalAppeals(true) }}>Подать обращение</Button>
             <Modal
                 open={isOpenModalAppeals}
-                onCancel={() => { setIsOpenModalAppeals(false) }}
+                onCancel={() => {
+                    clearAppeal()
+                    setIsOpenModalAppeals(false)
+                }}
                 footer={false}
+                title={"Подать обращение"}
+                destroyOnClose={true}
+                width={"80%"}
             >
-                Список обращений
+                {/* <Typography.Text>Выберите тип обращения:</Typography.Text> */}
+                {isLoadingAppeals && <Preloader />}
+                {!isLoadingAppeals &&
+                    <TreeSelect
+                        showSearch
+                        style={{ width: 'min(500px, 100%)' }}
+                        // tagRender={(props) => {
+                        //     console.log("props", props);
+
+                        // }}                        
+                        // value={value}
+                        styles={{
+                            popup: { root: { maxHeight: 400, overflow: 'auto' } },
+                        }}
+                        placeholder="Выберите тип обращения"
+                        allowClear
+                        treeDefaultExpandAll
+                        onChange={onChangeTypeAppeal}
+                        treeData={treeData}
+                    // onPopupScroll={onPopupScroll}
+                    />
+                }
+                <div style={{marginTop:20}}>
+
+                <AppealItem
+                    isLoadingAppeal={isLoadingAppeal}
+                    appeal={appeal}
+                    // claimId={}
+                    />
+                    </div>
+                {/* {isLoadingAppeal && <div><Preloader /></div>}
+                {!isLoadingAppeal && appeal && <div>Форма тут</div>} */}
             </Modal>
         </div >
     )

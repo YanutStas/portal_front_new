@@ -2,6 +2,7 @@ import { Col, Form } from "antd";
 import React from "react";
 import useServices from "../../stores/useServices";
 import useClaims from "../../stores/Cabinet/useClaims";
+import useDataForForm from "../../stores/Cabinet/useDataForForm";
 
 export default function WrapperComponent({
   children,
@@ -14,9 +15,15 @@ export default function WrapperComponent({
   // console.log("WrapperComponent read", read);
   // console.log("WrapperComponent name", name);
   // console.log("WrapperComponent children", children);
+  const { styles: style } = useDataForForm((state) => state)
   const serviceItem = useServices((state) => state.serviceItem);
   const claim = useClaims((state) => state.claim);
-  const styles = read ? claim?.template?.portalFields?.styles[stylesField_key] : (serviceItem?.styles && serviceItem?.styles[stylesField_key]);
+  let styles = false
+  if (style) {
+    styles = style
+  } else {
+    styles = read ? claim?.template?.portalFields?.styles[stylesField_key] : (serviceItem?.styles && serviceItem?.styles[stylesField_key]);
+  }
 
   const mainForm = Form.useFormInstance();
   let fieldDepends = Form.useWatch(dependOf, mainForm);
