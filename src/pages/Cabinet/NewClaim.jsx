@@ -9,6 +9,7 @@ import {
   Row,
   Tag,
   Modal,
+  Empty,
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
@@ -102,7 +103,7 @@ export default function NewClaim() {
       removeBlockButtonNewClaim()
       setIsDirty(false);
     } catch (err) {
-      
+
       console.log(err.message || "Ошибка при создании заявки.");
       removeBlockButtonNewClaim()
     }
@@ -194,25 +195,35 @@ export default function NewClaim() {
 
                   .map((item, index) => selectComponent(item, index))}
               </Row>
-
-              <div
-                style={{
-                  marginTop: 20,
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <Form.Item>
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                  >
-                    <Button type="primary" htmlType="submit" disabled={blockButtonNewClaim}>
-                      {serviceItem.buttonText || "Подать заявку на услугу"}
-                    </Button>
-                  </motion.div>
-                </Form.Item>
-              </div>
+              {serviceItem?.fields?.length > 0 &&
+                < div
+                  style={{
+                    marginTop: 20,
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Form.Item>
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    >
+                      <Button type="primary" htmlType="submit" disabled={blockButtonNewClaim}>
+                        {serviceItem.buttonText || "Подать заявку на услугу"}
+                      </Button>
+                    </motion.div>
+                  </Form.Item>
+                </div>
+              }
+              {!serviceItem?.fields?.length > 0 &&
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description={
+                    <Typography.Text>
+                      Отсутствует содержимое
+                    </Typography.Text>
+                  }
+                />}
             </Form>
           </ConfigProvider>
           {/* <Drawer
@@ -233,17 +244,20 @@ export default function NewClaim() {
             )}
           </Drawer> */}
         </>
-      )}
+      )
+      }
 
-      {newClaim && (
-        <SubmitModal
-          open={!!newClaim}
-          claim={{ ...newClaim }}
-          onClose={onClose}
-        />
-      )}
+      {
+        newClaim && (
+          <SubmitModal
+            open={!!newClaim}
+            claim={{ ...newClaim }}
+            onClose={onClose}
+          />
+        )
+      }
 
       {error && <ErrorModal visible={!!error} error={error} />}
-    </div>
+    </div >
   );
 }

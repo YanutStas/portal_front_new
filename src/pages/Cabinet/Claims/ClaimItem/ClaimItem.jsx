@@ -86,11 +86,11 @@ export default function ClaimItem() {
     {
       key: 5,
       label: `Обращения`,
-      children: <Appeals />,
+      children: <Appeals claimId={claim.id}/>,
     },
   ]
 
-  // console.log("claim", claim);
+  console.log("claim", claim);
 
   return (
     <Container>

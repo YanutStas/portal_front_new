@@ -56,10 +56,10 @@ const useAppeals = create((set, get) => ({
         }
     },
 
-    createNewTask: async (data) => {
+    createNewAppeal: async (data) => {
         try {
             const token = localStorage.getItem("jwt");
-            const response = await axios.post(`${backServer}/api/cabinet/tasks`,
+            const response = await axios.post(`${backServer}/api/cabinet/appeals`,
                 {
                     ...data
                 },
@@ -68,7 +68,7 @@ const useAppeals = create((set, get) => ({
                         Authorization: `Bearer ${token}`,
                     },
                 });
-            console.log(response.data);
+            console.log(response);
 
             if (response.data) {
                 return true

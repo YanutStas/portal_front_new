@@ -29,12 +29,12 @@ export default function CadastrInput({
             name={name}
             normalize={(value) => {
                 let newvalue = value.replace(/[^\d,:]/g, "");
-                if (newvalue.length === 2) {
-                    newvalue = `${newvalue}:`;
-                }
-                if (newvalue.length === 5) {
-                    newvalue = `${newvalue}:`;
-                }
+                // if (newvalue.length === 2) {
+                //     newvalue = `${newvalue}:`;
+                // }
+                // if (newvalue.length === 5) {
+                //     newvalue = `${newvalue}:`;
+                // }
                 return newvalue
             }}
             rules={[

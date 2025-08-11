@@ -42,8 +42,8 @@ const changeData = (arr) => {
     })
 
 }
-export default function Appeals() {
-    const { setLinks,setStyles, clearDataForForm } = useDataForForm((state) => state)
+export default function Appeals({ claimId }) {
+    const { setLinks, setStyles, clearDataForForm } = useDataForForm((state) => state)
     const { appeals, fetchAppealsAll, isLoadingAppeals, fetchAppealById, isLoadingAppeal, appeal, clearAppeal } = useAppeals(store => store)
     const [isOpenModalAppeals, setIsOpenModalAppeals] = useState(false)
     const [treeData, setTreeData] = useState(false)
@@ -86,7 +86,11 @@ export default function Appeals() {
         setSelectType(value)
     }
     // console.log(token);
-
+    const closeModal = () => {
+        clearAppeal()
+        clearDataForForm()
+        setIsOpenModalAppeals(false)
+    }
     return (
         <div>
             {(!appealsByClaim || appealsByClaim.length < 1) && <Empty
@@ -128,11 +132,7 @@ export default function Appeals() {
             <Button type='primary' onClick={() => { setIsOpenModalAppeals(true) }}>Подать обращение</Button>
             <Modal
                 open={isOpenModalAppeals}
-                onCancel={() => {
-                    clearAppeal()
-                    clearDataForForm()
-                    setIsOpenModalAppeals(false)
-                }}
+                onCancel={closeModal}
                 footer={false}
                 title={"Подать обращение"}
                 destroyOnClose={true}
@@ -160,14 +160,17 @@ export default function Appeals() {
                     // onPopupScroll={onPopupScroll}
                     />
                 }
-                <div style={{marginTop:20}}>
+                <div style={{ marginTop: 20 }}>
 
-                <AppealItem
-                    isLoadingAppeal={isLoadingAppeal}
-                    appeal={appeal}
+                    <AppealItem
+                        isLoadingAppeal={isLoadingAppeal}
+                        appeal={appeal}
+                        appealsId={selectType}
+                        claimId={claimId}
+                        closeModal={closeModal}
                     // claimId={}
                     />
-                    </div>
+                </div>
                 {/* {isLoadingAppeal && <div><Preloader /></div>}
                 {!isLoadingAppeal && appeal && <div>Форма тут</div>} */}
             </Modal>

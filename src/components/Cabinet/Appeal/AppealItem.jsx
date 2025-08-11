@@ -5,9 +5,12 @@ import { Button, Empty, Flex, Form, Typography } from "antd";
 import selectComponent from "../../selectComponent";
 import Preloader from "../../Main/Preloader";
 import useDataForForm from "../../../stores/Cabinet/useDataForForm";
+import useAppeals from "../../../stores/Cabinet/useAppeals";
 
 
-export default function AppealItem({ claimId, appeal, isLoadingAppeal }) {
+export default function AppealItem({ claimId, appeal, isLoadingAppeal, appealsId, closeModal }) {
+    const { createNewAppeal } = useAppeals(store => store)
+    const [errorAddAppeal, setErrorAddAppeal] = useState(false)
     // const { fetchActionById, isLoadingAction, action, createNewTask } = useTasks(store => store)
     // const { setLinks } = useDataForForm((state) => state)
     // useEffect(() => {
@@ -18,6 +21,12 @@ export default function AppealItem({ claimId, appeal, isLoadingAppeal }) {
 
     // }, [])
     const handlerFinish = (values) => {
+        console.log("claimId", claimId)
+        if (createNewAppeal({ values, claimId, versionId: appeal.versionId, appealsId })) {
+            closeModal()
+        } else {
+            setErrorAddAppeal(true)
+        }
         console.log(values)
         // if (createNewTask({
         //     typeActionId: actionId,
@@ -55,6 +64,11 @@ export default function AppealItem({ claimId, appeal, isLoadingAppeal }) {
                         </Typography.Text>
                     }
                 />
+            }
+            {errorAddAppeal &&
+                <Typography.Text style={{color:"red"}}>
+                    Ошибка при подаче обращения.
+                </Typography.Text>
             }
         </>
     )

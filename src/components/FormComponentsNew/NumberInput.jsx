@@ -83,6 +83,7 @@ export default function NumberInput({
       <InputNumber      
         min={min}
         max={max}
+        style={{width:"100%"}}
         step={stepMain}
         decimalSeparator=","
         precision={ractionDigits}
