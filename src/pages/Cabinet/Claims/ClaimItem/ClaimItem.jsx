@@ -56,7 +56,9 @@ export default function ClaimItem() {
     if (searchParams.get('pay') === "success") setOpenSuccessPay(true)
     if (searchParams.get('pay') === "fail") setOpenFailPay(true)
   }, [searchParams]);
-
+if(!claim){
+  return <Preloader />
+}
   const tabs = [
     {
       key: 1,
@@ -86,7 +88,7 @@ export default function ClaimItem() {
     {
       key: 5,
       label: `Обращения`,
-      children: <Appeals claimId={claim.id}/>,
+      children: <Appeals claimId={claim?.id}/>,
     },
   ]
 

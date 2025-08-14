@@ -135,10 +135,10 @@ export default function NewClaim() {
               return <Link to={currentRoute.href}>{currentRoute.title}</Link>;
             }}
             items={
-              chain &&
-              chain.map((item) => ({
+              serviceItem &&
+              serviceItem.path.map((item) => ({
                 href: `/services/${item.Ref_Key}`,
-                title: item.Description,
+                title: item.label,
               }))
             }
           />
