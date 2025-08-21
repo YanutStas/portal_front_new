@@ -73,7 +73,12 @@ export default function Lk() {
                         <>
                             <Divider orientation='left'>В работе</Divider>
                             <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20 }}>
-                                {claimsByPersonalAccount && claimsByPersonalAccount.sort((a, b) => b.number - a.number).map((item, index) =>
+                                {claimsByPersonalAccount && claimsByPersonalAccount.sort((a, b) => b.number - a.number).filter(item=>{return item.currentStatus.state !== "completed"}).map((item, index) =>
+                                    <CardClaim item={item} key={index} />)}
+                            </Flex>
+                            <Divider orientation='left'>В архиве</Divider>
+                            <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20 }}>
+                                {claimsByPersonalAccount && claimsByPersonalAccount.sort((a, b) => b.number - a.number).filter(item=>{return item.currentStatus.state === "completed"}).map((item, index) =>
                                     <CardClaim item={item} key={index} />)}
                             </Flex>
                         </>

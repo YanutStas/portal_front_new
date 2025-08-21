@@ -19,7 +19,7 @@ export default function PoliciesAndRegulations() {
         </div>
         <div className="docLine__wrapText">
           <span className={styles.docLine__name}>
-            Политика обработки персональных данных «АО Мособлэнерго»
+            Политика обработки персональных данных АО «Мособлэнерго»
           </span>
           <span className={styles.docLine__fileInfo}>2.6 МБ</span>
         </div>

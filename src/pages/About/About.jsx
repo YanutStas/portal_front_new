@@ -30,7 +30,7 @@ export default function About() {
         <div className={styles.content}>
           <div style={{ marginBottom: 15 }}>
 
-            <Title level={1} style={{ marginBottom: 0 }}>О компании «АО Мособлэнерго»</Title>
+            <Title level={1} style={{ marginBottom: 0 }}>О компании АО «Мособлэнерго»</Title>
           </div>
 
           <Row gutter={[32, 32]} align={"top"}>
