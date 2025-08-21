@@ -22,8 +22,8 @@ export default function PhoneInput({
   const { colorBorderBg, colorText, colorBorder } = theme.useToken().token;
   const { profile } = useProfile();
 
-  const isAdditionalPhone = name === "dc284366-c637-441d-b552-dcf24ad603af";
-  const phoneFromProfile = isAdditionalPhone ? "" : profile.phone || "";
+  // const isAdditionalPhone = name === "dc284366-c637-441d-b552-dcf24ad603af";
+  const phoneFromProfile = required ? profile.phone || "" :  "";
 
   return (
     <WrapperComponent
