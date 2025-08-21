@@ -11,7 +11,7 @@ export default function InnInput({
   name = "name",
   label = "",
   placeholder = "",
-  required = false,
+  required = undefined,
   dependOf = false,
   howDepend = false,
   specialField: type = false,

@@ -9,7 +9,7 @@ export default function NumberInput({
   name = "name",
   label = "",
   disabled = false,
-  required = false,
+  required = undefined,
   dependOf = false,
   howDepend = false,
   min = 0,

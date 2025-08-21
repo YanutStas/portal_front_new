@@ -7,7 +7,7 @@ export default function SwitchInput({
   name = "name",
   label = "",
   defaultValue = false,
-  required = false,
+  required = undefined,
   dependOf = false,
   howDepend = false,
   span = false,

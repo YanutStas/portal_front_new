@@ -25,18 +25,18 @@ export default function Documentation() {
     },
     {
       key: "2",
-      label: "Политики и регламенты",
-      children: <PoliciesAndRegulations />,
-    },
-    {
-      key: "3",
-      label: "Руководства пользователя",
+      label: "Руководство пользователя",
       children: <UserGuide />,
     },
     {
-      key: "4",
+      key: "3",
       label: "Законодательство",
       children: <Law />,
+    },
+    {
+      key: "4",
+      label: "Локальные нормативные акты",
+      children: <PoliciesAndRegulations />,
     },
   ];
 

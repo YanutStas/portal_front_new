@@ -294,7 +294,7 @@ const FileInput = ({
         {formElement}
       </WrapperComponent>
       <Modal
-        visible={previewVisible}
+        open={previewVisible}
         onCancel={() => setPreviewVisible(false)}
         closeIcon={<CloseOutlined style={{ color: '#ff4d4f', fontSize: 28 }} />}
         footer={null}

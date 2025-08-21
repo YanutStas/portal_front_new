@@ -15,7 +15,7 @@ const AddressInput = ({
   label = "Label",
   disabled = false,
   placeholder = "",
-  required = false,
+  required = undefined,
   dependOf = false,
   howDepend = false,
   inputMask = false,
@@ -30,7 +30,7 @@ const AddressInput = ({
   city = false,
   settlement = false,
   street = false,
-  fullAddress = false,
+  fullAddress = undefined,
   read = false
 }) => {
   const { token } = theme.useToken();
@@ -180,7 +180,9 @@ const AddressInput = ({
                   )
                 }
                 rules={[
-                  { required: required, message: "Это поле обязательное" },
+                  { 
+                    required: required, 
+                    message: "Это поле обязательное" },
                 ]}
                 style={{ flex: 1, minWidth: 300 }}
                 labelAlign="left"

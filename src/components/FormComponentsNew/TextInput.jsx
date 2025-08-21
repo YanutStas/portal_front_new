@@ -28,7 +28,7 @@ export default function TextInput({
   disabled = false,
   placeholder = "",
   defaultValue = "",
-  required = false,
+  required = undefined,
   dependOf = false,
   howDepend = false,
   inputMask = false,

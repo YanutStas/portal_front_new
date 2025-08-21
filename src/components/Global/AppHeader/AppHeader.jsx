@@ -54,6 +54,8 @@ export default function AppHeader() {
   useEffect(() => {
     if (auth) {
       fetchProfile();
+    }else{
+      
     }
   }, [auth, fetchProfile]);
 

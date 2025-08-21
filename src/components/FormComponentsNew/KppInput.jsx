@@ -6,7 +6,7 @@ import InfoDrawer from "../InfoDrawer";
 export default function KppInput({
     name = "kpp",
     label = "",
-    required = false,
+    required = undefined,
     dependOf = false,
     howDepend = false,
     placeholder = false,

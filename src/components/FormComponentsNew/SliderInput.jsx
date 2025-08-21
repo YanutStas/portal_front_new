@@ -4,7 +4,7 @@ import { Form, Slider } from "antd";
 export default function SliderInput({
   name = "name",
   label = "Label",
-  required = false,
+  required = undefined,
   min = 0,
   max = 100,
   step = 1,

@@ -175,7 +175,14 @@ export default function NewClaim() {
             </Flex>
 
             <Form
-              scrollToFirstError
+              scrollToFirstError={{
+                // boundary: (parent) => {
+                //   // console.log(parent);                  
+                // },
+                // behavior:(actions)=>{
+                //   console.log(actions);
+                // }
+              }}
               form={form}
               labelAlign="right"
               layout="vertical"

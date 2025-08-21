@@ -55,7 +55,7 @@ export default function CabinetMenuNew({ setIsOpenProfileMenu }) {
         <Flex gap={10} wrap={"wrap"}>
           <Button onClick={() => { setIsOpenModalSetting(true) }}><SettingOutlined /></Button>
           <Button onClick={() => { setIsOpenModal(true) }}>Сменить пароль</Button>
-          <Button type="primary" onClick={() => { setIsOpenModal(true) }}>Выйти</Button>
+          <Button type="primary" onClick={() => { logout() }}>Выйти</Button>
         </Flex>
         <Flex gap={10} vertical>
           <LinkCard title={"Заявки"} color={"blue"} url={"/cabinet/claimers"} />

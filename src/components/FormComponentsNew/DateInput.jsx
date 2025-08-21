@@ -12,7 +12,7 @@ export default function DateInput({
   name = "name",
   part = "Дата",
   label = "Поле",
-  defaultValue = false,
+  defaultValue = undefined,
   placeholder = "",
   required = false,
   dependOf = false,
@@ -42,14 +42,18 @@ export default function DateInput({
         initialValue={defaultValue}
       >
         {part === "Дата" && (
-          <DatePicker format={"DD.MM.YYYY"} placeholder={placeholder} required={required}/>
+          <DatePicker
+            format={"DD.MM.YYYY"}
+            placeholder={placeholder}
+            // required={required}
+          />
         )}
         {part === "МесяцГод" && (
           <DatePicker
             format={"MM.YYYY"}
             placeholder={placeholder}
             picker="month"
-            required={required}
+          // required={required}
           />
         )}
         {part === "ДатаВремя" && (
@@ -57,11 +61,15 @@ export default function DateInput({
             format={"DD.MM.YYYY HH:mm"}
             showTime
             placeholder={placeholder}
-            required={required}
+          // required={required}
           />
         )}
         {part === "Время" && (
-          <TimePicker format={"HH:mm"} placeholder={placeholder} required={required}/>
+          <TimePicker
+            format={"HH:mm"}
+            placeholder={placeholder}
+            // required={required}
+          />
         )}
       </Form.Item>
     </ConfigProvider>

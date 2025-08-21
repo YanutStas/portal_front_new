@@ -15,7 +15,7 @@ const AuthRegForm = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/docs?tab=3");
+    navigate("/docs?tab=2");
   };
 
   return (
@@ -52,9 +52,9 @@ const AuthRegForm = () => {
       {registrationStep === 0 && <EmailVerification />}
       {registrationStep === 2 && <PasswordRegForm />}
 
-      <Button type="link" onClick={handleClick}>
-        Инструкция по регистрации
-      </Button>
+      {/* <Button type="link" onClick={handleClick}>
+        Руководство пользоввателя
+      </Button> */}
     </div>
   );
 };
