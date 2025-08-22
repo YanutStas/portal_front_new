@@ -298,7 +298,11 @@ const FileInput = ({
         onCancel={() => setPreviewVisible(false)}
         closeIcon={<CloseOutlined style={{ color: '#ff4d4f', fontSize: 28 }} />}
         footer={null}
-        bodyStyle={{ padding: 0 }}
+        styles={{
+          body: {
+            padding: 0
+          }
+        }}
         width={previewFileType === 'application/pdf' ? '80%' : 'auto'}
         style={{ textAlign: 'center' }}
       >

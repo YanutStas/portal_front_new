@@ -14,7 +14,7 @@ export default function TableResults({
     name = "сумма";
     value = fieldValue?.reduce((sum, current) => {
       if (current) {
-        return sum + current[field];
+        return Number(sum) + Number(current[field]);
       }
     }, 0);
   } else if (typeTotal === "count") {

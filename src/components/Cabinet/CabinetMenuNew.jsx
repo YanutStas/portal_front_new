@@ -55,7 +55,10 @@ export default function CabinetMenuNew({ setIsOpenProfileMenu }) {
         <Flex gap={10} wrap={"wrap"}>
           <Button onClick={() => { setIsOpenModalSetting(true) }}><SettingOutlined /></Button>
           <Button onClick={() => { setIsOpenModal(true) }}>Сменить пароль</Button>
-          <Button type="primary" onClick={() => { logout() }}>Выйти</Button>
+          <Button type="primary" onClick={() => {
+            logout()
+            setIsOpenProfileMenu(false)
+          }}>Выйти</Button>
         </Flex>
         <Flex gap={10} vertical>
           <LinkCard title={"Заявки"} color={"blue"} url={"/cabinet/claimers"} />
@@ -71,7 +74,7 @@ export default function CabinetMenuNew({ setIsOpenProfileMenu }) {
         open={isOpenModal}
         onCancel={() => { setIsOpenModal(false) }}
         footer={false}
-        >
+      >
         <Paragraph>
           Если вы хотите{" "}
           <strong>изменить телефон или пароль</strong>, повторно
@@ -90,7 +93,7 @@ export default function CabinetMenuNew({ setIsOpenProfileMenu }) {
         onCancel={() => { setIsOpenModalSetting(false) }}
         footer={false}
       >
-       <ProfileSetting/>
+        <ProfileSetting />
       </Modal>
     </>
   );

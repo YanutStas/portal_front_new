@@ -43,7 +43,7 @@ export default function TableInput({
         <Typography.Title level={5} style={{ margin: "0 0 10px 0" }}>
           {label}
         </Typography.Title>
-        <Form.List name={name}>
+        <Form.List name={nameTable}>
           {(fields, { add, remove }) => {
             if (required && fields.length === 0)
               fields.push({
@@ -264,7 +264,7 @@ export default function TableInput({
                             key={index}
                             {...item.component}
                             {...item}
-                            name={[name, item.idLine]}
+                            name={[ name, item.idLine]}
                             fullDescription={item.name_fullDescription}
                             dependOf={
                               item.dependIdLine
@@ -273,6 +273,7 @@ export default function TableInput({
                             }
                             howDepend={item.dependСondition}
                             read={read}
+                            nameTable={nameTable}
                           />
                         );
                     })}
@@ -313,7 +314,7 @@ export default function TableInput({
                             <TableResults
                               key={index}
                               typeTotal={item.typeTotal}
-                              table={name}
+                              table={nameTable}
                               field={item.idLine}
                               label={item.label}
                             />
