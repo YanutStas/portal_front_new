@@ -105,7 +105,7 @@ export default function Lk() {
 
                                         <Typography.Text>{item.email}</Typography.Text>
                                         {<Typography.Text style={{ fontSize: 10, color: "gray" }}>Создан: 15.05.2024</Typography.Text>}
-                                        {<Typography.Text style={{ fontSize: 10, color: "gray" }}>Присоеденен к ЛК: 18.10.2024</Typography.Text>}
+                                        {<Typography.Text style={{ fontSize: 10, color: "gray" }}>Присоединен к ЛК: 18.10.2024</Typography.Text>}
                                         {item.block ? <Typography.Text style={{ fontSize: 10, color: "red" }}>Профиль заблокирован</Typography.Text> : false}
                                     </Flex>
                                 </List.Item>

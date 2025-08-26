@@ -179,9 +179,18 @@ export default function NewClaim() {
                 // boundary: (parent) => {
                 //   // console.log(parent);                  
                 // },
-                // behavior:(actions)=>{
-                //   console.log(actions);
-                // }
+                behavior: (actions) => {
+                  console.log(actions);
+                  actions.forEach(({ el, top, left }) => {
+                    // implement the scroll anyway you want
+                    el.scrollTop = top - 100
+                    el.scrollLeft = left
+
+                    // // If you need the relative scroll coordinates, for things like window.scrollBy style logic or whatever, just do the math
+                    // const offsetTop = el.scrollTop - top
+                    // const offsetLeft = el.scrollLeft - left
+                  })
+                }
               }}
               form={form}
               labelAlign="right"

@@ -27,6 +27,9 @@
 .logoMobile {
   display: none;
 }
+.mainMenu{
+  border: 0;
+}
 
 .flipButton {
   /* background: #ec691f;
