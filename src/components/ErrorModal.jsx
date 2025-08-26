@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Flex, Modal, Typography } from "antd";
 import cat from "../img/Cat.png";
 
-const { Text, Title } = Typography;
+const { Text, Title, Paragraph } = Typography;
 
 const ErrorModal = ({ visible, error, onClose }) => {
   return (
@@ -16,10 +16,14 @@ const ErrorModal = ({ visible, error, onClose }) => {
       <Title level={4} style={{ textAlign: "center" }}>
         Ошибка
       </Title>
+     
       <Text type="danger">
-        Извините, наш сайт немного устал и приболел, пожалуйста, подождите пару
-        минут и попробуйте обновить страницу.
+        Извините, наш портал временно недоступен.
       </Text>
+      <Paragraph type="danger">
+        Пожалуйста, подождите несколько
+        минут и попробуйте обновить страницу.
+      </Paragraph>
       <br />
       <img
         src={cat}
@@ -36,7 +40,7 @@ const ErrorModal = ({ visible, error, onClose }) => {
           }}
         >
           {" "}
-          Обновить страничку
+          Обновить страницу
         </Button>
         <Button
           type="dashed"
@@ -45,7 +49,7 @@ const ErrorModal = ({ visible, error, onClose }) => {
           }}
         >
           {" "}
-          На главную страничку
+          На главную страницу
         </Button>
       </Flex>
     </Modal>

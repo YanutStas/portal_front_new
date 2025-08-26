@@ -34,6 +34,7 @@ import Test from "./pages/Test";
 import useGlobal from "./stores/useGlobal";
 import useAuth from "./stores/useAuth";
 import Lk from "./pages/Cabinet/Lk/Lk";
+import Error from "./pages/Error";
 
 const { Content } = Layout;
 
@@ -120,6 +121,7 @@ export default function App() {
                 <Route path="/contacts" element={<Contacts />} />
 
                 <Route path="/docs" element={<Documentation />} />
+                <Route path="/error" element={<Error />} />
                 <Route path="/test" element={<AddressInputTest />} />
                 <Route path="/login" element={<Login />} />
 
