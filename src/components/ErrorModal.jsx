@@ -14,7 +14,7 @@ const ErrorModal = ({ visible, error, onClose }) => {
       styles={{ body: { textAlign: "center" } }}
     >
       <Title level={4} style={{ textAlign: "center" }}>
-        Ошибка
+        Регламентные работы
       </Title>
      
       <Text type="danger">
