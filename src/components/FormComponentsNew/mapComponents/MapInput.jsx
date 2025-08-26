@@ -20,7 +20,7 @@ export default function MapInput({
   dependOf = false,
   howDepend = false,
   span = false,
-  fullDescription = "nfhfhf",
+  fullDescription = false,
   stylesField_key = false,
   read = false,
   type = null,
