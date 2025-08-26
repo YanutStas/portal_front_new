@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Card, Tag, Form, Flex } from "antd";
+import { Button, Card, Tag, Form, Flex,theme } from "antd";
 import MapModal from "./MapModal";
 
 import pdfMake from "pdfmake/build/pdfmake";
@@ -28,6 +28,7 @@ export default function MapInput({
   const form = Form.useFormInstance();
   const [modalVisible, setModalVisible] = useState(false);
   const [coordinates, setCoordinates] = useState(null);
+  const { token } = theme.useToken();
 
   const handleSave = (data) => {
     console.log("MapModal onSave ->", data);
@@ -48,8 +49,9 @@ export default function MapInput({
     <Card
       title={label}
       style={{
-        borderColor: isAttached ? "green" : required ? "red" : "#1677ff",
+          borderColor: isAttached ? "#389e0d" : (required ? "red" : token.colorPrimary),
         // minHeight: 300,
+        borderWidth:2,
         height: "100%",
         display: "flex",
         flexDirection: "column",
