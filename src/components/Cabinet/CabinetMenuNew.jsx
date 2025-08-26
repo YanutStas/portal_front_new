@@ -20,7 +20,7 @@ export default function CabinetMenuNew({ setIsOpenProfileMenu }) {
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [isOpenModalSetting, setIsOpenModalSetting] = useState(false)
 
-  const navigate = useNavigate();
+
 
 
   const handleReg = () => {
@@ -61,9 +61,13 @@ export default function CabinetMenuNew({ setIsOpenProfileMenu }) {
           }}>Выйти</Button>
         </Flex>
         <Flex gap={10} vertical>
-          <LinkCard title={"Заявки"} color={"blue"} url={"/cabinet/claimers"} />
-          <LinkCard title={"Задачи"} color={"red"} url={"/cabinet/claimers"} />
-          <LinkCard title={"Обращения"} color={"green"} url={"/cabinet/claimers"} />
+          <LinkCard title={"Заявки"} color={"blue"} url={"/cabinet/claimers"} setIsOpenProfileMenu={setIsOpenProfileMenu} />
+          <LinkCard title={"Задачи"} color={"red"} url={"/cabinet/claimers"} setIsOpenProfileMenu={setIsOpenProfileMenu} />
+          {/* <LinkCard title={"Обращения"} color={"green"} url={"/cabinet/claimers"} /> */}
+          <Flex vertical gap={0} justify="center" style={{ width: "100%" }}>
+            <Typography.Text level={5} style={{ textAlign: "center", marginBottom: "0" }}>Горячая линия АО «Мособлэнерго»</Typography.Text>
+            <Typography.Text style={{ textAlign: "center" }}><a href="tel:+74959950099">+7 (495) 99-500-99</a></Typography.Text>
+          </Flex>
         </Flex>
 
         {/* <Card hoverable onClick={() => { setIsOpenModal(true) }}>
@@ -98,12 +102,18 @@ export default function CabinetMenuNew({ setIsOpenProfileMenu }) {
     </>
   );
 }
-function LinkCard({ title, color, url }) {
+function LinkCard({ title, color, url, setIsOpenProfileMenu }) {
+  const navigate = useNavigate();
+  const handlerNavigate = (url) => {
+    navigate(url)
+    setIsOpenProfileMenu(false)
+  }
   return (
-    <Link to={url} style={{ width: "100%" }}>
-      <Button style={{ width: "100%" }} size="large" color={color} variant="filled">{title}</Button>
-
-    </Link>
+    // <Link to={url} style={{ width: "100%" }} >
+    <Button onClick={() => {
+      handlerNavigate(url)
+    }} style={{ width: "100%" }} size="large" color={color} variant="filled">{title}</Button>
+    // </Link>
   )
 }
 

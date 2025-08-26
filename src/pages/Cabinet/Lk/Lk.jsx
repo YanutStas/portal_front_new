@@ -10,14 +10,14 @@ export default function Lk() {
     const [openDrawer, setOpenDrawer] = useState(false)
     // const [lk, setLk] = useState(null)
     // const [listClaims, setListClaims] = useState(null)
-    const [listCompletedClaims, setListCompletedClaims] = useState(null)
+    // const [listCompletedClaims, setListCompletedClaims] = useState(null)
     const { token } = theme.useToken();
     const {
         personalAccount,
         fetchPersonalAccountItem,
         claimsByPersonalAccount,
         fetchClaimsByPersonalAccount,
-        loadingPersonalAccounts,
+        // loadingPersonalAccounts,
         loadingPersonalAccount,
         loadingClaimsByPersonalAccount,
     } = usePersonalAccounts(state => state)
@@ -25,32 +25,32 @@ export default function Lk() {
     useEffect(() => {
         fetchPersonalAccountItem(id)
         fetchClaimsByPersonalAccount(id)
-        setListCompletedClaims([
-            {
-                Ref_Key: "c416e302-98df-11ef-9501-5ef3fcb042f7",
-                number: "000000109",
-                date: "2024-10-01T09:00:32",
-                service: {
-                    description: "Описание услуги N3"
-                }
-            },
-            {
-                Ref_Key: "c416e302-98df-11ef-9501-5ef3fcb042f6",
-                number: "000000108",
-                date: "2024-09-12T10:56:32",
-                service: {
-                    description: "Описание услуги №4"
-                }
-            }
-        ])
+        // setListCompletedClaims([
+        //     {
+        //         Ref_Key: "c416e302-98df-11ef-9501-5ef3fcb042f7",
+        //         number: "000000109",
+        //         date: "2024-10-01T09:00:32",
+        //         service: {
+        //             description: "Описание услуги N3"
+        //         }
+        //     },
+        //     {
+        //         Ref_Key: "c416e302-98df-11ef-9501-5ef3fcb042f6",
+        //         number: "000000108",
+        //         date: "2024-09-12T10:56:32",
+        //         service: {
+        //             description: "Описание услуги №4"
+        //         }
+        //     }
+        // ])
     }, [])
-    const collap = [
-        {
-            key: '1',
-            label: 'Выполненные заявки',
-            children: <Flex gap={10} style={{ marginBottom: 10 }}>{listCompletedClaims && listCompletedClaims.map((item, index) => <CardClaim item={item} key={index} borderColor={"red"} />)}</Flex>,
-        },
-    ]
+    // const collap = [
+    //     {
+    //         key: '1',
+    //         label: 'Выполненные заявки',
+    //         children: <Flex gap={10} style={{ marginBottom: 10 }}>{listCompletedClaims && listCompletedClaims.map((item, index) => <CardClaim item={item} key={index} borderColor={"red"} />)}</Flex>,
+    //     },
+    // ]
     // console.log(token)
     return (
         <Container>
@@ -73,12 +73,12 @@ export default function Lk() {
                         <>
                             <Divider orientation='left'>В работе</Divider>
                             <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20 }}>
-                                {claimsByPersonalAccount && claimsByPersonalAccount.sort((a, b) => b.number - a.number).filter(item=>{return item.currentStatus.state !== "completed"}).map((item, index) =>
+                                {claimsByPersonalAccount && claimsByPersonalAccount.sort((a, b) => b.number - a.number).filter(item => { return item.currentStatus.state !== "completed" }).map((item, index) =>
                                     <CardClaim item={item} key={index} />)}
                             </Flex>
                             <Divider orientation='left'>В архиве</Divider>
                             <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20 }}>
-                                {claimsByPersonalAccount && claimsByPersonalAccount.sort((a, b) => b.number - a.number).filter(item=>{return item.currentStatus.state === "completed"}).map((item, index) =>
+                                {claimsByPersonalAccount && claimsByPersonalAccount.sort((a, b) => b.number - a.number).filter(item => { return item.currentStatus.state === "completed" }).map((item, index) =>
                                     <CardClaim item={item} key={index} />)}
                             </Flex>
                         </>
@@ -98,10 +98,16 @@ export default function Lk() {
                         </Typography.Paragraph>
                         <List
                             bordered
-                            dataSource={personalAccount?.profiles?.map(item => item.email)}
+                            dataSource={personalAccount?.profiles?.map(item => item)}
                             renderItem={item => (
                                 <List.Item>
-                                    <Typography.Text>{item}</Typography.Text>
+                                    <Flex vertical>
+
+                                        <Typography.Text>{item.email}</Typography.Text>
+                                        {<Typography.Text style={{ fontSize: 10, color: "gray" }}>Создан: 15.05.2024</Typography.Text>}
+                                        {<Typography.Text style={{ fontSize: 10, color: "gray" }}>Присоеденен к ЛК: 18.10.2024</Typography.Text>}
+                                        {item.block ? <Typography.Text style={{ fontSize: 10, color: "red" }}>Профиль заблокирован</Typography.Text> : false}
+                                    </Flex>
                                 </List.Item>
                             )}
                         />
