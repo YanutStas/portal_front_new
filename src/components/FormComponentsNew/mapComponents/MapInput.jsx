@@ -6,6 +6,7 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import WrapperComponent from "../WrapperComponent";
 import CoordinatesDisplay from "./CoordinatesDisplay";
+import InfoDrawer from "../../InfoDrawer";
 
 pdfMake.vfs = pdfFonts.vfs;
 
@@ -19,7 +20,7 @@ export default function MapInput({
   dependOf = false,
   howDepend = false,
   span = false,
-  fullDescription = false,
+  fullDescription = "nfhfhf",
   stylesField_key = false,
   read = false,
   type = null,
@@ -48,28 +49,48 @@ export default function MapInput({
       title={label}
       style={{
         borderColor: isAttached ? "green" : required ? "red" : "#1677ff",
-        minHeight: 300,
+        // minHeight: 300,
         height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
       }}
       styles={{
         title: {
           whiteSpace: "break-spaces",
+          paddingTop: 5,
+          paddingBottom: 5
         },
         body: {
+          flex: 1,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
+          padding: 10
         },
       }}
       extra={
-        isAttached ? (
-          <Tag color="green">Добавлены</Tag>
-        ) : required ? (
-          <Tag color="red">НЕ добавлены</Tag>
-        ) : (
-          <Tag color="blue">НЕ добавлены</Tag>
-        )
+        // isAttached ? (
+        //   <Tag color="green">Добавлены</Tag>
+        // ) : required ? (
+        //   <Tag color="red">НЕ добавлены</Tag>
+        // ) : (
+        //   <Tag color="blue">НЕ добавлены</Tag>
+        // )
+        <>
+          {fullDescription ? (
+            <InfoDrawer fullDescription={fullDescription}></InfoDrawer>
+          ) : (
+            false
+          )}
+        </>
       }
+      actions={[
+        <>
+          {required && <Tag color="red">Обязателен</Tag>}
+          {isAttached ? <Tag color="green">Добавлен</Tag> : <Tag color={"blue"}>НЕ добавлен</Tag>}
+        </>
+      ]}
     >
       <Form.Item
         name={name}

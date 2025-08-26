@@ -21,6 +21,8 @@ import openDocs from "../Cabinet/openDocument";
 import { CloseOutlined } from '@ant-design/icons';
 import pdfIcon from '../../img/docs/pdf.svg';
 
+import styles from './FileInput.module.css'
+
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
 const MiniThumb = ({ file, onPreview, onRemove }) => (
@@ -198,27 +200,55 @@ const FileInput = ({
     <Card
       title={label}
       style={{
-        borderColor: isAttached ? "green" : token.colorPrimary,
-        minHeight: 300,
+        borderColor: isAttached ? "#389e0d" : (required ? "red" : token.colorPrimary),
+        borderWidth: 2,
+        // minHeight: 300,
         height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
       }}
       styles={{
         title: {
           whiteSpace: "break-spaces",
+          paddingTop: 5,
+          paddingBottom: 5
         },
         body: {
+          flex: 1,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
+          padding: 10
         },
       }}
       extra={
-        isAttached ? (
-          <Tag color="green">Добавлен</Tag>
-        ) : (
-          <Tag color={"blue"}>НЕ добавлен</Tag>
-        )
+        // <>
+        //   {required && <Tag color="red">Обезателен</Tag>}
+        //   {isAttached ? (
+
+        //     <Tag color="green">Добавлен</Tag>
+
+        //   ) : (
+
+        //     <Tag color={"blue"}>НЕ добавлен</Tag>
+
+        //   )}
+        // </>
+        <>
+          {fullDescription ? (
+            <InfoDrawer fullDescription={fullDescription}></InfoDrawer>
+          ) : (
+            false
+          )}
+        </>
       }
+      actions={[
+        <>
+          {required && !isAttached && <Tag color="red">Обязателен</Tag>}
+          {isAttached ? <Tag color="green">Добавлен</Tag> : (!required && <Tag color={"blue"}>Не добавлен</Tag>)}
+        </>
+      ]}
     >
       {contextHolder}
       <Form.Item
@@ -232,38 +262,45 @@ const FileInput = ({
         ]}
       ></Form.Item>
       {!isAttached && (
-        <Flex gap={10} vertical justify="center" style={{ height: "100%" }}>
-          <Upload {...props} style={{ display: "", width: "100%" }}>
-            <Button icon={<UploadOutlined />} type="primary">
-              Выбрать файлы
-            </Button>
-          </Upload>
+        <Flex gap={10} vertical justify="space-between" style={{ height: "100%" }}>
+          <Flex vertical justify="center" style={{ height: "100%" }}>
+
+            <Flex justify="center" align="center">
+              <Upload {...props} style={{ textAlign: "center", display: "block", width: "100%" }}>
+                <Button icon={<UploadOutlined />} type="primary">
+                  Выбрать файлы
+                </Button>
+              </Upload>
+            </Flex>
 
 
-          <div
-            style={{
-              maxHeight: 240,
-              overflowY: "auto",
-              marginTop: 8,
-              paddingRight: 4,
-            }}
-          >
-            {fileList.map((file) => (
-              <MiniThumb
-                key={file.name}
-                file={file}
-                onPreview={previewFile}
-                onRemove={removeItem}
-              />
-            ))}
-          </div>
+            <div
+              style={{
+                maxHeight: 240,
+                overflowY: "auto",
+                marginTop: 8,
+                paddingRight: 4,
+              }}
+            >
+              {fileList.map((file) => (
+                <MiniThumb
+                  key={file.name}
+                  file={file}
+                  onPreview={previewFile}
+                  onRemove={removeItem}
+                />
+              ))}
+            </div>
+          </Flex>
 
           <Button
             type="primary"
             onClick={handleUpload}
             disabled={fileList.length === 0}
             loading={uploading}
-            style={{ marginTop: 16 }}
+            color="green" variant="solid"
+            style={{ marginTop: 16, padding: 10 }}
+            className={fileList.length > 0 && styles.buttonAdd}
           >
             {uploading ? "Загрузка..." : "Добавить документ"}
           </Button>
@@ -323,6 +360,7 @@ const FileInput = ({
           />
         )}
       </Modal>
+
     </>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Drawer } from "antd";
+import { Drawer, theme } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import MarkDownText from "./MarkDownText/MarkDownText";
 
@@ -8,14 +8,17 @@ const InfoDrawer = ({ fullDescription, children: label }) => {
   const showDrawer = () => setDrawerVisible(true);
   const onClose = () => setDrawerVisible(false);
 
+  const { token } = theme.useToken()
+// console.log(token);
+
   return (
     <>
       {label}
       <InfoCircleOutlined
         onClick={showDrawer}
         style={{
-          color: "rgba(0, 0, 0, 0.45)",
-          transform: "translate(3px, -5px)",
+          color: token.colorInfoText,
+          transform: "translate(3px, 0px)",
         }}
       />
       <Drawer
