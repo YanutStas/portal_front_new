@@ -53,7 +53,7 @@ export default function CabinetMenuNew({ setIsOpenProfileMenu }) {
       {modalContextHolder}
       <Flex gap={20} wrap={"wrap"} vertical style={{ margin: "20px 0", width: "100%" }}>
         <Flex gap={10} wrap={"wrap"}>
-          <Button onClick={() => { setIsOpenModalSetting(true) }}><SettingOutlined /></Button>
+          {/* <Button onClick={() => { setIsOpenModalSetting(true) }}><SettingOutlined /></Button> */}
           <Button onClick={() => { setIsOpenModal(true) }}>Сменить пароль</Button>
           <Button type="primary" onClick={() => {
             logout()
