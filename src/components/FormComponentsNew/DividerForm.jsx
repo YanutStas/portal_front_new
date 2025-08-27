@@ -69,7 +69,11 @@ function DividerForm({
         {label && (
           <div
             className={styles.dividerTitle}
-            style={{ paddingLeft: orientation === "left" ? 0 : false }}
+            style={{ 
+              paddingLeft: orientation === "left" ? 0 : false,
+              textAlign: orientation === "left" ? "left" : "center",
+
+             }}
           >
             {label}
           </div>
