@@ -78,64 +78,66 @@ export default function FormulaInput({
   //     return;
   //   }
   // }, form);
+  const mathResult = (values) => {
+    const temp = { formula };
+    if (nameTable && values[nameTable] && values[nameTable][name[0]]) {
+      //Таблица
+      keys.forEach(item => {
+        temp.formula = temp.formula.replace(
+          item,
+          Number(values[nameTable][name[0]][item]) || 0
+        );
+      })
+      try {
+        const evalu = evaluate(temp.formula).toFixed(ractionDigits);
+        if (!isNaN(evalu) && evalu !== values[nameTable][name[0]][name[1]]) {
+          form.setFieldValue([nameTable, name[0], name[1]], evalu);
+        }
+      } catch (error) {
+        console.log(error);
+        if (!isNaN(form.getFieldValue([nameTable, name[0], name[1]]))) {
+          form.setFieldValue([nameTable, name[0], name[1]], 0);
+        }
+        return;
+      }
+    } else {
+      //Не таблица
+      keys.forEach(item => {
+        temp.formula = temp.formula.replace(
+          item,
+          Number(values[item]) || 0
+        );
+      })
+      try {
+        const evalu = evaluate(temp.formula).toFixed(ractionDigits);
+        if (!isNaN(evalu) && evalu !== values[name]) {
+          form.setFieldValue(name, evalu);
+        }
+      } catch (error) {
+        console.log(error);
+        if (!isNaN(form.getFieldValue(name))) {
+          form.setFieldValue(name, 0);
+        }
+        return;
+      }
+    }
+  }
 
   if (formula === "") return false;
-// let newFormula = ''
+  // let newFormula = ''
   const formElement = (
     <Form.Item
       required={required}
-      
       name={name}
       shouldUpdate={(prevValues, values) => {
         // console.log("values", values)
         // console.log("keys", keys)
         // console.log("beginFormula", formula)
-        const temp = { formula };
-        if (nameTable) {
-          //Таблица
-           keys.forEach(item => {
-            temp.formula = temp.formula.replace(
-              item,
-              Number(values[nameTable][name[0]][item]) || 0
-            );            
-          })          
-          try {
-            const evalu = evaluate(temp.formula).toFixed(ractionDigits);    
-            if (!isNaN(evalu) && evalu !== values[nameTable][name[0]][name[1]]) {
-              form.setFieldValue([nameTable, name[0], name[1]], evalu);
-            }
-          } catch (error) {
-            console.log(error);
-            if (!isNaN(form.getFieldValue([nameTable, name[0], name[1]]))) {
-              form.setFieldValue([nameTable, name[0], name[1]], 0);
-            }
-            return;
-          }
-        }else{
-          //Не таблица
-           keys.forEach(item => {
-            temp.formula = temp.formula.replace(
-              item,
-              Number(values[item]) || 0
-            );            
-          })          
-          try {
-            const evalu = evaluate(temp.formula).toFixed(ractionDigits);    
-            if (!isNaN(evalu) && evalu !== values[name]) {
-              form.setFieldValue( name, evalu);
-            }
-          } catch (error) {
-            console.log(error);
-            if (!isNaN(form.getFieldValue(name))) {
-              form.setFieldValue(name, 0);
-            }
-            return;
-          }
-        }
-        
+        mathResult(values)
+
       }
       }
-      initialValue={0}
+      initialValue={mathResult(form.getFieldsValue()) || 0}
       // initialValue={()=>{
       //   if(keys){
       //     return form.getFieldValue([nameTable, name[0], keys[item]])
