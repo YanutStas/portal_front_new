@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Flex, Layout, Menu, theme } from "antd";
+import { Flex, Layout, Menu, Tag, theme } from "antd";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AppstoreOutlined, CalculatorOutlined, InfoCircleOutlined, InfoOutlined, MenuOutlined } from "@ant-design/icons";
 import logoWhite from "../../../img/header/logoWhite.svg";
@@ -13,6 +13,8 @@ import styles from "./AppHeader.module.css";
 import ErrorModal from "../../ErrorModal";
 import { items, itemsMobile, RightMenuArea } from "./AppHeaderMenus";
 import { MobileMenuDrawer, NotificationDrawer } from "./AppHeaderDrawers";
+
+const version = import.meta.env.VITE_BACK_VERSION;
 
 const { Header } = Layout;
 
@@ -54,8 +56,8 @@ export default function AppHeader() {
   useEffect(() => {
     if (auth) {
       fetchProfile();
-    }else{
-      
+    } else {
+
     }
   }, [auth, fetchProfile]);
 
@@ -136,24 +138,28 @@ export default function AppHeader() {
         }}
       >
         <Flex align="center" gap={10}>
-          <div className="demo-logo" style={{ padding: 10, }}>
+          <div className="demo-logo" style={{ padding: 10 }}>
+
             <Link
               to="/"
               style={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+
               }}
             >
               <img
                 src={darkMode ? logoWhite : logoBlue}
                 height={40}
                 alt="Логотип компании"
+                // style={{ zIndex: 10 }}
                 className={styles.logoDesktop}
               />
               <img
                 src={logoMobile}
                 height={40}
+                // style={{ zIndex: 10 }}
                 alt="Логотип компании"
                 className={styles.logoMobile}
               />
@@ -161,17 +167,17 @@ export default function AppHeader() {
           </div>
           <Flex gap={15} className={styles.mobileMenuCatalog} align="center">
 
-            <Link to={"/services"} style={{ color: "gray",fontSize: 28 }} >
-              <AppstoreOutlined  />
+            <Link to={"/services"} style={{ color: "gray", fontSize: 28 }} >
+              <AppstoreOutlined />
               {/* <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 14c0-.93 0-1.394.077-1.78a4 4 0 0 1 3.143-3.143C12.606 9 13.07 9 14 9s1.394 0 1.78.077a4 4 0 0 1 3.143 3.143c.077.386.077.85.077 1.78s0 1.394-.077 1.78a4 4 0 0 1-3.143 3.143C15.394 19 14.93 19 14 19s-1.394 0-1.78-.077a4 4 0 0 1-3.143-3.143C9 15.394 9 14.93 9 14zm5 3.5c-1.001 0-1.283-.007-1.488-.048a2.5 2.5 0 0 1-1.964-1.964C10.508 15.283 10.5 15 10.5 14s.007-1.283.048-1.488a2.5 2.5 0 0 1 1.964-1.964c.205-.04.487-.048 1.488-.048s1.283.007 1.488.048a2.5 2.5 0 0 1 1.964 1.964c.04.205.048.487.048 1.488s-.007 1.283-.048 1.488a2.5 2.5 0 0 1-1.964 1.964c-.205.04-.487.048-1.488.048zM9 26c0-.93 0-1.394.077-1.78a4 4 0 0 1 3.143-3.143C12.606 21 13.07 21 14 21s1.394 0 1.78.077a4 4 0 0 1 3.143 3.143c.077.386.077.85.077 1.78s0 1.394-.077 1.78a4 4 0 0 1-3.143 3.143C15.394 31 14.93 31 14 31s-1.394 0-1.78-.077a4 4 0 0 1-3.143-3.143C9 27.394 9 26.93 9 26zm5 3.5c-1.001 0-1.283-.007-1.488-.048a2.5 2.5 0 0 1-1.964-1.964C10.508 27.283 10.5 27 10.5 26s.007-1.283.048-1.488a2.5 2.5 0 0 1 1.964-1.964c.205-.04.487-.048 1.488-.048s1.283.007 1.488.048a2.5 2.5 0 0 1 1.964 1.964c.04.205.048.487.048 1.488s-.007 1.283-.048 1.488a2.5 2.5 0 0 1-1.964 1.964c-.205.04-.487.048-1.488.048zM21.077 24.22C21 24.606 21 25.07 21 26s0 1.394.077 1.78a4 4 0 0 0 3.143 3.143c.386.077.85.077 1.78.077s1.394 0 1.78-.077a4 4 0 0 0 3.143-3.143C31 27.394 31 26.93 31 26s0-1.394-.077-1.78a4 4 0 0 0-3.143-3.143C27.394 21 26.93 21 26 21s-1.394 0-1.78.077a4 4 0 0 0-3.143 3.143zm3.435 5.232c.205.04.487.048 1.488.048s1.283-.007 1.488-.048a2.5 2.5 0 0 0 1.964-1.964c.04-.205.048-.487.048-1.488s-.007-1.283-.048-1.488a2.5 2.5 0 0 0-1.964-1.964C27.283 22.508 27 22.5 26 22.5s-1.283.007-1.488.048a2.5 2.5 0 0 0-1.964 1.964c-.04.205-.048.487-.048 1.488s.007 1.283.048 1.488a2.5 2.5 0 0 0 1.964 1.964zM21 14c0-.93 0-1.394.077-1.78a4 4 0 0 1 3.143-3.143C24.606 9 25.07 9 26 9s1.394 0 1.78.077a4 4 0 0 1 3.143 3.143c.077.386.077.85.077 1.78s0 1.394-.077 1.78a4 4 0 0 1-3.143 3.143C27.394 19 26.93 19 26 19s-1.394 0-1.78-.077a4 4 0 0 1-3.143-3.143C21 15.394 21 14.93 21 14zm5 3.5c-1.001 0-1.283-.007-1.488-.048a2.5 2.5 0 0 1-1.964-1.964C22.508 15.283 22.5 15 22.5 14s.007-1.283.048-1.488a2.5 2.5 0 0 1 1.964-1.964c.205-.04.487-.048 1.488-.048s1.283.007 1.488.048a2.5 2.5 0 0 1 1.964 1.964c.04.205.048.487.048 1.488s-.007 1.283-.048 1.488a2.5 2.5 0 0 1-1.964 1.964c-.205.04-.487.048-1.488.048z" fill="currentColor"></path></svg> */}
             </Link>
-            <Link to={"/calc"} style={{ color: "gray",fontSize: 28 }}>
-              <CalculatorOutlined  />
-              
+            <Link to={"/calc"} style={{ color: "gray", fontSize: 28 }}>
+              <CalculatorOutlined />
+
             </Link>
-            <Link to={"/docs"} style={{ color: "gray",fontSize: 28 }}>
-              <InfoCircleOutlined  />
-            
+            <Link to={"/docs"} style={{ color: "gray", fontSize: 28 }}>
+              <InfoCircleOutlined />
+
             </Link>
           </Flex>
         </ Flex>
@@ -190,7 +196,11 @@ export default function AppHeader() {
             minWidth: 0,
           }}
         />
-
+        <div style={{  opacity: .7,}}>
+          {version === "local" && <Tag color="blue">Локальная версия</Tag>}
+          {version === "beta" && <Tag color="gold">Бета версия</Tag>}
+          {version === "test" && <Tag color="red">Тестовая версия</Tag>}
+        </div>
         <RightMenuArea
           colorText={colorText}
           darkMode={darkMode}
