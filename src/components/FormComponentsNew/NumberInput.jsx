@@ -18,7 +18,7 @@ export default function NumberInput({
   defaultValue = false,
   length = false,
   properties = false,
-  ractionDigits = undefined,
+  ractionDigits = 0,
   span = false,
   fullDescription = false,
   stylesField_key = false,

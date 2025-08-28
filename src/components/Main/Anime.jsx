@@ -39,13 +39,35 @@ export const Anime = () => {
 
   return (
     <>
+
       <div className={styles.container}>
+        {/* <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ease: "easeOut", duration: 2, delay: 3.5 }}
+          style={{ position: "absolute", bottom: 60, zIndex: 5, width: "100vw" }}
+        >
+          <Typography.Title
+            style={{
+              textTransform: "uppercase",
+              fontSize: 84,
+              fontWeight: 800,
+              color: "rgba(0, 97, 170,.1)",
+              // color: "rgba(227, 112, 33, 1)",
+              textAlign: "center",
+            }}
+          >
+            на благо подмосковья
+          </Typography.Title>
+        </motion.div> */}
+
         <motion.svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 275.8 300.5"
           className={styles.item}
           height={300}
           width={500}
+          style={{ zIndex: 10 }}
         >
           {arr.map((item, index) => (
             <motion.path
@@ -61,7 +83,42 @@ export const Anime = () => {
             />
           ))}
         </motion.svg>
+        {/* <motion.div
+          initial={{ opacity: 0, }}
+          animate={{ opacity: 1, }}
+          transition={{ ease: "easeOut", duration: 2, delay: 3.5 }}
+          style={{ position: "absolute", top: 50, left: -60, zIndex: 10 }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="200px"
+            height="200px"
+            // style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+            viewBox="0 0 160.83 243.91">
+            <path style={{ fill: "rgba(227, 112, 33, 1)" }} class="fil0" d="M160.83 215.42l0 28.49 -160.8 0c-0.23,-7.18 0.96,-14.08 3.5,-20.75 4.13,-10.91 10.75,-21.71 19.85,-32.28 9.1,-10.58 22.11,-22.79 39.01,-36.64 26.29,-21.66 44.16,-38.79 53.49,-51.45 9.38,-12.67 14.08,-24.65 14.08,-35.96 0,-11.82 -4.25,-21.77 -12.73,-29.91 -8.48,-8.08 -19.56,-12.16 -33.18,-12.16 -14.42,0 -25.96,4.3 -34.61,12.89 -8.65,8.54 -13,20.42 -13.11,35.63l-30.54 -3.06c2.1,-22.84 10.01,-40.25 23.69,-52.24 13.74,-11.99 32.12,-17.98 55.24,-17.98 23.3,0 41.79,6.45 55.36,19.39 13.62,12.95 20.41,29.01 20.41,48.12 0,9.72 -1.98,19.28 -6,28.66 -3.95,9.45 -10.57,19.34 -19.79,29.74 -9.27,10.35 -24.59,24.65 -45.96,42.75 -17.93,15.04 -29.46,25.21 -34.55,30.58 -5.09,5.38 -9.27,10.75 -12.61,16.18l119.25 0z" />
+          </svg>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, }}
+          animate={{ opacity: 1, }}
+          transition={{ ease: "easeOut", duration: 2, delay: 3.5 }}
+          style={{ position: "absolute", top: 150, right: -200, zIndex: 10 }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="300px"
+            height="100px"
+            // style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+            viewBox="0 0 393.99 138.9">
+            <path style={{ fill: "rgba(227, 112, 33, 1)" }} class="fil0" d="M24.91 2.82l105.01 0 0 133.13 -22.6 0 0 -114.38 -59.82 0 0 66.28c0,15.45 -0.51,25.64 -1.5,30.6 -1.03,4.92 -3.76,9.2 -8.26,12.88 -4.53,3.68 -11.04,5.52 -19.55,5.52 -5.27,0 -11.34,-0.34 -18.19,-0.98l0 -18.79 9.88 0c4.67,0 8.01,-0.47 10.02,-1.46 2.01,-0.94 3.34,-2.48 4.02,-4.57 0.64,-2.1 0.99,-8.9 0.99,-20.42l0 -87.81zm229.66 90.12l23.37 3.09c-3.64,13.56 -10.45,24.13 -20.37,31.62 -9.93,7.49 -22.6,11.25 -38.05,11.25 -19.42,0 -34.83,-5.99 -46.21,-17.97 -11.38,-11.94 -17.08,-28.76 -17.08,-50.37 0,-22.33 5.74,-39.71 17.25,-52.03 11.51,-12.37 26.45,-18.53 44.8,-18.53 17.76,0 32.27,6.03 43.52,18.14 11.26,12.11 16.91,29.15 16.91,51.1 0,1.32 -0.05,3.34 -0.13,5.99l-99.24 0c0.86,14.59 4.97,25.8 12.41,33.55 7.4,7.74 16.69,11.64 27.77,11.64 8.26,0 15.32,-2.18 21.14,-6.55 5.87,-4.36 10.49,-11.34 13.91,-20.93zm-73.94 -36.2l74.2 0c-0.99,-11.21 -3.85,-19.6 -8.52,-25.2 -7.14,-8.69 -16.47,-13.05 -27.9,-13.05 -10.35,0 -19.04,3.46 -26.1,10.39 -7.02,6.94 -10.91,16.22 -11.68,27.86zm105.52 -53.92l107.84 0 0 18.75 -42.62 0 0 114.51 -22.6 0 0 -114.51 -42.62 0 0 -18.75z" />
+          </svg>
+        </motion.div> */}
       </div>
+
+
+
+
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
