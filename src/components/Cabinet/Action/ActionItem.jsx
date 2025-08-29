@@ -16,9 +16,9 @@ export default function ActionItem({ actionId, claimId, taskBasis, buttonText, v
         console.log(action);
     }, [action])
 
-    const handlerFinish = (values) => {
+    const handlerFinish =async (values) => {
         console.log(values)
-        if (createNewTask({
+        if (await createNewTask({
             typeActionId: actionId,
             claimId,
             ...taskBasis,

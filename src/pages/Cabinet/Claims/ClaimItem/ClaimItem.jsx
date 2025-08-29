@@ -82,7 +82,7 @@ if(!claim){
     },
     {
       key: 3,
-      label: `Файлы`,
+      label: `Документы`,
       children: <Docs files={claim?.files} />,
     },
     {
