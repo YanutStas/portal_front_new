@@ -81,6 +81,7 @@ export default function NumberInput({
       initialValue={defaultValue ? defaultValue : min}
     >
       <InputNumber      
+      // defaultValue={0}
         min={min}
         max={max}
         style={{width:"100%"}}

@@ -6,6 +6,7 @@ import moment from 'moment';
 import ActionItem from '../../../../components/Cabinet/Action/ActionItem';
 import useClaims from "../../../../stores/Cabinet/useClaims";
 import TaskItem from '../../../../components/Cabinet/Action/TaskItem';
+import FileForDownload from '../../../../components/FileForDownload';
 
 
 export default function StepsClaim({ steps = false, claimId, versionId }) {
@@ -58,13 +59,18 @@ export default function StepsClaim({ steps = false, claimId, versionId }) {
                           <Typography.Text style={{ fontSize: 18 }}>{item.name}</Typography.Text>
                           {item.description && <InfoCircleOutlined style={{ marginBottom: 10, fontSize: 14, color: "gray" }} onClick={() => { handlerOpenDrawer(item.name, item.description) }} />}
                         </Flex>
+                        {item.files && <>
+                          {item.files.map((item, index) =>
+                            <FileForDownload key={index} type={item.ext} name={item.name} id={item.id} size={item.size} />
+                          )}
+                        </>}
                         {item.action && item.action.type === "plan" &&
                           <Button type='primary' style={{ marginTop: 10, fontSize: 16 }} onClick={() => {
                             // console.log(item.action.id);
                             setOpenModalAction({ id: item.action.id, title: item.action.label, taskBasis: item.action.taskBasis, buttonText: item.action.buttonText })
                           }}>{item.action.label}</Button>}
                         {item.action && item.action.type === "fact" &&
-                          <Flex gap={1} align='baseline' vertical style={{ borderLeft: `4px solid ${item.action.currentStatus?.color || "#52c41a"}`, paddingLeft: 5, borderRadius: 3, marginLeft:10}}>
+                          <Flex gap={1} align='baseline' vertical style={{ borderLeft: `4px solid ${item.action.currentStatus?.color || "#52c41a"}`, paddingLeft: 5, borderRadius: 3, marginLeft: 10 }}>
                             <a
                               style={{ color: "#0061aa" }}
                               onClick={() => {
