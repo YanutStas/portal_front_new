@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import styles from "./Anime.module.css";
+import { Flex } from "antd";
 
 const arr = [
   "M137.6,0.1L157,53.7h-6.6l-12.9-30l-12.9,30h-6.6L137.6,0.1z",
@@ -21,51 +22,53 @@ const arr = [
 
 export default function Preloader() {
   return (
-    <motion.svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 275.8 300.5"
-      className={styles.item}
-      height={150}
-      width={150}
-      animate={{
-        opacity: [0, 1],
-      }}
-      transition={{
-        duration: 0.5,
-      }}
-    >
-      <motion.path
-        d={
-          "M138.1,59.7c50.2,0,91,40.5,91,90.4s-40.8,90.4-91,90.4s-91-40.5-91-90.4S87.8,59.7,138.1,59.7L138.1,59.7z M138.1,78.4 c-39.9,0-72.2,32.1-72.2,71.7s32.3,71.8,72.2,71.8s72.2-32.2,72.2-71.8S177.9,78.4,138.1,78.4z"
-        }
-        fill={"rgba(227, 112, 33, 1)"}
-        strokeWidth={0}
-      />
-      {arr.map((item, index) => (
+    <Flex justify="center">
+      <motion.svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 275.8 300.5"
+        className={styles.item}
+        height={150}
+        width={150}
+        animate={{
+          opacity: [0, 1],
+        }}
+        transition={{
+          duration: 0.5,
+        }}
+      >
         <motion.path
-          key={index}
-          d={item}
+          d={
+            "M138.1,59.7c50.2,0,91,40.5,91,90.4s-40.8,90.4-91,90.4s-91-40.5-91-90.4S87.8,59.7,138.1,59.7L138.1,59.7z M138.1,78.4 c-39.9,0-72.2,32.1-72.2,71.7s32.3,71.8,72.2,71.8s72.2-32.2,72.2-71.8S177.9,78.4,138.1,78.4z"
+          }
+          fill={"rgba(227, 112, 33, 1)"}
           strokeWidth={0}
-          pathLength={0}
-          animate={{
-            scale: [1, 1.3, 1],
-            fill: [
-              "rgba(227, 112, 33, 1)",
-              "rgba(227, 112, 33, 0.5)",
-              "rgba(227, 112, 33, 1)",
-            ],
-            pathLength: [0, 1, 0],
-          }}
-          transition={{
-            delay: index / 7,
-            duration: 1,
-            ease: "easeInOut",
-            times: [0, 0.5, 1],
-            repeat: Infinity,
-            repeatDelay: 1,
-          }}
         />
-      ))}
-    </motion.svg>
+        {arr.map((item, index) => (
+          <motion.path
+            key={index}
+            d={item}
+            strokeWidth={0}
+            pathLength={0}
+            animate={{
+              scale: [1, 1.3, 1],
+              fill: [
+                "rgba(227, 112, 33, 1)",
+                "rgba(227, 112, 33, 0.5)",
+                "rgba(227, 112, 33, 1)",
+              ],
+              pathLength: [0, 1, 0],
+            }}
+            transition={{
+              delay: index / 7,
+              duration: 1,
+              ease: "easeInOut",
+              times: [0, 0.5, 1],
+              repeat: Infinity,
+              repeatDelay: 1,
+            }}
+          />
+        ))}
+      </motion.svg>
+    </Flex>
   );
 }

@@ -22,6 +22,7 @@ export default function CommentInput({
       rules={[
         {
           required: required,
+          message: "Это поле обязательное",
         },
       ]}
     >
