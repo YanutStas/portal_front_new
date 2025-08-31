@@ -1,26 +1,31 @@
 import React, { useState } from "react";
-import { Drawer, theme } from "antd";
+import { Button, Drawer, theme } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import MarkDownText from "./MarkDownText/MarkDownText";
 
-const InfoDrawer = ({ fullDescription, children: label }) => {
+const InfoDrawer = ({ fullDescription, children: label, button = false }) => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const showDrawer = () => setDrawerVisible(true);
   const onClose = () => setDrawerVisible(false);
 
   const { token } = theme.useToken()
-// console.log(token);
+  // console.log(token);
 
   return (
     <>
-      {label}
-      <InfoCircleOutlined
-        onClick={showDrawer}
-        style={{
-          color: token.colorInfoText,
-          transform: "translate(3px, 0px)",
-        }}
-      />
+      {!button &&
+        <>
+          {label}
+          < InfoCircleOutlined
+            onClick={showDrawer}
+            style={{
+              color: token.colorInfoText,
+              transform: "translate(3px, 0px)",
+            }}
+            />
+        </>
+      }
+      {button &&  <Button onClick={showDrawer}>Подробнее...</Button>}
       <Drawer
         title={label}
         placement="right"
