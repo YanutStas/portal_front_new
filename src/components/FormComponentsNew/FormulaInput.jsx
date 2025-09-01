@@ -35,6 +35,10 @@ export default function FormulaInput({
       keys.push(objectProp.formulaDetails[key]);
     }
   }
+  // if (label === "Максимальная мощность (кВт)") {
+  //   min = 670
+  //   valueValidate = true
+  // }
 
   // if (name[1] === "9abe1ffa-1418-4f9f-96cc-31849028a407") {
   //   console.log("formula", formula)

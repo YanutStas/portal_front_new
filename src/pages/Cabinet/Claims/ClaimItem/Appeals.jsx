@@ -6,32 +6,32 @@ import useAppeals from '../../../../stores/Cabinet/useAppeals'
 import Preloader from '../../../../components/Main/Preloader'
 import AppealItem from '../../../../components/Cabinet/Appeal/AppealItem'
 import useDataForForm from '../../../../stores/Cabinet/useDataForForm'
-const appealsByClaim = [
-    // {
-    //     number: "123",
-    //     question: "Хочу изменить фамилию заявителя с Васильченка на Васильченко",
-    //     question_datetime: "2024-11-28 10:42",
-    //     answer: 'Произвели изменения фамилии заявителя на Васильченко',
-    //     answer_datetime: "2024-11-29 11:06"
-    // },
-    // {
-    //     number: "124",
-    //     question: "Когда заявка проверится",
-    //     question_datetime: "2024-11-29 12:21",
-    //     answer: 'Срок проверки заявки состовляет 2 рабочих дня',
-    //     answer_datetime: "2024-11-29 16:33"
-    // },
-    // {
-    //     number: "125",
-    //     question: "Можно ли подписать договор с помощью госуслуг",
-    //     question_datetime: "2024-12-05 09:53",
-    //     // answer: 'Да, Вы можете подписать договор с помощью ЭЦП от госуслуг',
-    //     // answer_datetime: "2024-12-06 10:42"
-    // },
-]
+// const appealsByClaim = [
+//     // {
+//     //     number: "123",
+//     //     question: "Хочу изменить фамилию заявителя с Васильченка на Васильченко",
+//     //     question_datetime: "2024-11-28 10:42",
+//     //     answer: 'Произвели изменения фамилии заявителя на Васильченко',
+//     //     answer_datetime: "2024-11-29 11:06"
+//     // },
+//     // {
+//     //     number: "124",
+//     //     question: "Когда заявка проверится",
+//     //     question_datetime: "2024-11-29 12:21",
+//     //     answer: 'Срок проверки заявки состовляет 2 рабочих дня',
+//     //     answer_datetime: "2024-11-29 16:33"
+//     // },
+//     // {
+//     //     number: "125",
+//     //     question: "Можно ли подписать договор с помощью госуслуг",
+//     //     question_datetime: "2024-12-05 09:53",
+//     //     // answer: 'Да, Вы можете подписать договор с помощью ЭЦП от госуслуг',
+//     //     // answer_datetime: "2024-12-06 10:42"
+//     // },
+// ]
 
 const changeData = (arr) => {
-    console.log("changeData", arr);
+    // console.log("changeData", arr);
     arr.forEach((item, index) => {
         if (item.children) {
             arr[index].selectable = false
@@ -42,7 +42,7 @@ const changeData = (arr) => {
     })
 
 }
-export default function Appeals({ claimId }) {
+export default function Appeals({ claimId, appealsByClaim }) {
     const { setLinks, setStyles, clearDataForForm } = useDataForForm((state) => state)
     const { appeals, fetchAppealsAll, isLoadingAppeals, fetchAppealById, isLoadingAppeal, appeal, clearAppeal } = useAppeals(store => store)
     const [isOpenModalAppeals, setIsOpenModalAppeals] = useState(false)
@@ -62,12 +62,12 @@ export default function Appeals({ claimId }) {
     useEffect(() => {
         if (appeal) {
 
-            console.log(appeal);
+            // console.log(appeal);
             setLinks(appeal.links)
             setStyles(appeal.styles)
         } else {
 
-            console.log("appeal пуст");
+            // console.log("appeal пуст");
         }
     }, [appeal])
 
@@ -109,19 +109,19 @@ export default function Appeals({ claimId }) {
                             padding: 0
                         }
                     }}
-                    extra={item.answer ? <Tag color="green">Отвечено</Tag> : <Tag color="blue">В обработке</Tag>}
+                    extra={<Tag color="blue">{item.currentStatus?.label}</Tag>}
                 >
                     <Flex vertical>
                         <div style={{ padding: 10, paddingLeft: 24 }}>
                             <Typography.Title level={5} style={{ marginTop: 0 }}>Вопрос:</Typography.Title>
                             <Typography.Paragraph>{item.question}</Typography.Paragraph>
-                            <Meta description={moment(item.question_datetime).format('DD.MM.YYYY hh:mm')} />
+                            <Meta description={moment(item.date).format('DD.MM.YYYY hh:mm')} />
                         </div>
-                        {item.answer &&
+                        {item.response &&
                             <div style={{ padding: 10, paddingLeft: 24, backgroundColor: "rgba(0,255,0,.4)" }}>
                                 <Typography.Title level={5} style={{ marginTop: 0 }}>Ответ:</Typography.Title>
-                                <Typography.Paragraph>{item.answer}</Typography.Paragraph>
-                                <Meta description={moment(item.answer_datetime).format('DD.MM.YYYY hh:mm')} />
+                                <Typography.Paragraph>{item.response}</Typography.Paragraph>
+                                <Meta description={moment(item.date).format('DD.MM.YYYY hh:mm')} />
                             </div>
                         }
                     </Flex>
@@ -129,7 +129,22 @@ export default function Appeals({ claimId }) {
 
             )
             }
-            <Button type='primary' onClick={() => { setIsOpenModalAppeals(true) }}>Подать обращение</Button>
+            <Button
+                disabled={appealsByClaim?.length === 0 || appealsByClaim.reduce((accum, item) => {
+                    if (item.response && item.response !== '') {
+                        // console.log(item.response);
+                        // console.log(accum);
+                        
+                        return Number(accum) + 1
+                    } else {
+                        console.log(item.response);
+                        console.log(accum);
+                        return Number(accum)
+                    }
+                }, 0)}
+                type='primary'
+                onClick={() => { setIsOpenModalAppeals(true) }}
+            >Подать обращение</Button>
             <Modal
                 open={isOpenModalAppeals}
                 onCancel={closeModal}

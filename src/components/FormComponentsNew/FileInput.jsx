@@ -200,7 +200,7 @@ const FileInput = ({
     <Card
       title={label}
       style={{
-        borderColor: isAttached ? "#389e0d" : (required ? "red" : token.colorPrimary),
+        borderColor: isAttached ? "#389e0d" : (required ? token.colorPrimary : token.colorPrimary),
         borderWidth: 2,
         // minHeight: 300,
         height: "100%",
@@ -245,7 +245,7 @@ const FileInput = ({
       }
       actions={[
         <>
-          {required && !isAttached && <Tag color="red">Обязателен</Tag>}
+          {required && !isAttached && <Tag color="red">Не добавлен*</Tag>}
           {isAttached ? <Tag color="green">Добавлен</Tag> : (!required && <Tag color={"blue"}>Не добавлен</Tag>)}
         </>
       ]}

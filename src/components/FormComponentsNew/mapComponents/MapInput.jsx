@@ -89,8 +89,8 @@ export default function MapInput({
       }
       actions={[
         <>
-          {required && <Tag color="red">Обязателен</Tag>}
-          {isAttached ? <Tag color="green">Добавлен</Tag> : <Tag color={"blue"}>НЕ добавлен</Tag>}
+          {required && <Tag color="red">Не добавлены*</Tag>}
+          {isAttached ? <Tag color="green">Добавлены</Tag> : <Tag color={"blue"}>Не добавлены</Tag>}
         </>
       ]}
     >

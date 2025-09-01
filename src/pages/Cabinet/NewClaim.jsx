@@ -180,7 +180,7 @@ export default function NewClaim() {
                 //   // console.log(parent);                  
                 // },
                 behavior: (actions) => {
-                  console.log(actions);
+                  // console.log(actions);
                   actions.forEach(({ el, top, left }) => {
                     // implement the scroll anyway you want
                     el.scrollTop = top - 100

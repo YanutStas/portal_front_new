@@ -88,7 +88,7 @@ if(!claim){
     {
       key: 5,
       label: `Обращения`,
-      children: <Appeals claimId={claim?.id}/>,
+      children: <Appeals claimId={claim?.id} appealsByClaim={claim?.appeals}/>,
     },
   ]
 
