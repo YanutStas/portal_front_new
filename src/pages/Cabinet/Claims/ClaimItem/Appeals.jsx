@@ -137,7 +137,7 @@ export default function Appeals({ claimId, appealsByClaim }) {
             )
             }
             <Button
-                disabled={appealsByClaim?.length !== 0 && appealsByClaim.reduce((accum, item) => item.answer ? true : accum, false)}
+                disabled={appealsByClaim?.length !== 0 && appealsByClaim.reduce((accum, item) => !item.answer ? true : accum, false)}
                 type='primary'
                 onClick={() => { setIsOpenModalAppeals(true) }}
             >Подать обращение</Button>
