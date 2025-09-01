@@ -102,14 +102,21 @@ export default function Appeals({ claimId, appealsByClaim }) {
             {appealsByClaim && appealsByClaim.map((item, index) =>
                 <Card
                     key={index}
-                    title={`Обращение №${item.number}`}
+                    title={<Flex align="center" justify='space-between' wrap={'wrap'} gap={10} style={{marginBottom:10,marginTop:10}}>
+                        <div style={{ fontSize: 20 }}>
+                            Обращение №{item.number} <span style={{color:"gray"}}>по теме</span> {item.typeAppeal.name}
+                            </div>
+                        <div>
+                            <Tag color="blue">{item.currentStatus?.label}</Tag>
+                        </div>
+                    </Flex>}
                     style={{ maxWidth: "100%", marginBottom: 20, border: `1px solid ${token.colorIcon}` }}
                     styles={{
                         body: {
                             padding: 0
                         }
                     }}
-                    extra={<Tag color="blue">{item.currentStatus?.label}</Tag>}
+                // extra={}
                 >
                     <Flex vertical>
                         <div style={{ padding: 10, paddingLeft: 24 }}>
@@ -117,11 +124,11 @@ export default function Appeals({ claimId, appealsByClaim }) {
                             <Typography.Paragraph>{item.question}</Typography.Paragraph>
                             <Meta description={moment(item.date).format('DD.MM.YYYY hh:mm')} />
                         </div>
-                        {item.response &&
+                        {item.answer &&
                             <div style={{ padding: 10, paddingLeft: 24, backgroundColor: "rgba(0,255,0,.4)" }}>
                                 <Typography.Title level={5} style={{ marginTop: 0 }}>Ответ:</Typography.Title>
-                                <Typography.Paragraph>{item.response}</Typography.Paragraph>
-                                <Meta description={moment(item.date).format('DD.MM.YYYY hh:mm')} />
+                                <Typography.Paragraph>{item.answer.text}</Typography.Paragraph>
+                                <Meta description={moment(item.answer.date).format('DD.MM.YYYY hh:mm')} />
                             </div>
                         }
                     </Flex>
@@ -131,14 +138,14 @@ export default function Appeals({ claimId, appealsByClaim }) {
             }
             <Button
                 disabled={appealsByClaim?.length === 0 || appealsByClaim.reduce((accum, item) => {
-                    if (item.response && item.response !== '') {                        
+                    if (item.answer) {
                         return Number(accum) + 1
                     } else {
                         console.log(item.response);
                         console.log(accum);
                         return Number(accum)
                     }
-                }, 0)}
+                }, 0) === 0}
                 type='primary'
                 onClick={() => { setIsOpenModalAppeals(true) }}
             >Подать обращение</Button>
