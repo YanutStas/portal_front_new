@@ -104,7 +104,7 @@ export default function Appeals({ claimId, appealsByClaim }) {
                     key={index}
                     title={<Flex align="center" justify='space-between' wrap={'wrap'} gap={10} style={{ marginBottom: 10, marginTop: 10 }}>
                         <div style={{ fontSize: 20 }}>
-                            Обращение №{item.number} <span style={{ color: "gray" }}>по теме</span> {item.typeAppeal.name}
+                            Обращение №{item.number} <span style={{ color: "gray" }}>по теме</span> "{item.typeAppeal.name}"
                         </div>
                         <div>
                             <Tag color="blue">{item.currentStatus?.label}</Tag>
@@ -137,15 +137,7 @@ export default function Appeals({ claimId, appealsByClaim }) {
             )
             }
             <Button
-                disabled={appealsByClaim?.length === 0 || appealsByClaim.reduce((accum, item) => {
-                    if (item.answer) {
-                        return Number(accum) + 1
-                    } else {
-                        console.log(item.response);
-                        console.log(accum);
-                        return Number(accum)
-                    }
-                }, 0) === 0}
+                disabled={appealsByClaim?.length !== 0 && appealsByClaim.reduce((accum, item) => item.answer ? true : accum, false)}
                 type='primary'
                 onClick={() => { setIsOpenModalAppeals(true) }}
             >Подать обращение</Button>
