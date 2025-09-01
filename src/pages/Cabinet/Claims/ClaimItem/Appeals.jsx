@@ -131,10 +131,7 @@ export default function Appeals({ claimId, appealsByClaim }) {
             }
             <Button
                 disabled={appealsByClaim?.length === 0 || appealsByClaim.reduce((accum, item) => {
-                    if (item.response && item.response !== '') {
-                        // console.log(item.response);
-                        // console.log(accum);
-                        
+                    if (item.response && item.response !== '') {                        
                         return Number(accum) + 1
                     } else {
                         console.log(item.response);

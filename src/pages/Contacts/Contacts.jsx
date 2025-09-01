@@ -24,6 +24,7 @@ import ContactInfo from "../../components/Contacts/ContactInfo";
 import AppHelmet from "../../components/Global/AppHelmet";
 import Container from "../../components/Container";
 import getPublicFile from "../../lib/getPublicFile";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const { Text, Title } = Typography;
 const { Search } = Input;
@@ -58,6 +59,7 @@ export default function Contacts() {
 
   return (
     <>
+      <ScrollToTop />
       <AppHelmet title={"Контакты"} desc={"Контакты"} />
       {loading &&
         <div style={{ display: "flex", justifyContent: "center" }}>

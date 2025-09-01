@@ -6,6 +6,8 @@ import TP from "../../img/about/TP.png";
 import TPDark from "../../img/about/TP_dark.png";
 
 import useGlobal from "../../stores/useGlobal";
+import Container from "../../components/Container";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const { Title, Paragraph } = Typography;
 
@@ -26,7 +28,9 @@ export default function About() {
   return (
     <>
       <AppHelmet title="О нас" desc="Информация о компании" />
-      <div className={styles.container} ref={containerRef}>
+      <ScrollToTop />
+      <Container>
+
         <div className={styles.content}>
           <div style={{ marginBottom: 15 }}>
 
@@ -37,7 +41,7 @@ export default function About() {
             <Col xs={24} md={12}>
               <div className={styles.textBlock}>
                 <Paragraph>
-                     Акционерное общество «Московская областная энергосетевая
+                  Акционерное общество «Московская областная энергосетевая
                   компания» создано на основании постановления Правительства
                   Московской области от 19.07.2005 № 456/26 «Об участии
                   Московской области в создании открытого акционерного общества
@@ -50,7 +54,7 @@ export default function About() {
                   года.
                 </Paragraph>
                 <Paragraph>
-                     Создание АО «Мособлэнерго» в 2005 году со 100-процентным
+                  Создание АО «Мособлэнерго» в 2005 году со 100-процентным
                   участием в уставном капитале Московской области было вызвано
                   необходимостью решить накопившиеся проблемы в региональном
                   электроснабжении, такие как дефицит электрической мощности,
@@ -58,7 +62,7 @@ export default function About() {
                   уровень потерь при передаче электрической энергии.
                 </Paragraph>
                 <Paragraph>
-                     Сегодня АО «Мособлэнерго» является одной из крупнейших
+                  Сегодня АО «Мособлэнерго» является одной из крупнейших
                   энергосетевых компаний региона, которая обеспечивает
                   потребности экономики в передающих мощностях, является
                   надежным партнером государственных органов исполнительной
@@ -134,7 +138,7 @@ export default function About() {
             </Col>
           </Row>
         </div>
-      </div>
+      </Container>
     </>
   );
 }

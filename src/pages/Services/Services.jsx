@@ -19,6 +19,7 @@ import { IconDocument } from "../../components/icons/IconDocument";
 import { IconFolder } from "../../components/icons/IconFolder";
 import { IconService } from "../../components/icons/IconService";
 import getPublicFile from "../../lib/getPublicFile";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const { Title } = Typography;
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
@@ -78,6 +79,7 @@ export default function Services() {
 
   return (
     <>
+      <ScrollToTop />
       <AppHelmet
         title={"Каталог услуг"}
         desc="Услуги компании"

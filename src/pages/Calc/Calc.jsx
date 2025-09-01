@@ -12,6 +12,7 @@ import CalcTable from "./CalcTable";
 import Container from "../../components/Container";
 import DocumentationCalc from "./DocumentationCalc";
 import MobileCalcView from "./MobileCalcView";
+import ScrollToTop from "../../components/ScrollToTop";
 
 TweenOne.plugins.push(Children);
 
@@ -62,6 +63,7 @@ export default function Calc() {
 
   return (
     <>
+      <ScrollToTop />
       <Container>
         <AppHelmet title={"Калькулятор"} desc={"Калькулятор мощности"} />
         {isMobile ? (

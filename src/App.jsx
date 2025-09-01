@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { ConfigProvider, Layout, theme } from "antd";
-import { Route, BrowserRouter, Routes } from "react-router-dom";
+import { Route, BrowserRouter, Routes, ScrollRestoration } from "react-router-dom";
 import "./App.css";
 
 import Main from "./pages/Main";
@@ -97,9 +97,10 @@ export default function App() {
           <CodeModal />
           <AppHeader />
           <Layout>
+            {/* <ScrollRestoration /> */}
             {/* {auth && <CabinetMenu />} */}
-            <Content 
-            className={"mainContent"}
+            <Content
+              className={"mainContent"}
             // className={`${auth ? "mainContentAuth" : "mainContent"}`}
             >
               <Routes>
