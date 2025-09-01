@@ -102,10 +102,10 @@ export default function Appeals({ claimId, appealsByClaim }) {
             {appealsByClaim && appealsByClaim.map((item, index) =>
                 <Card
                     key={index}
-                    title={<Flex align="center" justify='space-between' wrap={'wrap'} gap={10} style={{marginBottom:10,marginTop:10}}>
+                    title={<Flex align="center" justify='space-between' wrap={'wrap'} gap={10} style={{ marginBottom: 10, marginTop: 10 }}>
                         <div style={{ fontSize: 20 }}>
-                            Обращение №{item.number} <span style={{color:"gray"}}>по теме</span> {item.typeAppeal.name}
-                            </div>
+                            Обращение №{item.number} <span style={{ color: "gray" }}>по теме</span> {item.typeAppeal.name}
+                        </div>
                         <div>
                             <Tag color="blue">{item.currentStatus?.label}</Tag>
                         </div>
@@ -118,17 +118,17 @@ export default function Appeals({ claimId, appealsByClaim }) {
                     }}
                 // extra={}
                 >
-                    <Flex vertical>
-                        <div style={{ padding: 10, paddingLeft: 24 }}>
-                            <Typography.Title level={5} style={{ marginTop: 0 }}>Вопрос:</Typography.Title>
-                            <Typography.Paragraph>{item.question}</Typography.Paragraph>
-                            <Meta description={moment(item.date).format('DD.MM.YYYY hh:mm')} />
+                    <Flex vertical gap={20} style={{ padding: 10, paddingLeft: 24, }}>
+                        <div >
+                            <Typography.Title level={5} style={{ marginTop: 0 }}>Вопрос <span style={{ color: "gray", fontSize: 14 }}>от {moment(item.date).format('DD.MM.YYYY hh:mm')}</span></Typography.Title>
+                            <Typography.Text>{item.question}</Typography.Text>
+                            {/* <Meta description={moment(item.date).format('DD.MM.YYYY hh:mm')} /> */}
                         </div>
                         {item.answer &&
-                            <div style={{ padding: 10, paddingLeft: 24, backgroundColor: "rgba(0,255,0,.4)" }}>
-                                <Typography.Title level={5} style={{ marginTop: 0 }}>Ответ:</Typography.Title>
-                                <Typography.Paragraph>{item.answer.text}</Typography.Paragraph>
-                                <Meta description={moment(item.answer.date).format('DD.MM.YYYY hh:mm')} />
+                            <div style={{ marginLeft: 30, paddingLeft: 10, borderLeft: "4px solid #0061aa" }}>
+                                <Typography.Title level={5} style={{ marginTop: 0 }}>Ответ <span style={{ color: "gray", fontSize: 14 }}>от {moment(item.answer.date).format('DD.MM.YYYY hh:mm')}</span></Typography.Title>
+                                <Typography.Text>{item.answer.text}</Typography.Text>
+                                {/* <Meta description={moment(item.answer.date).format('DD.MM.YYYY hh:mm')} /> */}
                             </div>
                         }
                     </Flex>
