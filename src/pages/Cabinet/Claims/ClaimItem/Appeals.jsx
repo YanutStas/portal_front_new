@@ -120,13 +120,13 @@ export default function Appeals({ claimId, appealsByClaim }) {
                 >
                     <Flex vertical gap={20} style={{ padding: 10, paddingLeft: 24, }}>
                         <div >
-                            <Typography.Title level={5} style={{ marginTop: 0 }}>Вопрос <span style={{ color: "gray", fontSize: 14 }}>от {moment(item.date).format('DD.MM.YYYY hh:mm')}</span></Typography.Title>
+                            <Typography.Title level={5} style={{ marginTop: 0 }}>Вопрос <span style={{ color: "gray", fontSize: 14 }}>от {moment(item.date).format('DD.MM.YYYY HH:mm')}</span></Typography.Title>
                             <Typography.Text>{item.question}</Typography.Text>
                             {/* <Meta description={moment(item.date).format('DD.MM.YYYY hh:mm')} /> */}
                         </div>
                         {item.answer &&
                             <div style={{ marginLeft: 30, paddingLeft: 10, borderLeft: "4px solid #0061aa" }}>
-                                <Typography.Title level={5} style={{ marginTop: 0 }}>Ответ <span style={{ color: "gray", fontSize: 14 }}>от {moment(item.answer.date).format('DD.MM.YYYY hh:mm')}</span></Typography.Title>
+                                <Typography.Title level={5} style={{ marginTop: 0 }}>Ответ <span style={{ color: "gray", fontSize: 14 }}>от {moment(item.answer.date).format('DD.MM.YYYY HH:mm')}</span></Typography.Title>
                                 <Typography.Text>{item.answer.text}</Typography.Text>
                                 {/* <Meta description={moment(item.answer.date).format('DD.MM.YYYY hh:mm')} /> */}
                             </div>
