@@ -14,6 +14,7 @@ const useRegistration = create((set, get) => ({
   codeRequested: false,
   emailVerified: false,
   codeRequestedEmail: false,
+  isRegistering: false,
 
   setRegistrationStep: (step) => set(() => ({ registrationStep: step })),
   setPhone: (phone) => set(() => ({ phone })),
@@ -113,12 +114,14 @@ const useRegistration = create((set, get) => ({
     }
 
     try {
+      set({ isRegistering: true });
+      
       const registrationResponse = await axios.post(
         `${backServer}/api/registration/newuser`,
         { email: get().email, phone: get().phone, password },
         { withCredentials: true }
       );
-
+      
       if (registrationResponse.data.status === "ok") {
         localStorage.setItem("jwt", registrationResponse.data.jwt);
         useAuth.getState().toggleAuth(true);
@@ -126,7 +129,9 @@ const useRegistration = create((set, get) => ({
       } else {
         console.error(registrationResponse.data.message);
       }
+      set({ isRegistering: false });
     } catch (error) {
+      set({ isRegistering: false });
       console.error("Ошибка при регистрации пользователя", error);
     }
   },

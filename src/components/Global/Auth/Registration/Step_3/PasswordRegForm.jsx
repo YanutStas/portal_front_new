@@ -6,7 +6,7 @@ const { Paragraph } = Typography;
 
 export default function PasswordRegForm() {
   const [form] = Form.useForm();
-  const { registerUser } = useRegistration();
+  const { registerUser, isRegistering } = useRegistration();
 
   const onFinish = (values) => {
     if (values.password !== values.repeat_password) {
@@ -64,7 +64,7 @@ export default function PasswordRegForm() {
           <Input.Password />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button disabled={isRegistering} type="primary" htmlType="submit">
             Зарегистрироваться
           </Button>
         </Form.Item>
