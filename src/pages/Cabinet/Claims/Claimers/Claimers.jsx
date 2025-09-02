@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Card, Typography, Skeleton, Descriptions, theme, Divider, Flex } from "antd";
+import { Card, Typography, Skeleton, Descriptions, theme, Divider, Flex, Empty } from "antd";
 import { FileSearchOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import AppHelmet from "../../../../components/Global/AppHelmet";
@@ -57,7 +57,15 @@ export default function Claimers() {
         </div>
       ) : (
         <div className={styles.claimsContainer}>
-          {personalAccounts && <Divider orientation="left">
+          {claims?.length === 0 &&  personalAccounts.length ===0 && 
+          <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={
+                    <Typography.Text>Поданных заявок пока нет</Typography.Text>
+                }
+            />
+          }
+          {personalAccounts && personalAccounts.length > 0 && <Divider orientation="left">
             <Flex gap={10} align="center">
               <UserOutlined style={{ fontSize: 24 }} />
               <Typography.Text>Заявки от:</Typography.Text>
