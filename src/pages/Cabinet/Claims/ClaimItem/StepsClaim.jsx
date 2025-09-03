@@ -83,6 +83,11 @@ export default function StepsClaim({ steps = false, claimId, versionId }) {
                             <Typography.Text style={{ color: "gray", fontSize: 14 }}>
                               {moment(item.action.date).format("DD.MM.YYYY hh:mm")}
                             </Typography.Text>
+                            {item.action.email &&
+                              <Typography.Text style={{ color: "gray", fontSize: 14 }}>
+                                {item.action.email}
+                              </Typography.Text>
+                            }
                             <Typography.Text style={{ color: "gray", fontSize: 14 }}>
                               №{item.action.number}
                             </Typography.Text>
