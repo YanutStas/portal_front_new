@@ -62,7 +62,7 @@ if(!claim){
   const tabs = [
     {
       key: 1,
-      label: `Процесс выполнения`,
+      label: <Badge count={claim?.countTasks} offset={[0,5]}><Typography.Text style={{padding:"10px 10px"}}>Процесс выполнения</Typography.Text></Badge>,
       children: <StepsClaim steps={claim?.steps} claimId={claim?.id} versionId={claim?.versionId}/>,
     },
     // {
@@ -77,17 +77,17 @@ if(!claim){
     // },
     {
       key: 6,
-      label: `Информация по заявке`,
+      label: <Typography.Text style={{padding:"10px 10px"}}>Информация по заявке</Typography.Text>,
       children: <InfoClaim template={claim?.template} values={claim?.values} pdf={pdf}/>,
     },
     {
       key: 3,
-      label: `Документы`,
+      label: <Typography.Text style={{padding:"10px 10px"}}>Документы</Typography.Text>,
       children: <Docs files={claim?.files} />,
     },
     {
       key: 5,
-      label: `Обращения`,
+      label: <Badge count={claim?.countAppeals} offset={[0,5]}><Typography.Text style={{padding:"10px 10px"}}>Обращения</Typography.Text></Badge>,
       children: <Appeals claimId={claim?.id} appealsByClaim={claim?.appeals}/>,
     },
   ]

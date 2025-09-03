@@ -57,6 +57,9 @@ export default function StepsClaim({ steps = false, claimId, versionId }) {
                         <Typography.Text style={{ color: "gray", fontSize: 14 }}>{moment(item.date).format('DD.MM.YYYY hh:mm')}</Typography.Text>
                         <Flex gap={5}>
                           <Typography.Text style={{ fontSize: 18 }}>{item.name}</Typography.Text>
+                          {item.shortDescription &&
+                            <Typography.Text style={{ color: "gray", fontSize: 14 }}>{item.shortDescription}</Typography.Text>
+                          }
                           {item.description && <InfoCircleOutlined style={{ marginBottom: 10, fontSize: 14, color: "gray" }} onClick={() => { handlerOpenDrawer(item.name, item.description) }} />}
                         </Flex>
                         {item.files && <>

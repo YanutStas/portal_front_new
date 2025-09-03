@@ -50,6 +50,7 @@
   transition: box-shadow 0.3s;
   height: 100%;
   min-height: 200px;
+  /* position: relative; */
 }
 
 .styleCard:hover {
