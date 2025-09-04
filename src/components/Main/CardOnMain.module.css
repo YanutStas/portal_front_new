@@ -1,0 +1,14 @@
+.card {
+    height: 400px;
+    width: 304px;
+    border-radius: 30px;
+    padding: 20px;
+    /* min-width: 200px */
+}
+
+@media (max-width:650px) {
+    .card {
+        
+        width: 100%;
+    }
+}

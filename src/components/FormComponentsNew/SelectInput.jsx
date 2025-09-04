@@ -27,10 +27,10 @@ export default function SelectInput({
   const claim = useClaims((state) => state.claim);
   let options = false
   // console.log(links);
-  
-  if(links){
+
+  if (links) {
     options = links[Ref_Key]?.options;
-  }else{
+  } else {
     options = read ? claim?.template.portalFields.links[Ref_Key]?.options : serviceItem?.links[Ref_Key]?.options;
   }
 
@@ -54,6 +54,7 @@ export default function SelectInput({
       initialValue={defaultValue}
     >
       <Select
+        allowClear
         style={{ width: "100%" }}
         placeholder={placeholder}
         showSearch

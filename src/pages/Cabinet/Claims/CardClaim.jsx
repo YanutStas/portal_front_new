@@ -27,7 +27,7 @@ export default function CardClaim({ item, borderColor }) {
                 }}
             // extra={<div><Typography.Text style={{ color: token.colorTextDescription }}>От: </Typography.Text><Typography.Text>{moment(item.create).format('DD.MM.YYYY HH:mm')}</Typography.Text></div>}
             >
-                {(item.countAppeals > 0 || item.countTasks > 0) && <div style={{ position: "absolute", borderRadius: 10, top: -5, right: -5 }}><Badge count={Number(item.countAppeals)||0 + Number(item.countTasks)||0} showZero /></div>}
+                {(item.countAppeals > 0 || item.countTasks > 0) && <div style={{ position: "absolute", borderRadius: 10, top: -5, right: -5 }}><Badge count={(Number(item.countAppeals) || 0) + (Number(item.countTasks) || 0)} showZero /></div>}
 
                 <Descriptions column={1}>
                     {/* <Descriptions.Item label="Создана">

@@ -175,6 +175,7 @@ if(!claim){
           <Tabs
             type="card"
             items={tabs}
+            destroyInactiveTabPane
           // tabBarGutter={5}
           // centered
           />
