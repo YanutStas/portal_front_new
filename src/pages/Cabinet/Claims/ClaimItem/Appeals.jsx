@@ -44,15 +44,24 @@ const changeData = (arr) => {
 }
 export default function Appeals({ claimId, appealsByClaim }) {
     const { setLinks, setStyles, clearDataForForm } = useDataForForm((state) => state)
-    const { appeals, fetchAppealsAll, isLoadingAppeals, fetchAppealById, isLoadingAppeal, appeal, clearAppeal } = useAppeals(store => store)
+    const { appeals,
+        fetchAppealsAll,
+        isLoadingAppeals,
+        fetchAppealById,
+        isLoadingAppeal,
+        appeal,
+        clearAppeal,
+        readingAnswer,
+        isReadingAnswer } = useAppeals(store => store)
     const [isOpenModalAppeals, setIsOpenModalAppeals] = useState(false)
     const [treeData, setTreeData] = useState(false)
     const [selectType, setSelectType] = useState(false)
+    const [reload, setReload] = useState(false)
     const token = theme.useToken().token
 
     useEffect(() => {
         fetchAppealsAll()
-    }, [])
+    }, [reload])
     useEffect(() => {
         if (appeals.length > 0) {
             changeData(appeals)
@@ -74,7 +83,6 @@ export default function Appeals({ claimId, appealsByClaim }) {
     useEffect(() => {
         // console.log(appeal);
         if (selectType) {
-
             fetchAppealById(selectType)
         } else {
             clearAppeal()
@@ -90,6 +98,16 @@ export default function Appeals({ claimId, appealsByClaim }) {
         clearAppeal()
         clearDataForForm()
         setIsOpenModalAppeals(false)
+    }
+    const readAnswer = async (id) => {
+        // console.log("id", id);
+        await readingAnswer(id)
+        setReload(!reload)
+        // if (await readingAnswer(id)) {
+        //     setReload(!reload)
+        // } else {
+        //     console.log('Ошибка при прочтении')
+        // }
     }
     return (
         <div>
@@ -136,7 +154,14 @@ export default function Appeals({ claimId, appealsByClaim }) {
                                     <Typography.Text style={{ color: "gray", fontSize: 12 }}>{moment(item.answer.date).format('DD.MM.YYYY HH:mm')}</Typography.Text>
                                     <Typography.Text style={{ marginTop: 0, marginBottom: 0, fontSize: 20, fontWeight: 600, lineHeight: 1 }}>Ответ </Typography.Text>
                                 </Flex>
-                                <Typography.Text>{item.answer.text}</Typography.Text>
+                                {item.answer.answerRead &&
+                                    <Typography.Text>{item.answer.text}</Typography.Text>
+                                }
+                                {!item.answer.answerRead &&
+                                    <Button disabled={isReadingAnswer} type='primary' onClick={() => {
+                                        readAnswer(item.Ref_Key)
+                                    }}>Прочитать ответ</Button>
+                                }
                                 {/* <Meta description={moment(item.answer.date).format('DD.MM.YYYY hh:mm')} /> */}
                             </div>
                         }

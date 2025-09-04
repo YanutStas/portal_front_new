@@ -7,6 +7,7 @@ const useAppeals = create((set, get) => ({
     isLoadingAppeals: false,
     appeal: false,
     isLoadingAppeal: false,
+    isReadingAnswer: false,
     clearAppeal: () => {
         set({ appeal: false });
     },
@@ -58,6 +59,7 @@ const useAppeals = create((set, get) => ({
 
     createNewAppeal: async (data) => {
         try {
+            set({ isReadingAnswer: true });
             const token = localStorage.getItem("jwt");
             const response = await axios.post(`${backServer}/api/cabinet/appeals`,
                 {
@@ -68,16 +70,43 @@ const useAppeals = create((set, get) => ({
                         Authorization: `Bearer ${token}`,
                     },
                 });
-            console.log(response);
+            // console.log(response);
 
             if (response.data) {
+                set({ isReadingAnswer: false });
                 return true
             } else {
+                set({ isReadingAnswer: false });
                 console.log("Задача не создана");
                 return false
             }
         } catch (error) {
+            set({ isReadingAnswer: false });
             console.error("Ошибка при создании задачи:", error);
+        }
+    },
+    readingAnswer: async (id) => {
+        try {
+            const token = localStorage.getItem("jwt");
+            const response = await axios.post(`${backServer}/api/cabinet/appeals/read`,
+                {
+                    id
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+            // console.log(response);
+
+            if (response.data) {
+                return true
+            } else {
+                console.log("Ответ не прочитан");
+                return false
+            }
+        } catch (error) {
+            console.error("Ошибка при прочтении ответа:", error);
         }
     }
 
