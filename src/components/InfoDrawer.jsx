@@ -5,7 +5,11 @@ import MarkDownText from "./MarkDownText/MarkDownText";
 
 const InfoDrawer = ({ fullDescription, children: label, button = false }) => {
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const showDrawer = () => setDrawerVisible(true);
+  const showDrawer = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    setDrawerVisible(true)
+  };
   const onClose = () => setDrawerVisible(false);
 
   const { token } = theme.useToken()

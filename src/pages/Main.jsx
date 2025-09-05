@@ -6,6 +6,11 @@ import ScrollToTop from "../components/ScrollToTop";
 import { Link } from "react-router-dom";
 import CartOnMain from "../components/Main/CardOnMain";
 const { Title, Paragraph } = Typography;
+import imageDoc from '../img/main/docs.svg'
+import imageServices from '../img/main/services.svg'
+import imageCalc from '../img/main/calc.svg'
+import imageAbout from '../img/main/about.svg'
+import imageContacts from '../img/main/contacts.svg'
 
 
 const data = [
@@ -18,32 +23,42 @@ const cards = [
   {
     title: "Каталог услуг",
     url: "/services",
-    color: "#D0DCF4",
-    dataList: data,
+    color: "rgba(127,127,127,0.2)",
+    // color: "#D0DCF4",
+    // dataList: data,
+    image: imageServices
   },
   {
     title: "Калькулятор",
     url: "/calc",
-    color: "#EDE8F6",
-    text: "Калькулятор мощности",
+    color: "rgba(127,127,127,0.2)",
+    // color: "#EDE8F6",
+    // text: "Калькулятор мощности",
+    image: imageCalc
   },
   {
     title: "Информация",
     url: "/docs",
-    color: "#E2E8F0",
-    text: "Документация и законодательство",
+    color: "rgba(127,127,127,0.2)",
+    // color: "#E2E8F0",
+    // text: "Документация и законодательство",
+    image: imageDoc
   },
   {
     title: "О нас",
     url: "/about",
-    color: "#d0ecf4ff",
-    text: "Информация о компании",
+    color: "rgba(127,127,127,0.2)",
+    // color: "#d0ecf4ff",
+    // text: "Информация о компании",
+    image: imageAbout
   },
   {
     title: "Контакты",
     url: "/contacts",
-    color: "#f4d0d5ff",
-    text: "Контакты ЦОК и ПОК",
+    color: "rgba(127,127,127,0.2)",
+    // color: "#f4d0d5ff",
+    // text: "Контакты ЦОК и ПОК",
+    image: imageContacts
   },
 ]
 export default function Main() {
@@ -67,7 +82,7 @@ export default function Main() {
         </Flex>
         <Flex gap={20} wrap={"wrap"} justify="center">
           {cards.map((item, index) =>
-            <CartOnMain key={index} color={item.color} dataList={item.dataList} url={item.url} title={item.title} text={item.text} />
+            <CartOnMain key={index} {...item} />
           )}
 
           {/* <CartOnMain color={"#D0DCF4"} dataList={data} url="/services" title="Каталог услуг" />
