@@ -15,7 +15,7 @@ const useAuth = create((set, get) => {
     authTimer: 0,
     redirection: "",
     showErrorModal: false,
-    authTab: "1", // Новое состояние для выбора вкладки
+    authTab: "1",
 
     toggleAuth: (value) => {
       set((state) => ({
@@ -76,17 +76,17 @@ const useAuth = create((set, get) => {
           });
         }
       } catch (error) {
-        if (error.message === "Network Error" || error.code === "ERR_NETWORK") {
-          set(() => ({
-            showErrorModal: true,
-          }));
-        } else {
+        // if (error.message === "Network Error" || error.code === "ERR_NETWORK") {
+        //   set(() => ({
+        //     showErrorModal: true,
+        //   }));
+        // } else {
           set(() => ({
             loginError: error.response?.data?.message || "Ошибка авторизации.",
             authTimer: 0,
-            showErrorModal: false,
+            showErrorModal: true,
           }));
-        }
+        // }
       }
     },
 

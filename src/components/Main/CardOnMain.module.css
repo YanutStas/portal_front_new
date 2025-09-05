@@ -4,11 +4,16 @@
     border-radius: 30px;
     padding: 20px;
     /* min-width: 200px */
+    transition: box-shadow .2s linear;
+}
+
+.card:hover {
+    box-shadow: 2px 2px 8px 0px rgba(34, 60, 80, 0.2);
 }
 
 @media (max-width:650px) {
     .card {
-        
+
         width: 100%;
     }
 }

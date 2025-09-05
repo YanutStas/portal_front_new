@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import axios from "axios";
-import { path } from "framer-motion/client";
+// import { path } from "framer-motion/client";
 
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 

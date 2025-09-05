@@ -8,12 +8,10 @@ import styles from './CardOnMain.module.css'
 export default function CardOnMain({ title, url, dataList, text, color }) {
     return (
         <Link to={url}
-         style={{ backgroundColor: color,  }}
-                className={styles.card}
+            style={{ backgroundColor: color, }}
+            className={styles.card}
         >
-            <div
-               
-            >
+            <div>
                 <Title level={2} style={{ textAlign: "center" }}>
                     {title}
                 </Title>
