@@ -65,7 +65,7 @@ export const Anime = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 275.8 300.5"
           className={styles.item}
-          height={300}
+          height={200}
           width={500}
           style={{ zIndex: 10 }}
         >

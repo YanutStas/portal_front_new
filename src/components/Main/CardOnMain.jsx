@@ -1,24 +1,26 @@
-import { Image, List } from 'antd'
+import { Image, List, theme } from 'antd'
 import Paragraph from 'antd/es/typography/Paragraph'
 import Title from 'antd/es/typography/Title'
+import Text from 'antd/es/typography/Text'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styles from './CardOnMain.module.css'
 
 export default function CardOnMain({ title, url, dataList, text, color, image }) {
+    const { token } = theme.useToken()
+    console.log(token);
+
     return (
         <Link to={url}
-            style={{ backgroundColor: color, }}
+            style={{ backgroundColor: token.colorBgContainer, borderColor: token.colorBorderSecondary }}
             className={styles.card}
         >
             <div>
-                <Title level={2} style={{ 
-                    textAlign: "center",
-                    // color:"rgb(227, 112, 33)" 
-                    // color:"rgb(0, 97, 170)" 
-                    }}>
-                    {title}
-                </Title>
+                <div className={styles.titleContainer}>
+                    <Text className={styles.title}>
+                        {title}
+                    </Text>
+                </div>
                 {dataList &&
                     <List
                         size="small"
