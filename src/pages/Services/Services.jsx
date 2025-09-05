@@ -113,9 +113,9 @@ export default function Services() {
         </>
         {/* )} */}
         {isLoading ? (
-          <Flex style={{ height: "300px" }} align="center" justify="center">
+          
             <Preloader />
-          </Flex>
+          
         ) : error ? (
           <ErrorModal
             visible={!!error}

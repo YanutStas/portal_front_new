@@ -62,9 +62,9 @@ export default function Contacts() {
       <ScrollToTop />
       <AppHelmet title={"Контакты"} desc={"Контакты"} />
       {loading &&
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        
           <Preloader />
-        </div>
+        
       }
 
       {!loading &&

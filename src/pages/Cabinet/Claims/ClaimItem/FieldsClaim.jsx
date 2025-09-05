@@ -114,12 +114,12 @@ export default function FieldsClaim({ template, values }) {
         return <div key={index} style={{ width: "100%", paddingLeft: 10 }}>
             <Flex gap={10} wrap={"wrap"}>
                 {label && <Typography.Text style={{ color: "gray" }}>{label}: </Typography.Text>}
-                <div style={{marginTop:-16}}>
+                <div style={{ marginTop: -16 }}>
 
-                <CoordinatesDisplay coordinates={{
-                    point: value?.point ? [value.point?.lat, value.point?.lon] : null,
-                    polygon: value?.polygon ? value.polygon.map(item => ([item.lat, item.lon])) : null,
-                }} />
+                    <CoordinatesDisplay coordinates={{
+                        point: value?.point ? [value.point?.lat, value.point?.lon] : null,
+                        polygon: value?.polygon ? value.polygon.map(item => ([item.lat, item.lon])) : null,
+                    }} />
                 </div>
             </Flex>
         </div>
@@ -162,43 +162,45 @@ export default function FieldsClaim({ template, values }) {
     }
     const getFields = (fields, inGroup = false, valItem) => {
         return <Row gutter={[10, 10]} align={"stretch"}>{fields.map((field, index) => {
-            if (field.component.Ref_Type === "componentsHiddenInput") {
-                return false
-            }
-            if (field.component.Ref_Type === "componentsDivider") {
-                return getDivider(index, field.label)
-            }
-            if (field.component.Ref_Type === "componentsDateInput") {
-                return getDate(index, field.label, field.idLine)
-            }
-            if (field.component.Ref_Type === "componentsAddressInput") {
-                return getAddress(index, field.label, field.idLine)
-            }
-            if (field.component.Ref_Type === "componentsSwitchInput") {
-                return getSwitch(index, field.label, field.idLine)
-            }
-            if (field.component.Ref_Type === "componentsFileInput") {
-                return getFile(index, field.label, field.idLine)
-            }
-            if (field.component.Ref_Type === "componentsGroupFieldsInput") {
-                return getGroupFields(index, field)
-            }
-            if (field.component.Ref_Type === "componentsTableInput") {
-                return getTable(index, field)
-            }
-            if (field.component.Ref_Type === "componentsLinkInput") {
-                return getField(index, field, field.component.Ref_Key)
-            }
-            if (field.component.Ref_Type === "componentsMapInput") {
-                return getMap(index, field.label, field.idLine)
-            }
-            if (field.component.Ref_Type !== "componentsGroupFieldsInput" &&
-                field.component.Ref_Type !== "componentsTableInput" &&
-                field.component.Ref_Type !== "componentsDivider" &&
-                field.component.Ref_Type !== "componentsAddressInput" &&
-                field.component.Ref_Type !== "componentsMapInput"
-            ) {
-                return getField(index, field, false, valItem)
+            if (field.component.Ref_Type) {
+                if (field.component.Ref_Type === "componentsHiddenInput") {
+                    return false
+                }
+                if (field.component.Ref_Type === "componentsDivider") {
+                    return getDivider(index, field.label)
+                }
+                if (field.component.Ref_Type === "componentsDateInput") {
+                    return getDate(index, field.label, field.idLine)
+                }
+                if (field.component.Ref_Type === "componentsAddressInput") {
+                    return getAddress(index, field.label, field.idLine)
+                }
+                if (field.component.Ref_Type === "componentsSwitchInput") {
+                    return getSwitch(index, field.label, field.idLine)
+                }
+                if (field.component.Ref_Type === "componentsFileInput") {
+                    return getFile(index, field.label, field.idLine)
+                }
+                if (field.component.Ref_Type === "componentsGroupFieldsInput") {
+                    return getGroupFields(index, field)
+                }
+                if (field.component.Ref_Type === "componentsTableInput") {
+                    return getTable(index, field)
+                }
+                if (field.component.Ref_Type === "componentsLinkInput") {
+                    return getField(index, field, field.component.Ref_Key)
+                }
+                if (field.component.Ref_Type === "componentsMapInput") {
+                    return getMap(index, field.label, field.idLine)
+                }
+                if (field.component.Ref_Type !== "componentsGroupFieldsInput" &&
+                    field.component.Ref_Type !== "componentsTableInput" &&
+                    field.component.Ref_Type !== "componentsDivider" &&
+                    field.component.Ref_Type !== "componentsAddressInput" &&
+                    field.component.Ref_Type !== "componentsMapInput"
+                ) {
+                    return getField(index, field, false, valItem)
+                }
             }
         })}
         </Row>
