@@ -162,7 +162,7 @@ export default function FieldsClaim({ template, values }) {
     }
     const getFields = (fields, inGroup = false, valItem) => {
         return <Row gutter={[10, 10]} align={"stretch"}>{fields.map((field, index) => {
-            if (field.component.Ref_Type) {
+            if (field.component?.Ref_Type) {
                 if (field.component.Ref_Type === "componentsHiddenInput") {
                     return false
                 }
