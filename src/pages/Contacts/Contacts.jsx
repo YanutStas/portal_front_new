@@ -62,9 +62,9 @@ export default function Contacts() {
       <ScrollToTop />
       <AppHelmet title={"Контакты"} desc={"Контакты"} />
       {loading &&
-        
-          <Preloader />
-        
+
+        <Preloader />
+
       }
 
       {!loading &&
@@ -180,26 +180,28 @@ export default function Contacts() {
                                     gap: "10px",
                                   }}
                                 >
-                                  {center.files.map((item, index) => (
-                                    <div
-                                      className={styles.cardContainer}
-                                      key={index}
-                                    >
-                                      <Image
-                                        src={item?.id && `${backServer}/uploads/${item?.checksum}.${item?.ext}`}
-                                        onError={async ({ currentTarget }) => {
-                                          // console.log(`${backServer}/uploads/${item.picture?.id}.${item.picture?.ext}`);
+                                  <Image.PreviewGroup>
+                                    {center.files.map((item, index) => (
+                                      <div
+                                        className={styles.cardContainer}
+                                        key={index}
+                                      >
+                                        <Image
+                                          src={item?.id && `${backServer}/uploads/${item?.checksum}.${item?.ext}`}
+                                          onError={async ({ currentTarget }) => {
+                                            // console.log(`${backServer}/uploads/${item.picture?.id}.${item.picture?.ext}`);
 
-                                          currentTarget.onerror = null; // prevents looping
-                                          currentTarget.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D"
-                                          currentTarget.src = item?.id ? await getPicture(item?.id, item?.ext) || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" : (item.isFolder ? folderPic : docPic)
-                                        }}
-                                        // src={getPublicFile(item.id, item.ext)}
-                                        alt={`Фото ${index + 1}`}
-                                        height={200}
-                                      />
-                                    </div>
-                                  ))}
+                                            currentTarget.onerror = null; // prevents looping
+                                            currentTarget.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D"
+                                            currentTarget.src = item?.id ? await getPicture(item?.id, item?.ext) || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" : (item.isFolder ? folderPic : docPic)
+                                          }}
+                                          // src={getPublicFile(item.id, item.ext)}
+                                          alt={`Фото ${index + 1}`}
+                                          height={200}
+                                        />
+                                      </div>
+                                    ))}
+                                  </Image.PreviewGroup>
                                 </div>
                               </div>
                             </div>
