@@ -42,7 +42,7 @@ export default function Docs({ files }) {
             </Typography.Text>
         </Flex>,
         children: <Flex vertical gap={10}>
-            {item.docs.map((item, index) => <Flex vertical gap={10}>
+            {item.docs?.map((item, index) => <Flex vertical gap={10} key={index}>
                 <div>
                     <Typography.Title style={{ marginBottom: 0, marginTop: 0 }} level={4}>{item.name}</Typography.Title>
                     <Typography.Text style={{ color: "gray" }}>от: {moment(item.date).format('DD.MM.YYYY hh:mm')}</Typography.Text>

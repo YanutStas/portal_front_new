@@ -56,14 +56,14 @@ export default function ClaimItem() {
     if (searchParams.get('pay') === "success") setOpenSuccessPay(true)
     if (searchParams.get('pay') === "fail") setOpenFailPay(true)
   }, [searchParams]);
-if(!claim){
-  return <Preloader />
-}
+  if (!claim) {
+    return <Preloader />
+  }
   const tabs = [
     {
       key: 1,
-      label: <Badge count={claim?.countTasks} offset={[0,5]}><Typography.Text style={{padding:"10px 10px"}}>Процесс выполнения</Typography.Text></Badge>,
-      children: <StepsClaim steps={claim?.steps} claimId={claim?.id} versionId={claim?.versionId}/>,
+      label: <Badge count={claim?.countTasks} offset={[0, 5]}><Typography.Text style={{ padding: "10px 10px" }}>Процесс выполнения</Typography.Text></Badge>,
+      children: <StepsClaim steps={claim?.steps} claimId={claim?.id} versionId={claim?.versionId} />,
     },
     // {
     //   key: 4,
@@ -77,18 +77,20 @@ if(!claim){
     // },
     {
       key: 6,
-      label: <Typography.Text style={{padding:"10px 10px"}}>Информация по заявке</Typography.Text>,
-      children: <InfoClaim template={claim?.template} values={claim?.values} pdf={pdf}/>,
+      label: <Typography.Text style={{ padding: "10px 10px" }}>Информация по заявке</Typography.Text>,
+      children: <InfoClaim template={claim?.template} values={claim?.values} pdf={pdf} />,
     },
     {
       key: 3,
-      label: <Typography.Text style={{padding:"10px 10px"}}>Документы</Typography.Text>,
+      label: <Badge count={claim?.files?.reduce((acc, item) => {
+        return acc + item.docs?.length
+      }, 0)} offset={[0, 5]} color="gray"><Typography.Text style={{ padding: "10px 10px" }}>Документы</Typography.Text></Badge>,
       children: <Docs files={claim?.files} />,
     },
     {
       key: 5,
-      label: <Badge count={claim?.countAppeals} offset={[0,5]}><Typography.Text style={{padding:"10px 10px"}}>Обращения</Typography.Text></Badge>,
-      children: <Appeals claimId={claim?.id} appealsByClaim={claim?.appeals}/>,
+      label: <Badge count={claim?.countAppeals} offset={[0, 5]}><Typography.Text style={{ padding: "10px 10px" }}>Обращения</Typography.Text></Badge>,
+      children: <Appeals claimId={claim?.id} appealsByClaim={claim?.appeals} />,
     },
   ]
 
@@ -111,13 +113,13 @@ if(!claim){
                 theme={{
                   components: {
                     Descriptions: {
-                      itemPaddingBottom:0
+                      itemPaddingBottom: 0
                     },
                   },
                 }}
               >
 
-                <Descriptions  column={1} items={[
+                <Descriptions column={1} items={[
                   {
                     key: '1',
                     label: 'от',
