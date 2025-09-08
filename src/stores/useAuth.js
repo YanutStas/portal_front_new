@@ -15,6 +15,7 @@ const useAuth = create((set, get) => {
     authTimer: 0,
     redirection: "",
     showErrorModal: false,
+    showGlobalError: false,
     authTab: "1",
 
     toggleAuth: (value) => {
@@ -74,18 +75,37 @@ const useAuth = create((set, get) => {
               showErrorModal: false,
             };
           });
+        } else if (response.data && response.status === 403) {
+
         }
       } catch (error) {
+        console.log(error)
         // if (error.message === "Network Error" || error.code === "ERR_NETWORK") {
         //   set(() => ({
         //     showErrorModal: true,
         //   }));
         // } else {
-          set(() => ({
-            loginError: error.response?.data?.message || "Ошибка авторизации.",
+        if (error.status === 403) {
+          return set(() => ({
+            loginError: "Неверный логин или пароль",
             authTimer: 0,
             showErrorModal: true,
           }));
+        }
+         if (error.status === 423) {
+          return set(() => ({
+            loginError: "Пользователь заблокирован. Обратитесь в службу поддержки.",
+            authTimer: 0,
+            showErrorModal: true,
+          }));
+        }
+
+        set(() => ({
+          loginError: "Ошибка авторизации.",
+          authTimer: 0,
+          showErrorModal: true,
+          showGlobalError: true
+        }));
         // }
       }
     },

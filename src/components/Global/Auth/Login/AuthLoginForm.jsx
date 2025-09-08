@@ -18,7 +18,8 @@ export default function AuthLoginForm() {
     isCodeRequested,
     authTimer,
     startAuthTimer,
-    showErrorModal
+    showErrorModal,
+    showGlobalError
   } = useAuth();
 
   const [emailFocused, setEmailFocused] = useState(false);
@@ -163,13 +164,12 @@ export default function AuthLoginForm() {
         </Form.Item>
       </Form>
       {isCodeRequested && <CodeForm />}
-      
-        <ErrorModal
-          visible={showErrorModal}
-          error={"Ошибка соединения с сервером 1С"}
-          onClose={() => toggleModal("isAuthModalOpen", false)}
-        />
-      
+
+      <ErrorModal
+        visible={showGlobalError}
+        error={"Ошибка"}
+      />
+
     </>
   );
 }
