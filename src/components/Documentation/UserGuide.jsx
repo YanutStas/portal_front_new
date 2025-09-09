@@ -21,7 +21,7 @@ export default function UserGuide() {
             Руководство пользователя Порталом потребителя услуг АО
             «Мособлэнерго»
           </span>
-          <span className={styles.docLine__fileInfo}>2.8 МБ</span>
+          <span className={styles.docLine__fileInfo}>3.1 МБ</span>
         </div>
       </a>
     </div>
