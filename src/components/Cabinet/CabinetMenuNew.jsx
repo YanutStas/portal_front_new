@@ -62,7 +62,7 @@ export default function CabinetMenuNew({ setIsOpenProfileMenu }) {
         </Flex>
         <Flex gap={10} vertical>
           <LinkCard title={"Заявки"} color={"blue"} url={"/cabinet/claimers"} setIsOpenProfileMenu={setIsOpenProfileMenu} />
-          <LinkCard title={"Задачи"} color={"red"} url={"/cabinet/claimers"} setIsOpenProfileMenu={setIsOpenProfileMenu} />
+          {/* <LinkCard title={"Задачи"} color={"red"} url={"/cabinet/claimers"} setIsOpenProfileMenu={setIsOpenProfileMenu} /> */}
           {/* <LinkCard title={"Обращения"} color={"green"} url={"/cabinet/claimers"} /> */}
           <Flex vertical gap={0} justify="center" style={{ width: "100%" }}>
             <Typography.Text level={5} style={{ textAlign: "center", marginBottom: "0" }}>Горячая линия АО «Мособлэнерго»</Typography.Text>
