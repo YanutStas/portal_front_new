@@ -130,46 +130,130 @@ export default function NewClaim() {
     setShowValidationModal(true);
   };
 
-  const getFieldNames = useMemo(() => {
-    if (!serviceItem?.fields) return {};
 
-    const fieldMap = {};
-    serviceItem.fields.forEach((field) => {
-      fieldMap[field.name] = field.label;
-    });
-    return fieldMap;
-  }, [serviceItem]);
+// Берём «человеческую» подпись у элемента поля
+const pickLabel = (f = {}) =>
+  f.displayName ||
+  f.label ||
+  f.display_name ||
+  f.caption ||
+  f.title ||
+  f.placeholder ||
+  f.name ||
+  f.description ||
+  null;
 
-  const getReadableErrorMessages = (errorFields) => {
-    return errorFields.map((error) => {
-      // Получаем fieldId из error.name[0] (это UUID)
-      const fieldId = error.name[0];
+// Рекурсивно собираем все возможные ключи -> метка
+const buildFieldLabelMap = (fields = []) => {
+  const map = new Map();
 
-      // Ищем поле в serviceItem.fields по Ref_Key или name
-      const field = serviceItem.fields.find(
-        (f) => f.Ref_Key === fieldId || f.name === fieldId
-      );
+  const dive = (node) => {
+    if (!node || typeof node !== "object") return;
 
-      // Используем label поля, если нашли, иначе оставляем UUID
-      const fieldLabel = field ? field.label : fieldId;
+    const keys = [
+      node.Ref_Key,
+      node.name,
+      node.id,
+      node.field,
+      node.code,
+      node.key,
+      node.guid,
+      node.fieldKey,
+    ].filter(Boolean);
 
-      // Форматируем сообщение об ошибке
-      const errorMessage = error.errors[0].replace(
-        "Это поле обязательное",
-        "Обязательное поле"
-      );
+    const label = pickLabel(node);
+    if (label) {
+      keys.forEach((k) => map.set(String(k), String(label)));
+    }
 
-      return `${fieldLabel}: ${errorMessage}`;
+    // возможные контейнеры с вложенными полями
+    const nests = [
+      node.fields,
+      node.children,
+      node.items,
+      node.bindFields,
+      node.options,
+      node.props && node.props.fields,
+    ].filter(Boolean);
+
+    nests.forEach((arr) => {
+      if (Array.isArray(arr)) arr.forEach(dive);
+      else if (typeof arr === "object") Object.values(arr).forEach(dive);
     });
   };
 
-  // 3. Функция для склонения слова "поле" в зависимости от количества
-  const declineWord = (count) => {
-    if (count % 10 === 1 && count % 100 !== 11) return "поле";
-    if ([2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100))
-      return "поля";
-    return "полей";
-  };
+  (Array.isArray(fields) ? fields : []).forEach(dive);
+  return map;
+};
+
+// Готовим карту меток один раз при смене сервиса
+const fieldLabelMap = useMemo(
+  () => buildFieldLabelMap(serviceItem?.fields || []),
+  [serviceItem]
+);
+
+// Попытки найти метку в описании сервиса по пути поля
+const getLabelFromService = (namePath) => {
+  const parts = Array.isArray(namePath)
+    ? namePath.filter((p) => typeof p === "string" || typeof p === "number").map(String)
+    : [String(namePath)];
+
+  // 1) Пробуем с конца (часто последняя часть и есть ключ реального поля)
+  for (let i = parts.length - 1; i >= 0; i--) {
+    const k = parts[i];
+    const lbl = fieldLabelMap.get(k);
+    if (lbl) return lbl;
+  }
+
+  // 2) Пробуем «склеенные» пути (на случай, если имя хранится как "a.b.c")
+  for (let i = parts.length; i > 0; i--) {
+    const joinDot = parts.slice(0, i).join(".");
+    const lbl = fieldLabelMap.get(joinDot);
+    if (lbl) return lbl;
+  }
+
+  return null;
+};
+
+// Вытягиваем label из DOM (ближайший Form.Item)
+const getLabelFromDom = (namePath) => {
+  try {
+    const inst = form.getFieldInstance(namePath);
+    const node =
+      inst instanceof HTMLElement
+        ? inst
+        : inst?.input || inst?.resizableTextArea?.textArea || inst?.nativeElement;
+
+    const item = node?.closest?.(".ant-form-item");
+    const labelNode = item?.querySelector?.(".ant-form-item-label label");
+    if (!labelNode) return null;
+
+    const text = (labelNode.textContent || labelNode.innerText || "").trim();
+    return text.replace(/[＊*]\s*|[:：]\s*$/g, "").trim() || null;
+  } catch {
+    return null;
+  }
+};
+
+// Формируем список удобочитаемых названий полей для модалки
+const getReadableFieldNames = (errorFields = []) => {
+  const result = [];
+  const used = new Set();
+
+  errorFields.forEach(({ name }) => {
+    const label =
+      getLabelFromService(name) ||
+      getLabelFromDom(name) ||
+      "Поле формы";
+
+    if (!used.has(label)) {
+      used.add(label);
+      result.push(label);
+    }
+  });
+
+  return result;
+};
 
   return (
     <div style={{ maxWidth: "100%", margin: "0 auto" }}>
@@ -305,23 +389,6 @@ export default function NewClaim() {
               )}
             </Form>
           </ConfigProvider>
-          {/* <Drawer
-            title="Поля формы"
-            placement="bottom"
-            closable={false}
-            onClose={onClose}
-            open={open}
-            key="bottom"
-          >
-            {newClaim && (
-              <>
-                <Typography.Title level={3}>
-                  Создана заявка с Ref_Key: <b>{newClaim.Ref_Key}</b>
-                </Typography.Title>
-                <Paragraph>Данные по заявке в консоле</Paragraph>
-              </>
-            )}
-          </Drawer> */}
         </>
       )}
       {newClaim && (
@@ -334,69 +401,46 @@ export default function NewClaim() {
       {error && <ErrorModal visible={!!error} error={error} />}
       {showValidationModal && (
         <Modal
-          // title={
-          //   <span>
-          //     <ExclamationCircleFilled
-          //       style={{ color: "#ff4d4f", marginRight: 8 }}
-          //     />
-          //     Ошибка заполнения формы
-          //   </span>
-          // }
+          cancelButtonProps={{ style: { display: "none" } }}
+          keyboard={false}
           open={showValidationModal}
           closable={false}
           onOk={() => setShowValidationModal(false)}
           onCancel={() => setShowValidationModal(false)}
           maskClosable={false}
           width={600}
-          okText="Понятно"
-          cancelText="Закрыть"
+          okText="Продолжить"
           style={{ top: 20 }}
         >
           <Alert
-            message={`Вы не заполнили ${validationErrors.length} ${declineWord(
-              validationErrors.length
-            )} из обязательных`}
-            // description="Пожалуйста, проверьте следующие поля:"
+            message={`Вы не заполнили данные в обязательных полях экранной формы заявки:`}
             type="error"
             showIcon
             style={{ marginBottom: 16 }}
           />
 
-          {/* <List
+          <List
             size="small"
             bordered
-            dataSource={getReadableErrorMessages(validationErrors).slice(0, 5)}
-            renderItem={(item) => (
+            dataSource={getReadableFieldNames(validationErrors)}
+            renderItem={(label, idx) => (
               <List.Item
                 style={{
                   padding: "8px 12px",
                   borderBottom: "1px solid #f0f0f0",
                 }}
               >
-                <span style={{ color: "#ff4d4f", fontSize: "14px" }}>
-                  • {item}
+                <span style={{ fontSize: "14px" }}>
+                  {idx + 1}. {label}
                 </span>
               </List.Item>
             )}
-            footer={
-              validationErrors.length > 5 && (
-                <div
-                  style={{
-                    textAlign: "center",
-                    padding: "8px",
-                    backgroundColor: "#fafafa",
-                    borderTop: "1px solid #f0f0f0",
-                  }}
-                >
-                  ... и ещё {validationErrors.length - 5} ошибок
-                </div>
-              )
-            }
-            style={{ maxHeight: "200px", overflowY: "auto" }}
-          /> */}
+            style={{ maxHeight: "220px", overflowY: "auto" }}
+          />
 
           <div style={{ marginTop: 16, color: "#8c8c8c", fontSize: "12px" }}>
-            После исправления ошибок попробуйте отправить форму ещё раз.
+            Внимание! Для подачи заявки на выбранную Вами услугу необходимо
+            заполнить все обязательные поля.
           </div>
         </Modal>
       )}
