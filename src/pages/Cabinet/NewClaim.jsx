@@ -159,6 +159,11 @@ const buildFieldLabelMap = (fields = []) => {
       node.key,
       node.guid,
       node.fieldKey,
+      // IMPORTANT: many fields (особенно документы) используют idLine как name
+      node.idLine,
+      // иногда ключ может лежать внутри component
+      node.component && node.component.idLine,
+      node.component && node.component.name,
     ].filter(Boolean);
 
     const label = pickLabel(node);
@@ -174,6 +179,10 @@ const buildFieldLabelMap = (fields = []) => {
       node.bindFields,
       node.options,
       node.props && node.props.fields,
+      // Также просматриваем описание самого компонента
+      node.component,
+      node.component && node.component.fields,
+      node.component && node.component.children,
     ].filter(Boolean);
 
     nests.forEach((arr) => {
@@ -219,17 +228,30 @@ const getLabelFromService = (namePath) => {
 const getLabelFromDom = (namePath) => {
   try {
     const inst = form.getFieldInstance(namePath);
-    const node =
-      inst instanceof HTMLElement
-        ? inst
-        : inst?.input || inst?.resizableTextArea?.textArea || inst?.nativeElement;
 
-    const item = node?.closest?.(".ant-form-item");
-    const labelNode = item?.querySelector?.(".ant-form-item-label label");
-    if (!labelNode) return null;
+    const node = inst instanceof HTMLElement
+      ? inst
+      : inst?.input || inst?.resizableTextArea?.textArea || inst?.nativeElement;
 
-    const text = (labelNode.textContent || labelNode.innerText || "").trim();
-    return text.replace(/[＊*]\s*|[:：]\s*$/g, "").trim() || null;
+    // Ищем ближайший контейнер Form.Item или Card
+    const container = node?.closest?.('.ant-form-item') || node?.closest?.('.ant-card');
+
+    // 1) Сначала пробуем стандартный label от Form.Item
+    const labelNode = container?.querySelector?.('.ant-form-item-label label');
+    if (labelNode) {
+      const text = (labelNode.textContent || labelNode.innerText || '').trim();
+      const cleaned = text.replace(/[＊*]\s*|[:：]\s*$/g, '').trim();
+      if (cleaned) return cleaned;
+    }
+
+    // 2) Фоллбек для карточек документов: заголовок Card
+    const cardTitle = container?.querySelector?.('.ant-card-head-title');
+    if (cardTitle) {
+      const text = (cardTitle.textContent || cardTitle.innerText || '').trim();
+      if (text) return text;
+    }
+
+    return null;
   } catch {
     return null;
   }
