@@ -2,7 +2,6 @@ import {
   Form,
   Typography,
   Button,
-  Drawer,
   Flex,
   Breadcrumb,
   ConfigProvider,
@@ -22,12 +21,11 @@ import moment from "moment";
 import Preloader from "../../components/Main/Preloader";
 import ErrorModal from "../../components/ErrorModal";
 import SubmitModal from "../../components/SubmitModal";
-import { ExclamationCircleFilled } from "@ant-design/icons";
 import { motion } from "framer-motion";
 
 import selectComponent from "../../components/selectComponent";
 
-const { Title, Paragraph } = Typography;
+const { Title} = Typography;
 
 export default function NewClaim() {
   const chain = useServices((state) => state.chain);
@@ -130,152 +128,154 @@ export default function NewClaim() {
     setShowValidationModal(true);
   };
 
+  const pickLabel = (f = {}) =>
+    f.displayName ||
+    f.label ||
+    f.display_name ||
+    f.caption ||
+    f.title ||
+    f.placeholder ||
+    f.name ||
+    f.description ||
+    null;
 
-// Берём «человеческую» подпись у элемента поля
-const pickLabel = (f = {}) =>
-  f.displayName ||
-  f.label ||
-  f.display_name ||
-  f.caption ||
-  f.title ||
-  f.placeholder ||
-  f.name ||
-  f.description ||
-  null;
+  const buildFieldLabelMap = (fields = []) => {
+    const map = new Map();
 
-// Рекурсивно собираем все возможные ключи -> метка
-const buildFieldLabelMap = (fields = []) => {
-  const map = new Map();
+    const dive = (node) => {
+      if (!node || typeof node !== "object") return;
 
-  const dive = (node) => {
-    if (!node || typeof node !== "object") return;
+      const keys = [
+        node.Ref_Key,
+        node.name,
+        node.id,
+        node.field,
+        node.code,
+        node.key,
+        node.guid,
+        node.fieldKey,
+        // IMPORTANT: many fields (особенно документы) используют idLine как name
+        node.idLine,
+        // иногда ключ может лежать внутри component
+        node.component && node.component.idLine,
+        node.component && node.component.name,
+      ].filter(Boolean);
 
-    const keys = [
-      node.Ref_Key,
-      node.name,
-      node.id,
-      node.field,
-      node.code,
-      node.key,
-      node.guid,
-      node.fieldKey,
-      // IMPORTANT: many fields (особенно документы) используют idLine как name
-      node.idLine,
-      // иногда ключ может лежать внутри component
-      node.component && node.component.idLine,
-      node.component && node.component.name,
-    ].filter(Boolean);
+      const label = pickLabel(node);
+      if (label) {
+        keys.forEach((k) => map.set(String(k), String(label)));
+      }
 
-    const label = pickLabel(node);
-    if (label) {
-      keys.forEach((k) => map.set(String(k), String(label)));
-    }
+      // возможные контейнеры с вложенными полями
+      const nests = [
+        node.fields,
+        node.children,
+        node.items,
+        node.bindFields,
+        node.options,
+        node.props && node.props.fields,
+        // Также просматриваем описание самого компонента
+        node.component,
+        node.component && node.component.fields,
+        node.component && node.component.children,
+      ].filter(Boolean);
 
-    // возможные контейнеры с вложенными полями
-    const nests = [
-      node.fields,
-      node.children,
-      node.items,
-      node.bindFields,
-      node.options,
-      node.props && node.props.fields,
-      // Также просматриваем описание самого компонента
-      node.component,
-      node.component && node.component.fields,
-      node.component && node.component.children,
-    ].filter(Boolean);
+      nests.forEach((arr) => {
+        if (Array.isArray(arr)) arr.forEach(dive);
+        else if (typeof arr === "object") Object.values(arr).forEach(dive);
+      });
+    };
 
-    nests.forEach((arr) => {
-      if (Array.isArray(arr)) arr.forEach(dive);
-      else if (typeof arr === "object") Object.values(arr).forEach(dive);
-    });
+    (Array.isArray(fields) ? fields : []).forEach(dive);
+    return map;
   };
 
-  (Array.isArray(fields) ? fields : []).forEach(dive);
-  return map;
-};
+  const fieldLabelMap = useMemo(
+    () => buildFieldLabelMap(serviceItem?.fields || []),
+    [serviceItem]
+  );
 
-// Готовим карту меток один раз при смене сервиса
-const fieldLabelMap = useMemo(
-  () => buildFieldLabelMap(serviceItem?.fields || []),
-  [serviceItem]
-);
+  const getLabelFromService = (namePath) => {
+    const parts = Array.isArray(namePath)
+      ? namePath
+          .filter((p) => typeof p === "string" || typeof p === "number")
+          .map(String)
+      : [String(namePath)];
 
-// Попытки найти метку в описании сервиса по пути поля
-const getLabelFromService = (namePath) => {
-  const parts = Array.isArray(namePath)
-    ? namePath.filter((p) => typeof p === "string" || typeof p === "number").map(String)
-    : [String(namePath)];
-
-  // 1) Пробуем с конца (часто последняя часть и есть ключ реального поля)
-  for (let i = parts.length - 1; i >= 0; i--) {
-    const k = parts[i];
-    const lbl = fieldLabelMap.get(k);
-    if (lbl) return lbl;
-  }
-
-  // 2) Пробуем «склеенные» пути (на случай, если имя хранится как "a.b.c")
-  for (let i = parts.length; i > 0; i--) {
-    const joinDot = parts.slice(0, i).join(".");
-    const lbl = fieldLabelMap.get(joinDot);
-    if (lbl) return lbl;
-  }
-
-  return null;
-};
-
-// Вытягиваем label из DOM (ближайший Form.Item)
-const getLabelFromDom = (namePath) => {
-  try {
-    const inst = form.getFieldInstance(namePath);
-
-    const node = inst instanceof HTMLElement
-      ? inst
-      : inst?.input || inst?.resizableTextArea?.textArea || inst?.nativeElement;
-
-    // Ищем ближайший контейнер Form.Item или Card
-    const container = node?.closest?.('.ant-form-item') || node?.closest?.('.ant-card');
-
-    // 1) Сначала пробуем стандартный label от Form.Item
-    const labelNode = container?.querySelector?.('.ant-form-item-label label');
-    if (labelNode) {
-      const text = (labelNode.textContent || labelNode.innerText || '').trim();
-      const cleaned = text.replace(/[＊*]\s*|[:：]\s*$/g, '').trim();
-      if (cleaned) return cleaned;
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const k = parts[i];
+      const lbl = fieldLabelMap.get(k);
+      if (lbl) return lbl;
     }
 
-    // 2) Фоллбек для карточек документов: заголовок Card
-    const cardTitle = container?.querySelector?.('.ant-card-head-title');
-    if (cardTitle) {
-      const text = (cardTitle.textContent || cardTitle.innerText || '').trim();
-      if (text) return text;
+    for (let i = parts.length; i > 0; i--) {
+      const joinDot = parts.slice(0, i).join(".");
+      const lbl = fieldLabelMap.get(joinDot);
+      if (lbl) return lbl;
     }
 
     return null;
-  } catch {
-    return null;
-  }
-};
+  };
 
-// Формируем список удобочитаемых названий полей для модалки
-const getReadableFieldNames = (errorFields = []) => {
-  const result = [];
-  const used = new Set();
+  const getLabelFromDom = (namePath) => {
+    try {
+      const inst = form.getFieldInstance(namePath);
 
-  errorFields.forEach(({ name }) => {
-    const label =
-      getLabelFromService(name) ||
-      getLabelFromDom(name) ||
-      "Поле формы";
+      const node =
+        inst instanceof HTMLElement
+          ? inst
+          : inst?.input ||
+            inst?.resizableTextArea?.textArea ||
+            inst?.nativeElement;
 
-    if (!used.has(label)) {
-      used.add(label);
-      result.push(label);
+      const container =
+        node?.closest?.(".ant-form-item") || node?.closest?.(".ant-card");
+
+      const labelNode = container?.querySelector?.(
+        ".ant-form-item-label label"
+      );
+      if (labelNode) {
+        const text = (
+          labelNode.textContent ||
+          labelNode.innerText ||
+          ""
+        ).trim();
+        const cleaned = text.replace(/[＊*]\s*|[:：]\s*$/g, "").trim();
+        if (cleaned) return cleaned;
+      }
+
+      const cardTitle = container?.querySelector?.(".ant-card-head-title");
+      if (cardTitle) {
+        const text = (
+          cardTitle.textContent ||
+          cardTitle.innerText ||
+          ""
+        ).trim();
+        if (text) return text;
+      }
+
+      return null;
+    } catch {
+      return null;
     }
-  });
+  };
 
-  return result;
-};
+  const getReadableFieldNames = (errorFields = []) => {
+    const result = [];
+    const used = new Set();
+
+    errorFields.forEach(({ name }) => {
+      const label =
+        getLabelFromService(name) || getLabelFromDom(name) || "Поле формы";
+
+      if (!used.has(label)) {
+        used.add(label);
+        result.push(label);
+      }
+    });
+
+    return result;
+  };
 
   return (
     <div style={{ maxWidth: "100%", margin: "0 auto" }}>
