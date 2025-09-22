@@ -7,6 +7,8 @@ import ConfirmationDocumentNewInput from "./FormComponentsNew/confirmationDocume
 import DateInput from "./FormComponentsNew/DateInput";
 import DividerForm from "./FormComponentsNew/DividerForm";
 import DocumentInput from "./FormComponentsNew/DocumentInput";
+import EgripInput from "./FormComponentsNew/EgripInput";
+import EgrulInput from "./FormComponentsNew/EgrulInput";
 import FileInput from "./FormComponentsNew/FileInput";
 import FormulaInput from "./FormComponentsNew/FormulaInput";
 import GroupInput from "./FormComponentsNew/GroupInput";
@@ -166,6 +168,38 @@ export default function selectComponent(item, index, read = false) {
   )
     return (
       <CadastrInput
+        key={index}
+        {...item.component}
+        {...item}
+        fullDescription={item.name_fullDescription}
+        name={item.idLine}
+        dependOf={item.dependIdLine}
+        howDepend={item.dependСondition}
+        read={read}
+      />
+    );
+  if (
+    item.component?.Ref_Type?.includes("TextInput") &&
+    item.component.specialField === "ЕГРЮЛ"
+  )
+    return (
+      <EgrulInput
+        key={index}
+        {...item.component}
+        {...item}
+        fullDescription={item.name_fullDescription}
+        name={item.idLine}
+        dependOf={item.dependIdLine}
+        howDepend={item.dependСondition}
+        read={read}
+      />
+    );
+  if (
+    item.component?.Ref_Type?.includes("TextInput") &&
+    item.component.specialField === "ЕГРИП"
+  )
+    return (
+      <EgripInput
         key={index}
         {...item.component}
         {...item}

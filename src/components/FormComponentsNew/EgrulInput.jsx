@@ -3,8 +3,8 @@ import { Input, Form } from "antd";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
 
-export default function KppInput({
-    name = "kpp",
+export default function EgrulInput({
+    name = "egrul",
     label = "",
     required = undefined,
     dependOf = false,
@@ -35,8 +35,8 @@ export default function KppInput({
 
             rules={[
                 {
-                    min: 9,
-                    message: "Минимальная длина 9 цифр"
+                    min: 13,
+                    message: "Минимальная длина 13 цифр"
                 },
                 {
                     required: required,
@@ -47,8 +47,7 @@ export default function KppInput({
         >
             <Input
                 placeholder={placeholder}
-                maxLength={9}
-                // minLength={9}
+                maxLength={13}
             />
         </Form.Item>
     );

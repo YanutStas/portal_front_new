@@ -19,7 +19,8 @@ export default function InnInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
-  read = false
+  read = false,
+  length = undefined,
 }) {
   const [value, setValue] = useState('');
   const form = Form.useFormInstance();
@@ -27,7 +28,7 @@ export default function InnInput({
   const objProperties = properties.externalService;
 
   const fetchSuggestions = debounce((inn) => {
-    if(/\D{1,}/.test(inn)) return false
+    if (/\D{1,}/.test(inn)) return false
     const params = { type: "ИНН", query: inn };
     console.log(params);
     axios
@@ -89,7 +90,11 @@ export default function InnInput({
           label
         )
       }
-      rules={[{ required: required, message: "Это поле обязательное" }]}
+      rules={[
+        { required: required, message: "Это поле обязательное" },
+        { min: length, message: `Минимальная длина ${length} цифр` },
+      ]}
+
       style={{
         flex: 1,
         minWidth: 300,
@@ -103,7 +108,7 @@ export default function InnInput({
         onSearch={(text) => fetchSuggestions(text)}
         placeholder={placeholder}
         style={{ fontSize: 18 }}
-        maxLength={12}
+        maxLength={length}
         value={value}
       >
         <Input
