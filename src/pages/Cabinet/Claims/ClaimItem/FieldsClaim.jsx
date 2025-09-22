@@ -138,8 +138,8 @@ export default function FieldsClaim({ template, values }) {
             if (!result) return false
         }
 
-        return <Col {...styles} xxl={styles?.span ? styles.span : 24} xs={24}>
-            <Card className="formElement groupInput" key={index} title={field.label} style={{ borderColor: token.colorBorder, color: token.colorBorder, }} styles={{ title: { whiteSpace: "normal" } }}>
+        return <Col {...styles} xxl={styles?.span ? styles.span : 24} xs={24} key={index}>
+            <Card className="formElement groupInput" title={field.label} style={{ borderColor: token.colorBorder, color: token.colorBorder, }} styles={{ title: { whiteSpace: "normal" } }}>
                 {getFields(field.component.fields, true)}
             </Card>
         </Col>
@@ -147,9 +147,9 @@ export default function FieldsClaim({ template, values }) {
     const getTable = (index, field) => {
         const styles = template?.portalFields?.styles[field.stylesField_key]
         const valuesTable = values[field.idLine]
-        return <Col {...styles} xxl={styles?.span ? styles.span : 24} xs={24}>
+        return <Col {...styles} xxl={styles?.span ? styles.span : 24} xs={24} key={index}>
 
-            <Card className="formElement groupInput" style={{ borderColor: token.colorBorder, color: token.colorBorder, }} key={index} title={field.label} styles={{ title: { whiteSpace: "normal", } }} >
+            <Card className="formElement groupInput" style={{ borderColor: token.colorBorder, color: token.colorBorder, }}  title={field.label} styles={{ title: { whiteSpace: "normal", } }} >
                 <Flex wrap="wrap" gap={10}>
                     {valuesTable && valuesTable.map((valItem, index) =>
                         <Card className="formElement groupInput" title={<Typography.Text style={{ color: "gray" }}>{index + 1}</Typography.Text>} key={index} style={{ flexGrow: 1, border: "1px solid", borderColor: token.colorBorder, color: token.colorBorder, }}>

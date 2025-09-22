@@ -47,6 +47,9 @@ const useNewClaim = create((set) => ({
         // console.log("fetchClaimItem", res.data.data);
         return   set((state) => ({  loadingClaim: false }));
       }
+      // if (res.data.data.links) {
+      //   useDataForForm.getState().setLinks(res.data.data.links)
+      // }
       set({ claim: res.data.data, loadingClaim: false });
     } catch (error) {
       console.log(error)

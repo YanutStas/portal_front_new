@@ -18,7 +18,8 @@ export default function SelectInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
-  read = false
+  read = false,
+  // options = false
 }) {
   // console.log("selectInput read", read);
 
@@ -30,9 +31,10 @@ export default function SelectInput({
 
   if (links) {
     options = links[Ref_Key]?.options;
-  } else {
-    options = read ? claim?.template.portalFields.links[Ref_Key]?.options : serviceItem?.links[Ref_Key]?.options;
-  }
+  } 
+  // else {
+  //   options = read ? claim?.template.portalFields.links[Ref_Key]?.options : serviceItem?.links[Ref_Key]?.options;
+  // }
 
   const formElement = (
     <Form.Item

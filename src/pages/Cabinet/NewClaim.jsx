@@ -28,7 +28,7 @@ import selectComponent from "../../components/selectComponent";
 const { Title} = Typography;
 
 export default function NewClaim() {
-  const chain = useServices((state) => state.chain);
+  // const chain = useServices((state) => state.chain);
   const serviceItem = useServices((state) => state.serviceItem);
   const fetchServiceItem = useServices((state) => state.fetchServiceItem);
   const isLoading = useServices((state) => state.isLoading);
@@ -63,11 +63,11 @@ export default function NewClaim() {
     fetchServiceItem(id, { withChain: true, withFields: true });
   }, []);
 
-  useEffect(() => {
-    if (newClaim) {
-      console.log("newClaim", newClaim);
-    }
-  }, [newClaim]);
+  // useEffect(() => {
+  //   if (newClaim) {
+  //     console.log("newClaim", newClaim);
+  //   }
+  // }, [newClaim]);
 
   const onClose = () => {
     clearNewClaim();
@@ -370,7 +370,6 @@ export default function NewClaim() {
               <Row gutter={[20, 20]} align={"stretch"}>
                 {serviceItem.fields
                   ?.sort((a, b) => a.lineNum - b.lineNum)
-
                   .map((item, index) => selectComponent(item, index))}
               </Row>
               {serviceItem?.fields?.length > 0 && (

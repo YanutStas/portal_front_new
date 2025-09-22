@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 // import { path } from "framer-motion/client";
+import useDataForForm from "./Cabinet/useDataForForm";
 
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
@@ -34,6 +35,7 @@ const useServices = create((set, get) => ({
         // serviceItem: res[1].data,
         isLoading: false,
       });
+
     } catch (error) {
       console.log(error);
       set({
@@ -57,6 +59,13 @@ const useServices = create((set, get) => ({
         "Ref_Key": "",
         "label": "Каталог услуг"
       })
+      // console.log("links", res.data.data)
+      if (res.data.data.links) {
+        useDataForForm.getState().setLinks(res.data.data.links)
+      }
+      // if (res.data.data.styles) {
+      //   useDataForForm.getState().setStyles(res.data.data.styles)
+      // }
       set({
         serviceItem: res.data?.data,
         isLoading: false,
