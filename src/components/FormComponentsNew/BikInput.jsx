@@ -73,7 +73,7 @@ export default function BikInput({
         // console.log("objProperties[key][1]", objProperties[key]);
       }
     }
-// console.log(currentData)
+    // console.log(currentData)
     form.setFieldValue(name, currentData.data.bic);
   };
   const formElement = (
@@ -86,18 +86,27 @@ export default function BikInput({
           label
         )
       }
-      rules={[{ required: required, message: "Это поле обязательное" }]}
+      rules={[
+        {
+          min: 9,
+          message: "Минимальная длина 9 цифр"
+        },
+        {
+          required: required,
+          message: "Это поле обязательное"
+        }
+      ]}
       style={{
         flex: 1,
         minWidth: 300,
       }}
       normalize={(value) => {
-        let newvalue = value.replace(/[^\d,:]/g, "");        
+        let newvalue = value.replace(/[^\d,:]/g, "");
         return newvalue
       }}
     >
       <AutoComplete
-      maxLength={9}
+        maxLength={9}
         options={options}
         onSelect={(value, option) => onSelect(value, option)}
         onSearch={(text) => fetchSuggestions(text, "АдресПолный")}

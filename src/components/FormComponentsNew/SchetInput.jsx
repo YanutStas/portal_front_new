@@ -35,10 +35,13 @@ export default function SchetInput({
             }}
             rules={[
                 {
+                    min: maxLength,
+                    message: `Минимальная длина ${maxLength} цифр`,
+                },
+                {
                     required: required,
                     message: "Это поле обязательное",
                 },
-                // { validator: validateSnils },
             ]}
         >
             <Input
