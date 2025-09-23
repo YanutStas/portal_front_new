@@ -16,11 +16,13 @@ import HiddenInput from "./FormComponentsNew/HiddenInput";
 import InnInput from "./FormComponentsNew/InnInput";
 import KppInput from "./FormComponentsNew/KppInput";
 import MapInput from "./FormComponentsNew/mapComponents/MapInput";
+import NumberDocInput from "./FormComponentsNew/NumberDocInput";
 import NumberInput from "./FormComponentsNew/NumberInput";
 import PhoneInput from "./FormComponentsNew/phoneComponent/PhoneInput";
 import PriceInput from "./FormComponentsNew/PriceInput";
 import SchetInput from "./FormComponentsNew/SchetInput";
 import SelectInput from "./FormComponentsNew/SelectInput";
+import SeriaDocInput from "./FormComponentsNew/SeriaDocInput";
 import SliderInput from "./FormComponentsNew/SliderInput";
 import SnilsInput from "./FormComponentsNew/SnilsInput";
 import SwitchInput from "./FormComponentsNew/SwitchInput";
@@ -200,6 +202,38 @@ export default function selectComponent(item, index, read = false) {
   )
     return (
       <EgripInput
+        key={index}
+        {...item.component}
+        {...item}
+        fullDescription={item.name_fullDescription}
+        name={item.idLine}
+        dependOf={item.dependIdLine}
+        howDepend={item.dependСondition}
+        read={read}
+      />
+    );
+  if (
+    item.component?.Ref_Type?.includes("TextInput") &&
+    item.component.specialField === "СерияДокумента"
+  )
+    return (
+      <SeriaDocInput
+        key={index}
+        {...item.component}
+        {...item}
+        fullDescription={item.name_fullDescription}
+        name={item.idLine}
+        dependOf={item.dependIdLine}
+        howDepend={item.dependСondition}
+        read={read}
+      />
+    );
+  if (
+    item.component?.Ref_Type?.includes("TextInput") &&
+    item.component.specialField === "НомерДокумента"
+  )
+    return (
+      <NumberDocInput
         key={index}
         {...item.component}
         {...item}
