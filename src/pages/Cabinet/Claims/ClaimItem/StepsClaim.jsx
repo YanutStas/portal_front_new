@@ -54,7 +54,7 @@ export default function StepsClaim({ steps = false, claimId, versionId }) {
                   return {
                     children: <div style={{ position: "relative" }}>
                       <Flex vertical justify='center' align='flex-start' style={{ marginBottom: 10, marginLeft: 5 }}>
-                        <Typography.Text style={{ color: "gray", fontSize: 14 }}>{moment(item.date).format('DD.MM.YYYY hh:mm')}</Typography.Text>
+                        <Typography.Text style={{ color: "gray", fontSize: 14 }}>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Typography.Text>
                         <Flex gap={5}>
                           <Typography.Text style={{ fontSize: 18 }}>{item.name}</Typography.Text>
                           {item.shortDescription &&
