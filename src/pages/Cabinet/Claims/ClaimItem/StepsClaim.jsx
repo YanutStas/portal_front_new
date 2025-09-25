@@ -9,7 +9,7 @@ import TaskItem from '../../../../components/Cabinet/Action/TaskItem';
 import FileForDownload from '../../../../components/FileForDownload';
 
 
-export default function StepsClaim({ steps = false, claimId, versionId }) {
+export default function StepsClaim({ steps = false, claimId, versionId, reloadClaim }) {
   const fetchClaimItem = useClaims((state) => state.fetchClaimItem);
   const token = theme.useToken().token
   // console.log(token)
@@ -146,6 +146,7 @@ export default function StepsClaim({ steps = false, claimId, versionId }) {
               taskBasis={openModalAction.taskBasis}
               onCancel={() => {
                 setOpenModalAction(false)
+                reloadClaim()
               }}
             />
           </Modal>

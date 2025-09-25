@@ -41,11 +41,12 @@ export default function ClaimItem() {
 
   const token = theme.useToken().token
   // console.log("searchParams", searchParams);
-  console.log("claim", claim);
+  // console.log("claim", claim);
 
   useEffect(() => {
     fetchClaimItem(id);
   }, [fetchClaimItem, id]);
+
   useEffect(() => {
     if (claim) {
       setPdf(claim.files.find(item => item.isPrintForm))
@@ -56,14 +57,18 @@ export default function ClaimItem() {
     if (searchParams.get('pay') === "success") setOpenSuccessPay(true)
     if (searchParams.get('pay') === "fail") setOpenFailPay(true)
   }, [searchParams]);
+
   if (!claim) {
     return <Preloader />
+  }
+  const reloadClaim = () => {
+    fetchClaimItem(id);
   }
   const tabs = [
     {
       key: 1,
       label: <Badge count={claim?.countTasks} offset={[0, 5]}><Typography.Text style={{ padding: "10px 10px" }}>Процесс выполнения</Typography.Text></Badge>,
-      children: <StepsClaim steps={claim?.steps} claimId={claim?.id} versionId={claim?.versionId} />,
+      children: <StepsClaim steps={claim?.steps} claimId={claim?.id} versionId={claim?.versionId} reloadClaim={reloadClaim} />,
     },
     // {
     //   key: 4,
@@ -93,6 +98,7 @@ export default function ClaimItem() {
       children: <Appeals claimId={claim?.id} appealsByClaim={claim?.appeals} />,
     },
   ]
+
 
   console.log("claim", claim);
 

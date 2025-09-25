@@ -91,11 +91,19 @@ export default function FieldsClaim({ template, values }) {
             }}
         >{value.Description}</a> : "нет")
     }
-    const getDate = (index, label, idLine, valItem = false) => {
+    const getDate = (index, label, idLine, part = false, valItem = false) => {
         let value = valItem ? valItem[idLine] : values[idLine]
         let date = "не указана"
         if (value) {
-            date = moment(value).format("DD.MM.YYYY hh:mm")
+            if (part === "МесяцГод") {
+                date = moment(value).format("MM.YYYY")
+            } else if (part === "Дата") {
+                date = moment(value).format("DD.MM.YYYY")
+            } else if (part === "Время") {
+                date = moment(value).format("HH:mm")
+            } else {
+                date = moment(value).format("DD.MM.YYYY HH:mm")
+            }
         }
         return singleTextField(index, label, date)
     }
@@ -149,7 +157,7 @@ export default function FieldsClaim({ template, values }) {
         const valuesTable = values[field.idLine]
         return <Col {...styles} xxl={styles?.span ? styles.span : 24} xs={24} key={index}>
 
-            <Card className="formElement groupInput" style={{ borderColor: token.colorBorder, color: token.colorBorder, }}  title={field.label} styles={{ title: { whiteSpace: "normal", } }} >
+            <Card className="formElement groupInput" style={{ borderColor: token.colorBorder, color: token.colorBorder, }} title={field.label} styles={{ title: { whiteSpace: "normal", } }} >
                 <Flex wrap="wrap" gap={10}>
                     {valuesTable && valuesTable.map((valItem, index) =>
                         <Card className="formElement groupInput" title={<Typography.Text style={{ color: "gray" }}>{index + 1}</Typography.Text>} key={index} style={{ flexGrow: 1, border: "1px solid", borderColor: token.colorBorder, color: token.colorBorder, }}>
@@ -170,16 +178,17 @@ export default function FieldsClaim({ template, values }) {
                     return getDivider(index, field.label)
                 }
                 if (field.component.Ref_Type === "componentsDateInput") {
-                    return getDate(index, field.label, field.idLine)
+                    // console.log("fields", field.label)
+                    return getDate(index, field.label, field.idLine, field.component.part, valItem)
                 }
                 if (field.component.Ref_Type === "componentsAddressInput") {
-                    return getAddress(index, field.label, field.idLine)
+                    return getAddress(index, field.label, field.idLine, valItem)
                 }
                 if (field.component.Ref_Type === "componentsSwitchInput") {
                     return getSwitch(index, field.label, field.idLine)
                 }
                 if (field.component.Ref_Type === "componentsFileInput") {
-                    return getFile(index, field.label, field.idLine)
+                    return getFile(index, field.label, field.idLine, valItem)
                 }
                 if (field.component.Ref_Type === "componentsGroupFieldsInput") {
                     return getGroupFields(index, field)

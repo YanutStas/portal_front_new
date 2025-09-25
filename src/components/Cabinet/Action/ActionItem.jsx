@@ -12,11 +12,11 @@ export default function ActionItem({ actionId, claimId, taskBasis, buttonText, v
     useEffect(() => {
         fetchActionById(actionId)
     }, [actionId])
-    useEffect(() => {
-        console.log(action);
-    }, [action])
+    // useEffect(() => {
+    //     console.log(action);
+    // }, [action])
 
-    const handlerFinish =async (values) => {
+    const handlerFinish = async (values) => {
         console.log(values)
         if (await createNewTask({
             typeActionId: actionId,
