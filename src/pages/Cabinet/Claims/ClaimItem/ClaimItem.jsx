@@ -95,7 +95,7 @@ export default function ClaimItem() {
     {
       key: 5,
       label: <Badge count={claim?.countAppeals} offset={[0, 5]}><Typography.Text style={{ padding: "10px 10px" }}>Обращения</Typography.Text></Badge>,
-      children: <Appeals claimId={claim?.id} appealsByClaim={claim?.appeals} />,
+      children: <Appeals claimId={claim?.id} appealsByClaim={claim?.appeals} reloadClaim={reloadClaim}/>,
     },
   ]
 

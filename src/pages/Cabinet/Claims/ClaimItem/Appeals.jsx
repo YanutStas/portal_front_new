@@ -42,7 +42,7 @@ const changeData = (arr) => {
     })
 
 }
-export default function Appeals({ claimId, appealsByClaim }) {
+export default function Appeals({ claimId, appealsByClaim, reloadClaim }) {
     const { setLinks, setStyles, clearDataForForm } = useDataForForm((state) => state)
     const { appeals,
         fetchAppealsAll,
@@ -63,6 +63,7 @@ export default function Appeals({ claimId, appealsByClaim }) {
         fetchAppealsAll()
     }, [reload])
     useEffect(() => {
+        console.log("appeals",appeals)
         if (appeals.length > 0) {
             changeData(appeals)
             setTreeData(appeals)
@@ -98,6 +99,8 @@ export default function Appeals({ claimId, appealsByClaim }) {
         clearAppeal()
         clearDataForForm()
         setIsOpenModalAppeals(false)
+        // fetchAppealsAll()
+        reloadClaim()
     }
     const readAnswer = async (id) => {
         // console.log("id", id);

@@ -1,10 +1,10 @@
-import axios from "axios";
+// import axios from "axios";
 import React, { useEffect, useState } from "react";
-import useTasks from "../../../stores/Cabinet/useTasks";
+// import useTasks from "../../../stores/Cabinet/useTasks";
 import { Button, Empty, Flex, Form, Typography } from "antd";
 import selectComponent from "../../selectComponent";
 import Preloader from "../../Main/Preloader";
-import useDataForForm from "../../../stores/Cabinet/useDataForForm";
+// import useDataForForm from "../../../stores/Cabinet/useDataForForm";
 import useAppeals from "../../../stores/Cabinet/useAppeals";
 
 
@@ -20,14 +20,14 @@ export default function AppealItem({ claimId, appeal, isLoadingAppeal, appealsId
     //     //     setLinks(appeal.links)
 
     // }, [])
-    const handlerFinish = (values) => {
-        console.log("claimId", claimId)
-        if (createNewAppeal({ values, claimId, versionId: appeal.versionId, appealsId })) {
+    const handlerFinish = async(values) => {
+        // console.log("claimId", claimId)
+        if (await createNewAppeal({ values, claimId, versionId: appeal.versionId, appealsId })) {
             closeModal()
         } else {
             setErrorAddAppeal(true)
         }
-        console.log(values)
+        // console.log(values)
         // if (createNewTask({
         //     typeActionId: actionId,
         //     claimId,
