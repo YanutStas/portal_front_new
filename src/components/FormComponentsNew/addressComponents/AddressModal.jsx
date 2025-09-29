@@ -116,7 +116,7 @@ const AddressModal = forwardRef(
       let fullString = "";
       fieldConfig.forEach((field) => {
         let currString = form.getFieldValue([name, field.name]);
-        if (currString) fullString = fullString + currString + ", ";
+        if (currString) fullString = fullString + (field.type ? field.type + ' ' : '') + currString + ", ";
       });
       form.setFieldValue([name, "fullAddress"], fullString);
       onCancel();

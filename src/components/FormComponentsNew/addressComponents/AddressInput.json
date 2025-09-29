@@ -1,14 +1,14 @@
 [
   { "name": "postal_code", "label": "Почтовый индекс" },
   { "name": "country", "label": "Страна" },
-  { "name": "region", "label": "Регион/Область" },
-  { "name": "area", "label": "Район" },
-  { "name": "city", "label": "Город" },
+  { "name": "region", "label": "Регион/Область","type":"обл" },
+  { "name": "area", "label": "Район","type":"р" },
+  { "name": "city", "label": "Город", "type":"г" },
   { "name": "settlement", "label": "Населенный пункт" },
-  { "name": "street", "label": "Улица" },
-  { "name": "house", "label": "Номер дома" },
-  { "name": "block", "label": "Корпус" },
-  { "name": "structure", "label": "Строение" },
-  { "name": "flat", "label": "Квартира/Офис/Комната" },
+  { "name": "street", "label": "Улица", "type":"ул" },
+  { "name": "house", "label": "Номер дома", "type":"д" },
+  { "name": "block", "label": "Корпус", "type":"кор" },
+  { "name": "structure", "label": "Строение", "type":"стр" },
+  { "name": "flat", "label": "Квартира/Офис/Комната", "type":"кв" },
   { "name": "comment", "label": "Комментарий", "type":"textArea" }
 ]

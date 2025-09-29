@@ -180,13 +180,15 @@ const AddressInput = ({
                   )
                 }
                 rules={[
-                  { 
-                    required: required, 
-                    message: "Это поле обязательное" },
+                  {
+                    required: required,
+                    message: "Это поле обязательное"
+                  },
                 ]}
                 style={{ flex: 1, minWidth: 300 }}
                 labelAlign="left"
                 initialValue={fullAddress}
+                extra={ <EditOutlined />}
               >
                 <AutoComplete
                   options={options}
@@ -194,7 +196,9 @@ const AddressInput = ({
                   onSearch={(text) => fetchSuggestions(text, "fullAddress")}
                   placeholder={placeholder}
                 >
-                  <Input.TextArea />
+                  <Input.TextArea
+                    autoSize={{ minRows: 1, maxRows: 4 }}                    
+                  />
                 </AutoComplete>
               </Form.Item>
               <div

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Flex, Typography, Card, Modal, Button } from "antd";
+import { Flex, Typography, Card, Modal, Button, message } from "antd";
 
 import { Link, useNavigate, } from "react-router-dom";
 import useAuth from "../../stores/useAuth";
@@ -32,6 +32,8 @@ export default function CabinetMenuNew({ setIsOpenProfileMenu }) {
       onOk: () => {
         logout();
         message.success("Вы вышли из системы. Открываем окно регистрации...");
+        setIsOpenProfileMenu(false)
+        setIsOpenModal(false)
         toggleModal("isAuthModalOpen", true);
         setAuthTab("2");
       },

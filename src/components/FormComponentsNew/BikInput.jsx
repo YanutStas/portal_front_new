@@ -22,6 +22,7 @@ export default function BikInput({
   read = false
 }) {
   const form = Form.useFormInstance();
+  // const [value, setValue] = useState('');
   const [options, setOptions] = useState([]);
   const objProperties = properties.externalService;
 
@@ -38,10 +39,11 @@ export default function BikInput({
       })
       .then((response) => {
         if (response.data && response.data.data) {
-          console.log(response.data.data);
+          // console.log(response.data.data);
           setOptions(
             response.data.data.map((item) => ({
-              value: item.value,
+              value: item.data.bic,
+              label: item.value,
               data: item.data,
             }))
           );
@@ -74,7 +76,8 @@ export default function BikInput({
       }
     }
     // console.log(currentData)
-    form.setFieldValue(name, currentData.data.bic);
+    // form.setFieldValue(name, currentData.data.bic);
+    
   };
   const formElement = (
     <Form.Item
@@ -107,8 +110,10 @@ export default function BikInput({
     >
       <AutoComplete
         maxLength={9}
+        // value={value}
+        // onChange={(data)=>{setValue(data)}}
         options={options}
-        onSelect={(value, option) => onSelect(value, option)}
+        onSelect={onSelect}
         onSearch={(text) => fetchSuggestions(text, "АдресПолный")}
         placeholder={placeholder}
       />
