@@ -24,10 +24,14 @@ import SubmitModal from "../../components/SubmitModal";
 import { motion } from "framer-motion";
 
 import selectComponent from "../../components/selectComponent";
+import useGlobal from "../../stores/useGlobal";
 
-const { Title} = Typography;
+const version = import.meta.env.VITE_BACK_VERSION;
+
+const { Title } = Typography;
 
 export default function NewClaim() {
+  const { setTestData, testData } = useGlobal((state) => state)
   // const chain = useServices((state) => state.chain);
   const serviceItem = useServices((state) => state.serviceItem);
   const fetchServiceItem = useServices((state) => state.fetchServiceItem);
@@ -60,6 +64,7 @@ export default function NewClaim() {
   }, [isDirty]);
 
   useEffect(() => {
+    setTestData(false)
     fetchServiceItem(id, { withChain: true, withFields: true });
   }, []);
 
@@ -103,11 +108,11 @@ export default function NewClaim() {
     try {
       console.log("Данные для создания заявки: ", newValues);
       addBlockButtonNewClaim();
-      await createClaim({
-        versionId: serviceItem.versionId,
-        serviceId: serviceItem.Ref_Key,
-        values: newValues,
-      });
+      // await createClaim({
+      //   versionId: serviceItem.versionId,
+      //   serviceId: serviceItem.Ref_Key,
+      //   values: newValues,
+      // });
       removeBlockButtonNewClaim();
       setIsDirty(false);
     } catch (err) {
@@ -198,8 +203,8 @@ export default function NewClaim() {
   const getLabelFromService = (namePath) => {
     const parts = Array.isArray(namePath)
       ? namePath
-          .filter((p) => typeof p === "string" || typeof p === "number")
-          .map(String)
+        .filter((p) => typeof p === "string" || typeof p === "number")
+        .map(String)
       : [String(namePath)];
 
     for (let i = parts.length - 1; i >= 0; i--) {
@@ -225,8 +230,8 @@ export default function NewClaim() {
         inst instanceof HTMLElement
           ? inst
           : inst?.input ||
-            inst?.resizableTextArea?.textArea ||
-            inst?.nativeElement;
+          inst?.resizableTextArea?.textArea ||
+          inst?.nativeElement;
 
       const container =
         node?.closest?.(".ant-form-item") || node?.closest?.(".ant-card");
@@ -276,7 +281,9 @@ export default function NewClaim() {
 
     return result;
   };
-
+  const handlerOnClick = () => {
+    setTestData(true)
+  }
   return (
     <div style={{ maxWidth: "100%", margin: "0 auto" }}>
       <AppHelmet
@@ -334,6 +341,12 @@ export default function NewClaim() {
                 </Tag>
               ))}
             </Flex>
+            {(version === "local" || version === "test") &&
+             <Flex justify="flex-end">
+                <Button disabled={testData} onClick={handlerOnClick}>Заполнить тестовыми данными</Button>
+             </Flex>
+              
+            }
 
             <Form
               scrollToFirstError={{
@@ -380,6 +393,7 @@ export default function NewClaim() {
                     justifyContent: "center",
                   }}
                 >
+
                   <Form.Item>
                     <motion.div
                       whileHover={{ scale: 1.1 }}

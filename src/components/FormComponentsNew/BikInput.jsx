@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AutoComplete, Form } from "antd";
 import debounce from "lodash/debounce";
 import axios from "axios";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
+import useGlobal from "../../stores/useGlobal";
 
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
@@ -21,10 +22,16 @@ export default function BikInput({
   stylesField_key = false,
   read = false
 }) {
+  const testData = useGlobal((state) => state.testData)
   const form = Form.useFormInstance();
   // const [value, setValue] = useState('');
   const [options, setOptions] = useState([]);
   const objProperties = properties.externalService;
+  useEffect(() => {
+      if (testData) {
+        form.setFieldValue(name, "044525823")
+      }
+    }, [testData])
 
   const fetchSuggestions = debounce((inn) => {
     const params = { type: "БИК", query: inn };

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { AutoComplete, Form, Flex, Input, ConfigProvider, theme } from "antd";
 import debounce from "lodash/debounce";
 import axios from "axios";
@@ -7,6 +7,7 @@ import fieldConfig from "./AddressInput.json";
 import { EditOutlined } from "@ant-design/icons";
 import WrapperComponent from "../WrapperComponent";
 import InfoDrawer from "../../InfoDrawer";
+import useGlobal from "../../../stores/useGlobal";
 
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
@@ -34,8 +35,14 @@ const AddressInput = ({
   read = false
 }) => {
   const { token } = theme.useToken();
-  // console.log(country)
+  const testData = useGlobal((state) => state.testData)
   const form = Form.useFormInstance();
+  useEffect(() => {
+    if (testData) {
+      form.setFieldValue(name, { fullAddress: "143430, Россия, Московская обл, г Красногорск, пгт Нахабино, ул Карла Маркса, двлд 8" })
+    }
+  }, [testData])
+  // console.log(country)
   // let fieldDepends = Form.useWatch(dependOf, form)
   const [options, setOptions] = useState([]);
   const [address, setAddress] = useState({});
@@ -188,7 +195,7 @@ const AddressInput = ({
                 style={{ flex: 1, minWidth: 300 }}
                 labelAlign="left"
                 initialValue={fullAddress}
-                extra={ <EditOutlined />}
+              // extra={ <EditOutlined />}
               >
                 <AutoComplete
                   options={options}
@@ -197,7 +204,7 @@ const AddressInput = ({
                   placeholder={placeholder}
                 >
                   <Input.TextArea
-                    autoSize={{ minRows: 1, maxRows: 4 }}                    
+                    autoSize={{ minRows: 1, maxRows: 4 }}
                   />
                 </AutoComplete>
               </Form.Item>

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Select, Typography } from "antd";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
 import useServices from "../../stores/useServices";
 import useClaims from "../../stores/Cabinet/useClaims";
 import useDataForForm from "../../stores/Cabinet/useDataForForm";
+import useGlobal from "../../stores/useGlobal";
 
 export default function SelectInput({
   name = "name",
@@ -22,16 +23,23 @@ export default function SelectInput({
   // options = false
 }) {
   // console.log("selectInput read", read);
+  const testData = useGlobal((state) => state.testData)
+  const form = Form.useFormInstance();
 
   const { links } = useDataForForm((state) => state)
-  const serviceItem = useServices((state) => state.serviceItem);
-  const claim = useClaims((state) => state.claim);
+  // const serviceItem = useServices((state) => state.serviceItem);
+  // const claim = useClaims((state) => state.claim);
   let options = false
   // console.log(links);
 
   if (links) {
     options = links[Ref_Key]?.options;
-  } 
+  }
+  useEffect(() => {
+    if (testData) {
+      options && form.setFieldValue(name, options[0].value)
+    }
+  }, [testData])
   // else {
   //   options = read ? claim?.template.portalFields.links[Ref_Key]?.options : serviceItem?.links[Ref_Key]?.options;
   // }

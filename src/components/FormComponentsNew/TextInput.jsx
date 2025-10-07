@@ -7,6 +7,7 @@ import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
 import useServices from "../../stores/useServices";
 import useProfile from "../../stores/Cabinet/useProfile";
+import useGlobal from "../../stores/useGlobal";
 
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
@@ -39,6 +40,7 @@ export default function TextInput({
   stylesField_key = false,
   read = false
 }) {
+  const testData = useGlobal((state) => state.testData)
   // const serviceItem = useServices((state) => state.serviceItem);
   // if (label === "Номер записи в ЕГРЮЛ") {
   //   console.log("Номер записи в ЕГРЮЛ",length)
@@ -46,6 +48,22 @@ export default function TextInput({
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const form = Form.useFormInstance();
+  useEffect(() => {
+    if (testData) {
+      type === "Фамилия" && form.setFieldValue(name, "Иванов")
+      type === "Имя" && form.setFieldValue(name, "Иван")
+      type === "Отчество" && form.setFieldValue(name, "Иванович")
+      type === "Страна" && form.setFieldValue(name, "Россия")
+      type === "Регион" && form.setFieldValue(name, "Московский")
+      type === "Город" && form.setFieldValue(name, "Красногорск")
+      type === "Улица" && form.setFieldValue(name, "Пушкина")
+      type === "Район" && form.setFieldValue(name, "Дзержинский")
+      type === "АдресПолный" && form.setFieldValue(name, "143430, Россия, Московская обл, г Красногорск, пгт Нахабино, ул Карла Маркса, двлд 8")
+      type === "НаименованиеОрганизации" && form.setFieldValue(name, 'АКЦИОНЕРНОЕ ОБЩЕСТВО "МОСКОВСКАЯ ОБЛАСТНАЯ ЭНЕРГОСЕТЕВАЯ КОМПАНИЯ"')
+      type === false && form.setFieldValue(name, "Произвольный текст")
+      type === "Банк" && form.setFieldValue(name, 'ФИЛИАЛ "ЦЕНТРАЛЬНЫЙ" БАНКА ВТБ (ПАО) Г. МОСКВА')
+    }
+  },[testData])
 
   const { profile } = useProfile();
   const emailFromProfile = profile.email || "";

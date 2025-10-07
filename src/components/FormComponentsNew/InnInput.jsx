@@ -1,20 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AutoComplete, Form, Input, InputNumber } from "antd";
 import debounce from "lodash/debounce";
 import axios from "axios";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
+import useGlobal from "../../stores/useGlobal";
 
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
 export default function InnInput({
-  name = "name",
+  name = "inn",
   label = "",
   placeholder = "",
   required = undefined,
   dependOf = false,
   howDepend = false,
-  specialField: type = false,
+  // specialField: type = false,
   properties = false,
   span = false,
   fullDescription = false,
@@ -23,14 +24,20 @@ export default function InnInput({
   length = undefined,
 }) {
   const [value, setValue] = useState('');
+  const testData = useGlobal((state) => state.testData)
   const form = Form.useFormInstance();
   const [options, setOptions] = useState([]);
   const objProperties = properties.externalService;
+  useEffect(() => {
+    if (testData) {
+      form.setFieldValue(name, "5032137342")
+    }
+  }, [testData])
 
   const fetchSuggestions = debounce((inn) => {
     if (/\D{1,}/.test(inn)) return false
     const params = { type: "ИНН", query: inn };
-    console.log(params);
+    // console.log(params);
     axios
       .get(`${backServer}/api/cabinet/getDaData`, {
         headers: {

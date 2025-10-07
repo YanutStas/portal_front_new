@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ConfigProvider, DatePicker, Form, TimePicker } from "antd";
 import moment from "moment";
 import "moment/locale/ru";
 import locale from "antd/es/locale/ru_RU";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
+import useGlobal from "../../stores/useGlobal";
 
 moment.locale("ru");
 
@@ -22,6 +23,13 @@ export default function DateInput({
   stylesField_key = false,
   read = false
 }) {
+  const testData = useGlobal((state) => state.testData)
+  const form = Form.useFormInstance();
+  useEffect(() => {
+    if (testData) {
+      form.setFieldValue(name, moment())
+    }
+  }, [testData])
   const formElement = (
     <ConfigProvider locale={locale}>
       <Form.Item
@@ -45,7 +53,7 @@ export default function DateInput({
           <DatePicker
             format={"DD.MM.YYYY"}
             placeholder={placeholder}
-            // required={required}
+          // required={required}
           />
         )}
         {part === "МесяцГод" && (
@@ -68,7 +76,7 @@ export default function DateInput({
           <TimePicker
             format={"HH:mm"}
             placeholder={placeholder}
-            // required={required}
+          // required={required}
           />
         )}
       </Form.Item>
