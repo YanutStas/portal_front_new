@@ -63,7 +63,7 @@ export default function TextInput({
       type === false && form.setFieldValue(name, "Произвольный текст")
       type === "Банк" && form.setFieldValue(name, 'ФИЛИАЛ "ЦЕНТРАЛЬНЫЙ" БАНКА ВТБ (ПАО) Г. МОСКВА')
     }
-  },[testData])
+  }, [testData])
 
   const { profile } = useProfile();
   const emailFromProfile = profile.email || "";
@@ -195,7 +195,7 @@ export default function TextInput({
       ]}
       initialValue={emailFromProfile}
     >
-      <Input placeholder={placeholder} maxLength={length || undefined} />
+      <Input placeholder={placeholder} maxLength={length || undefined} autoComplete="off" />
     </Form.Item>
   );
 
@@ -238,6 +238,7 @@ export default function TextInput({
       initialValue={defaultValue}
     >
       <Input.TextArea
+        autoComplete="off"
         placeholder={placeholder}
         maxLength={length || undefined}
         disabled={disabled}

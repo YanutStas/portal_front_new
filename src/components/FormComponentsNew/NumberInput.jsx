@@ -80,11 +80,13 @@ export default function NumberInput({
       ]}
       initialValue={defaultValue ? defaultValue : min}
     >
-      <InputNumber      
-      // defaultValue={0}
+      <InputNumber
+        // defaultValue={0}
+        autoComplete="off"
+        // changeOnBlur={false}
         min={min}
         max={max}
-        style={{width:"100%"}}
+        style={{ width: "100%" }}
         step={stepMain}
         decimalSeparator=","
         precision={ractionDigits}

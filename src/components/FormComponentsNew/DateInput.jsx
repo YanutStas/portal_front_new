@@ -51,14 +51,20 @@ export default function DateInput({
       >
         {part === "Дата" && (
           <DatePicker
-            format={"DD.MM.YYYY"}
+            format={{ format: "DD.MM.YYYY", type: "mask" }}
+            // format={"DD.MM.YYYY"}
             placeholder={placeholder}
+            onChange={(date, dateString) => {
+              console.log("dateString", dateString);
+
+            }}
           // required={required}
           />
         )}
         {part === "МесяцГод" && (
           <DatePicker
-            format={"MM.YYYY"}
+            format={{ format: "MM.YYYY", type: "mask" }}
+            // format={"MM.YYYY"}
             placeholder={placeholder}
             picker="month"
           // required={required}
@@ -66,7 +72,8 @@ export default function DateInput({
         )}
         {part === "ДатаВремя" && (
           <DatePicker
-            format={"DD.MM.YYYY HH:mm"}
+            format={{ format: "DD.MM.YYYY HH:mm", type: "mask" }}
+            // format={"DD.MM.YYYY HH:mm"}
             showTime
             placeholder={placeholder}
           // required={required}
@@ -74,7 +81,8 @@ export default function DateInput({
         )}
         {part === "Время" && (
           <TimePicker
-            format={"HH:mm"}
+            format={{ format: "HH:mm", type: "mask" }}
+            // format={"HH:mm"}
             placeholder={placeholder}
           // required={required}
           />

@@ -208,7 +208,7 @@ const AddressInput = ({
                   />
                 </AutoComplete>
               </Form.Item>
-              <div
+              {/* <div
                 style={{
                   cursor: "pointer",
                   color: token.colorTextLabel,
@@ -218,8 +218,8 @@ const AddressInput = ({
                 onClick={openModal}
               >
                 <EditOutlined />
-                {/* Заполнить */}
-              </div>
+                
+              </div> */}
             </Flex>
             <AddressModal
               visible={modalVisible}
