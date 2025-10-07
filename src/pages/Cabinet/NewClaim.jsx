@@ -108,11 +108,11 @@ export default function NewClaim() {
     try {
       console.log("Данные для создания заявки: ", newValues);
       addBlockButtonNewClaim();
-      // await createClaim({
-      //   versionId: serviceItem.versionId,
-      //   serviceId: serviceItem.Ref_Key,
-      //   values: newValues,
-      // });
+      await createClaim({
+        versionId: serviceItem.versionId,
+        serviceId: serviceItem.Ref_Key,
+        values: newValues,
+      });
       removeBlockButtonNewClaim();
       setIsDirty(false);
     } catch (err) {
