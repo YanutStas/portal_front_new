@@ -1,13 +1,32 @@
 <!doctype html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Портал потребителя</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Портал потребителя</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+  <script>
+    var script = document.createElement('script');
+    script.src = 'https://nccchat.mosoblenergo.ru:8082/fv2/chat.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    //initialize ncc-chat
+    window.addEventListener('chatLoaded', function () {
+      window.sdk = initializeChat({
+        showcaseId: 129,
+        basePath: 'https://nccchat.mosoblenergo.ru:8082/v2',
+        token: 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7v9WZMQHTI0sjtpnqPYAp0iEoX2NMXiepvHdhnBgDsT9yA0KH/lTdcLzwW0fsY20zDMn7EYcaMANxe41LRIflbHpRDA53ZDCHce2obKKfMUkp2Xe6vRJCSWW/LWLvB30Pq3GkspShbgjVJYdJzuETzz29k0Qn3AQ6Ptop5hY9NAYk67o4J/4fQci8ZMWYTD3cVMOfGNhyL35+0Pd5dK6gwuERchDQeRFCtSbilUSx1+kddrlxZPVY6VWdhKXGhbMtcQJxRrU80bAf6WZCXP0qucno4CwEFBs8Fe32AtGLf+dkBwjXxrfLlnsxAK0WP9TQ+liPfVndL+k8lQX9LkKyQIDAQAB',
+        hideOpenButton: false,
+      });
+    });
+  </script>
+</body>
+
 </html>
