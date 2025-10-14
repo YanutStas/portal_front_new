@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { AutoComplete, Form, Flex, Input, ConfigProvider, theme, Button } from "antd";
+import { AutoComplete, Form, Flex, Input, ConfigProvider, theme } from "antd";
 import debounce from "lodash/debounce";
 import axios from "axios";
 import AddressModal from "./AddressModal";
@@ -8,7 +8,6 @@ import { EditOutlined } from "@ant-design/icons";
 import WrapperComponent from "../WrapperComponent";
 import InfoDrawer from "../../InfoDrawer";
 import useGlobal from "../../../stores/useGlobal";
-import Typography from "antd/es/typography/Typography";
 
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
@@ -46,8 +45,6 @@ const AddressInput = ({
   // console.log(country)
   // let fieldDepends = Form.useWatch(dependOf, form)
   const [options, setOptions] = useState([]);
-  const [reload, setReload] = useState(false);
-
   const [address, setAddress] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const modalFormRef = useRef(null);
@@ -174,51 +171,66 @@ const AddressInput = ({
         },
       }}
     >
-
-      <Flex vertical>
-        <Form.Item
-          name={name}
-          label={
-            fullDescription ? (
-              <InfoDrawer fullDescription={fullDescription}>
-                {label}
-              </InfoDrawer>
-            ) : (
-              label
-            )
-          }
-          rules={[
-            {
-              required: required,
-              message: "Это поле обязательное"
-            },
-          ]}
-          style={{ flex: 1, minWidth: 300 }}
-          labelAlign="left"
-        // initialValue={fullAddress}
-
-        >
-          <Typography.Text style={{ color: "gray" }}>{form.getFieldValue(name)?.fullAddressForVisual}</Typography.Text>
-          {/* <Input.TextArea disabled /> */}
-        </Form.Item>
-        <Flex gap={10} justify="center">
-          <Button type="primary" onClick={openModal}>Заполнить</Button>
-          <Button onClick={() => { 
-            form.setFieldValue(name, false) 
-            setReload(!reload)
-            }}>Очистить</Button>
-        </Flex>
-      </Flex>
-      <AddressModal
-        visible={modalVisible}
-        onSave={handleModalSave}
-        onCancel={() => setModalVisible(false)}
-        name={name}
-        form={form}
-        defaultValue={{ country, region, area, city, settlement, street }}
-      />
-
-
+      <Form.List name={name}>
+        {(fields, { add, remove }) => (
+          <>
+            <Flex align="flex-start">
+              <Form.Item
+                name={"fullAddress"}
+                label={
+                  fullDescription ? (
+                    <InfoDrawer fullDescription={fullDescription}>
+                      {label}
+                    </InfoDrawer>
+                  ) : (
+                    label
+                  )
+                }
+                rules={[
+                  {
+                    required: required,
+                    message: "Это поле обязательное"
+                  },
+                ]}
+                style={{ flex: 1, minWidth: 300 }}
+                labelAlign="left"
+                initialValue={fullAddress}
+              // extra={ <EditOutlined />}
+              >
+                <AutoComplete
+                  options={options}
+                  onSelect={(value, option) => onSelect(value, option)}
+                  onSearch={(text) => fetchSuggestions(text, "fullAddress")}
+                  placeholder={placeholder}
+                >
+                  <Input.TextArea
+                    autoSize={{ minRows: 1, maxRows: 4 }}
+                  />
+                </AutoComplete>
+              </Form.Item>
+              {/* <div
+                style={{
+                  cursor: "pointer",
+                  color: token.colorTextLabel,
+                  padding: 5,
+                  paddingTop: 30,
+                }}
+                onClick={openModal}
+              >
+                <EditOutlined />
+                
+              </div> */}
+            </Flex>
+            <AddressModal
+              visible={modalVisible}
+              onSave={handleModalSave}
+              onCancel={() => setModalVisible(false)}
+              name={name}
+              defaultValue={{ country, region, area, city, settlement, street }}
+            />
+          </>
+        )}
+      </Form.List>
     </ConfigProvider>
   );
 

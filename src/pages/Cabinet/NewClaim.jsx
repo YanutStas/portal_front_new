@@ -83,8 +83,13 @@ export default function NewClaim() {
     let newValues = {};
 
     const addNewValue = (value) => {
-      if (typeof value === "object" && Object.hasOwn(value, "$d")) {
-        return moment(value.$d).format();
+      // console.log(value.__proto__.constructor.name);
+      
+      if (typeof value === "object" && 
+        // Object.hasOwn(value, "$d")
+        value.__proto__.constructor.name==="Moment"
+      ) {
+        return moment(value._d).format();
       } else if (!Array.isArray(value)) {
         return value;
       }
@@ -108,11 +113,11 @@ export default function NewClaim() {
     try {
       console.log("Данные для создания заявки: ", newValues);
       addBlockButtonNewClaim();
-      await createClaim({
-        versionId: serviceItem.versionId,
-        serviceId: serviceItem.Ref_Key,
-        values: newValues,
-      });
+      // await createClaim({
+      //   versionId: serviceItem.versionId,
+      //   serviceId: serviceItem.Ref_Key,
+      //   values: newValues,
+      // });
       removeBlockButtonNewClaim();
       setIsDirty(false);
     } catch (err) {

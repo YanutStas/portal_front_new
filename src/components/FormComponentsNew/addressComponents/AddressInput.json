@@ -1,4 +1,5 @@
 [
+  { "name": "fullAddress", "label": "Поиск" },
   { "name": "postal_code", "label": "Почтовый индекс" },
   { "name": "country", "label": "Страна" },
   { "name": "region", "label": "Регион/Область","type":"обл" },
