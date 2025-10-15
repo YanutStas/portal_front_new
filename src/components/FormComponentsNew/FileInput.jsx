@@ -11,6 +11,7 @@ import {
   Upload,
   theme,
   Modal,
+  Typography,
 } from "antd";
 import { Space } from "antd";
 import InfoDrawer from "../InfoDrawer";
@@ -266,12 +267,14 @@ const FileInput = ({
           <Flex vertical justify="center" style={{ height: "100%" }}>
 
             <Flex justify="center" align="center">
-              <Upload {...props} style={{ textAlign: "center", display: "block", width: "100%" }}>
+              <Upload {...props} style={{ textAlign: "center", display: "block", width: "100%" }} accept=".png,.jpg,.jpeg,.pdf">
                 <Button icon={<UploadOutlined />} type="primary">
                   Выбрать файлы
                 </Button>
               </Upload>
             </Flex>
+              <Typography.Text style={{textAlign:"center",color:"gray",fontSize:12}}>.png, .jpg, .jpeg, .pdf</Typography.Text>
+              <Typography.Text style={{textAlign:"center",color:"gray",fontSize:12}}>{"меньше 20МБ"}</Typography.Text>
 
 
             <div
