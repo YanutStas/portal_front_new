@@ -22,7 +22,8 @@ export default function NumberInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
-  read = false
+  read = false,
+  value0NotEmpty = false
 }) {
   const [stepMain, setStepMain] = useState(step);
   const serviceItem = useServices((state) => state.serviceItem);
@@ -82,10 +83,10 @@ export default function NumberInput({
           required: required,
           message: "Это поле обязательное",
         },
-        // {
-        //   min: required ? 0.0000000000000000000000000000000001 : undefined,
-        //   message: "Это поле обязательное",          
-        // }
+        {
+          min: value0NotEmpty ? 0.0000000000000000000000000000000001 : undefined,
+          message: "Это поле должно быть больше нуля",          
+        }
       ]}
       initialValue={defaultValue ? defaultValue : min}
     >
