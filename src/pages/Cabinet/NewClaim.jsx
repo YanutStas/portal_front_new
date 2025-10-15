@@ -32,6 +32,7 @@ const { Title } = Typography;
 
 export default function NewClaim() {
   const { setTestData, testData } = useGlobal((state) => state)
+  const [testForm, setTestForm] = useState(false)
   // const chain = useServices((state) => state.chain);
   const serviceItem = useServices((state) => state.serviceItem);
   const fetchServiceItem = useServices((state) => state.fetchServiceItem);
@@ -84,10 +85,10 @@ export default function NewClaim() {
 
     const addNewValue = (value) => {
       // console.log(value.__proto__.constructor.name);
-      
-      if (typeof value === "object" && 
+
+      if (typeof value === "object" &&
         // Object.hasOwn(value, "$d")
-        value.__proto__.constructor.name==="Moment"
+        value.__proto__.constructor.name === "Moment"
       ) {
         return moment(value._d).format();
       } else if (!Array.isArray(value)) {
@@ -113,11 +114,15 @@ export default function NewClaim() {
     try {
       console.log("Данные для создания заявки: ", newValues);
       addBlockButtonNewClaim();
-      // await createClaim({
-      //   versionId: serviceItem.versionId,
-      //   serviceId: serviceItem.Ref_Key,
-      //   values: newValues,
-      // });
+      if (!testForm) {
+        await createClaim({
+          versionId: serviceItem.versionId,
+          serviceId: serviceItem.Ref_Key,
+          values: newValues,
+        });
+        // console.log("Отправили заявку");
+
+      }
       removeBlockButtonNewClaim();
       setIsDirty(false);
     } catch (err) {
@@ -347,10 +352,9 @@ export default function NewClaim() {
               ))}
             </Flex>
             {(version === "local" || version === "test") &&
-             <Flex justify="flex-end">
+              <Flex justify="flex-end">
                 <Button disabled={testData} onClick={handlerOnClick}>Заполнить тестовыми данными</Button>
-             </Flex>
-              
+              </Flex>
             }
 
             <Form
@@ -374,7 +378,11 @@ export default function NewClaim() {
               form={form}
               labelAlign="right"
               layout="vertical"
-              onFinish={onFinish}
+              onFinish={(values) => {
+                setTestForm(false)
+                onFinish(values)
+              }}
+              // onFinish={onFinish}
               onKeyDown={handleKeyDown}
               onValuesChange={() => setIsDirty(true)}
               style={{
@@ -391,13 +399,7 @@ export default function NewClaim() {
                   .map((item, index) => selectComponent(item, index))}
               </Row>
               {serviceItem?.fields?.length > 0 && (
-                <div
-                  style={{
-                    marginTop: 20,
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
+                <Flex justify="center" gap={20} style={{ marginTop: 20, }}>
 
                   <Form.Item>
                     <motion.div
@@ -417,7 +419,13 @@ export default function NewClaim() {
                       </Button>
                     </motion.div>
                   </Form.Item>
-                </div>
+                  {(version === "local" || version === "test") &&
+                    <Button onClick={() => {
+                      setTestForm(true)
+                      form.submit()
+                    }}>Протестировать форму</Button>
+                  }
+                </Flex>
               )}
               {!serviceItem?.fields?.length > 0 && (
                 <Empty
