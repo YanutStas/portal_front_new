@@ -63,10 +63,8 @@ export default function NumberInput({
   } else if (unit[name] === "м") {
     ractionDigits = 2;
   }
-  if (label === "Количество присоединяемых генераторов") {
 
-    console.log("defaultValue", min);
-  }
+
 
   const formElement = (
     <Form.Item
@@ -83,10 +81,12 @@ export default function NumberInput({
           required: required,
           message: "Это поле обязательное",
         },
-        {
-          min: value0NotEmpty ? 0.0000000000000000000000000000000001 : undefined,
-          message: "Это поле должно быть больше нуля",          
-        }
+        required && !value0NotEmpty ?
+          {
+            min: 0.0000000000000001,
+            type: "number",
+            message: "Это поле должно быть больше нуля",
+          } : undefined
       ]}
       initialValue={defaultValue ? defaultValue : min}
     >
