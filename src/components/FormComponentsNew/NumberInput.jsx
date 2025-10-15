@@ -85,7 +85,7 @@ export default function NumberInput({
           {
             min: 0.0000000000000001,
             type: "number",
-            message: "Это поле должно быть больше нуля",
+            message: "Это поле не должно быть равно нулю",
           } : undefined
       ]}
       initialValue={defaultValue ? defaultValue : min}
