@@ -1,15 +1,156 @@
 [
-  { "name": "fullAddress", "label": "Поиск" },
-  { "name": "postal_code", "label": "Почтовый индекс" },
-  { "name": "country", "label": "Страна" },
-  { "name": "region", "label": "Регион/Область","type":"обл" },
-  { "name": "area", "label": "Район","type":"р" },
-  { "name": "city", "label": "Город", "type":"г" },
-  { "name": "settlement", "label": "Населенный пункт" },
-  { "name": "street", "label": "Улица", "type":"ул" },
-  { "name": "house", "label": "Номер дома", "type":"д" },
-  { "name": "block", "label": "Корпус", "type":"кор" },
-  { "name": "structure", "label": "Строение", "type":"стр" },
-  { "name": "flat", "label": "Квартира/Офис/Комната", "type":"кв" },
-  { "name": "comment", "label": "Комментарий", "type":"textArea" }
+  {
+    "name": "postal_code",
+    "label": "Почтовый индекс"
+  },
+  {
+    "name": "country",
+    "label": "Страна"
+  },
+  {
+    "name": "region",
+    "label": "Регион",
+    "type": [
+      {
+        "type": "обл",
+        "type_full": "область"
+      },
+      {
+        "type": "г",
+        "type_full": "город"
+      },
+      {
+        "type": "край",
+        "type_full": "край"
+      }
+    ]
+  },
+  {
+    "name": "area",
+    "label": "Район в регионе",
+    "type": [
+      {
+        "type": "окр",
+        "type_full": "Округ"
+      }
+    ]
+  },
+  {
+    "name": "city",
+    "label": "Город",
+    "type": [
+      {
+        "type": "г",
+        "type_full": "город"
+      }
+    ]
+  },
+  {
+    "name": "settlement",
+    "label": "Населенный пункт",
+    "type": [
+      {
+        "type": "д",
+        "type_full": "деревня"
+      },
+      {
+        "type": "мкр",
+        "type_full": "микрорайон"
+      },
+      {
+        "type": "с",
+        "type_full": "село"
+      },
+      {
+        "type": "тер",
+        "type_full": "территория"
+      },
+      {
+        "type": "тер. СНТ",
+        "type_full": "территория снт"
+      },
+      {
+        "type": "тер. ТСН",
+        "type_full": "территория тсн"
+      }
+    ]
+  },
+  {
+    "name": "street",
+    "label": "Улица",
+    "type": [
+      {
+        "type": "б-р",
+        "type_full": "бульвар"
+      },
+      {
+        "type": "кв-л",
+        "type_full": "квартал"
+      },
+      {
+        "type": "пер",
+        "type_full": "переулок"
+      },
+      {
+        "type": "пр-кт",
+        "type_full": "проспект"
+      },
+      {
+        "type": "ул",
+        "type_full": "улица"
+      }
+    ]
+  },
+  {
+    "name": "stead",
+    "label": "Номер земельного участка",
+    "type": [
+      {
+        "type": "н",
+        "type_full": "номер"
+      }
+    ]
+  },
+  {
+    "name": "house",
+    "label": "Номер дома",
+    "type": [
+      {
+        "type": "д",
+        "type_full": "дом"
+      }
+    ]
+  },
+  {
+    "name": "block",
+    "label": "Корпус/строение",
+    "type": [
+      {
+        "type": "кор",
+        "type_full": "корпус"
+      },
+      {
+        "type": "стр",
+        "type_full": "строение"
+      }
+    ]
+  },
+  {
+    "name": "flat",
+    "label": "Квартира",
+    "type": [
+      {
+        "type": "кв",
+        "type_full": "квартира"
+      },
+      {
+        "type": "оф",
+        "type_full": "офис"
+      }
+    ]
+  },
+  {
+    "name": "comment",
+    "label": "Дополнительная информация"
+  }
 ]

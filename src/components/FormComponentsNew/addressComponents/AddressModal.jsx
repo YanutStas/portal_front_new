@@ -3,8 +3,9 @@ import React, {
   useImperativeHandle,
   forwardRef,
   useState,
+  useRef,
 } from "react";
-import { Modal, Form, Input, AutoComplete, theme, Typography } from "antd";
+import { Modal, Form, Input, AutoComplete, theme, Typography, Divider, Flex, Select, Button } from "antd";
 import fieldConfig from "./AddressInput.json";
 import axios from "axios";
 import debounce from "lodash/debounce";
@@ -12,21 +13,32 @@ import debounce from "lodash/debounce";
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
 const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, form }, ref) => {
+  const [refAuto, setRefAuto] = useState({});
+
   const [options, setOptions] = useState({});
+  const [fullAddressForVisual, setFullAddressForVisual] = useState(false);
+  const [isSelectAddress, setIsSelectAddress] = useState(false);
   const [formAddress] = Form.useForm();
-  const { token } = theme.useToken();
+  // const { token } = theme.useToken();
+  useEffect(() => {
+    if (visible) {
+      formAddress.scrollToField('fullAddress', { focus: true })
+
+      // formAddress.focusField('fullAddress')
+    }
+  }, [visible])
 
   const fetchSuggestions = debounce((text, type) => {
     if (text.length > 1) {
       // console.log("area: ", formAddress.getFieldValue([name, "area"]));
-      const formValue = {
-        country: formAddress.getFieldValue("country"),
-        region: formAddress.getFieldValue("region"),
-        area: formAddress.getFieldValue("area"),
-        city: formAddress.getFieldValue("city"),
-        settlement: formAddress.getFieldValue("settlement"),
-        street: formAddress.getFieldValue("street"),
-      };
+      // const formValue = {
+      //   country: formAddress.getFieldValue("country"),
+      //   region: formAddress.getFieldValue("region"),
+      //   area: formAddress.getFieldValue("area"),
+      //   city: formAddress.getFieldValue("city"),
+      //   settlement: formAddress.getFieldValue("settlement"),
+      //   street: formAddress.getFieldValue("street"),
+      // };
       const params = {
         type,
         query: text,
@@ -97,7 +109,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
           setOptions({ [type]: [] });
         });
     }
-  }, 500);
+  }, 1000);
   // Используем useImperativeHandle для управления формой из родительского компонента
   useImperativeHandle(ref, () => ({
     setFieldsValue: formAddress.setFieldsValue,
@@ -112,70 +124,188 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
       let temp = {}
       fieldConfig.forEach(item => {
         if (item.name !== "fullAddress") {
-          temp[item.name] = option.data[`${item.name}_with_type`] || option.data[item.name]
+          temp[item.name] = option.data[`${item.name}`] || option.data[item.name]
+          temp[`${item.name}_type`] = option.data[`${item.name}_type`] || undefined
         } else {
           temp.fullAddress = false
         }
       })
-      console.log('temp', temp);
-
+      // console.log('temp', temp);
       formAddress.setFieldsValue(temp)
+      manualInput()
+      // setIsSelectAddress(true)
     }
-    console.log("value", value);
+    // console.log("value", value);
     console.log("option", option);
   };
   const handleOk = () => {
-    let address = {};
-    fieldConfig.forEach((field) => {
-      let currString = formAddress.getFieldValue(field.name);
-      address[field.name] = currString
-      if (currString) address.fullAddressForVisual = (address.fullAddressForVisual||'') + 
-      // (field.type ? field.type + ' ' : '') + 
-      currString + ", ";
-    });
-    address.fullAddressForVisual = address.fullAddressForVisual.slice(0, -2)
-    form.setFieldValue(name, address);
+
+    // let address = {};
+    // fieldConfig.forEach((field) => {
+    //   let currString = formAddress.getFieldValue(field.name);
+    //   address[field.name] = currString
+    //   if (currString) address.fullAddressForVisual = (address.fullAddressForVisual || '') +
+    //     // (field.type ? field.type + ' ' : '') + 
+    //     currString + ", ";
+    // });
+    // address.fullAddressForVisual = address.fullAddressForVisual.slice(0, -2)
+    // setFullAddressForVisual(address.fullAddressForVisual)
+    form.setFieldValue(name, concatAddressString());
     onCancel();
   };
 
+  const manualInput = () => {
+    setFullAddressForVisual(concatAddressString().fullAddressForVisual)
+  }
+  const concatAddressString = () => {
+    let address = { fullAddressForVisual: "" }
+    fieldConfig.forEach(item => {
+      const addText = formAddress.getFieldValue(item.name)
+      const addType = formAddress.getFieldValue(`${item.name}_type`)
+      if (addText) {
+        address[item.name] = (addType ? addType + ' ' : '') + addText
+        address.fullAddressForVisual = address.fullAddressForVisual + (addType ? addType + ' ' : '') + addText + ", "
+      }
+    })
+    address.fullAddressForVisual = address.fullAddressForVisual.slice(0, -2)
+    return address
+  }
+  // useEffect(() => {
+  //   // const rect = refAutoComplete.current.getBoundingClientRect();
+  //   console.log(refAutoComplete);
+
+  // }, []);
+
   return (
     <Modal
-      closable={false}
+      closable={true}
       open={visible}
       title="Введите адрес"
+      // cancelButtonProps={{style:{display:"none"}}}
       onOk={handleOk}
       onCancel={onCancel}
       okText="Сохранить"
+      cancelText="Закрыть"
       width={800}
     >
       <Form form={formAddress}>
-        {fieldConfig.map((field) => (
+        <div vertical gap={10} wrap={"wrap"}>
+
           <Form.Item
-            name={field.name}
-            label={field.label}
-            key={field.name}
-            labelCol={{ span: 8 }}
-          // initialValue={}
+            style={{ flex: 1 }}
+            name={"fullAddress"}
+          // label={"Поиск"}
+
           >
             <AutoComplete
+              autoFocus={true}
+              options={options.fullAddress}
+              onSelect={(value, option) => onSelect(value, option, "fullAddress")}
+              onSearch={(text) => fetchSuggestions(text, "fullAddress")}
+              // defaultValue={defaultValue[field.name]}
+              disabled={defaultValue.fullAddress}
+              // popupRender={(elem) => {
+              //   console.log(elem);
+              //   return <Button>{elem}</Button>
+              // }}
+              styles={{
+                popup: {
+                  root: {
+                    // inset: "",
+                    top: refAuto,
+                  }
+                }
+              }}
+            >
+
+              <Input.TextArea
+                ref={(ref) => {
+                  setRefAuto(ref?.resizableTextArea?.textArea?.getBoundingClientRect().bottom)
+                  // console.log(ref?.resizableTextArea?.textArea?.getBoundingClientRect().bottom);
+                }}
+                placeholder={`Начните вводить адрес...`}
+                autoSize={{ minRows: 1, maxRows: 4 }}
+              // size="large"
+              />
+
+            </AutoComplete>
+          </Form.Item>
+          <Button onClick={() => { setIsSelectAddress(!isSelectAddress) }}>Ручной ввод</Button>
+        </div>
+        {isSelectAddress &&
+          <>
+            <Divider>Редактирование вручную</Divider>
+            {fieldConfig.map((field) => (
+              <Flex key={field.name} gap={10}>
+                {field.type &&
+                  <Form.Item
+                    name={`${field.name}_type`}
+                    style={{ width: 130 }}
+                    labelCol={{ span: 8 }}
+                  >
+                    <Select
+                      // size="small"
+                      options={field.type && field.type.map(item => ({
+                        value: item.type,
+                        // label: item.type_full
+                      }))}
+                      // defaultValue={0}
+                      placeholder="Тип"
+                      onChange={manualInput}
+                    />
+                  </Form.Item>
+                }
+                <Form.Item
+                  name={field.name}
+                  style={{ flex: 1 }}
+                  // label={field.label}
+                  // key={field.name}
+                  labelCol={{ span: 8 }}
+                // initialValue={}
+                >
+                  {/* <AutoComplete
               options={options[field.name]}
               onSelect={(value, option) => onSelect(value, option, field.name)}
               onSearch={(text) => fetchSuggestions(text, field.name)}
               // defaultValue={defaultValue[field.name]}
               disabled={defaultValue[field.name]}
-            >
-              {field.type === "textArea" ? (
-                <Input.TextArea
-                  placeholder={`Введите ${field.label.toLowerCase()}`}
-                />
+              >
+            {field.type === "textArea" ? (
+              <Input.TextArea
+              placeholder={`Введите ${field.label.toLowerCase()}`}
+              />
               ) : (
                 <Input placeholder={`Введите ${field.label.toLowerCase()}`} />
-              )}
-            </AutoComplete>
-          </Form.Item>
-        ))}
+                )}
+            </AutoComplete> */}
+                  <Input.TextArea
+                    // size="small"
+                    placeholder={`${field.label}`}
+                    autoSize={{ minRows: 1, maxRows: 3 }}
+                    onChange={manualInput}
+                  />
+                </Form.Item>
+              </Flex>
+            ))}
+          </>
+        }
+
       </Form>
-      <Typography.Text style={{ color: "gray" }}>{form.getFieldValue(name)?.fullAddressForVisual}</Typography.Text>
+      <Typography.Text style={{ color: "gray" }}>{fullAddressForVisual}</Typography.Text>
+      {/* {isSelectAddress &&
+        <Flex vertical gap={10}>
+
+          <Flex justify="center" style={{}}>
+
+            <Button color="danger" variant="outlined" onClick={() => {
+              formAddress.resetFields()
+              setFullAddressForVisual(false)
+              setOptions({})
+              // setIsSelectAddress(false)
+            }}>Очистить</Button>
+          </Flex>
+        </Flex>
+      } */}
     </Modal>
   );
 }

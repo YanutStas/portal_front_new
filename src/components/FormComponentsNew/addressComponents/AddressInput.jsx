@@ -202,11 +202,13 @@ const AddressInput = ({
           {/* <Input.TextArea disabled /> */}
         </Form.Item>
         <Flex gap={10} justify="center">
-          <Button type="primary" onClick={openModal}>Заполнить</Button>
-          <Button onClick={() => { 
-            form.setFieldValue(name, false) 
+          <Button type="primary" onClick={openModal}>{form.getFieldValue(name)?.fullAddressForVisual ? "Изменить" : "Указать адрес"}</Button>
+          {form.getFieldValue(name)?.fullAddressForVisual&&
+          <Button onClick={() => {
+            form.setFieldValue(name, false)
             setReload(!reload)
-            }}>Очистить</Button>
+          }}>Очистить</Button>
+        }
         </Flex>
       </Flex>
       <AddressModal
