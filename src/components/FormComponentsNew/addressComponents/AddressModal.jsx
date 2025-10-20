@@ -12,7 +12,7 @@ import debounce from "lodash/debounce";
 
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
-const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, form,label }, ref) => {
+const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, form, label }, ref) => {
   const [refAuto, setRefAuto] = useState({});
 
   const [options, setOptions] = useState({});
@@ -212,7 +212,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
                 popup: {
                   root: {
                     // inset: "",
-                    top: refAuto,
+                    top:  refAuto,
                   }
                 }
               }}
@@ -221,7 +221,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
               <Input.TextArea
                 ref={(ref) => {
                   setRefAuto(ref?.resizableTextArea?.textArea?.getBoundingClientRect().bottom)
-                  // console.log(ref?.resizableTextArea?.textArea?.getBoundingClientRect().bottom);
+                  console.log(ref?.resizableTextArea?.textArea?.getBoundingClientRect().bottom);
                 }}
                 placeholder={`Поиск по базе адресов`}
                 autoSize={{ minRows: 1, maxRows: 4 }}
@@ -292,7 +292,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
 
       </Form>
       {/* <Divider/> */}
-      <Descriptions  items={[{
+      <Descriptions items={[{
         key: '1',
         label: 'Выбранный адрес',
         children: fullAddressForVisual,

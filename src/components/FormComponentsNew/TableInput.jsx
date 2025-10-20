@@ -18,7 +18,7 @@ import CadastrInput from "./CadastrInput";
 
 export default function TableInput({
   name = "nameTableInput",
-  label = "Поле",
+  label = "",
   required = false,
   dependOf = false,
   howDepend = false,
