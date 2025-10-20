@@ -160,13 +160,23 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
   const concatAddressString = () => {
     let address = { fullAddressForVisual: "" }
     fieldConfig.forEach(item => {
-      console.log(item);
+      // console.log(item);
 
       const addText = formAddress.getFieldValue(item.name)
       const addType = formAddress.getFieldValue(`${item.name}_type`)
       if (addText) {
-        address[item.name] = (addType ? addType + ' ' : '') + addText
-        address.fullAddressForVisual = address.fullAddressForVisual + (addType && item.name !== "region" ? addType + ' ' : '') + addText + (addType && item.name === "region" ? ' '+ addType   : '') + ", "
+        if (addType) {
+          if (item.name === "region" || item.name === "area" || item.name === "city" || item.name === "settlement"|| item.name === "street") {
+            address[item.name] = addText + ' ' + addType
+          } else {
+            address[item.name] = addType + ' ' + addText
+          }
+          
+        } else {
+          address[item.name] = addText
+        }
+        // addText + (addType && (item.name === "region" || item.name === "area" || item.name === "city" || item.name === "settlement") ? ' ' + addType : '')
+        address.fullAddressForVisual = address.fullAddressForVisual + (addType && item.name !== "region" ? addType + ' ' : '') + addText + (addType && item.name === "region" ? ' ' + addType : '') + ", "
       }
     })
     address.fullAddressForVisual = address.fullAddressForVisual.slice(0, -2)
