@@ -5,19 +5,19 @@ import React, {
   useState,
   useRef,
 } from "react";
-import { Modal, Form, Input, AutoComplete, theme, Typography, Divider, Flex, Select, Button } from "antd";
+import { Modal, Form, Input, AutoComplete, theme, Typography, Divider, Flex, Select, Button, Descriptions } from "antd";
 import fieldConfig from "./AddressInput.json";
 import axios from "axios";
 import debounce from "lodash/debounce";
 
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
-const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, form }, ref) => {
+const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, form,label }, ref) => {
   const [refAuto, setRefAuto] = useState({});
 
   const [options, setOptions] = useState({});
   const [fullAddressForVisual, setFullAddressForVisual] = useState(false);
-  const [isSelectAddress, setIsSelectAddress] = useState(false);
+  const [isSelectAddress, setIsSelectAddress] = useState(true);
   const [formAddress] = Form.useForm();
   // const { token } = theme.useToken();
   useEffect(() => {
@@ -180,7 +180,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
     <Modal
       closable={true}
       open={visible}
-      title="Введите адрес"
+      title={label}
       // cancelButtonProps={{style:{display:"none"}}}
       onOk={handleOk}
       onCancel={onCancel}
@@ -223,18 +223,18 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
                   setRefAuto(ref?.resizableTextArea?.textArea?.getBoundingClientRect().bottom)
                   // console.log(ref?.resizableTextArea?.textArea?.getBoundingClientRect().bottom);
                 }}
-                placeholder={`Начните вводить адрес...`}
+                placeholder={`Поиск по базе адресов`}
                 autoSize={{ minRows: 1, maxRows: 4 }}
               // size="large"
               />
 
             </AutoComplete>
           </Form.Item>
-          <Button onClick={() => { setIsSelectAddress(!isSelectAddress) }}>Ручной ввод</Button>
+          {/* <Button onClick={() => { setIsSelectAddress(!isSelectAddress) }}>Ручной ввод</Button> */}
         </div>
         {isSelectAddress &&
           <>
-            <Divider>Редактирование вручную</Divider>
+            <Divider>Корректировка</Divider>
             {fieldConfig.map((field) => (
               <Flex key={field.name} gap={10}>
                 {field.type &&
@@ -291,7 +291,14 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
         }
 
       </Form>
-      <Typography.Text style={{ color: "gray" }}>{fullAddressForVisual}</Typography.Text>
+      {/* <Divider/> */}
+      <Descriptions  items={[{
+        key: '1',
+        label: 'Выбранный адрес',
+        children: fullAddressForVisual,
+      }]} />
+      {/* <Typography.Title level={5}>Выбранный адрес:</Typography.Title>
+      <Typography.Text style={{ color: "gray" }}>{fullAddressForVisual}</Typography.Text> */}
       {/* {isSelectAddress &&
         <Flex vertical gap={10}>
 

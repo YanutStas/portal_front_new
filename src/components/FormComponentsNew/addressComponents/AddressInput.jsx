@@ -218,6 +218,7 @@ const AddressInput = ({
         name={name}
         form={form}
         defaultValue={{ country, region, area, city, settlement, street }}
+        label={label}
       />
 
 
