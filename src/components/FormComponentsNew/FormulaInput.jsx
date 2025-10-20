@@ -10,7 +10,7 @@ export default function FormulaInput({
   label = "",
   dependOf = false,
   howDepend = false,
-  min = false,
+  min = 0,
   max = false,
   properties = false,
   formula = "",

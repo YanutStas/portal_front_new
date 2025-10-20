@@ -60,7 +60,8 @@ export default function Appeals({ claimId, appealsByClaim, reloadClaim }) {
     const token = theme.useToken().token
 
     useEffect(() => {
-        fetchAppealsAll()
+        // fetchAppealsAll()
+        reloadClaim()
     }, [reload])
     useEffect(() => {
         console.log("appeals",appeals)

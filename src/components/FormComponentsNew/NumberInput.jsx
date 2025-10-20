@@ -12,7 +12,7 @@ export default function NumberInput({
   required = undefined,
   dependOf = false,
   howDepend = false,
-  min = undefined,
+  min = 0,
   max = undefined,
   step = 1,
   defaultValue = false,
