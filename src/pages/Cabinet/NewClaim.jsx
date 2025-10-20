@@ -11,6 +11,7 @@ import {
   Empty,
   List,
   Alert,
+  message
 } from "antd";
 import React, { useEffect, useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
@@ -47,6 +48,8 @@ export default function NewClaim() {
   } = useClaims((state) => state);
   const { id } = useParams();
   const [form] = Form.useForm();
+
+  const [messageApi, contextHolder] = message.useMessage();
 
   const [error, setError] = useState(null);
   const [isDirty, setIsDirty] = useState(false);
@@ -122,6 +125,11 @@ export default function NewClaim() {
         });
         // console.log("Отправили заявку");
 
+      } else {
+        messageApi.open({
+          type: 'success',
+          content: 'Форма успешно проверена',
+        });
       }
       removeBlockButtonNewClaim();
       setIsDirty(false);
@@ -296,6 +304,7 @@ export default function NewClaim() {
   }
   return (
     <div style={{ maxWidth: "100%", margin: "0 auto" }}>
+      {contextHolder}
       <AppHelmet
         title={"Новая заявка"}
         desc={"Новая заявка - Портал цифровых услуг АО Мособлэнерго"}

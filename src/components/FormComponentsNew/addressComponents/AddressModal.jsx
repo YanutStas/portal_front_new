@@ -136,7 +136,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
       // setIsSelectAddress(true)
     }
     // console.log("value", value);
-    console.log("option", option);
+    // console.log("option", option);
   };
   const handleOk = () => {
 
@@ -160,11 +160,13 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
   const concatAddressString = () => {
     let address = { fullAddressForVisual: "" }
     fieldConfig.forEach(item => {
+      console.log(item);
+
       const addText = formAddress.getFieldValue(item.name)
       const addType = formAddress.getFieldValue(`${item.name}_type`)
       if (addText) {
         address[item.name] = (addType ? addType + ' ' : '') + addText
-        address.fullAddressForVisual = address.fullAddressForVisual + (addType ? addType + ' ' : '') + addText + ", "
+        address.fullAddressForVisual = address.fullAddressForVisual + (addType && item.name !== "region" ? addType + ' ' : '') + addText + (addType && item.name === "region" ? ' '+ addType   : '') + ", "
       }
     })
     address.fullAddressForVisual = address.fullAddressForVisual.slice(0, -2)
@@ -212,7 +214,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
                 popup: {
                   root: {
                     // inset: "",
-                    top:  refAuto,
+                    top: refAuto,
                   }
                 }
               }}
@@ -221,7 +223,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
               <Input.TextArea
                 ref={(ref) => {
                   setRefAuto(ref?.resizableTextArea?.textArea?.getBoundingClientRect().bottom)
-                  console.log(ref?.resizableTextArea?.textArea?.getBoundingClientRect().bottom);
+                  // console.log(ref?.resizableTextArea?.textArea?.getBoundingClientRect().bottom);
                 }}
                 placeholder={`Поиск по базе адресов`}
                 autoSize={{ minRows: 1, maxRows: 4 }}
@@ -240,14 +242,14 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
                 {field.type &&
                   <Form.Item
                     name={`${field.name}_type`}
-                    style={{ width: 130 }}
+                    style={{ width: 200 }}
                     labelCol={{ span: 8 }}
                   >
                     <Select
                       // size="small"
                       options={field.type && field.type.map(item => ({
                         value: item.type,
-                        // label: item.type_full
+                        label: item.type_full
                       }))}
                       // defaultValue={0}
                       placeholder="Тип"
