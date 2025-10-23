@@ -198,14 +198,14 @@ const AddressInput = ({
         // initialValue={fullAddress}
 
         >
-          <Typography.Text style={{ color: "gray" }}>{form.getFieldValue(name)?.fullAddressForVisual}</Typography.Text>
+          <Typography.Text style={{ color: "gray" }}>{form.getFieldValue(name)?.fullAddress}</Typography.Text>
           {/* <Input.TextArea disabled /> */}
         </Form.Item>
         <Flex gap={10} justify="center">
-          <Button type="primary" onClick={openModal}>{form.getFieldValue(name)?.fullAddressForVisual ? "Изменить" : "Указать адрес"}</Button>
-          {form.getFieldValue(name)?.fullAddressForVisual&&
+          <Button type="primary" onClick={openModal}>{form.getFieldValue(name)?.fullAddress ? "Изменить" : "Указать адрес"}</Button>
+          {form.getFieldValue(name)?.fullAddress&&
           <Button onClick={() => {
-            form.setFieldValue(name, false)
+            form.setFieldValue(name, undefined)
             setReload(!reload)
           }}>Очистить</Button>
         }

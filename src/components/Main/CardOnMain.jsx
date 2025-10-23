@@ -8,7 +8,7 @@ import styles from './CardOnMain.module.css'
 
 export default function CardOnMain({ title, url, dataList, text, color, image }) {
     const { token } = theme.useToken()
-    console.log(token);
+    // console.log(token);
 
     return (
         <Link to={url}

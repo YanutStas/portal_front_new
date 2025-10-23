@@ -16,14 +16,16 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
   const [refAuto, setRefAuto] = useState({});
 
   const [options, setOptions] = useState({});
-  const [fullAddressForVisual, setFullAddressForVisual] = useState(false);
-  const [isSelectAddress, setIsSelectAddress] = useState(true);
+  const [fullAddressForVisual, setFullAddressForVisual] = useState();
+  const [isSelectAddress, setIsSelectAddress] = useState(false);
   const [formAddress] = Form.useForm();
   // const { token } = theme.useToken();
   useEffect(() => {
     if (visible) {
       formAddress.scrollToField('fullAddress', { focus: true })
-
+      if (typeof form.getFieldValue(name) === "undefined") {
+        formAddress.resetFields()
+      }
       // formAddress.focusField('fullAddress')
     }
   }, [visible])
@@ -127,7 +129,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
           temp[item.name] = option.data[`${item.name}`] || option.data[item.name]
           temp[`${item.name}_type`] = option.data[`${item.name}_type`] || undefined
         } else {
-          temp.fullAddress = false
+          temp.fullAddress = undefined
         }
       })
       // console.log('temp', temp);
@@ -150,36 +152,45 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
     // });
     // address.fullAddressForVisual = address.fullAddressForVisual.slice(0, -2)
     // setFullAddressForVisual(address.fullAddressForVisual)
-    form.setFieldValue(name, concatAddressString());
+    const dataAddress = concatAddressString()
+    if (dataAddress && dataAddress.fullAddress !== '') {
+      form.setFieldValue(name, concatAddressString());
+    } else {
+      form.setFieldValue(name, undefined);
+    }
     onCancel();
   };
 
   const manualInput = () => {
-    setFullAddressForVisual(concatAddressString().fullAddressForVisual)
+    setFullAddressForVisual(concatAddressString().fullAddress)
   }
   const concatAddressString = () => {
-    let address = { fullAddressForVisual: "" }
+    let address = { fullAddress: "" }
     fieldConfig.forEach(item => {
       // console.log(item);
-
       const addText = formAddress.getFieldValue(item.name)
       const addType = formAddress.getFieldValue(`${item.name}_type`)
       if (addText) {
         if (addType) {
-          if (item.name === "region" || item.name === "area" || item.name === "city" || item.name === "settlement"|| item.name === "street") {
-            address[item.name] = addText + ' ' + addType
-          } else {
-            address[item.name] = addType + ' ' + addText
-          }
-          
+          // if (item.name === "region" || item.name === "area" || item.name === "city" || item.name === "settlement" || item.name === "street") {
+          //   address[item.name] = addText + ' ' + addType
+          //   address[`${item.name}_type`] = addType            
+          // } else {
+          //   address[item.name] = addType + ' ' + addText
+          //   address[`${item.name}_type`] = addType
+          // }
+          address[item.name] = addText
+          address[`${item.name}_type`] = addType
+
         } else {
           address[item.name] = addText
         }
         // addText + (addType && (item.name === "region" || item.name === "area" || item.name === "city" || item.name === "settlement") ? ' ' + addType : '')
-        address.fullAddressForVisual = address.fullAddressForVisual + (addType && item.name !== "region" ? addType + ' ' : '') + addText + (addType && item.name === "region" ? ' ' + addType : '') + ", "
+        address.fullAddress = address.fullAddress + (addType && item.name !== "region" ? addType + ' ' : '') + addText + (addType && item.name === "region" ? ' ' + addType : '') + ", "
       }
     })
-    address.fullAddressForVisual = address.fullAddressForVisual.slice(0, -2)
+    address.fullAddress = address.fullAddress.slice(0, -2)
+    formAddress.setFieldValue("fullAddress", address.fullAddress)
     return address
   }
   // useEffect(() => {
@@ -192,7 +203,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
     <Modal
       closable={true}
       open={visible}
-      title={label}
+      title={`${label}:`}
       // cancelButtonProps={{style:{display:"none"}}}
       onOk={handleOk}
       onCancel={onCancel}
@@ -200,13 +211,19 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
       cancelText="Закрыть"
       width={800}
     >
+
+      {/* <Button onClick={() => {
+        formAddress.setFieldValue('fullAddress', formAddress.getFieldValue('fullAddress') + 1)
+      }}>Тест добавления</Button> */}
+      {/* <Typography.Title level={5}>{fullAddressForVisual || <span style={{ color: "red" }}>адрес не выбран</span>}</Typography.Title> */}
+      {/* <Divider /> */}
       <Form form={formAddress}>
         <div vertical gap={10} wrap={"wrap"}>
 
           <Form.Item
             style={{ flex: 1 }}
             name={"fullAddress"}
-          // label={"Поиск"}
+          // label={"Поиск по ФИАС"}
 
           >
             <AutoComplete
@@ -242,11 +259,14 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
 
             </AutoComplete>
           </Form.Item>
-          {/* <Button onClick={() => { setIsSelectAddress(!isSelectAddress) }}>Ручной ввод</Button> */}
+          <Flex justify="center" style={{ marginBottom: 20 }}>
+
+            <Button onClick={() => { setIsSelectAddress(!isSelectAddress) }}>Ручная корректировка</Button>
+          </Flex>
         </div>
         {isSelectAddress &&
           <>
-            <Divider>Корректировка</Divider>
+            {/* <Divider>Корректировка</Divider> */}
             {fieldConfig.map((field) => (
               <Flex key={field.name} gap={10}>
                 {field.type &&
@@ -304,14 +324,14 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
 
       </Form>
       {/* <Divider/> */}
-      <Descriptions items={[{
+      {/* <Descriptions items={[{
         key: '1',
         label: 'Выбранный адрес',
         children: fullAddressForVisual,
-      }]} />
+      }]} /> */}
       {/* <Typography.Title level={5}>Выбранный адрес:</Typography.Title>
       <Typography.Text style={{ color: "gray" }}>{fullAddressForVisual}</Typography.Text> */}
-      {/* {isSelectAddress &&
+      {isSelectAddress &&
         <Flex vertical gap={10}>
 
           <Flex justify="center" style={{}}>
@@ -324,7 +344,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
             }}>Очистить</Button>
           </Flex>
         </Flex>
-      } */}
+      }
     </Modal>
   );
 }
