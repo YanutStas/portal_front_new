@@ -14,7 +14,7 @@ const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
 const AddressInput = ({
   name = "name",
-  label = "Label",
+  label = " ",
   disabled = false,
   placeholder = "",
   required = undefined,
