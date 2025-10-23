@@ -1,14 +1,13 @@
 import React, {
   useEffect,
   useImperativeHandle,
-  forwardRef,
   useState,
-  useRef,
 } from "react";
-import { Modal, Form, Input, AutoComplete, theme, Typography, Divider, Flex, Select, Button, Descriptions, Switch } from "antd";
+import { Modal, Form, Input, AutoComplete, Typography, Flex, Select, Switch } from "antd";
 import fieldConfig from "./AddressInput.json";
 import axios from "axios";
 import debounce from "lodash/debounce";
+import { DeleteOutlined } from '@ant-design/icons';
 
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
@@ -20,14 +19,17 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
   const [isSelectAddress, setIsSelectAddress] = useState(false);
   const [formAddress] = Form.useForm();
   // const { token } = theme.useToken();
+  const resetForm = () => {
+    formAddress.resetFields()
+    setFullAddressForVisual(undefined)
+    setOptions({})
+  }
   useEffect(() => {
     if (visible) {
       formAddress.scrollToField('fullAddress', { focus: true })
       if (typeof form.getFieldValue(name) === "undefined") {
-        formAddress.resetFields()
-        setFullAddressForVisual(undefined)
+        resetForm()
         setIsSelectAddress(false)
-        setOptions({})
       }
       // formAddress.focusField('fullAddress')
     }
@@ -216,8 +218,16 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
         formAddress.setFieldValue('fullAddress', formAddress.getFieldValue('fullAddress') + 1)
       }}>Тест добавления</Button> */}
       {/* <Divider /> */}
+      <Flex align="center" wrap={"wrap"} gap={10} style={{ marginBottom: 10 }}>
 
-      <Typography.Title style={{ marginTop: 0 }} level={5}>{fullAddressForVisual || <span style={{ color: "red" }}>Адрес не выбран</span>}</Typography.Title>
+        <Typography.Title type={!fullAddressForVisual && "danger"} style={{ margin: 0 }} level={5}>{fullAddressForVisual || 'Адрес не выбран'}</Typography.Title>
+        {fullAddressForVisual &&
+          <DeleteOutlined style={{ color: "#ff4d4f", fontSize: 18 }} onClick={() => {
+            resetForm()
+          }} />
+        }
+      </Flex>
+      {/* <Typography.Text type="danger">Адрес не выбран</Typography.Text> */}
       <Form form={formAddress}>
         <div vertical gap={10} wrap={"wrap"} style={{ position: "relative" }} >
 
@@ -325,7 +335,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
                 )}
             </AutoComplete> */}
                   <Input.TextArea
-                  disabled={defaultValue[field.name]}
+                    disabled={defaultValue[field.name]}
                     // size="small"
                     placeholder={`${field.label}`}
                     autoSize={{ minRows: 1, maxRows: 3 }}
