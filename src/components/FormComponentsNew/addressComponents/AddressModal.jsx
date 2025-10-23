@@ -47,30 +47,26 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
       const params = {
         type,
         query: text,
-        // locations: [
-        //   {
-        //     country:
-        //       formValue.country && type != "country"
-        //         ? formValue.country
-        //         : undefined,
-        //     region:
-        //       formValue.region && type != "region"
-        //         ? formValue.region
-        //         : undefined,
-        //     area:
-        //       formValue.area && type != "area" ? formValue.area : undefined,
-        //     city:
-        //       formValue.city && type != "city" ? formValue.city : undefined,
-        //     settlement:
-        //       formValue.settlement && type != "settlement"
-        //         ? formValue.settlement
-        //         : undefined,
-        //     street:
-        //       formValue.street && type != "street"
-        //         ? formValue.street
-        //         : undefined,
-        //   },
-        // ],
+        locations: [
+          {
+            country:
+              defaultValue.country || undefined,
+            region:
+              defaultValue.region || undefined,
+            //   area:
+            //     formValue.area && type != "area" ? formValue.area : undefined,
+            //   city:
+            //     formValue.city && type != "city" ? formValue.city : undefined,
+            //   settlement:
+            //     formValue.settlement && type != "settlement"
+            //       ? formValue.settlement
+            //       : undefined,
+            //   street:
+            //     formValue.street && type != "street"
+            //       ? formValue.street
+            //       : undefined,
+          },
+        ],
       };
 
       axios
@@ -220,16 +216,16 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
         formAddress.setFieldValue('fullAddress', formAddress.getFieldValue('fullAddress') + 1)
       }}>Тест добавления</Button> */}
       {/* <Divider /> */}
-       
-          <Typography.Title style={{marginTop:0}} level={5}>{fullAddressForVisual || <span style={{ color: "red" }}>Адрес не выбран</span>}</Typography.Title>
+
+      <Typography.Title style={{ marginTop: 0 }} level={5}>{fullAddressForVisual || <span style={{ color: "red" }}>Адрес не выбран</span>}</Typography.Title>
       <Form form={formAddress}>
-        <div vertical gap={10} wrap={"wrap"}>
+        <div vertical gap={10} wrap={"wrap"} style={{ position: "relative" }} >
 
           <Form.Item
             style={{ flex: 1 }}
             name={"fullAddress"}
-          // label={"Поиск по ФИАС"}
-
+            // label={"Поиск по ФИАС"}
+            id={`${name}_relative`}
           >
             <AutoComplete
               autoFocus={true}
@@ -238,18 +234,20 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
               onSearch={(text) => fetchSuggestions(text, "fullAddress")}
               // defaultValue={defaultValue[field.name]}
               disabled={defaultValue.fullAddress}
-              // popupRender={(elem) => {
-              //   console.log(elem);
-              //   return <Button>{elem}</Button>
-              // }}
-              styles={{
-                popup: {
-                  root: {
-                    // inset: "",
-                    top: refAuto,
-                  }
-                }
-              }}
+            // popupRender={(elem) => {
+            //   console.log(elem);
+            //   return <Button>{elem}</Button>
+            // }}
+            // getPopupContainer={() => document.getElementById(`${name}_relative`)}
+            // styles={{
+            //   popup: {
+            //     root: {
+
+            //       // inset: "",
+            //       top: refAuto,
+            //     }
+            //   }
+            // }}
             >
 
               <Input.TextArea
@@ -257,7 +255,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
                   setRefAuto(ref?.resizableTextArea?.textArea?.getBoundingClientRect().bottom)
                   // console.log(ref?.resizableTextArea?.textArea?.getBoundingClientRect().bottom);
                 }}
-                placeholder={`Поиск (указывайте названия без адресных сокращений)`}
+                placeholder={`Поиск по базе адресов`}
                 autoSize={{ minRows: 1, maxRows: 4 }}
               // size="large"
               />
@@ -309,7 +307,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
                   // label={field.label}
                   // key={field.name}
                   labelCol={{ span: 8 }}
-                // initialValue={}
+                  initialValue={defaultValue[field.name] || undefined}
                 >
                   {/* <AutoComplete
               options={options[field.name]}
@@ -327,6 +325,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
                 )}
             </AutoComplete> */}
                   <Input.TextArea
+                  disabled={defaultValue[field.name]}
                     // size="small"
                     placeholder={`${field.label}`}
                     autoSize={{ minRows: 1, maxRows: 3 }}
