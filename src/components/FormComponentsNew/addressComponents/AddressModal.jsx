@@ -5,7 +5,7 @@ import React, {
   useState,
   useRef,
 } from "react";
-import { Modal, Form, Input, AutoComplete, theme, Typography, Divider, Flex, Select, Button, Descriptions } from "antd";
+import { Modal, Form, Input, AutoComplete, theme, Typography, Divider, Flex, Select, Button, Descriptions, Switch } from "antd";
 import fieldConfig from "./AddressInput.json";
 import axios from "axios";
 import debounce from "lodash/debounce";
@@ -25,6 +25,9 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
       formAddress.scrollToField('fullAddress', { focus: true })
       if (typeof form.getFieldValue(name) === "undefined") {
         formAddress.resetFields()
+        setFullAddressForVisual(undefined)
+        setIsSelectAddress(false)
+        setOptions({})
       }
       // formAddress.focusField('fullAddress')
     }
@@ -135,6 +138,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
       // console.log('temp', temp);
       formAddress.setFieldsValue(temp)
       manualInput()
+      formAddress.setFieldValue("fullAddress", '')
       // setIsSelectAddress(true)
     }
     // console.log("value", value);
@@ -190,7 +194,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
       }
     })
     address.fullAddress = address.fullAddress.slice(0, -2)
-    formAddress.setFieldValue("fullAddress", address.fullAddress)
+    // formAddress.setFieldValue("fullAddress", address.fullAddress)
     return address
   }
   // useEffect(() => {
@@ -215,8 +219,9 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
       {/* <Button onClick={() => {
         formAddress.setFieldValue('fullAddress', formAddress.getFieldValue('fullAddress') + 1)
       }}>Тест добавления</Button> */}
-      {/* <Typography.Title level={5}>{fullAddressForVisual || <span style={{ color: "red" }}>адрес не выбран</span>}</Typography.Title> */}
       {/* <Divider /> */}
+       
+          <Typography.Title style={{marginTop:0}} level={5}>{fullAddressForVisual || <span style={{ color: "red" }}>Адрес не выбран</span>}</Typography.Title>
       <Form form={formAddress}>
         <div vertical gap={10} wrap={"wrap"}>
 
@@ -252,16 +257,27 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
                   setRefAuto(ref?.resizableTextArea?.textArea?.getBoundingClientRect().bottom)
                   // console.log(ref?.resizableTextArea?.textArea?.getBoundingClientRect().bottom);
                 }}
-                placeholder={`Поиск по базе адресов`}
+                placeholder={`Поиск (указывайте названия без адресных сокращений)`}
                 autoSize={{ minRows: 1, maxRows: 4 }}
               // size="large"
               />
 
             </AutoComplete>
           </Form.Item>
-          <Flex justify="center" style={{ marginBottom: 20 }}>
+          <Flex
+            // justify="center" 
+            style={{ marginBottom: 20 }}
+          >
+            <Form.Item
+              label="Ручная корректировка"
+            >
 
-            <Button onClick={() => { setIsSelectAddress(!isSelectAddress) }}>Ручная корректировка</Button>
+              <Switch
+                checked={isSelectAddress}
+                onChange={(val) => { setIsSelectAddress(val) }}
+              // onClick={() => { setIsSelectAddress(!isSelectAddress) }}
+              />
+            </Form.Item>
           </Flex>
         </div>
         {isSelectAddress &&
@@ -331,7 +347,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
       }]} /> */}
       {/* <Typography.Title level={5}>Выбранный адрес:</Typography.Title>
       <Typography.Text style={{ color: "gray" }}>{fullAddressForVisual}</Typography.Text> */}
-      {isSelectAddress &&
+      {/* {isSelectAddress &&
         <Flex vertical gap={10}>
 
           <Flex justify="center" style={{}}>
@@ -344,7 +360,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
             }}>Очистить</Button>
           </Flex>
         </Flex>
-      }
+      } */}
     </Modal>
   );
 }
