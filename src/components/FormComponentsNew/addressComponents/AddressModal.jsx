@@ -203,7 +203,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
   //   console.log(refAutoComplete);
 
   // }, []);
-console.log(defaultValue);
+// console.log(defaultValue);
 
   return (
     <Modal
@@ -225,11 +225,11 @@ console.log(defaultValue);
       <Flex align="center" wrap={"wrap"} gap={10} style={{ marginBottom: 10 }}>
 
         <Typography.Title type={!fullAddressForVisual && "danger"} style={{ margin: 0 }} level={5}>{fullAddressForVisual || 'Адрес не выбран'}</Typography.Title>
-        {fullAddressForVisual &&
+        {/* {fullAddressForVisual &&
           <DeleteOutlined style={{ color: "#ff4d4f", fontSize: 18 }} onClick={() => {
             resetForm()
           }} />
-        }
+        } */}
       </Flex>
       {/* <Typography.Text type="danger">Адрес не выбран</Typography.Text> */}
       <Form form={formAddress}>
