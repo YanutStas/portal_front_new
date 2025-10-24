@@ -28,6 +28,7 @@ const AddressInput = ({
   stylesField_key = false,
   country = false,
   region = false,
+  regionType = false,
   area = false,
   city = false,
   settlement = false,
@@ -217,7 +218,7 @@ const AddressInput = ({
         onCancel={() => setModalVisible(false)}
         name={name}
         form={form}
-        defaultValue={{ country, region, area, city, settlement, street }}
+        defaultValue={{ country, region,regionType, area, city, settlement, street }}
         label={label}
       />
 

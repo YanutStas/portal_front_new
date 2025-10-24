@@ -34,6 +34,9 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
       // formAddress.focusField('fullAddress')
     }
   }, [visible])
+  useEffect(() => {
+    formAddress.setFieldValue("fullAddress", '')
+  }, [isSelectAddress])
 
   const fetchSuggestions = debounce((text, type) => {
     if (text.length > 1) {
@@ -200,6 +203,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
   //   console.log(refAutoComplete);
 
   // }, []);
+console.log(defaultValue);
 
   return (
     <Modal
@@ -243,7 +247,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
               onSelect={(value, option) => onSelect(value, option, "fullAddress")}
               onSearch={(text) => fetchSuggestions(text, "fullAddress")}
               // defaultValue={defaultValue[field.name]}
-              disabled={defaultValue.fullAddress}
+              disabled={isSelectAddress}
             // popupRender={(elem) => {
             //   console.log(elem);
             //   return <Button>{elem}</Button>
@@ -298,8 +302,10 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
                     name={`${field.name}_type`}
                     style={{ width: 200 }}
                     labelCol={{ span: 8 }}
+                    initialValue={defaultValue[`${field.name}Type`] || undefined}
                   >
                     <Select
+                    disabled={defaultValue[`${field.name}Type`]}
                       // size="small"
                       options={field.type && field.type.map(item => ({
                         value: item.type,
