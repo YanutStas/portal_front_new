@@ -28,7 +28,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
     if (visible) {
       formAddress.scrollToField('fullAddress', { focus: true })
       const tempAddress = Object.assign({}, form.getFieldValue(name))
-      if (typeof tempAddress === "undefined") {
+      if (!tempAddress.fullAddress) {
         resetForm()
         setIsSelectAddress(false)
       }else{
