@@ -272,7 +272,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
             >
 
               <Input
-                suffix={<InfoDrawer fullDescription={'### Поиск адресов по базе данных осуществляется в сокращенном формате.\n**К примеру, чтобы найти адрес:** 143006, Россия, Московская обл, г Одинцово, г Одинцово, ул Союзная, д 9\n\n**Необходимо ввести:** одинцово союзная 9'} title={"Поиск адреса"} />}
+                suffix={<InfoDrawer fullDescription={'### Поиск адресов по базе данных можно осуществлять в сокращенном формате.\n**К примеру, чтобы найти адрес:** 143402, Московская обл, г Красногорск, кв-л Коммунальный, д 1\n\n**Необходимо ввести:** красногорск коммунальный 1'} title={"Поиск адреса"} />}
                 ref={(ref) => {
                   setRefAuto(ref?.resizableTextArea?.textArea?.getBoundingClientRect().bottom)
                   // console.log(ref?.resizableTextArea?.textArea?.getBoundingClientRect().bottom);
