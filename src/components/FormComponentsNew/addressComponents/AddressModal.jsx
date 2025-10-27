@@ -27,9 +27,14 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
   useEffect(() => {
     if (visible) {
       formAddress.scrollToField('fullAddress', { focus: true })
-      if (typeof form.getFieldValue(name) === "undefined") {
+      const tempAddress = Object.assign({}, form.getFieldValue(name))
+      if (typeof tempAddress === "undefined") {
         resetForm()
         setIsSelectAddress(false)
+      }else{
+        setFullAddressForVisual(tempAddress.fullAddress)
+        tempAddress.fullAddress = ""
+        formAddress.setFieldsValue(tempAddress)
       }
       // formAddress.focusField('fullAddress')
     }
