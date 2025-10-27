@@ -29,7 +29,12 @@ export default function WrapperComponent({
   let fieldDepends = Form.useWatch(dependOf, mainForm);
 
   const formElement = (
-    <Col {...styles} xxl={styles?.span ? styles.span : 24} xs={24}>
+    <Col 
+    {...styles} 
+    xxl={styles?.span || 24} 
+    xl={styles?.span || 24} 
+    xs={24}
+    >
       {children}
     </Col>
   );

@@ -3,7 +3,7 @@ import { Button, Drawer, theme } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import MarkDownText from "./MarkDownText/MarkDownText";
 
-const InfoDrawer = ({ fullDescription, children: label, button = false }) => {
+const InfoDrawer = ({ fullDescription, children: label, button = false, title = false }) => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const showDrawer = (event) => {
     event.preventDefault()
@@ -26,12 +26,12 @@ const InfoDrawer = ({ fullDescription, children: label, button = false }) => {
               color: token.colorInfoText,
               transform: "translate(3px, 0px)",
             }}
-            />
+          />
         </>
       }
-      {button &&  <Button onClick={showDrawer}>Подробнее...</Button>}
+      {button && <Button onClick={showDrawer}>Подробнее...</Button>}
       <Drawer
-        title={label}
+        title={label||title}
         placement="right"
         onClose={onClose}
         open={drawerVisible}
