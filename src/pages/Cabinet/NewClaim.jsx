@@ -410,12 +410,12 @@ export default function NewClaim() {
               {serviceItem?.fields?.length > 0 && (
                 <Flex justify="center" gap={20} style={{ marginTop: 20, }}>
 
-                  {(version === "local" || version === "test") &&
+                  {/* {(version === "local" || version === "test") && */}
                     <Button onClick={() => {
                       setTestForm(true)
                       form.submit()
                     }}>Проверить форму</Button>
-                  }
+                  {/* } */}
                   <Form.Item>
                     <motion.div
                       whileHover={{ scale: 1.1 }}

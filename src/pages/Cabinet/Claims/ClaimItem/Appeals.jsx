@@ -61,10 +61,10 @@ export default function Appeals({ claimId, appealsByClaim, reloadClaim }) {
 
     useEffect(() => {
         // fetchAppealsAll()
-        reloadClaim()
+        // reloadClaim()
     }, [reload])
     useEffect(() => {
-        console.log("appeals",appeals)
+        // console.log("appeals",appeals)
         if (appeals.length > 0) {
             changeData(appeals)
             setTreeData(appeals)

@@ -7,7 +7,8 @@ import { Modal, Form, Input, AutoComplete, Typography, Flex, Select, Switch } fr
 import fieldConfig from "./AddressInput.json";
 import axios from "axios";
 import debounce from "lodash/debounce";
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, InfoOutlined } from '@ant-design/icons';
+import InfoDrawer from "../../InfoDrawer";
 
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
@@ -27,9 +28,14 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
   useEffect(() => {
     if (visible) {
       formAddress.scrollToField('fullAddress', { focus: true })
-      if (typeof form.getFieldValue(name) === "undefined") {
+      const tempAddress = Object.assign({}, form.getFieldValue(name))
+      if (!tempAddress.fullAddress) {
         resetForm()
         setIsSelectAddress(false)
+      } else {
+        setFullAddressForVisual(tempAddress.fullAddress)
+        tempAddress.fullAddress = ""
+        formAddress.setFieldsValue(tempAddress)
       }
       // formAddress.focusField('fullAddress')
     }
@@ -203,7 +209,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
   //   console.log(refAutoComplete);
 
   // }, []);
-// console.log(defaultValue);
+  // console.log(defaultValue);
 
   return (
     <Modal
@@ -242,6 +248,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
             id={`${name}_relative`}
           >
             <AutoComplete
+
               autoFocus={true}
               options={options.fullAddress}
               onSelect={(value, option) => onSelect(value, option, "fullAddress")}
@@ -264,7 +271,8 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
             // }}
             >
 
-              <Input.TextArea
+              <Input
+                suffix={<InfoDrawer fullDescription={'### Поиск адресов по базе данных можно осуществлять в сокращенном формате.\n**К примеру, чтобы найти адрес:** 143402, Московская обл, г Красногорск, кв-л Коммунальный, д 1\n\n**Необходимо ввести:** красногорск коммунальный 1'} title={"Поиск адреса"} />}
                 ref={(ref) => {
                   setRefAuto(ref?.resizableTextArea?.textArea?.getBoundingClientRect().bottom)
                   // console.log(ref?.resizableTextArea?.textArea?.getBoundingClientRect().bottom);
@@ -273,7 +281,6 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
                 autoSize={{ minRows: 1, maxRows: 4 }}
               // size="large"
               />
-
             </AutoComplete>
           </Form.Item>
           <Flex
@@ -305,7 +312,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
                     initialValue={defaultValue[`${field.name}Type`] || undefined}
                   >
                     <Select
-                    disabled={defaultValue[`${field.name}Type`]}
+                      disabled={defaultValue[`${field.name}Type`]}
                       // size="small"
                       options={field.type && field.type.map(item => ({
                         value: item.type,
