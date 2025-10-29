@@ -4,6 +4,7 @@ import useServices from "../../stores/useServices";
 import useTemp from "../../stores/Cabinet/useTemp";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
+import useGlobal from "../../stores/useGlobal";
 
 export default function NumberInput({
   name = "name",
@@ -30,6 +31,12 @@ export default function NumberInput({
   const unit = useTemp((state) => state.unit);
   const setUnit = useTemp((state) => state.setUnit);
   const form = Form.useFormInstance();
+  const testData = useGlobal((state) => state.testData)
+  useEffect(() => {
+    if (testData) {
+      form.setFieldValue(name, min||1)
+    }
+  }, [testData])
 
   let objectProp = null;
   if (properties) objectProp = properties;

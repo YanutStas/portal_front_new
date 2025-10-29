@@ -8,7 +8,6 @@ export default function EgripInput({
     name = "egrip",
     label = "",
     required = undefined,
-  
     dependOf = false,
     howDepend = false,
     placeholder = false,
@@ -16,7 +15,7 @@ export default function EgripInput({
     fullDescription = false,
     stylesField_key = false,
 }) {
-     const form = Form.useFormInstance();
+    const form = Form.useFormInstance();
     const testData = useGlobal((state) => state.testData)
     // const form = Form.useFormInstance();
     // console.log("CadastrInput");
