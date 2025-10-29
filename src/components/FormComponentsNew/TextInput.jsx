@@ -24,7 +24,7 @@ const listTypeForDadata = [
 ];
 
 export default function TextInput({
-  name = "name",
+  name = "",
   label = "",
   disabled = false,
   placeholder = "",
@@ -48,11 +48,17 @@ export default function TextInput({
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const form = Form.useFormInstance();
+  if(label==="Номер записи в ЕГРЮЛ"){
+
+    console.log("type",type);
+  }
+  
   useEffect(() => {
     if (testData) {
       type === "Фамилия" && form.setFieldValue(name, "Иванов")
       type === "Имя" && form.setFieldValue(name, "Иван")
       type === "Отчество" && form.setFieldValue(name, "Иванович")
+      type === "ЕГРЮЛ" && form.setFieldValue(name, 1234567890123)
       type === "Страна" && form.setFieldValue(name, "Россия")
       type === "Регион" && form.setFieldValue(name, "Московский")
       type === "Город" && form.setFieldValue(name, "Красногорск")

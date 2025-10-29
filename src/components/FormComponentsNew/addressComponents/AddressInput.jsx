@@ -36,14 +36,10 @@ const AddressInput = ({
   fullAddress = undefined,
   read = false
 }) => {
+ 
   const { token } = theme.useToken();
   const testData = useGlobal((state) => state.testData)
   const form = Form.useFormInstance();
-  useEffect(() => {
-    if (testData) {
-      form.setFieldValue(name, { fullAddress: "143430, Россия, Московская обл, г Красногорск, пгт Нахабино, ул Карла Маркса, двлд 8" })
-    }
-  }, [testData])
   // console.log(country)
   // let fieldDepends = Form.useWatch(dependOf, form)
   const [options, setOptions] = useState([]);
@@ -52,6 +48,26 @@ const AddressInput = ({
   const [address, setAddress] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const modalFormRef = useRef(null);
+  useEffect(() => {
+    if (testData) {
+      form.setFieldValue(name, {
+    "fullAddress": "143430, Россия, Московская обл, г Красногорск, пгт Нахабино, ул Карла Маркса, двлд 9",
+    "postal_code": "143430",
+    "country": "Россия",
+    "region": "Московская",
+    "region_type": "обл",
+    "city": "Красногорск",
+    "city_type": "г",
+    "settlement": "Нахабино",
+    "settlement_type": "пгт",
+    "street": "Карла Маркса",
+    "street_type": "ул",
+    "house": "9",
+    "house_type": "двлд"
+})
+      setReload(!reload)
+    }
+  }, [testData])
 
   // Функция для получения предложений
   const fetchSuggestions = debounce((text, type) => {
@@ -204,12 +220,12 @@ const AddressInput = ({
         </Form.Item>
         <Flex gap={10} justify="center">
           <Button type="primary" onClick={openModal}>{form.getFieldValue(name)?.fullAddress ? "Изменить" : "Указать адрес"}</Button>
-          {form.getFieldValue(name)?.fullAddress&&
-          <Button onClick={() => {
-            form.setFieldValue(name, undefined)
-            setReload(!reload)
-          }}>Очистить</Button>
-        }
+          {form.getFieldValue(name)?.fullAddress &&
+            <Button onClick={() => {
+              form.setFieldValue(name, undefined)
+              setReload(!reload)
+            }}>Очистить</Button>
+          }
         </Flex>
       </Flex>
       <AddressModal
@@ -218,7 +234,7 @@ const AddressInput = ({
         onCancel={() => setModalVisible(false)}
         name={name}
         form={form}
-        defaultValue={{ country, region,regionType, area, city, settlement, street }}
+        defaultValue={{ country, region, regionType, area, city, settlement, street }}
         label={label}
       />
 

@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Input, Form } from "antd";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
+import useGlobal from '../../stores/useGlobal';
 
 export default function EgrulInput({
     name = "egrul",
@@ -14,10 +15,16 @@ export default function EgrulInput({
     fullDescription = false,
     stylesField_key = false,
 }) {
+    const form = Form.useFormInstance();
+    const testData = useGlobal((state) => state.testData)
     // const form = Form.useFormInstance();
     // console.log("CadastrInput");
     // console.log("name", name);
-
+    useEffect(() => {
+        if (testData) {
+            form.setFieldValue(name, "1234567890123")
+        }
+    }, [testData])
     const formElement = (
         <Form.Item
             label={
