@@ -12,7 +12,7 @@ const useAppeals = create((set, get) => ({
         set({ appeal: false });
     },
 
-    fetchAppealsAll: async () => {
+    fetchAppealsAll: async (claimId) => {
         try {
             set({ isLoadingProfile: true });
             const token = localStorage.getItem("jwt");

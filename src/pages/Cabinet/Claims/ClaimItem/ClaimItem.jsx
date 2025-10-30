@@ -49,7 +49,7 @@ export default function ClaimItem() {
 
   useEffect(() => {
     if (claim) {
-      setPdf(claim.files.find(item => item.isPrintForm))
+      setPdf(claim.files?.find(item => item.isPrintForm))
     }
   }, [claim]);
 

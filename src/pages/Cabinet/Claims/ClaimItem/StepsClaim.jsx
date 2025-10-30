@@ -1,5 +1,5 @@
 import { Button, ConfigProvider, Drawer, Flex, Modal, Timeline, Typography, theme } from 'antd'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CheckCircleOutlined, ClockCircleOutlined, FileTextOutlined, InfoCircleOutlined, LikeOutlined } from "@ant-design/icons";
 import { color } from 'framer-motion';
 import moment from 'moment';
@@ -7,16 +7,22 @@ import ActionItem from '../../../../components/Cabinet/Action/ActionItem';
 import useClaims from "../../../../stores/Cabinet/useClaims";
 import TaskItem from '../../../../components/Cabinet/Action/TaskItem';
 import FileForDownload from '../../../../components/FileForDownload';
+import Preloader from '../../../../components/Main/Preloader';
 
 
 export default function StepsClaim({ steps = false, claimId, versionId, reloadClaim }) {
-  const fetchClaimItem = useClaims((state) => state.fetchClaimItem);
+  // const fetchClaimItem = useClaims((state) => state.fetchClaimItem);
+  const loadingDataByClaim = useClaims((state) => state.loadingDataByClaim);
+  const fetchDataByClaim = useClaims((state) => state.fetchDataByClaim);
   const token = theme.useToken().token
   // console.log(token)
   const [openDrawer, setOpenDrawer] = useState(null)
   const [openModalAction, setOpenModalAction] = useState(false)
   const [openModalTask, setOpenModalTask] = useState(false)
-
+  const [reload, setReload] = useState(false)
+  useEffect(() => {
+    fetchDataByClaim(claimId, "steps")
+  }, [reload])
   const handlerOpenDrawer = (title, content) => {
     setOpenDrawer({
       title,
@@ -26,7 +32,9 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
   const handlerCloseDrawer = () => {
     setOpenDrawer(null)
   }
-
+  if (loadingDataByClaim) {
+    return <Preloader />
+  }
   return (
     <>
 
@@ -131,11 +139,11 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
             open={!!openModalAction}
             onCancel={() => {
               setOpenModalAction(false)
-              fetchClaimItem(claimId)
+              fetchDataByClaim(claimId, "steps")
 
             }}
             footer={false}
-            destroyOnClose={true}
+            destroyOnHidden={true}
             width={"80%"}
           >
             <ActionItem

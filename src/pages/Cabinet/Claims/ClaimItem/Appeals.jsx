@@ -6,6 +6,7 @@ import useAppeals from '../../../../stores/Cabinet/useAppeals'
 import Preloader from '../../../../components/Main/Preloader'
 import AppealItem from '../../../../components/Cabinet/Appeal/AppealItem'
 import useDataForForm from '../../../../stores/Cabinet/useDataForForm'
+import useNewClaim from '../../../../stores/Cabinet/useClaims'
 // const appealsByClaim = [
 //     // {
 //     //     number: "123",
@@ -53,6 +54,7 @@ export default function Appeals({ claimId, appealsByClaim, reloadClaim }) {
         clearAppeal,
         readingAnswer,
         isReadingAnswer } = useAppeals(store => store)
+    const { loadingDataByClaim, fetchDataByClaim } = useNewClaim((state) => state)
     const [isOpenModalAppeals, setIsOpenModalAppeals] = useState(false)
     const [treeData, setTreeData] = useState(false)
     const [selectType, setSelectType] = useState(false)
@@ -60,7 +62,8 @@ export default function Appeals({ claimId, appealsByClaim, reloadClaim }) {
     const token = theme.useToken().token
 
     useEffect(() => {
-        // fetchAppealsAll()
+        fetchAppealsAll()
+        fetchDataByClaim(claimId, "appeals")
         // reloadClaim()
     }, [reload])
     useEffect(() => {
@@ -100,8 +103,8 @@ export default function Appeals({ claimId, appealsByClaim, reloadClaim }) {
         clearAppeal()
         clearDataForForm()
         setIsOpenModalAppeals(false)
-        // fetchAppealsAll()
-        reloadClaim()
+        fetchAppealsAll()
+        // reloadClaim()
     }
     const readAnswer = async (id) => {
         // console.log("id", id);
@@ -112,6 +115,9 @@ export default function Appeals({ claimId, appealsByClaim, reloadClaim }) {
         // } else {
         //     console.log('Ошибка при прочтении')
         // }
+    }
+    if (loadingDataByClaim) {
+        return <Preloader />
     }
     return (
         <div>

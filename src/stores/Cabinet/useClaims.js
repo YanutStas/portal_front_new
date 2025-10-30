@@ -1,10 +1,11 @@
 import { create } from "zustand";
 import axios from "axios";
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
-const useNewClaim = create((set) => ({
+const useClaim = create((set, get) => ({
   claims: null,
   claim: null,
   loadingClaim: false,
+  loadingDataByClaim: false,
   loadingClaims: false,
   newClaim: null,
   blockButtonNewClaim: false,
@@ -32,10 +33,8 @@ const useNewClaim = create((set) => ({
       };
     });
   },
-  fetchClaimItem: async (key) => {
+  fetchClaimItem: async (key,) => {
     try {
-
-
       set((state) => ({ claim: null, loadingClaim: true }));
       const res = await axios.get(`${backServer}/api/cabinet/claims/${key}`, {
         headers: {
@@ -45,7 +44,7 @@ const useNewClaim = create((set) => ({
       });
       if (res.data?.data && Object.keys(res.data.data).length === 0) {
         // console.log("fetchClaimItem", res.data.data);
-        return   set((state) => ({  loadingClaim: false }));
+        return set((state) => ({ loadingClaim: false }));
       }
       // if (res.data.data.links) {
       //   useDataForForm.getState().setLinks(res.data.data.links)
@@ -54,6 +53,25 @@ const useNewClaim = create((set) => ({
     } catch (error) {
       console.log(error)
       set({ loadingClaim: false });
+    }
+  },
+  fetchDataByClaim: async (key, dataSet = "steps") => {
+    try {
+      set((state) => ({ loadingDataByClaim: true }));
+      const res = await axios.get(`${backServer}/api/cabinet/claims/${key}?dataSet=${dataSet}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        },
+        withCredentials: true,
+      });
+      // console.log('res.data', res.data.data.appeals)
+      const newClaim = Object.assign({}, get().claim)
+      // console.log('newClaim', newClaim)
+      newClaim[dataSet] = res.data.data[dataSet]
+      set({ claim: newClaim, loadingDataByClaim: false });
+    } catch (error) {
+      console.log(error)
+      set({ loadingDataByClaim: false });
     }
   },
   createClaim: async (data) => {
@@ -77,4 +95,4 @@ const useNewClaim = create((set) => ({
     });
   },
 }));
-export default useNewClaim;
+export default useClaim;
