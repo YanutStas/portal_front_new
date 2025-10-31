@@ -57,7 +57,7 @@ export default function ServiceItem({ currentKey }) {
   const onClose = () => {
     setOpen(false);
   };
-  console.log(serviceItem);
+  // console.log(serviceItem);
   return (
     <div>
       {serviceItem && (

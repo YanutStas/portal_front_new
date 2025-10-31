@@ -104,6 +104,7 @@ export default function Appeals({ claimId, appealsByClaim, reloadClaim }) {
         clearDataForForm()
         setIsOpenModalAppeals(false)
         fetchAppealsAll()
+        fetchDataByClaim(claimId, "appeals")
         // reloadClaim()
     }
     const readAnswer = async (id) => {
@@ -190,7 +191,7 @@ export default function Appeals({ claimId, appealsByClaim, reloadClaim }) {
                 onCancel={closeModal}
                 footer={false}
                 title={"Подать обращение"}
-                destroyOnClose={true}
+                destroyOnHidden={true}
                 width={"80%"}
             >
                 {/* <Typography.Text>Выберите тип обращения:</Typography.Text> */}

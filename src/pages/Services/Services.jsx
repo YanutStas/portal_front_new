@@ -50,7 +50,7 @@ export default function Services() {
 
     fetchData();
   }, [level2, fetchServices]);
-  console.log("services", services);
+  // console.log("services", services);
   // console.log("path", path);
 
   const getPicture = async (fileId, ext) => {
