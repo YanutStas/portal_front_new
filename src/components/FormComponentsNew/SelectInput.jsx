@@ -64,17 +64,18 @@ export default function SelectInput({
       style={{ maxWidth: "100%", overflow: "hidden" }}
       initialValue={defaultValue}
     >
-      {mode === "radio" &&
+      {(mode === "radioHorizontal" || mode === "radioVertical") &&
         <Radio.Group
           options={options}
           style={{
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: mode === "radioVertical" ? "column" : "row",
+            flexWrap:"wrap",
             gap: 8,
           }}
         />
       }
-      {mode !== "radio" &&
+      {(mode !== "radioHorizontal" || mode !== "radioVertical") &&
         <Select
           allowClear
           style={{ width: "100%" }}
