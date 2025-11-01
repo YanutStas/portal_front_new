@@ -75,7 +75,7 @@ export default function SelectInput({
           }}
         />
       }
-      {(mode !== "radioHorizontal" || mode !== "radioVertical") &&
+      {(mode !== "radioHorizontal" && mode !== "radioVertical") &&
         <Select
           allowClear
           style={{ width: "100%" }}
