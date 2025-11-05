@@ -178,12 +178,13 @@ const ModalBot = ({ visible, onClose }) => {
 
       {/* Поле ввода и кнопка отправки */}
       <div style={{ display: "flex", gap: "8px" }}>
-        <Input
+        <Input.TextArea
           placeholder="Введите сообщение"
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
           onPressEnter={handleSendMessage}
           disabled={loading}
+          autoSize
         />
         <Button type="primary" onClick={handleSendMessage} disabled={loading}>
           Отправить
