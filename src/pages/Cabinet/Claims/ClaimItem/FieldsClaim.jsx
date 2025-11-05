@@ -108,7 +108,7 @@ export default function FieldsClaim({ template, values }) {
         return singleTextField(index, label, date)
     }
     const getAddress = (index, label, idLine, valItem = false) => {
-        let value = valItem ? valItem[idLine]?.fullAddress : values[idLine]?.fullAddress
+        let value = valItem ? valItem[idLine] : values[idLine]
         return singleTextField(index, label, value)
     }
     const getDivider = (index, label) => {
