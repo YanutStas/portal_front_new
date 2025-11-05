@@ -321,6 +321,7 @@ const AddressModal = ({ visible, onCancel, initialValues, name, defaultValue, fo
                       // defaultValue={0}
                       placeholder="Тип"
                       onChange={manualInput}
+                      allowClear
                     />
                   </Form.Item>
                 }

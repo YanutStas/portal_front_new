@@ -91,7 +91,8 @@ export default function NewClaim() {
 
       if (typeof value === "object" &&
         // Object.hasOwn(value, "$d")
-        value.__proto__.constructor.name === "Moment"
+        (value.__proto__.constructor.name === "Moment"||
+          value.__proto__.constructor.name === "M2")
       ) {
         return moment(value._d).format();
       } else if (!Array.isArray(value)) {

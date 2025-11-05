@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Form, Select, Typography } from "antd";
+import { Form, Radio, Select, Typography } from "antd";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
 import useServices from "../../stores/useServices";
@@ -20,6 +20,7 @@ export default function SelectInput({
   fullDescription = false,
   stylesField_key = false,
   read = false,
+  mode = false
   // options = false
 }) {
   // console.log("selectInput read", read);
@@ -63,23 +64,36 @@ export default function SelectInput({
       style={{ maxWidth: "100%", overflow: "hidden" }}
       initialValue={defaultValue}
     >
-      <Select
-        allowClear
-        style={{ width: "100%" }}
-        placeholder={placeholder}
-        showSearch
-        optionFilterProp="label"
-        options={options}
-        optionRender={(option) => {
-          return (
-            <Typography.Paragraph
-              style={{ width: "100%", whiteSpace: "pre-wrap", marginBottom: 5 }}
-            >
-              {option.label}
-            </Typography.Paragraph>
-          );
-        }}
-      />
+      {(mode === "radioHorizontal" || mode === "radioVertical") &&
+        <Radio.Group
+          options={options}
+          style={{
+            display: "flex",
+            flexDirection: mode === "radioVertical" ? "column" : "row",
+            flexWrap:"wrap",
+            gap: 8,
+          }}
+        />
+      }
+      {(mode !== "radioHorizontal" && mode !== "radioVertical") &&
+        <Select
+          allowClear
+          style={{ width: "100%" }}
+          placeholder={placeholder}
+          showSearch
+          optionFilterProp="label"
+          options={options}
+          optionRender={(option) => {
+            return (
+              <Typography.Paragraph
+                style={{ width: "100%", whiteSpace: "pre-wrap", marginBottom: 5 }}
+              >
+                {option.label}
+              </Typography.Paragraph>
+            );
+          }}
+        />
+      }
     </Form.Item>
   );
 
