@@ -57,12 +57,12 @@ export default function Claimers() {
         </div>
       ) : (
         <div className={styles.claimsContainer}>
-          {claims?.length === 0 &&  personalAccounts.length ===0 && 
-          <Empty
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                description={
-                    <Typography.Text>Поданных заявок пока нет</Typography.Text>
-                }
+          {claims?.length === 0 && personalAccounts.length === 0 &&
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description={
+                <Typography.Text>Поданных заявок пока нет</Typography.Text>
+              }
             />
           }
           {personalAccounts && personalAccounts.length > 0 && <Divider orientation="left">
@@ -105,12 +105,16 @@ export default function Claimers() {
                     {/* <Descriptions.Item label="Создана">
                         {moment(item.date).format('DD.MM.YYYY HH:mm')}
                         </Descriptions.Item> */}
-                    <Descriptions.Item label="Заявок в работе" contentStyle={{ color: "green", fontWeight: 700 }}>
-                      {item.totalClaims}
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Выполнено заявок">
-                      {item.finishedClaims}
-                    </Descriptions.Item>
+                    {item.totalClaims &&
+                      <Descriptions.Item label="Заявок в работе" styles={{content:{ color: "green", fontWeight: 700 }}}>
+                        {item.totalClaims}
+                      </Descriptions.Item>
+                    }
+                    {item.finishedClaims &&
+                      <Descriptions.Item label="Заявок в архиве">
+                        {item.finishedClaims}
+                      </Descriptions.Item>
+                    }
                   </Descriptions>
                 </Card>
               </Link>
