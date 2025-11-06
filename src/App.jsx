@@ -35,6 +35,7 @@ import useGlobal from "./stores/useGlobal";
 import useAuth from "./stores/useAuth";
 import Lk from "./pages/Cabinet/Lk/Lk";
 import Error from "./pages/Error";
+import CheckSig from "./pages/CheckSig";
 
 const { Content } = Layout;
 
@@ -107,6 +108,7 @@ export default function App() {
                 <Route path="/" element={<Main />} />
 
                 <Route path="/services" element={<Services />} />
+                <Route path="/checksig" element={<CheckSig />} />
                 <Route path="/services/:level2" element={<Services />} />
                 <Route
                   path="/services/:level2/:key"
