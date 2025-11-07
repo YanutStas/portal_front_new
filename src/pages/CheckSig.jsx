@@ -1,12 +1,21 @@
-import { Button, Descriptions, Form, Upload } from 'antd'
-import React, { useState } from 'react'
+import { Button, Descriptions, Form, Typography, Upload } from 'antd'
+import React, { useEffect, useState } from 'react'
 import checkSig from '../lib/checkSig'
 
 export default function CheckSig() {
+    const [dataList, setDataList] = useState(false);
+    const [cmsList, setCmsList] = useState(false);
     const [chekingValue, setChekingValue] = useState(false)
-    const onFinish = async (val) => {
-        setChekingValue(await checkSig(val))
+    const onFinish = async () => {
+        setChekingValue(await checkSig({
+            data: dataList,
+            cms: cmsList
+        }))
     }
+    useEffect(() => {
+        console.log(dataList);
+
+    }, [dataList])
     console.log(chekingValue);
 
     return (
@@ -16,7 +25,13 @@ export default function CheckSig() {
                     name={"data"}
                     label="Документ"
                 >
-                    <Upload >
+                    <Upload
+                        beforeUpload={(data) => {
+                            setDataList(data);
+                            return false
+                        }}
+                        maxCount={1}
+                    >
                         <Button>Click to upload</Button>
                     </Upload>
                 </Form.Item>
@@ -24,7 +39,13 @@ export default function CheckSig() {
                     name={"cms"}
                     label="Подпись"
                 >
-                    <Upload >
+                    <Upload
+                        beforeUpload={(cms) => {
+                            setCmsList(cms);
+                            return false
+                        }}
+                        maxCount={1}
+                    >
                         <Button>Click to upload</Button>
                     </Upload>
                 </Form.Item>
@@ -44,6 +65,9 @@ export default function CheckSig() {
                         children: <span>{chekingValue.reportDate}</span>,
                     },
                 ]} />
+            }
+            { chekingValue === null &&
+                <Typography.Title style={{color:"red"}} level={5}>Входные данные не являются подписанным сообщением!</Typography.Title>
             }
         </>
     )

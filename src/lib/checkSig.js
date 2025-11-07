@@ -10,8 +10,8 @@ const checkSig = async (formData) => {
     // body.append("captchaUuid", "a7c98e54-9c24-4e9b-bf69-58b678fcec95")
     // body.append("VerifySignatureOnly", false)
     // body.append("methodName", "verifyCMSSignatureDetached")
-    body.append("cms", formData.cms.file.originFileObj)
-    body.append("data", formData.data.file.originFileObj)
+    body.append("cms", formData.cms)
+    body.append("data", formData.data)
     console.log("body", Object.fromEntries(body.entries()))
 
     const res = await axios.post(url, body)
