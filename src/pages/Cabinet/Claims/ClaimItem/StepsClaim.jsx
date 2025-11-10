@@ -1,6 +1,6 @@
 import { Button, ConfigProvider, Drawer, Flex, Modal, Timeline, Typography, theme } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { CheckCircleOutlined, ClockCircleOutlined, FileTextOutlined, InfoCircleOutlined, LikeOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileTextOutlined, InfoCircleOutlined, LikeOutlined } from "@ant-design/icons";
 import { color } from 'framer-motion';
 import moment from 'moment';
 import ActionItem from '../../../../components/Cabinet/Action/ActionItem';
@@ -116,9 +116,10 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
                       <Typography.Text>{item.name}</Typography.Text>
                       {item.description && <InfoCircleOutlined style={{ marginBottom: 10, fontSize: 14, color: "gray" }} onClick={() => { handlerOpenDrawer(item.name, item.description) }} />}
                     </Flex>,
-                    dot: item.completed ?
+                    dot: item.state === "completed" ?
                       <CheckCircleOutlined style={{ color: item.color || "#52c41a", fontSize: 30 }} /> :
-                      <ClockCircleOutlined className="timeline-clock-icon" style={{ color: item.color || (item.current ? "blue" : "gray"), fontSize: 30 }} />
+                      (item.state === "noAction" ? <CloseCircleOutlined style={{ color: item.color || "red", fontSize: 30 }} /> :
+                        <ClockCircleOutlined className="timeline-clock-icon" style={{ color: item.color || (item.current ? "blue" : "gray"), fontSize: 30 }} />)
                   }
                 }
                 return undefined

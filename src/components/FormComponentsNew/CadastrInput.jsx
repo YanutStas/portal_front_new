@@ -43,12 +43,19 @@ export default function CadastrInput({
                 // }
                 return newvalue
             }}
+            
             rules={[
                 {
                     required: required,
                     message: "Это поле обязательное",
                 },
-                // { validator: validateSnils },
+                {
+                    validator: (_, value) => {
+                         return /\d{2}:\d{2}:\d{6,7}:\d{1,10}/.test(value) ? Promise.resolve() : Promise.reject(new Error('Неверно введен кадастровый номер'))
+                            // console.log("Проверка",/\d{2}:\d{2}:\d{6,7}:\d*/.test(value))
+                            // return Promise.resolve()
+                    }
+                },
             ]}
         >
             <Input
