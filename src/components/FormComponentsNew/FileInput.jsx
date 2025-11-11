@@ -204,7 +204,7 @@ const FileInput = ({
       arrExt.forEach(item => {
         text = text + `.${item}, `
       })
-      console.log(text);
+      // console.log(text);
       
       
       return text.slice(0,-2)

@@ -32,7 +32,7 @@ import TextInput from "./FormComponentsNew/TextInput";
 
 export default function selectComponent(item, index, read = false) {
   if (item.component?.Ref_Type?.includes("Divider"))
-    return <DividerForm key={index} {...item.component} label={item.label} read={read} />;
+    return <DividerForm key={index} {...item.component} label={item.label} read={read} dependOf={item.dependIdLine} howDepend={item.dependСondition} />;
   if (
     item.component?.Ref_Type?.includes("TextInput") &&
     item.component?.specialField === "Телефон"
@@ -114,7 +114,7 @@ export default function selectComponent(item, index, read = false) {
         maxLength={20}
       />
     );
-  
+
   if (
     item.component?.Ref_Type?.includes("TextInput") &&
     item.component?.specialField === "Комментарий"

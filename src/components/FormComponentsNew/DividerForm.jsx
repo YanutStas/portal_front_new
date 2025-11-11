@@ -69,11 +69,11 @@ function DividerForm({
         {label && (
           <div
             className={styles.dividerTitle}
-            style={{ 
+            style={{
               paddingLeft: orientation === "left" ? 0 : false,
               textAlign: orientation === "left" ? "left" : "center",
 
-             }}
+            }}
           >
             {label}
           </div>
@@ -93,7 +93,7 @@ function DividerForm({
       dependOf={dependOf}
       howDepend={howDepend}
       name={name}
-      read = {read}
+      read={read}
     >
       {formElement}
     </WrapperComponent>
