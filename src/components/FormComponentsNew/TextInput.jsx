@@ -38,6 +38,7 @@ export default function TextInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
+  style = false,
   read = false
 }) {
   const testData = useGlobal((state) => state.testData)
@@ -267,6 +268,8 @@ export default function TextInput({
       howDepend={howDepend}
       name={name}
       read={read}
+      style={style}
+
     >
       {formElement}
     </WrapperComponent>

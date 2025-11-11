@@ -30,9 +30,14 @@ import TableInput from "./FormComponentsNew/TableInput";
 import TextConcatenation from "./FormComponentsNew/TextConcatenation";
 import TextInput from "./FormComponentsNew/TextInput";
 
-export default function selectComponent(item, index, read = false) {
+export default function selectComponent(item, index, style) {
   if (item.component?.Ref_Type?.includes("Divider"))
-    return <DividerForm key={index} {...item.component} label={item.label} read={read} dependOf={item.dependIdLine} howDepend={item.dependСondition} />;
+    return <DividerForm
+      key={index}
+      {...item.component}
+      label={item.label}
+      style={style}
+      dependOf={item.dependIdLine} howDepend={item.dependСondition} />;
   if (
     item.component?.Ref_Type?.includes("TextInput") &&
     item.component?.specialField === "Телефон"
@@ -46,7 +51,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (
@@ -62,7 +67,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (
@@ -78,7 +83,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (
@@ -94,7 +99,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (
@@ -110,7 +115,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
         maxLength={20}
       />
     );
@@ -128,7 +133,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
 
@@ -145,7 +150,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (
@@ -161,7 +166,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (
@@ -177,7 +182,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (
@@ -193,7 +198,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (
@@ -209,7 +214,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (
@@ -225,7 +230,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (
@@ -241,7 +246,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (item.component?.Ref_Type?.includes("TextInput"))
@@ -254,7 +259,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
 
@@ -268,7 +273,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
 
@@ -282,7 +287,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
 
@@ -300,7 +305,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
 
@@ -314,7 +319,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
 
@@ -328,7 +333,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
 
@@ -342,7 +347,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (item.component?.Ref_Type?.includes("AddressInput"))
@@ -355,7 +360,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
 
@@ -369,7 +374,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
 
@@ -383,7 +388,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (item.component?.Ref_Type?.includes("PriceInput"))
@@ -396,7 +401,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (item.component?.Ref_Type?.includes("componentsFormula"))
@@ -409,7 +414,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (item.component?.Ref_Type?.includes("TextConcatenation"))
@@ -422,7 +427,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (item.component?.Ref_Type?.includes("FileInput") && !item.component?.saveToProfile)
@@ -431,11 +436,11 @@ export default function selectComponent(item, index, read = false) {
         key={index}
         {...item.component}
         {...item}
-        fullDescription={item.name_fullDescription}
+        fullDescription={item.name_fullDescription}        
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (item.component?.Ref_Type?.includes("FileInput"))
@@ -448,7 +453,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (item.component?.Ref_Type?.includes("HiddenInput"))
@@ -461,7 +466,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
   if (item.component?.Ref_Type?.includes("MapInput"))
@@ -474,7 +479,7 @@ export default function selectComponent(item, index, read = false) {
         name={item.idLine}
         dependOf={item.dependIdLine}
         howDepend={item.dependСondition}
-        read={read}
+        style={style}
       />
     );
 }

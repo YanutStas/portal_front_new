@@ -35,6 +35,7 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
   if (loadingDataByClaim) {
     return <Preloader />
   }
+  
   return (
     <>
 

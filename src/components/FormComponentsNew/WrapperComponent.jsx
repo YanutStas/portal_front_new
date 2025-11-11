@@ -3,6 +3,7 @@ import React from "react";
 import useServices from "../../stores/useServices";
 import useClaims from "../../stores/Cabinet/useClaims";
 import useDataForForm from "../../stores/Cabinet/useDataForForm";
+import useTasks from "../../stores/Cabinet/useTasks";
 
 export default function WrapperComponent({
   children,
@@ -10,17 +11,22 @@ export default function WrapperComponent({
   name = false,
   howDepend = false,
   stylesField_key,
-  read = false
+  read = false,
+  style = false
 }) {
-  // console.log("WrapperComponent read", read);
+  // console.log("style", style);
   // console.log("WrapperComponent name", name);
   // console.log("WrapperComponent children", children);
-  const { styles: style } = useDataForForm((state) => state)
+  // const { action } = useTasks(store => store)
+  // const styleAction = action.styles || false
+  const { styles: styleMainForm } = useDataForForm((state) => state)
   const serviceItem = useServices((state) => state.serviceItem);
   const claim = useClaims((state) => state.claim);
   let styles = false
   if (style) {
     styles = style
+  } else if (styleMainForm) {
+    styles = styleMainForm
   } else {
     styles = read ? claim?.template?.portalFields?.styles[stylesField_key] : (serviceItem?.styles && serviceItem?.styles[stylesField_key]);
   }
@@ -29,11 +35,11 @@ export default function WrapperComponent({
   let fieldDepends = Form.useWatch(dependOf, mainForm);
 
   const formElement = (
-    <Col 
-    {...styles} 
-    xxl={styles?.span || 24} 
-    xl={styles?.span || 24} 
-    xs={24}
+    <Col
+      {...styles}
+      xxl={styles?.span || 24}
+      xl={styles?.span || 24}
+      xs={24}
     >
       {children}
     </Col>

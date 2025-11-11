@@ -20,6 +20,7 @@ export default function BikInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
+  style = false,
   read = false
 }) {
   const testData = useGlobal((state) => state.testData)
@@ -28,10 +29,10 @@ export default function BikInput({
   const [options, setOptions] = useState([]);
   const objProperties = properties.externalService;
   useEffect(() => {
-      if (testData) {
-        form.setFieldValue(name, "044525823")
-      }
-    }, [testData])
+    if (testData) {
+      form.setFieldValue(name, "044525823")
+    }
+  }, [testData])
 
   const fetchSuggestions = debounce((inn) => {
     const params = { type: "БИК", query: inn };
@@ -84,7 +85,7 @@ export default function BikInput({
     }
     // console.log(currentData)
     // form.setFieldValue(name, currentData.data.bic);
-    
+
   };
   const formElement = (
     <Form.Item
@@ -134,6 +135,7 @@ export default function BikInput({
       howDepend={howDepend}
       name={name}
       read={read}
+      style={style}
     >
       {formElement}
     </WrapperComponent>

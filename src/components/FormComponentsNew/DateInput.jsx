@@ -21,7 +21,9 @@ export default function DateInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
-  read = false
+  read = false,
+  style = false
+
 }) {
   const testData = useGlobal((state) => state.testData)
   const form = Form.useFormInstance();
@@ -99,6 +101,8 @@ export default function DateInput({
       howDepend={howDepend}
       name={name}
       read={read}
+      style={style}
+
     >
       {formElement}
     </WrapperComponent>

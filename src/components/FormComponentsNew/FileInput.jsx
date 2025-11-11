@@ -95,6 +95,7 @@ const FileInput = ({
   fullDescription = false,
   stylesField_key = false,
   read = false,
+  style = false,
   availableExtensions = false
 }) => {
   const [api, contextHolder] = notification.useNotification();
@@ -344,6 +345,7 @@ const FileInput = ({
         howDepend={howDepend}
         name={name}
         read={read}
+        style={style}
       >
         {formElement}
       </WrapperComponent>

@@ -28,20 +28,24 @@ export default function ActionItem({ actionId, claimId, taskBasis, buttonText, v
             onCancel()
         }
     }
+    // console.log("action",action);
+
     return (
-        <>
+        <div style={{ maxWidth: "100%" }}>
             {isLoadingAction && <Preloader />}
             {!isLoadingAction && action?.fields &&
-                <Form onFinish={handlerFinish}>
-                    {action.fields.map((item, index) => selectComponent(item, index))}
+                <Form
+                    onFinish={handlerFinish}
+                    layout="vertical"
+                >
+                    {action.fields.map((item, index) => selectComponent(item, index, action.styles[item.stylesField_key]))}
                     <Flex justify="center" style={{ marginTop: 20 }}>
-
                         <Form.Item>
                             <Button htmlType={"submit"} type="primary">{!buttonText && "Отправить"}</Button>
                         </Form.Item>
                     </Flex>
                 </Form>
             }
-        </>
+        </div>
     )
 }
