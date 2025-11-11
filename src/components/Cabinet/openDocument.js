@@ -1,26 +1,37 @@
 import axios from "axios";
 import b64toBlob from "../../lib/b64toBlob";
 
-export default function openDocs(documentId) {
+export default async function openDocs(documentId, sig = false) {
     const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
-    axios
-        .get(`${backServer}/api/cabinet/get-file/by-id/${documentId}`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-            },
-            withCredentials: true,
-        })
-        .then((res) => {
-            if (res.data?.data?.base64) {
-                const file = b64toBlob(res.data.data.base64, "application/pdf")
-                const fileURL = URL.createObjectURL(file);
+    try {
+        const res = await axios
+            .get(`${backServer}/api/cabinet/get-file/by-id/${documentId}?sig=${sig ? "1" : "0"}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+                },
+                withCredentials: true,
+            })
+        if (res.data?.data?.base64) {
+            let file = false
+            if (sig) {
+                file = b64toBlob(res.data.data.base64, "application/pgp-signature")
+            } else {
+                file = b64toBlob(res.data.data.base64, "application/pdf")
+            }
+            const fileURL = URL.createObjectURL(file);
+            if (sig) {
+                const newWindow = window.open(fileURL);
+            } else {
                 const newWindow = window.open("", "_blank");
                 newWindow.location.href = fileURL;
-            }else{
-                return false
             }
-        })
-        .catch((error) => {
-            console.error("Ошибка при открытии документа:", error);
-        });
+            return true
+        } else {
+            return false
+        }
+    } catch (error) {
+        console.error("Ошибка при открытии документа:", error);
+        return false
+    }
+
 }

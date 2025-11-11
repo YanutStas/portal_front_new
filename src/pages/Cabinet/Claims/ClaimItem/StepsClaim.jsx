@@ -38,8 +38,6 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
   
   return (
     <>
-
-
       {steps &&
         <>
           <ConfigProvider
@@ -73,7 +71,7 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
                         </Flex>
                         {item.files && <>
                           {item.files.map((item, index) =>
-                            <FileForDownload key={index} type={item.ext} name={item.name} id={item.id} size={item.size} />
+                            <FileForDownload key={index} type={item.ext} name={item.name} id={item.id} size={item.size} signs={item.signs}/>
                           )}
                         </>}
                         {item.action && item.action.type === "plan" &&
