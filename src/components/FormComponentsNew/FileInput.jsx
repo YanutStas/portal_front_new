@@ -95,6 +95,7 @@ const FileInput = ({
   fullDescription = false,
   stylesField_key = false,
   read = false,
+  availableExtensions = false
 }) => {
   const [api, contextHolder] = notification.useNotification();
   const { removeBlockButtonNewClaim, addBlockButtonNewClaim } = useNewClaim(
@@ -197,6 +198,19 @@ const FileInput = ({
   const removeItem = (file) =>
     setFileList((prev) => prev.filter((f) => f !== file));
 
+  const extConvertToText = (arrExt) => {
+    let text = ''
+    if (arrExt.length > 0) {
+      arrExt.forEach(item => {
+        text = text + `.${item}, `
+      })
+      console.log(text);
+      
+      
+      return text.slice(0,-2)
+    }
+    return false
+  }
   const formElement = (
     <Card
       title={label}
@@ -267,14 +281,14 @@ const FileInput = ({
           <Flex vertical justify="center" style={{ height: "100%" }}>
 
             <Flex justify="center" align="center">
-              <Upload {...props} style={{ textAlign: "center", display: "block", width: "100%" }} accept=".png,.jpg,.jpeg,.pdf">
+              <Upload {...props} style={{ textAlign: "center", display: "block", width: "100%" }} accept={availableExtensions ? extConvertToText(availableExtensions) : ".png,.jpg,.jpeg,.pdf"}>
                 <Button icon={<UploadOutlined />} type="primary">
                   Выбрать файлы
                 </Button>
               </Upload>
             </Flex>
-              <Typography.Text style={{textAlign:"center",color:"gray",fontSize:12}}>.png, .jpg, .jpeg, .pdf</Typography.Text>
-              <Typography.Text style={{textAlign:"center",color:"gray",fontSize:12}}>{"меньше 20МБ"}</Typography.Text>
+            <Typography.Text style={{ textAlign: "center", color: "gray", fontSize: 12 }}>{availableExtensions ? extConvertToText(availableExtensions) : ".png, .jpg, .jpeg, .pdf"}</Typography.Text>
+            <Typography.Text style={{ textAlign: "center", color: "gray", fontSize: 12 }}>{"меньше 20МБ"}</Typography.Text>
 
 
             <div
