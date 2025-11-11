@@ -12,12 +12,7 @@ export default async function openDocs(documentId, sig = false) {
                 withCredentials: true,
             })
         if (res.data?.data?.base64) {
-            let file = false
-            if (sig) {
-                file = b64toBlob(res.data.data.base64, "application/pgp-signature")
-            } else {
-                file = b64toBlob(res.data.data.base64, "application/pdf")
-            }
+            file = b64toBlob(res.data.data.base64, sig ? "application/pgp-signature" : "application/pdf")
             const fileURL = URL.createObjectURL(file);
             if (sig) {
                 const newWindow = window.open(fileURL);
