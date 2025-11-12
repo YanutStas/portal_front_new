@@ -11,8 +11,10 @@ export default async function openDocs(documentId, sig = false) {
                 },
                 withCredentials: true,
             })
+            console.log(res.data);
+            
         if (res.data?.data?.base64) {
-            file = b64toBlob(res.data.data.base64, sig ? "application/pgp-signature" : "application/pdf")
+            const file = b64toBlob(res.data.data.base64, sig ? "application/pgp-signature" : "application/pdf")
             const fileURL = URL.createObjectURL(file);
             if (sig) {
                 const newWindow = window.open(fileURL);
