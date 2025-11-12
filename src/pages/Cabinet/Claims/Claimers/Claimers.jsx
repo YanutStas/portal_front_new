@@ -106,7 +106,7 @@ export default function Claimers() {
                         {moment(item.date).format('DD.MM.YYYY HH:mm')}
                         </Descriptions.Item> */}
                     {item.totalClaims &&
-                      <Descriptions.Item label="Заявок в работе" styles={{content:{ color: "green", fontWeight: 700 }}}>
+                      <Descriptions.Item label="Заявок" styles={{content:{ color: "green", fontWeight: 700 }}}>
                         {item.totalClaims}
                       </Descriptions.Item>
                     }
