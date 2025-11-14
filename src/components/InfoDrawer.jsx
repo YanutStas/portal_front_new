@@ -10,7 +10,11 @@ const InfoDrawer = ({ fullDescription, children: label, button = false, title = 
     event.stopPropagation()
     setDrawerVisible(true)
   };
-  const onClose = () => setDrawerVisible(false);
+  const onClose = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    setDrawerVisible(false)
+  }
 
   const { token } = theme.useToken()
   // console.log(token);
@@ -31,7 +35,7 @@ const InfoDrawer = ({ fullDescription, children: label, button = false, title = 
       }
       {button && <Button onClick={showDrawer}>Подробнее...</Button>}
       <Drawer
-        title={label||title}
+        title={label || title}
         placement="right"
         onClose={onClose}
         open={drawerVisible}

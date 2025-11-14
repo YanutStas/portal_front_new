@@ -4,6 +4,7 @@ import { FileTextOutlined } from "@ant-design/icons";
 import { Link } from 'react-router-dom'
 import styles from "./Claimers/Claimers.module.css";
 import moment from 'moment';
+import InfoDrawer from '../../../components/InfoDrawer';
 export default function CardClaim({ item, borderColor }) {
     const { token } = theme.useToken();
     return (
@@ -37,7 +38,26 @@ export default function CardClaim({ item, borderColor }) {
                         {item.service.description}
                     </Descriptions.Item>
                 </Descriptions>
-                {item.currentStatus?.label && <div style={{ position: "absolute", bottom: 10, right: 10 }}> <Tag color="geekblue">{item.currentStatus.label}</Tag> <Typography.Text style={{ color: "gray" }}>от {moment(item.currentStatus.data).format("DD.MM.YYYY")}</Typography.Text></div>}
+                {item.currentStatus?.label &&
+                    <div style={{ position: "absolute", bottom: 10, right: 10 }}>
+                        <Flex gap={10} wrap="wrap" align='center'>
+                            <div>
+
+                                <Tag color="geekblue">{item.currentStatus.label}</Tag>
+                                {item.currentStatus.reason &&
+                                    <Typography.Text style={{ fontWeight: 600 }}>
+                                        <InfoDrawer
+                                            fullDescription={item.currentStatus?.comment || undefined}>
+                                            {item.currentStatus.reason}
+                                        </InfoDrawer>
+                                    </Typography.Text>
+                                }
+                            </div>
+                            <Typography.Text style={{ color: "gray", fontSize: 12 }}>от {moment(item.currentStatus.data).format("DD.MM.YYYY")}</Typography.Text>
+
+
+                        </Flex>
+                    </div>}
             </Card>
         </Link>
     )
