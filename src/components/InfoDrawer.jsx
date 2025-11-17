@@ -24,7 +24,7 @@ const InfoDrawer = ({ fullDescription, children: label, button = false, title = 
       {!button &&
         <>
           {label}
-          < InfoCircleOutlined
+          <InfoCircleOutlined
             onClick={showDrawer}
             style={{
               color: token.colorInfoText,
