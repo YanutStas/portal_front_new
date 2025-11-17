@@ -1,4 +1,4 @@
-import { Button, ConfigProvider, Drawer, Flex, Modal, Timeline, Typography, theme } from 'antd'
+import { Button, Card, Collapse, ConfigProvider, Drawer, Flex, Modal, Tag, Timeline, Typography, theme } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileTextOutlined, InfoCircleOutlined, LikeOutlined } from "@ant-design/icons";
 import { color } from 'framer-motion';
@@ -8,6 +8,7 @@ import useClaims from "../../../../stores/Cabinet/useClaims";
 import TaskItem from '../../../../components/Cabinet/Action/TaskItem';
 import FileForDownload from '../../../../components/FileForDownload';
 import Preloader from '../../../../components/Main/Preloader';
+import MarkDownText from '../../../../components/MarkDownText/MarkDownText';
 
 
 export default function StepsClaim({ steps = false, claimId, versionId, reloadClaim }) {
@@ -35,7 +36,7 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
   if (loadingDataByClaim) {
     return <Preloader />
   }
-  
+
   return (
     <>
       {steps &&
@@ -62,16 +63,29 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
                     children: <div style={{ position: "relative" }}>
                       <Flex vertical justify='center' align='flex-start' style={{ marginBottom: 10, marginLeft: 5 }}>
                         <Typography.Text style={{ color: "gray", fontSize: 14 }}>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Typography.Text>
-                        <Flex gap={5}>
-                          <Typography.Text style={{ fontSize: 18 }}>{item.name}</Typography.Text>
-                          {item.shortDescription &&
-                            <Typography.Text style={{ color: "gray", fontSize: 14 }}>{item.shortDescription}</Typography.Text>
-                          }
-                          {item.description && <InfoCircleOutlined style={{ marginBottom: 10, fontSize: 14, color: "gray" }} onClick={() => { handlerOpenDrawer(item.name, item.description) }} />}
+                        <Flex gap={5} vertical align='flex-start'>
+                          <Tag >{item.name}</Tag>
+                          {/* {item.shortDescription &&
+                              <Typography.Text>{item.shortDescription}</Typography.Text>
+                            } */}
+                          <Card
+                          size='small'
+                            // styles={{ title: {}, header: { padding: 10 } }}
+                            title={item.shortDescription}
+                          >
+
+                            <MarkDownText>{item.description}</MarkDownText>
+                          </Card>
+                          {/* {item.description && <InfoCircleOutlined style={{ marginBottom: 10, fontSize: 14, color: "gray" }} onClick={() => { handlerOpenDrawer(item.name, item.description) }} />} */}
+                          {/* <Collapse size='small' items={[{
+                            key: '1',
+                            label: item.shortDescription,
+                            children: <MarkDownText>{item.description}</MarkDownText>,
+                          },]} /> */}
                         </Flex>
                         {item.files && <>
                           {item.files.map((item, index) =>
-                            <FileForDownload key={index} type={item.ext} name={item.name} id={item.id} size={item.size} signs={item.signs}/>
+                            <FileForDownload key={index} type={item.ext} name={item.name} id={item.id} size={item.size} signs={item.signs} />
                           )}
                         </>}
                         {item.action && item.action.type === "plan" &&
