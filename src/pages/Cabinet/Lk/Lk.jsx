@@ -5,9 +5,12 @@ import CardClaim from '../Claims/CardClaim';
 import usePersonalAccounts from '../../../stores/Cabinet/usePersonalAccount';
 import Preloader from '../../../components/Main/Preloader'
 import Container from '../../../components/Container';
+import FiltersClaims from "../Claims/Claimers/FiltersClaims";
 
 export default function Lk() {
     const [openDrawer, setOpenDrawer] = useState(false)
+    const [selectFilters, setSelectFilters] = useState({})
+    const [claims, setClaims] = useState()
     // const [lk, setLk] = useState(null)
     // const [listClaims, setListClaims] = useState(null)
     // const [listCompletedClaims, setListCompletedClaims] = useState(null)
@@ -22,6 +25,20 @@ export default function Lk() {
         loadingClaimsByPersonalAccount,
     } = usePersonalAccounts(state => state)
     const { id } = useParams();
+
+    useEffect(() => {
+        setClaims(claimsByPersonalAccount)
+    }, [claimsByPersonalAccount])
+    useEffect(() => {
+        if (claimsByPersonalAccount) {
+          setClaims(claimsByPersonalAccount.filter(item => {
+            if (selectFilters.status) {
+              return item.currentStatus.label === selectFilters.status
+            }
+            return true
+          }))
+        }
+      }, [selectFilters])
     useEffect(() => {
         fetchPersonalAccountItem(id)
         fetchClaimsByPersonalAccount(id)
@@ -52,6 +69,7 @@ export default function Lk() {
     //     },
     // ]
     // console.log(token)
+    console.log("claims",claimsByPersonalAccount)
     return (
         <Container>
             {loadingPersonalAccount && <Preloader />}
@@ -71,14 +89,17 @@ export default function Lk() {
                     {loadingClaimsByPersonalAccount && <Preloader />}
                     {!loadingClaimsByPersonalAccount &&
                         <>
+                        <div style={{marginTop:20}}>
+                            <FiltersClaims claimsAll={claimsByPersonalAccount} setSelectFilters={setSelectFilters} selectFilters={selectFilters} />
+                        </div>
                             <Divider orientation='left'>В работе</Divider>
                             <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20 }}>
-                                {claimsByPersonalAccount && claimsByPersonalAccount.sort((a, b) => b.number - a.number).filter(item => { return item.currentStatus.state !== "completed" }).map((item, index) =>
+                                {claims && claims.sort((a, b) => b.number - a.number).filter(item => { return item.currentStatus.state !== "completed" }).map((item, index) =>
                                     <CardClaim item={item} key={index} />)}
                             </Flex>
                             <Divider orientation='left'>В архиве</Divider>
                             <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20 }}>
-                                {claimsByPersonalAccount && claimsByPersonalAccount.sort((a, b) => b.number - a.number).filter(item => { return item.currentStatus.state === "completed" }).map((item, index) =>
+                                {claims && claims.sort((a, b) => b.number - a.number).filter(item => { return item.currentStatus.state === "completed" }).map((item, index) =>
                                     <CardClaim item={item} key={index} />)}
                             </Flex>
                         </>

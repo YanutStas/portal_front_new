@@ -68,7 +68,7 @@ export default function CardClaim({ item, borderColor }) {
                         </Descriptions>
                         {item.currentStatus?.label &&
                             // <div style={{ position: "absolute", bottom: 10, right: 10 }}>
-                            <Flex vertical align='flex-end' style={{ marginTop: 20 }} gap={5}>
+                            <Flex vertical align='flex-start' style={{ marginTop: 20 }} gap={5}>
 
                                 <Flex gap={5} wrap="wrap" align='center'>
                                     <div>
