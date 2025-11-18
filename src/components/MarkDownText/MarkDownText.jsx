@@ -3,7 +3,7 @@ import { Typography, theme } from "antd";
 import Markdown from "markdown-to-jsx";
 import styles from "./MarkDownText.module.css";
 
-export default function MarkDownText({ children }) {
+export default function MarkDownText({ children,fontSize = false }) {
   const { fontFamily } = theme.useToken().token;
   if (typeof children !== "string") {
     return false;
@@ -11,13 +11,14 @@ export default function MarkDownText({ children }) {
   return (
     <Markdown
       className={styles.markdown}
+      // style={{ fontSize: fontSize }}
       options={{
         overrides: {
           p: {
             component: Typography.Paragraph,
             props: {
               className: styles.para,
-              styles: { fontFamily: fontFamily },
+              style: { fontFamily: fontFamily, fontSize: fontSize || undefined },
             },
           },
           h1: {

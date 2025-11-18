@@ -67,15 +67,18 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
                           <Tag >{item.name}</Tag>
                           {/* {item.shortDescription &&
                               <Typography.Text>{item.shortDescription}</Typography.Text>
-                            } */}
-                          <Card
-                          size='small'
-                            // styles={{ title: {}, header: { padding: 10 } }}
-                            title={item.shortDescription}
-                          >
-
-                            <MarkDownText>{item.description}</MarkDownText>
-                          </Card>
+                              } */}
+                          {item.shortDescription &&
+                            <Card
+                              size='small'
+                              styles={{ title: { fontSize: 16 }, header: { padding: 10 },body:{fontSize:16} }}
+                              title={item.shortDescription}
+                            >
+                              <MarkDownText 
+                              fontSize={16}
+                              >{item.description}</MarkDownText>
+                            </Card>
+                          }
                           {/* {item.description && <InfoCircleOutlined style={{ marginBottom: 10, fontSize: 14, color: "gray" }} onClick={() => { handlerOpenDrawer(item.name, item.description) }} />} */}
                           {/* <Collapse size='small' items={[{
                             key: '1',
