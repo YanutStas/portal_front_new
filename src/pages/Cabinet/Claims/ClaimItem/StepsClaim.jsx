@@ -65,21 +65,23 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
                         <Typography.Text style={{ color: "gray", fontSize: 14 }}>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Typography.Text>
                         <Flex gap={5} vertical align='flex-start'>
                           <Tag >{item.name}</Tag>
-                          {/* {item.shortDescription &&
-                              <Typography.Text>{item.shortDescription}</Typography.Text>
-                              } */}
-                          {item.shortDescription &&
+                          {item.action?.type === "fact" && item.shortDescription &&
+                            <Flex>                              
+                                <Typography.Text>{item.shortDescription}</Typography.Text>
+                               <InfoCircleOutlined style={{ marginBottom: 10, fontSize: 14, color: "#E37021" }} onClick={() => { handlerOpenDrawer(item.shortDescription, item.description) }} />
+                            </Flex>
+                          }
+                          {item.action?.type !== "fact" && item.shortDescription &&
                             <Card
                               size='small'
-                              styles={{ title: { fontSize: 16 }, header: { padding: 10 },body:{fontSize:16} }}
+                              styles={{ title: { fontSize: 16 }, header: { padding: 10 }, body: { fontSize: 16 } }}
                               title={item.shortDescription}
                             >
-                              <MarkDownText 
-                              fontSize={16}
+                              <MarkDownText
+                                fontSize={16}
                               >{item.description}</MarkDownText>
                             </Card>
                           }
-                          {/* {item.description && <InfoCircleOutlined style={{ marginBottom: 10, fontSize: 14, color: "gray" }} onClick={() => { handlerOpenDrawer(item.name, item.description) }} />} */}
                           {/* <Collapse size='small' items={[{
                             key: '1',
                             label: item.shortDescription,

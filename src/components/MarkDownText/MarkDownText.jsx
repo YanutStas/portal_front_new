@@ -38,6 +38,11 @@ export default function MarkDownText({ children,fontSize = false }) {
               className: `${styles.tableDescription} ${styles.table}`,
             },
           },
+          ul: {
+            props: {
+              style: { fontFamily: fontFamily, fontSize: fontSize || undefined },
+            },
+          },
         },
       }}
     >
