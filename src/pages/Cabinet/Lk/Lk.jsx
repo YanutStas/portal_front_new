@@ -31,14 +31,14 @@ export default function Lk() {
     }, [claimsByPersonalAccount])
     useEffect(() => {
         if (claimsByPersonalAccount) {
-          setClaims(claimsByPersonalAccount.filter(item => {
-            if (selectFilters.status) {
-              return item.currentStatus.label === selectFilters.status
-            }
-            return true
-          }))
+            setClaims(claimsByPersonalAccount.filter(item => {
+                if (selectFilters.status) {
+                    return item.currentStatus.label === selectFilters.status
+                }
+                return true
+            }))
         }
-      }, [selectFilters])
+    }, [selectFilters])
     useEffect(() => {
         fetchPersonalAccountItem(id)
         fetchClaimsByPersonalAccount(id)
@@ -69,7 +69,7 @@ export default function Lk() {
     //     },
     // ]
     // console.log(token)
-    console.log("claims",claimsByPersonalAccount)
+    console.log("claims", claimsByPersonalAccount)
     return (
         <Container>
             {loadingPersonalAccount && <Preloader />}
@@ -89,18 +89,18 @@ export default function Lk() {
                     {loadingClaimsByPersonalAccount && <Preloader />}
                     {!loadingClaimsByPersonalAccount &&
                         <>
-                        <div style={{marginTop:20}}>
-                            <FiltersClaims claimsAll={claimsByPersonalAccount} setSelectFilters={setSelectFilters} selectFilters={selectFilters} />
-                        </div>
+                            <div style={{ marginTop: 20 }}>
+                                <FiltersClaims claimsAll={claimsByPersonalAccount} setSelectFilters={setSelectFilters} selectFilters={selectFilters} />
+                            </div>
                             <Divider orientation='left'>В работе</Divider>
                             <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20 }}>
-                                {claims && claims.sort((a, b) => b.number - a.number).filter(item => { return item.currentStatus.state !== "completed" }).map((item, index) =>
+                                {claims && claims.sort((a, b) => b.number - a.number).filter(item => item.currentStatus.state !== "completed" && item.currentStatus.state !== "noAction").map((item, index) =>
                                     <CardClaim item={item} key={index} />)}
                             </Flex>
                             <Divider orientation='left'>В архиве</Divider>
                             <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20 }}>
-                                {claims && claims.sort((a, b) => b.number - a.number).filter(item => { return item.currentStatus.state === "completed" }).map((item, index) =>
-                                    <CardClaim item={item} key={index} />)}
+                                {claims && claims.sort((a, b) => b.number - a.number).filter(item => item.currentStatus.state === "completed" || item.currentStatus.state === "noAction").map((item, index) =>
+                                    <CardClaim item={item} key={index} state={item.currentStatus.state} />)}
                             </Flex>
                         </>
                     }
@@ -123,7 +123,6 @@ export default function Lk() {
                             renderItem={item => (
                                 <List.Item>
                                     <Flex vertical>
-
                                         <Typography.Text>{item.email}</Typography.Text>
                                         {<Typography.Text style={{ fontSize: 10, color: "gray" }}>Создан: 15.05.2024</Typography.Text>}
                                         {<Typography.Text style={{ fontSize: 10, color: "gray" }}>Присоединен к ЛК: 18.10.2024</Typography.Text>}

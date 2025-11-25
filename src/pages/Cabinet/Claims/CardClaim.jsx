@@ -1,6 +1,6 @@
 import { Badge, Card, Descriptions, Drawer, Flex, Tag, theme, Typography } from 'antd'
 import React, { useState } from 'react'
-import { FileTextOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileTextOutlined } from "@ant-design/icons";
 import { Link } from 'react-router-dom'
 import styles from "./Claimers/Claimers.module.css";
 import moment from 'moment';
@@ -8,7 +8,7 @@ import InfoDrawer from '../../../components/InfoDrawer';
 import { InfoCircleOutlined } from "@ant-design/icons";
 import MarkDownText from '../../../components/MarkDownText/MarkDownText';
 
-export default function CardClaim({ item, borderColor }) {
+export default function CardClaim({ item, borderColor, state = false }) {
     const { token } = theme.useToken();
     const [drawerVisible, setDrawerVisible] = useState(false);
     const showDrawer = (event) => {
@@ -32,8 +32,8 @@ export default function CardClaim({ item, borderColor }) {
                     styles={{
                         body: {
                             paddingBottom: 5,
-                            display:"flex",
-                            flex:1
+                            display: "flex",
+                            flex: 1
                         }
                     }}
                     // extra={<FileTextOutlined style={{ fontSize: 24, color: "gray" }} />}
@@ -47,15 +47,20 @@ export default function CardClaim({ item, borderColor }) {
                         border: `1px solid ${borderColor ? borderColor : token.colorPrimary}`,
                         position: "relative",
                         overflow: 'visible',
-                        display:"flex",
-                        flexDirection:'column',
-                        justifyContent:"space-between"
+                        display: "flex",
+                        flexDirection: 'column',
+                        justifyContent: "space-between"
                         // background: "linear-gradient(00deg, rgba(0,97,170,.1) 0%, rgba(255,255,255,0) 30%)",
                     }}
 
                 // extra={<div><Typography.Text style={{ color: token.colorTextDescription }}>От: </Typography.Text><Typography.Text>{moment(item.create).format('DD.MM.YYYY HH:mm')}</Typography.Text></div>}
                 >
                     {(item.countAppeals > 0 || item.countTasks > 0) && <div style={{ position: "absolute", borderRadius: 10, top: -5, right: -5 }}><Badge count={(Number(item.countAppeals) || 0) + (Number(item.countTasks) || 0)} showZero /></div>}
+                    {state && 
+                    <div style={{ position: "absolute", borderRadius: 10, bottom: 5, right: 5 }}>
+                        {state === "noAction" && <CloseCircleOutlined style={{ color: item.color || "red", fontSize: 30 }} />}
+                        {state === "completed" &&  <CheckCircleOutlined style={{ color: item.color || "#52c41a", fontSize: 30 }} />}
+                        </div>}
                     <Flex vertical justify='space-between' style={{ height: "100%" }}>
 
                         <Descriptions column={1}>
