@@ -32,8 +32,10 @@ export default function Lk() {
     useEffect(() => {
         if (claimsByPersonalAccount) {
             setClaims(claimsByPersonalAccount.filter(item => {
-                if (selectFilters.status) {
-                    return item.currentStatus.label === selectFilters.status
+                if (selectFilters.status || selectFilters.number) {
+                    const select = selectFilters.status ? item.currentStatus.label === selectFilters.status : true
+                    const number = selectFilters.number ? item.number?.includes(selectFilters.number) : true
+                    return (select && number)
                 }
                 return true
             }))

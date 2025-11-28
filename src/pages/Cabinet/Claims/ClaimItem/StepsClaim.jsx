@@ -110,7 +110,7 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
                               {item.action.currentStatus.label}
                             </Typography.Text>
                             <Typography.Text style={{ color: "gray", fontSize: 14 }}>
-                              {moment(item.action.date).format("DD.MM.YYYY hh:mm")}
+                              {moment(item.action.date).format("DD.MM.YYYY HH:mm")}
                             </Typography.Text>
                             {item.action.email &&
                               <Typography.Text style={{ color: "gray", fontSize: 14 }}>
@@ -185,7 +185,7 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
               // fetchClaimItem(claimId)
             }}
             footer={false}
-            destroyOnClose={true}
+            destroyOnHidden={true}
             width={"80%"}
           >
             <TaskItem

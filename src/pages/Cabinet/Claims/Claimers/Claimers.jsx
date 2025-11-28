@@ -45,10 +45,14 @@ export default function Claimers() {
     setClaims(claimsAll)
   }, [claimsAll])
   useEffect(() => {
+    console.log(selectFilters);
+
     if (claimsAll) {
       setClaims(claimsAll.filter(item => {
-        if (selectFilters.status) {
-          return item.currentStatus.label === selectFilters.status
+        if (selectFilters.status || selectFilters.number) {
+          const select = selectFilters.status ? item.currentStatus.label === selectFilters.status : true
+          const number = selectFilters.number ? item.number?.includes(selectFilters.number) : true
+          return (select && number)
         }
         return true
       }))
@@ -139,8 +143,12 @@ export default function Claimers() {
 
           {/* -------------------------------------------------------- */}
 
+          {/* {claimsAll?.length > 0 &&
+            <div style={{ marginTop: 20 }}>
+            </div>
 
-          {claims?.length > 0 &&
+          } */}
+          {claimsAll?.length > 0 &&
             <>
               <Divider orientation="left">
                 <Flex gap={10} align="center">

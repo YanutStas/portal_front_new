@@ -183,7 +183,7 @@ export default function ClaimItem() {
           <Tabs
             type="card"
             items={tabs}
-            destroyInactiveTabPane
+            destroyOnHidden
           // tabBarGutter={5}
           // centered
           />

@@ -199,7 +199,7 @@ export default function AppHeader() {
           }}
         />
         <div style={{ opacity: .7, }}>
-          <Tooltip title={`${release.version} от ${release.date}`}>
+          <Tooltip title={`${release[0]?.version} от ${release[0]?.date}`}>
 
             {version === "local" && <Tag color="blue">Локальная версия</Tag>}
             {version === "beta" && <Tag color="gold">Бета версия</Tag>}
