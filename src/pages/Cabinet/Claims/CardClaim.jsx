@@ -56,10 +56,10 @@ export default function CardClaim({ item, borderColor, state = false }) {
                 // extra={<div><Typography.Text style={{ color: token.colorTextDescription }}>От: </Typography.Text><Typography.Text>{moment(item.create).format('DD.MM.YYYY HH:mm')}</Typography.Text></div>}
                 >
                     {(item.countAppeals > 0 || item.countTasks > 0) && <div style={{ position: "absolute", borderRadius: 10, top: -5, right: -5 }}><Badge count={(Number(item.countAppeals) || 0) + (Number(item.countTasks) || 0)} showZero /></div>}
-                    {state && 
-                    <div style={{ position: "absolute", borderRadius: 10, bottom: 5, right: 5 }}>
-                        {state === "noAction" && <CloseCircleOutlined style={{ color: item.color || "red", fontSize: 30 }} />}
-                        {state === "completed" &&  <CheckCircleOutlined style={{ color: item.color || "#52c41a", fontSize: 30 }} />}
+                    {state &&
+                        <div style={{ position: "absolute", borderRadius: 10, bottom: 5, right: 5 }}>
+                            {state === "noAction" && <CloseCircleOutlined style={{ color: item.color || "red", fontSize: 30 }} />}
+                            {state === "completed" && <CheckCircleOutlined style={{ color: item.color || "#52c41a", fontSize: 30 }} />}
                         </div>}
                     <Flex vertical justify='space-between' style={{ height: "100%" }}>
 
@@ -79,7 +79,9 @@ export default function CardClaim({ item, borderColor, state = false }) {
                                     <div>
                                         <Tag style={{ marginRight: 2 }} color="geekblue">{item.currentStatus.label}</Tag>
                                     </div>
-                                    <Typography.Text style={{ color: "gray", fontSize: 12 }}>от {moment(item.currentStatus.data).format("DD.MM.YYYY")}</Typography.Text>
+                                    {item.currentStatus?.date &&
+                                        <Typography.Text style={{ color: "gray", fontSize: 12 }}>от {moment(item.currentStatus.date).format("DD.MM.YYYY")}</Typography.Text>
+                                    }
                                 </Flex>
                                 <Flex gap={3}>
 
