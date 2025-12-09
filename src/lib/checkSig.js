@@ -19,8 +19,8 @@ const checkSig = async (formData) => {
     if (res.data.status && res.data.status == "OK") {
         const json = JSON.parse(res.data.data)
         const jsonReport = JSON.parse(json.jsonReport)
-        console.log("json",json)
-        console.log("jsonReport",jsonReport)
+        // console.log("json",json)
+        // console.log("jsonReport",jsonReport)
         return jsonReport
     }
     return false
