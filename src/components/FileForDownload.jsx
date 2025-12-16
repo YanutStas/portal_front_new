@@ -16,6 +16,7 @@ import moment from "moment";
 import { Button, Descriptions, Flex, message, Modal, Spin, Typography, theme, Tooltip } from "antd";
 import checkSig from "./Cabinet/checkSig";
 import { DownloadOutlined, SafetyOutlined } from '@ant-design/icons'
+import PdfDownloader from "./PdfDownloader";
 const typeFile = {
   pdf,
   doc,
@@ -35,8 +36,13 @@ export default function FileForDownload({ type, id, name, size, date = false, si
   const [downloading, setDownloading] = useState(false)
   const [isChecking, setIsChecking] = useState(false)
   // console.log(token);
+  console.log(chekingValue);
   const [messageApi, contextHolder] = message.useMessage();
-
+  let jsonReport = false
+  if(chekingValue && chekingValue.resultCode === 0 ){
+    jsonReport = JSON.parse(chekingValue.jsonReport)
+    console.log(jsonReport);
+}
   return (
     <>
       <Flex vertical gap={10} style={{ marginBottom: 20, marginTop: 20 }}>
@@ -160,45 +166,51 @@ export default function FileForDownload({ type, id, name, size, date = false, si
           onCancel={() => {
             setChekingValue(false)
           }}
+          width={800}
+          footer
         >
-          {chekingValue && chekingValue.signatures?.length > 0 &&
-            <Descriptions column={1} style={{ marginTop: 20 }} items={[
-              {
-                key: '1',
-                label: 'Действительность',
-                children: <span style={{ color: chekingValue.isValid ? "green" : "red" }}>{chekingValue.resultText}</span>,
-              },
-              {
-                key: '2',
-                label: 'Дата отчета',
-                children: <span>{chekingValue.reportDate}</span>,
-              },
-              {
-                key: '3',
-                label: 'Издатель сертификата',
-                children: <span >{chekingValue.signatures[0].cert.issuer}</span>,
-              },
-              {
-                key: '4',
-                label: 'Владелец сертификата',
-                children: <span>{chekingValue.signatures[0].cert.subject}</span>,
-              },
-              {
-                key: '5',
-                label: 'Серийный номер',
-                children: <span>{chekingValue.signatures[0].cert.serial}</span>,
-              },
-              {
-                key: '56',
-                label: 'Действует',
-                children: <span>с {moment(chekingValue.signatures[0].cert.notBefore).format('DD.MM.YYYY')} по {moment(chekingValue.signatures[0].cert.notAfter).format('DD.MM.YYYY')}</span>,
-              },
-              {
-                key: '7',
-                label: 'Срок действия ключа подписи',
-                children: <span>с {moment(chekingValue.signatures[0].cert.pkeyNotBefore).format('DD.MM.YYYY')} по {moment(chekingValue.signatures[0].cert.pkeyNotAfter).format('DD.MM.YYYY')}</span>,
-              },
-            ]} />
+          {chekingValue && chekingValue.resultCode === 0  &&
+            <>
+              {/* <Typography.Title style={{ color: "green" }} level={5}>{chekingValue.description}</Typography.Title> */}
+              <Descriptions  column={1} style={{ marginTop: 20 }} items={[
+                {
+                  key: '1',
+                  label: 'Действительность',
+                  children: <span style={{ color: jsonReport.isValid ? "green" : "red" }}>{jsonReport.resultText}</span>,
+                },
+                {
+                  key: '2',
+                  label: 'Дата отчета',
+                  children: <span>{jsonReport.reportDate}</span>,
+                },
+                {
+                  key: '3',
+                  label: 'Издатель сертификата',
+                  children: <span >{jsonReport.signatures[0].cert.issuer}</span>,
+                },
+                {
+                  key: '4',
+                  label: 'Владелец сертификата',
+                  children: <span>{jsonReport.signatures[0].cert.subject}</span>,
+                },
+                {
+                  key: '5',
+                  label: 'Серийный номер',
+                  children: <span>{jsonReport.signatures[0].cert.serial}</span>,
+                },
+                {
+                  key: '56',
+                  label: 'Действует',
+                  children: <span>с {moment(jsonReport.signatures[0].cert.notBefore).format('DD.MM.YYYY')} по {moment(jsonReport.signatures[0].cert.notAfter).format('DD.MM.YYYY')}</span>,
+                },
+                {
+                  key: '7',
+                  label: 'Срок действия ключа подписи',
+                  children: <span>с {moment(jsonReport.signatures[0].cert.pkeyNotBefore).format('DD.MM.YYYY')} по {moment(jsonReport.signatures[0].cert.pkeyNotAfter).format('DD.MM.YYYY')}</span>,
+                },
+              ]} />
+              <PdfDownloader base64String={chekingValue.pdfReport}/>
+            </>
           }
           {chekingValue.resultCode === 1 &&
             <Typography.Title style={{ color: "red" }} level={5}>Входные данные не являются подписанным сообщением!</Typography.Title>

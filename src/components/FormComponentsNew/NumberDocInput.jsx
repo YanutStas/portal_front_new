@@ -9,7 +9,7 @@ export default function NumberDocInput({
     required = undefined,
     dependOf = false,
     howDepend = false,
-    placeholder = false,
+    placeholder = "",
     span = false,
     fullDescription = false,
     stylesField_key = false,

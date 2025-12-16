@@ -32,6 +32,8 @@ export default function DateInput({
       form.setFieldValue(name, moment())
     }
   }, [testData])
+  // console.log("defaultValue", defaultValue);
+
   const formElement = (
     <ConfigProvider locale={locale}>
       <Form.Item
@@ -49,7 +51,7 @@ export default function DateInput({
             message: "Это поле обязательное",
           },
         ]}
-        initialValue={defaultValue}
+      initialValue={moment(defaultValue)}
       >
         {part === "Дата" && (
           <DatePicker
