@@ -260,11 +260,12 @@ const FileInput = ({
         </>
       }
       actions={[
-        <>
+        <div style={{cursor:"default"}}>
           {required && !isAttached && <Tag color="red">Не добавлен*</Tag>}
           {isAttached ? <Tag color="green">Добавлен</Tag> : (!required && <Tag color={"blue"}>Не добавлен</Tag>)}
-        </>
+        </div>
       ]}
+      
     >
       {contextHolder}
       <Form.Item

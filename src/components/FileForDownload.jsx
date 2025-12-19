@@ -39,7 +39,7 @@ export default function FileForDownload({ type, id, name, size, date = false, si
   console.log(chekingValue);
   const [messageApi, contextHolder] = message.useMessage();
   let jsonReport = false
-  if(chekingValue && chekingValue.resultCode === 0 ){
+  if(chekingValue && (chekingValue.resultCode === 0 || chekingValue.resultCode === 3) ){
     jsonReport = JSON.parse(chekingValue.jsonReport)
     console.log(jsonReport);
 }
@@ -169,7 +169,7 @@ export default function FileForDownload({ type, id, name, size, date = false, si
           width={800}
           footer
         >
-          {chekingValue && chekingValue.resultCode === 0  &&
+          {chekingValue && (chekingValue.resultCode === 0 || chekingValue.resultCode === 3)  &&
             <>
               {/* <Typography.Title style={{ color: "green" }} level={5}>{chekingValue.description}</Typography.Title> */}
               <Descriptions  column={1} style={{ marginTop: 20 }} items={[
