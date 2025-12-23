@@ -5,6 +5,8 @@ import styles from "./EmailCodeVerification.module.css";
 
 const EmailCodeVerification = () => {
   const submitEmailCode = useRegistration((state) => state.submitEmailCode);
+  const isSendingCodeEmail = useRegistration((state) => state.isSendingCodeEmail);
+  const codeRequestedEmailError = useRegistration((state) => state.codeRequestedEmailError);
   const formRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -39,6 +41,7 @@ const EmailCodeVerification = () => {
           ]}
         >
           <Input.OTP
+            disabled={isSendingCodeEmail}
             ref={inputRef}
             onChange={handleChange}
             length={4}
@@ -47,6 +50,7 @@ const EmailCodeVerification = () => {
           />
         </Form.Item>
       </Form>
+       {codeRequestedEmailError && <Typography.Text style={{color:"red"}}>{codeRequestedEmailError}</Typography.Text>}
     </>
   );
 };

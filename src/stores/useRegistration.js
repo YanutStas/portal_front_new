@@ -10,10 +10,24 @@ const useRegistration = create((set, get) => ({
   phoneCode: "",
   emailCode: "",
   password: "",
+
   phoneVerified: false,
+  isSendingPhone: false,
+  phoneVerifiedError: false,
+
   codeRequested: false,
+  isSendingCodePhone: false,
+  codeRequestedError: false,
+
+
   emailVerified: false,
+  isSendingEmail: false,
+  emailVerifiedError: false,
+
   codeRequestedEmail: false,
+  isSendingCodeEmail: false,
+  codeRequestedEmailError: false,
+
   isRegistering: false,
 
   setRegistrationStep: (step) => set(() => ({ registrationStep: step })),
@@ -66,6 +80,10 @@ const useRegistration = create((set, get) => ({
   },
 
   submitEmail: async (email) => {
+    set(() => ({
+      isSendingEmail: true,
+    }));
+
     try {
       const response = await axios.post(
         `${backServer}/api/registration/email`,
@@ -77,16 +95,29 @@ const useRegistration = create((set, get) => ({
           email,
           emailSubmitted: true,
           codeRequestedEmail: true,
+          emailVerifiedError: false,
+          isSendingEmail: false,
         }));
       } else {
         console.error(response.data.message);
+        set(() => ({
+          emailVerifiedError: true,
+          isSendingEmail: false,
+        }));
       }
     } catch (error) {
       console.error("Ошибка при отправке email", error);
+      set(() => ({
+        emailVerifiedError: true,
+        isSendingEmail: false,
+      }));
     }
   },
 
   submitEmailCode: async (emailCode) => {
+    set(() => ({
+      isSendingCodeEmail: true,
+    }));
     try {
       const response = await axios.post(
         `${backServer}/api/registration/emailcode`,
@@ -96,14 +127,24 @@ const useRegistration = create((set, get) => ({
       if (response.data.status === "ok") {
         get().setEmailVerified(true);
         set(() => ({
+          codeRequestedEmailError: false,
           registrationStep: 1,
           codeRequestedEmail: false,
+          isSendingCodeEmail: false,
         }));
       } else {
         console.error("Неверный пин-код");
+        set(() => ({
+          codeRequestedEmailError: "Неверный пин-код",
+          isSendingCodeEmail: false,
+        }));
       }
     } catch (error) {
       console.error("Ошибка при подтверждении пин-кода", error);
+      set(() => ({
+        codeRequestedEmailError: error.message,
+        isSendingCodeEmail: false,
+      }));
     }
   },
 
@@ -115,13 +156,13 @@ const useRegistration = create((set, get) => ({
 
     try {
       set({ isRegistering: true });
-      
+
       const registrationResponse = await axios.post(
         `${backServer}/api/registration/newuser`,
         { email: get().email, phone: get().phone, password },
         { withCredentials: true }
       );
-      
+
       if (registrationResponse.data.status === "ok") {
         localStorage.setItem("jwt", registrationResponse.data.jwt);
         useAuth.getState().toggleAuth(true);
