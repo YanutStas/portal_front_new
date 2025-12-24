@@ -38,44 +38,90 @@ const useRegistration = create((set, get) => ({
   setCodeRequested: (value) => set({ codeRequested: value }),
 
   submitPhone: async (phone) => {
+    set(() => ({ isSendingPhone: true, codeRequestedError: false }));
     try {
       const response = await axios.post(
         `${backServer}/api/registration/phone`,
         { phone },
         { withCredentials: true }
       );
-      if (response.data.status === "ok") {
+
+      if (response.data?.status === "ok") {
         set(() => ({
           phone,
           phoneSubmitted: true,
           codeRequested: true,
+          isSendingPhone: false,
+          codeRequestedError: false,
         }));
-      } else {
-        console.error(response.data.message);
+        return { ok: true };
       }
+
+      const msg =
+        response?.data?.message ||
+        "Не удалось отправить код. Попробуйте позже.";
+      set(() => ({
+        isSendingPhone: false,
+        codeRequestedError: msg,
+      }));
+      return { ok: false, message: msg };
     } catch (error) {
+      const msg =
+        error?.response?.data?.message ||
+        "Ошибка при отправке СМС. Попробуйте позже.";
       console.error("Ошибка при отправке номера телефона", error);
+      set(() => ({
+        isSendingPhone: false,
+        codeRequestedError: msg,
+      }));
+      return { ok: false, error: msg };
     }
   },
 
   submitPhoneCode: async (phoneCode) => {
+    set(() => ({ isSendingCodePhone: true, codeRequestedError: false }));
     try {
       const response = await axios.post(
         `${backServer}/api/registration/phonecode`,
         { phoneCode },
         { withCredentials: true }
       );
-      if (response.data.status === "ok") {
+
+      if (response.data?.status === "ok") {
         get().setPhoneVerified(true);
         set(() => ({
           registrationStep: 2,
           codeRequested: false,
+          isSendingCodePhone: false,
+          codeRequestedError: false,
         }));
-      } else {
-        console.error("Неверный пин-код");
+        return { ok: true };
       }
+
+     
+      const attemptsLeft =
+        typeof response?.data?.phoneCount === "number"
+          ? response.data.phoneCount
+          : undefined;
+      const baseMsg =
+        response?.data?.message || "Неверный код.";
+      const msg =
+        attemptsLeft !== undefined
+          ? `${baseMsg} Осталось попыток: ${attemptsLeft}.`
+          : baseMsg;
+
+      set(() => ({
+        isSendingCodePhone: false,
+        codeRequestedError: msg,
+      }));
+      return { ok: false, attemptsLeft };
     } catch (error) {
       console.error("Ошибка при подтверждении пин-кода", error);
+      set(() => ({
+        isSendingCodePhone: false,
+        codeRequestedError: "Ошибка подтверждения кода. Попробуйте позже.",
+      }));
+      return { ok: false, error: true };
     }
   },
 

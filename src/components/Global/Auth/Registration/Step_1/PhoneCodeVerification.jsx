@@ -1,15 +1,17 @@
 import React, { useEffect, useRef } from "react";
-import { Form, Input, Typography } from "antd";
+import { Form, Input, Typography, Flex } from "antd";
 import useRegistration from "../../../../../stores/useRegistration";
 import styles from "./PhoneCodeVerification.module.css";
 
 const PhoneCodeVerification = () => {
-  const { submitPhoneCode } = useRegistration();
+  const submitPhoneCode = useRegistration((s) => s.submitPhoneCode);
+  const isSendingCodePhone = useRegistration((s) => s.isSendingCodePhone);
+  const phoneCodeError = useRegistration((s) => s.phoneCodeError);
   const formRef = useRef(null);
   const inputRef = useRef(null);
 
   useEffect(() => {
-    inputRef.current.focus();
+    if (inputRef.current) inputRef.current.focus();
   }, []);
 
   const onFinish = (values) => {
@@ -18,8 +20,8 @@ const PhoneCodeVerification = () => {
   };
 
   const handleChange = (value) => {
-    if (value.length === 4) {
-      formRef.current.submit();
+    if (value.length === 4 && !isSendingCodePhone) {
+      if (formRef.current) formRef.current.submit();
     }
   };
 
@@ -44,9 +46,18 @@ const PhoneCodeVerification = () => {
             length={4}
             formatter={(str) => str.toUpperCase()}
             className={styles.codeInput}
+            disabled={isSendingCodePhone}
+            status={phoneCodeError ? "error" : ""}
           />
         </Form.Item>
       </Form>
+
+      {isSendingCodePhone && (
+        <Typography.Text type="secondary">Проверяем код…</Typography.Text>
+      )}
+      {phoneCodeError && (
+        <Typography.Text style={{ color: "red" }}>{phoneCodeError}</Typography.Text>
+      )}
     </>
   );
 };
