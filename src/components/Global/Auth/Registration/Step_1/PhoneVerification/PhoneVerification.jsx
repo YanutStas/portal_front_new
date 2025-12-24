@@ -42,12 +42,12 @@ const PhoneVerification = React.memo(() => {
   const onFinish = useCallback(async () => {
     const formattedPhone = phone.replace(/[^\d]/g, "");
     const result = await submitPhone(formattedPhone);
-    setHasAttempted(true); // После первой попытки меняем текст кнопки
+    setHasAttempted(true); 
     if (result?.ok) {
       setCodeRequested(true);
-      setTimer(60); // Стартуем таймер только при успешной отправке
+      setTimer(60); 
     } else {
-      setCodeRequested(false); // При ошибке не показываем ввод кода и не запускаем таймер
+      setCodeRequested(false); 
     }
   }, [phone, submitPhone, setCodeRequested]);
 
