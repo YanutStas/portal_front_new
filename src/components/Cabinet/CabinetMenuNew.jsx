@@ -68,6 +68,15 @@ export default function CabinetMenuNew({ setIsOpenProfileMenu }) {
             url={"/cabinet/claimers"}
             setIsOpenProfileMenu={setIsOpenProfileMenu}
           />
+
+          <LinkCard
+            title={"Подать обращение"}
+            color={"green"}
+            url={"https://mosoblenergo.ru/contact?feedback=1"}
+            external
+            setIsOpenProfileMenu={setIsOpenProfileMenu}
+          />
+
           <Flex vertical gap={0} justify="center" style={{ width: "100%" }}>
             <Typography.Text
               level={5}
@@ -79,17 +88,7 @@ export default function CabinetMenuNew({ setIsOpenProfileMenu }) {
               <a href="tel:+74959950099">+7 (495) 99-500-99</a>
             </Typography.Text>
 
-            <Button
-              onClick={() =>
-                window.open(
-                  "https://mosoblenergo.ru/contact?feedback=1",
-                  "_blank",
-                  "noopener,noreferrer"
-                )
-              }
-            >
-              Написать нам
-            </Button>
+
           </Flex>
         </Flex>
       </Flex>
@@ -125,16 +124,21 @@ export default function CabinetMenuNew({ setIsOpenProfileMenu }) {
     </>
   );
 }
-function LinkCard({ title, color, url, setIsOpenProfileMenu }) {
+function LinkCard({ title, color, url, setIsOpenProfileMenu, external = false }) {
   const navigate = useNavigate();
-  const handlerNavigate = (url) => {
-    navigate(url);
-    setIsOpenProfileMenu(false);
+  const handlerNavigate = (url, isExternal) => {
+    if (isExternal) {
+      setIsOpenProfileMenu(false);
+      window.open(url, "_blank", "noopener,noreferrer");
+    } else {
+      navigate(url);
+      setIsOpenProfileMenu(false);
+    }
   };
   return (
     <Button
       onClick={() => {
-        handlerNavigate(url);
+        handlerNavigate(url, external);
       }}
       style={{ width: "100%" }}
       size="large"
