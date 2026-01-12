@@ -37,6 +37,7 @@ import Lk from "./pages/Cabinet/Lk/Lk";
 import Error from "./pages/Error";
 import CheckSig from "./pages/CheckSig";
 import Version from "./pages/Version";
+import Privacy from "./pages/Privacy";
 
 const { Content } = Layout;
 
@@ -121,6 +122,7 @@ export default function App() {
                 />
 
                 <Route path="/about" element={<About />} />
+                <Route path="/privacy" element={<Privacy />} />
                 <Route path="/calc" element={<Calc />} />
                 <Route path="/contacts" element={<Contacts />} />
                 <Route path="/version" element={<Version />} />
