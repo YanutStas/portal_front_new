@@ -8,7 +8,7 @@ import {
   message as antdMessage,
   theme,
 } from "antd";
-import { sendMessageToGigachat } from "./gigachatApi";
+import { sendMessageToGigachat, sendMessageToN8n } from "./gigachatApi";
 import moment from "moment";
 import "moment/locale/ru";
 
@@ -63,7 +63,7 @@ const ModalBot = ({ visible, onClose }) => {
 
     try {
       // Отправляем сообщение к GigaChat
-      const botResponse = await sendMessageToGigachat(userMessage);
+      const botResponse = await sendMessageToN8n(userMessage);
 
       // Добавляем ответ бота в историю сообщений с временем
       setChatMessages((prevMessages) => [
@@ -100,7 +100,7 @@ const ModalBot = ({ visible, onClose }) => {
           >
             Помощник
           </span>
-          <img
+          {/* <img
             src={GigaChatLogo}
             alt="GigaChat"
             style={{
@@ -109,20 +109,20 @@ const ModalBot = ({ visible, onClose }) => {
               filter:
                 "invert(56%) sepia(11%) saturate(746%) hue-rotate(178deg) brightness(93%) contrast(88%)",
             }}
-          />
+          /> */}
         </div>
       }
       // title="Помощник"
       open={visible}
       onCancel={onClose}
       footer={null}
-      width={600}
+      width={800}
     >
       {/* Область сообщений */}
       <div
         ref={messagesContainerRef}
         style={{
-          maxHeight: "400px",
+          maxHeight: "550px",
           overflowY: "auto",
           marginBottom: "16px",
           padding: "8px",
