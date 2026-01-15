@@ -62,7 +62,7 @@ export default function ChatUI() {
             <div
                 ref={chatContainerRef}
                 style={{
-                    height: 600,
+                    height: 500,
                     overflowY: 'auto',        // ← обязательно!
                     border: '1px solid #f0f0f0',
                     borderRadius: 8,
