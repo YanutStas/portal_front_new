@@ -14,6 +14,7 @@ import "moment/locale/ru";
 
 import MarkDownText from "../MarkDownText/MarkDownText";
 import GigaChatLogo from "../../img/answers/GigaChat.svg";
+import ChatGPT from "../../pages/ChatGPT";
 
 const ModalBot = ({ visible, onClose }) => {
   const [chatMessages, setChatMessages] = useState([
@@ -118,8 +119,9 @@ const ModalBot = ({ visible, onClose }) => {
       footer={null}
       width={800}
     >
-      {/* Область сообщений */}
-      <div
+      {/* Область сообщений  */}
+      <ChatGPT/>
+      {/* <div
         ref={messagesContainerRef}
         style={{
           maxHeight: "550px",
@@ -176,7 +178,7 @@ const ModalBot = ({ visible, onClose }) => {
         )}
       </div>
 
-      {/* Поле ввода и кнопка отправки */}
+      //  Поле ввода и кнопка отправки
       <div style={{ display: "flex", gap: "8px" }}>
         <Input.TextArea
           placeholder="Введите сообщение"
@@ -189,7 +191,7 @@ const ModalBot = ({ visible, onClose }) => {
         <Button type="primary" onClick={handleSendMessage} disabled={loading}>
           Отправить
         </Button>
-      </div>
+      </div> */}
     </Modal>
   );
 };

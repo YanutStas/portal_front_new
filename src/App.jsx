@@ -30,6 +30,7 @@ import Login from "./pages/Login";
 import AddressInputTest from "./components/FormComponentsNew/addressComponents/AddressInputTest";
 import Answers from "./pages/Answers/Answers";
 import Test from "./pages/Test";
+import ChatGPT from "./pages/ChatGPT";
 
 import useGlobal from "./stores/useGlobal";
 import useAuth from "./stores/useAuth";
@@ -130,6 +131,7 @@ export default function App() {
                 <Route path="/docs" element={<Documentation />} />
                 <Route path="/error" element={<Error />} />
                 <Route path="/test" element={<AddressInputTest />} />
+                <Route path="/chatgpt" element={<ChatGPT />} />
                 <Route path="/login" element={<Login />} />
 
                 <Route path="cabinet" element={<PrivateRoute />}>
