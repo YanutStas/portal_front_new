@@ -19,7 +19,7 @@ const ModalBot = ({ visible, onClose }) => {
   const [chatMessages, setChatMessages] = useState([
     {
       sender: "bot",
-      text: "Здравствуйте! Чем я могу вам помочь?",
+      text: "Здравствуйте, меня зовут Мособлэлектрик.\n\nПо какому вопросу Вас проконсультировать?",
       timestamp: new Date(),
     },
   ]);
@@ -98,7 +98,7 @@ const ModalBot = ({ visible, onClose }) => {
               color: token.colorTextHeading,
             }}
           >
-            Помощник
+            Консультант
           </span>
           {/* <img
             src={GigaChatLogo}
