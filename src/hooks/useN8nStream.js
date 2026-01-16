@@ -2,7 +2,7 @@
 import { useState, useCallback } from 'react';
 
 export const useN8nStream = () => {
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([{ id: Date.now(), text: "Здравствуйте! Меня зовут Мособлэлектрик.\n\nПо какому вопросу Вас проконсультировать?", role: 'assistant' }]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 

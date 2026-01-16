@@ -20,6 +20,9 @@ export default function ChatUI() {
 
     const chatContainerRef = useRef(null);
     const inputRef = useRef(null);
+    // useEffect(() => {
+    //     sendMessage('Здравствуйте!', sessionId)
+    // },[])
 
     // 🔁 Надёжная прокрутка вниз после любого изменения контента
     useEffect(() => {
