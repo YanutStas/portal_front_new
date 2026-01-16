@@ -15,7 +15,8 @@ export const useN8nStream = () => {
         const controller = new AbortController();
 
         try {
-            const response = await fetch('https://n8n.mosoblenergo.ru/webhook/f2274c46-ee15-4d83-95fe-b37796dc871a', {
+            // const response = await fetch('https://n8n.mosoblenergo.ru/webhook/f2274c46-ee15-4d83-95fe-b37796dc871a', {
+                const response = await fetch('https://n8n.mosoblenergo.ru/webhook/dcb1d216-fd9b-4bf7-828f-ddc58290803d', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
