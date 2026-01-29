@@ -11,6 +11,7 @@ import useAppeals from "../../../stores/Cabinet/useAppeals";
 export default function AppealItem({ claimId, appeal, isLoadingAppeal, appealsId, closeModal }) {
     const { createNewAppeal } = useAppeals(store => store)
     const [errorAddAppeal, setErrorAddAppeal] = useState(false)
+    const [isSending, setIsSending] = useState(false)
     // const { fetchActionById, isLoadingAction, action, createNewTask } = useTasks(store => store)
     // const { setLinks } = useDataForForm((state) => state)
     // useEffect(() => {
@@ -20,13 +21,15 @@ export default function AppealItem({ claimId, appeal, isLoadingAppeal, appealsId
     //     //     setLinks(appeal.links)
 
     // }, [])
-    const handlerFinish = async(values) => {
+    const handlerFinish = async (values) => {
         // console.log("claimId", claimId)
+        setIsSending(true)
         if (await createNewAppeal({ values, claimId, versionId: appeal.versionId, appealsId })) {
             closeModal()
         } else {
             setErrorAddAppeal(true)
         }
+        setIsSending(false)
         // console.log(values)
         // if (createNewTask({
         //     typeActionId: actionId,
@@ -50,7 +53,7 @@ export default function AppealItem({ claimId, appeal, isLoadingAppeal, appealsId
                     <Flex justify="center" style={{ marginTop: 20 }}>
 
                         <Form.Item>
-                            <Button htmlType={"submit"} type="primary">{"Подать обращение"}</Button>
+                            <Button disabled={isSending} htmlType={"submit"} type="primary">{"Подать обращение"}</Button>
                         </Form.Item>
                     </Flex>
                 </Form>
