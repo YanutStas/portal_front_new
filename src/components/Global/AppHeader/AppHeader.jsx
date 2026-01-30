@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Flex, Layout, Menu, Tag, theme } from "antd";
+import { Flex, Layout, Menu, Tag, theme, Tooltip } from "antd";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AppstoreOutlined, CalculatorOutlined, InfoCircleOutlined, InfoOutlined, MenuOutlined } from "@ant-design/icons";
 import logoWhite from "../../../img/header/logoWhite.svg";
@@ -13,6 +13,8 @@ import styles from "./AppHeader.module.css";
 import ErrorModal from "../../ErrorModal";
 import { items, itemsMobile, RightMenuArea } from "./AppHeaderMenus";
 import { MobileMenuDrawer, NotificationDrawer } from "./AppHeaderDrawers";
+
+import release from '../../../version.json'
 
 const version = import.meta.env.VITE_BACK_VERSION;
 
@@ -196,10 +198,13 @@ export default function AppHeader() {
             minWidth: 0,
           }}
         />
-        <div style={{  opacity: .7,}}>
-          {version === "local" && <Tag color="blue">Локальная версия</Tag>}
-          {version === "beta" && <Tag color="gold">Бета версия</Tag>}
-          {version === "test" && <Tag color="red">Тестовая версия</Tag>}
+        <div style={{ opacity: .7, }}>
+          <Tooltip title={`${release[0]?.version} от ${release[0]?.date}`}>
+
+            {version === "local" && <Tag color="blue">Локальная версия</Tag>}
+            {version === "beta" && <Tag color="gold">Бета версия</Tag>}
+            {version === "test" && <Tag color="red">Тестовая версия</Tag>}
+          </Tooltip>
         </div>
         <RightMenuArea
           colorText={colorText}

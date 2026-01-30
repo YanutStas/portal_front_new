@@ -6,6 +6,7 @@ import useAppeals from '../../../../stores/Cabinet/useAppeals'
 import Preloader from '../../../../components/Main/Preloader'
 import AppealItem from '../../../../components/Cabinet/Appeal/AppealItem'
 import useDataForForm from '../../../../stores/Cabinet/useDataForForm'
+import useNewClaim from '../../../../stores/Cabinet/useClaims'
 // const appealsByClaim = [
 //     // {
 //     //     number: "123",
@@ -42,7 +43,7 @@ const changeData = (arr) => {
     })
 
 }
-export default function Appeals({ claimId, appealsByClaim }) {
+export default function Appeals({ claimId, appealsByClaim, reloadClaim }) {
     const { setLinks, setStyles, clearDataForForm } = useDataForForm((state) => state)
     const { appeals,
         fetchAppealsAll,
@@ -53,6 +54,7 @@ export default function Appeals({ claimId, appealsByClaim }) {
         clearAppeal,
         readingAnswer,
         isReadingAnswer } = useAppeals(store => store)
+    const { loadingDataByClaim, fetchDataByClaim } = useNewClaim((state) => state)
     const [isOpenModalAppeals, setIsOpenModalAppeals] = useState(false)
     const [treeData, setTreeData] = useState(false)
     const [selectType, setSelectType] = useState(false)
@@ -61,8 +63,11 @@ export default function Appeals({ claimId, appealsByClaim }) {
 
     useEffect(() => {
         fetchAppealsAll()
+        fetchDataByClaim(claimId, "appeals")
+        // reloadClaim()
     }, [reload])
     useEffect(() => {
+        // console.log("appeals",appeals)
         if (appeals.length > 0) {
             changeData(appeals)
             setTreeData(appeals)
@@ -98,6 +103,9 @@ export default function Appeals({ claimId, appealsByClaim }) {
         clearAppeal()
         clearDataForForm()
         setIsOpenModalAppeals(false)
+        fetchAppealsAll()
+        fetchDataByClaim(claimId, "appeals")
+        // reloadClaim()
     }
     const readAnswer = async (id) => {
         // console.log("id", id);
@@ -108,6 +116,9 @@ export default function Appeals({ claimId, appealsByClaim }) {
         // } else {
         //     console.log('Ошибка при прочтении')
         // }
+    }
+    if (loadingDataByClaim) {
+        return <Preloader />
     }
     return (
         <div>
@@ -180,7 +191,7 @@ export default function Appeals({ claimId, appealsByClaim }) {
                 onCancel={closeModal}
                 footer={false}
                 title={"Подать обращение"}
-                destroyOnClose={true}
+                destroyOnHidden={true}
                 width={"80%"}
             >
                 {/* <Typography.Text>Выберите тип обращения:</Typography.Text> */}

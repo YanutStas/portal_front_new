@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Input, Form } from "antd";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
+import useGlobal from '../../stores/useGlobal';
 
 export default function CadastrInput({
     name = "cadastr",
@@ -13,10 +14,15 @@ export default function CadastrInput({
     fullDescription = false,
     stylesField_key = false,
 }) {
-    // const form = Form.useFormInstance();
+    const testData = useGlobal((state) => state.testData)
+    const form = Form.useFormInstance();
     // console.log("CadastrInput");
     // console.log("name", name);
-
+    useEffect(() => {
+        if (testData) {
+            form.setFieldValue(name, "50:11:0020104:6101")
+        }
+    }, [testData])
     const formElement = (
         <Form.Item
             label={
@@ -37,12 +43,19 @@ export default function CadastrInput({
                 // }
                 return newvalue
             }}
+            
             rules={[
                 {
                     required: required,
                     message: "Это поле обязательное",
                 },
-                // { validator: validateSnils },
+                {
+                    validator: (_, value) => {
+                         return /\d{2}:\d{2}:\d{6,7}:\d{1,10}/.test(value) ? Promise.resolve() : Promise.reject(new Error('Неверно введен кадастровый номер'))
+                            // console.log("Проверка",/\d{2}:\d{2}:\d{6,7}:\d*/.test(value))
+                            // return Promise.resolve()
+                    }
+                },
             ]}
         >
             <Input

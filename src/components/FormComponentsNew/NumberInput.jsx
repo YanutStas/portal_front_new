@@ -4,6 +4,7 @@ import useServices from "../../stores/useServices";
 import useTemp from "../../stores/Cabinet/useTemp";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
+import useGlobal from "../../stores/useGlobal";
 
 export default function NumberInput({
   name = "name",
@@ -13,7 +14,7 @@ export default function NumberInput({
   dependOf = false,
   howDepend = false,
   min = 0,
-  max = false,
+  max = undefined,
   step = 1,
   defaultValue = false,
   length = false,
@@ -22,13 +23,20 @@ export default function NumberInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
-  read = false
+  read = false,
+  value0NotEmpty = false
 }) {
   const [stepMain, setStepMain] = useState(step);
   const serviceItem = useServices((state) => state.serviceItem);
   const unit = useTemp((state) => state.unit);
   const setUnit = useTemp((state) => state.setUnit);
   const form = Form.useFormInstance();
+  const testData = useGlobal((state) => state.testData)
+  useEffect(() => {
+    if (testData) {
+      form.setFieldValue(name, min||1)
+    }
+  }, [testData])
 
   let objectProp = null;
   if (properties) objectProp = properties;
@@ -62,6 +70,9 @@ export default function NumberInput({
   } else if (unit[name] === "м") {
     ractionDigits = 2;
   }
+
+
+
   const formElement = (
     <Form.Item
       name={name}
@@ -77,14 +88,22 @@ export default function NumberInput({
           required: required,
           message: "Это поле обязательное",
         },
+        required && !value0NotEmpty ?
+          {
+            min: 0.0000000000000001,
+            type: "number",
+            message: "Это поле не должно быть равно нулю",
+          } : undefined
       ]}
       initialValue={defaultValue ? defaultValue : min}
     >
-      <InputNumber      
-      // defaultValue={0}
+      <InputNumber
+        // defaultValue={0}
+        autoComplete="off"
+        // changeOnBlur={false}
         min={min}
         max={max}
-        style={{width:"100%"}}
+        style={{ width: "100%" }}
         step={stepMain}
         decimalSeparator=","
         precision={ractionDigits}

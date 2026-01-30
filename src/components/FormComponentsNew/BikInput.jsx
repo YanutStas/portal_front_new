@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AutoComplete, Form } from "antd";
 import debounce from "lodash/debounce";
 import axios from "axios";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
+import useGlobal from "../../stores/useGlobal";
 
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
@@ -19,11 +20,19 @@ export default function BikInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
+  style = false,
   read = false
 }) {
+  const testData = useGlobal((state) => state.testData)
   const form = Form.useFormInstance();
+  // const [value, setValue] = useState('');
   const [options, setOptions] = useState([]);
   const objProperties = properties.externalService;
+  useEffect(() => {
+    if (testData) {
+      form.setFieldValue(name, "044525823")
+    }
+  }, [testData])
 
   const fetchSuggestions = debounce((inn) => {
     const params = { type: "БИК", query: inn };
@@ -38,10 +47,11 @@ export default function BikInput({
       })
       .then((response) => {
         if (response.data && response.data.data) {
-          console.log(response.data.data);
+          // console.log(response.data.data);
           setOptions(
             response.data.data.map((item) => ({
-              value: item.value,
+              value: item.data.bic,
+              label: item.value,
               data: item.data,
             }))
           );
@@ -73,8 +83,9 @@ export default function BikInput({
         // console.log("objProperties[key][1]", objProperties[key]);
       }
     }
-// console.log(currentData)
-    form.setFieldValue(name, currentData.data.bic);
+    // console.log(currentData)
+    // form.setFieldValue(name, currentData.data.bic);
+
   };
   const formElement = (
     <Form.Item
@@ -86,20 +97,31 @@ export default function BikInput({
           label
         )
       }
-      rules={[{ required: required, message: "Это поле обязательное" }]}
+      rules={[
+        {
+          min: 9,
+          message: "Минимальная длина 9 цифр"
+        },
+        {
+          required: required,
+          message: "Это поле обязательное"
+        }
+      ]}
       style={{
         flex: 1,
         minWidth: 300,
       }}
       normalize={(value) => {
-        let newvalue = value.replace(/[^\d,:]/g, "");        
+        let newvalue = value.replace(/[^\d,:]/g, "");
         return newvalue
       }}
     >
       <AutoComplete
-      maxLength={9}
+        maxLength={9}
+        // value={value}
+        // onChange={(data)=>{setValue(data)}}
         options={options}
-        onSelect={(value, option) => onSelect(value, option)}
+        onSelect={onSelect}
         onSearch={(text) => fetchSuggestions(text, "АдресПолный")}
         placeholder={placeholder}
       />
@@ -113,6 +135,7 @@ export default function BikInput({
       howDepend={howDepend}
       name={name}
       read={read}
+      style={style}
     >
       {formElement}
     </WrapperComponent>

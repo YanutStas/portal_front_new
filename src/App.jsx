@@ -30,11 +30,15 @@ import Login from "./pages/Login";
 import AddressInputTest from "./components/FormComponentsNew/addressComponents/AddressInputTest";
 import Answers from "./pages/Answers/Answers";
 import Test from "./pages/Test";
+import ChatGPT from "./pages/ChatGPT";
 
 import useGlobal from "./stores/useGlobal";
 import useAuth from "./stores/useAuth";
 import Lk from "./pages/Cabinet/Lk/Lk";
 import Error from "./pages/Error";
+import CheckSig from "./pages/CheckSig";
+import Version from "./pages/Version";
+import Privacy from "./pages/Privacy";
 
 const { Content } = Layout;
 
@@ -107,6 +111,7 @@ export default function App() {
                 <Route path="/" element={<Main />} />
 
                 <Route path="/services" element={<Services />} />
+                <Route path="/checksig" element={<CheckSig />} />
                 <Route path="/services/:level2" element={<Services />} />
                 <Route
                   path="/services/:level2/:key"
@@ -118,12 +123,15 @@ export default function App() {
                 />
 
                 <Route path="/about" element={<About />} />
+                <Route path="/privacy" element={<Privacy />} />
                 <Route path="/calc" element={<Calc />} />
                 <Route path="/contacts" element={<Contacts />} />
+                <Route path="/version" element={<Version />} />
 
                 <Route path="/docs" element={<Documentation />} />
                 <Route path="/error" element={<Error />} />
                 <Route path="/test" element={<AddressInputTest />} />
+                <Route path="/chatgpt" element={<ChatGPT />} />
                 <Route path="/login" element={<Login />} />
 
                 <Route path="cabinet" element={<PrivateRoute />}>

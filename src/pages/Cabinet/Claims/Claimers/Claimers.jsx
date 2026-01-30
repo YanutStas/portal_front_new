@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Typography, Skeleton, Descriptions, theme, Divider, Flex, Empty } from "antd";
 import { FileSearchOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
@@ -10,6 +10,7 @@ import moment from "moment/moment";
 import CardClaim from "../CardClaim";
 import usePersonalAccounts from "../../../../stores/Cabinet/usePersonalAccount";
 import Container from "../../../../components/Container";
+import FiltersClaims from "./FiltersClaims";
 
 // const { Title } = Typography;
 
@@ -31,18 +32,37 @@ import Container from "../../../../components/Container";
 // ]
 
 export default function Claimers() {
-  const claims = useClaims((state) => state.claims);
+
+  const [selectFilters, setSelectFilters] = useState({})
+  const [claims, setClaims] = useState()
+  const claimsAll = useClaims((state) => state.claims);
   const fetchClaims = useClaims((state) => state.fetchClaims);
   const personalAccounts = usePersonalAccounts((state) => state.personalAccounts);
   const fetchPersonalAccounts = usePersonalAccounts((state) => state.fetchPersonalAccounts);
 
   const { token } = theme.useToken();
+  useEffect(() => {
+    setClaims(claimsAll)
+  }, [claimsAll])
+  useEffect(() => {
+    console.log(selectFilters);
 
+    if (claimsAll) {
+      setClaims(claimsAll.filter(item => {
+        if (selectFilters.status || selectFilters.number) {
+          const select = selectFilters.status ? item.currentStatus.label === selectFilters.status : true
+          const number = selectFilters.number ? item.number?.includes(selectFilters.number) : true
+          return (select && number)
+        }
+        return true
+      }))
+    }
+  }, [selectFilters])
   useEffect(() => {
     fetchClaims();
     fetchPersonalAccounts();
   }, [fetchClaims]);
-  // console.log("claims", claims)
+  console.log("claimsAll", claimsAll)
   // console.log("token",token)
   return (
     <Container>
@@ -57,12 +77,12 @@ export default function Claimers() {
         </div>
       ) : (
         <div className={styles.claimsContainer}>
-          {claims?.length === 0 &&  personalAccounts.length ===0 && 
-          <Empty
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                description={
-                    <Typography.Text>Поданных заявок пока нет</Typography.Text>
-                }
+          {claims?.length === 0 && personalAccounts.length === 0 &&
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description={
+                <Typography.Text>Поданных заявок пока нет</Typography.Text>
+              }
             />
           }
           {personalAccounts && personalAccounts.length > 0 && <Divider orientation="left">
@@ -105,12 +125,16 @@ export default function Claimers() {
                     {/* <Descriptions.Item label="Создана">
                         {moment(item.date).format('DD.MM.YYYY HH:mm')}
                         </Descriptions.Item> */}
-                    <Descriptions.Item label="Заявок в работе" contentStyle={{ color: "green", fontWeight: 700 }}>
-                      {item.totalClaims}
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Выполнено заявок">
-                      {item.finishedClaims}
-                    </Descriptions.Item>
+                    {item.totalClaims &&
+                      <Descriptions.Item label="Заявок" styles={{ content: { color: "green", fontWeight: 700 } }}>
+                        {item.totalClaims}
+                      </Descriptions.Item>
+                    }
+                    {item.finishedClaims &&
+                      <Descriptions.Item label="Заявок в архиве">
+                        {item.finishedClaims}
+                      </Descriptions.Item>
+                    }
                   </Descriptions>
                 </Card>
               </Link>
@@ -119,14 +143,21 @@ export default function Claimers() {
 
           {/* -------------------------------------------------------- */}
 
+          {/* {claimsAll?.length > 0 &&
+            <div style={{ marginTop: 20 }}>
+            </div>
 
-          {claims?.length > 0 &&
-            <Divider orientation="left">
-              <Flex gap={10} align="center">
-                <FileSearchOutlined style={{ fontSize: 24 }} />
-                <Typography.Text>Заявки на проверке</Typography.Text>
-              </Flex>
-            </Divider>
+          } */}
+          {claimsAll?.length > 0 &&
+            <>
+              <Divider orientation="left">
+                <Flex gap={10} align="center">
+                  <FileSearchOutlined style={{ fontSize: 24 }} />
+                  <Typography.Text>Заявки на проверке</Typography.Text>
+                </Flex>
+              </Divider>
+              <FiltersClaims claimsAll={claimsAll} setSelectFilters={setSelectFilters} selectFilters={selectFilters} />
+            </>
           }
           <Flex wrap={"wrap"} gap={20} >
             {claims?.sort((a, b) => b.number - a.number).map((item, index) => (

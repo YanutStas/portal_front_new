@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ConfigProvider, DatePicker, Form, TimePicker } from "antd";
 import moment from "moment";
 import "moment/locale/ru";
 import locale from "antd/es/locale/ru_RU";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
+import useGlobal from "../../stores/useGlobal";
 
 moment.locale("ru");
 
@@ -20,8 +21,19 @@ export default function DateInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
-  read = false
+  read = false,
+  style = false
+
 }) {
+  const testData = useGlobal((state) => state.testData)
+  const form = Form.useFormInstance();
+  useEffect(() => {
+    if (testData) {
+      form.setFieldValue(name, moment())
+    }
+  }, [testData])
+  // console.log("defaultValue", defaultValue);
+
   const formElement = (
     <ConfigProvider locale={locale}>
       <Form.Item
@@ -39,18 +51,24 @@ export default function DateInput({
             message: "Это поле обязательное",
           },
         ]}
-        initialValue={defaultValue}
+      initialValue={moment(defaultValue)}
       >
         {part === "Дата" && (
           <DatePicker
-            format={"DD.MM.YYYY"}
+            format={{ format: "DD.MM.YYYY", type: "mask" }}
+            // format={"DD.MM.YYYY"}
             placeholder={placeholder}
-            // required={required}
+            onChange={(date, dateString) => {
+              console.log("dateString", dateString);
+
+            }}
+          // required={required}
           />
         )}
         {part === "МесяцГод" && (
           <DatePicker
-            format={"MM.YYYY"}
+            format={{ format: "MM.YYYY", type: "mask" }}
+            // format={"MM.YYYY"}
             placeholder={placeholder}
             picker="month"
           // required={required}
@@ -58,7 +76,8 @@ export default function DateInput({
         )}
         {part === "ДатаВремя" && (
           <DatePicker
-            format={"DD.MM.YYYY HH:mm"}
+            format={{ format: "DD.MM.YYYY HH:mm", type: "mask" }}
+            // format={"DD.MM.YYYY HH:mm"}
             showTime
             placeholder={placeholder}
           // required={required}
@@ -66,9 +85,10 @@ export default function DateInput({
         )}
         {part === "Время" && (
           <TimePicker
-            format={"HH:mm"}
+            format={{ format: "HH:mm", type: "mask" }}
+            // format={"HH:mm"}
             placeholder={placeholder}
-            // required={required}
+          // required={required}
           />
         )}
       </Form.Item>
@@ -83,6 +103,8 @@ export default function DateInput({
       howDepend={howDepend}
       name={name}
       read={read}
+      style={style}
+
     >
       {formElement}
     </WrapperComponent>

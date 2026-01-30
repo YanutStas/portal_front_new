@@ -7,6 +7,7 @@ import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
 import useServices from "../../stores/useServices";
 import useProfile from "../../stores/Cabinet/useProfile";
+import useGlobal from "../../stores/useGlobal";
 
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
@@ -23,7 +24,7 @@ const listTypeForDadata = [
 ];
 
 export default function TextInput({
-  name = "name",
+  name = "",
   label = "",
   disabled = false,
   placeholder = "",
@@ -37,8 +38,10 @@ export default function TextInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
+  style = false,
   read = false
 }) {
+  const testData = useGlobal((state) => state.testData)
   // const serviceItem = useServices((state) => state.serviceItem);
   // if (label === "Номер записи в ЕГРЮЛ") {
   //   console.log("Номер записи в ЕГРЮЛ",length)
@@ -46,6 +49,28 @@ export default function TextInput({
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const form = Form.useFormInstance();
+  if(label==="Номер записи в ЕГРЮЛ"){
+
+    console.log("type",type);
+  }
+  
+  useEffect(() => {
+    if (testData) {
+      type === "Фамилия" && form.setFieldValue(name, "Иванов")
+      type === "Имя" && form.setFieldValue(name, "Иван")
+      type === "Отчество" && form.setFieldValue(name, "Иванович")
+      type === "ЕГРЮЛ" && form.setFieldValue(name, 1234567890123)
+      type === "Страна" && form.setFieldValue(name, "Россия")
+      type === "Регион" && form.setFieldValue(name, "Московский")
+      type === "Город" && form.setFieldValue(name, "Красногорск")
+      type === "Улица" && form.setFieldValue(name, "Пушкина")
+      type === "Район" && form.setFieldValue(name, "Дзержинский")
+      type === "АдресПолный" && form.setFieldValue(name, "143430, Россия, Московская обл, г Красногорск, пгт Нахабино, ул Карла Маркса, двлд 8")
+      type === "НаименованиеОрганизации" && form.setFieldValue(name, 'АКЦИОНЕРНОЕ ОБЩЕСТВО "МОСКОВСКАЯ ОБЛАСТНАЯ ЭНЕРГОСЕТЕВАЯ КОМПАНИЯ"')
+      type === false && form.setFieldValue(name, "Произвольный текст")
+      type === "Банк" && form.setFieldValue(name, 'ФИЛИАЛ "ЦЕНТРАЛЬНЫЙ" БАНКА ВТБ (ПАО) Г. МОСКВА')
+    }
+  }, [testData])
 
   const { profile } = useProfile();
   const emailFromProfile = profile.email || "";
@@ -177,33 +202,33 @@ export default function TextInput({
       ]}
       initialValue={emailFromProfile}
     >
-      <Input placeholder={placeholder} maxLength={length || undefined} />
+      <Input placeholder={placeholder} maxLength={length || undefined} autoComplete="off" />
     </Form.Item>
   );
 
   // Рендерим поле ввода серии документа
-  const passportInput = (
-    <Form.Item
-      name={name}
-      label={
-        fullDescription ? (
-          <InfoDrawer fullDescription={fullDescription}>{label}</InfoDrawer>
-        ) : (
-          label
-        )
-      }
-      rules={formItemRules}
-      initialValue={defaultValue}
-    >
-      <InputNumber
-        placeholder={placeholder}
-        maxLength={length || undefined}
-        disabled={disabled}
-        autoSize={{ minRows: 1, maxRows: 4 }}
-        controls={false}
-      />
-    </Form.Item>
-  );
+  // const passportInput = (
+  //   <Form.Item
+  //     name={name}
+  //     label={
+  //       fullDescription ? (
+  //         <InfoDrawer fullDescription={fullDescription}>{label}</InfoDrawer>
+  //       ) : (
+  //         label
+  //       )
+  //     }
+  //     rules={formItemRules}
+  //     initialValue={defaultValue}
+  //   >
+  //     <InputNumber
+  //       placeholder={placeholder}
+  //       maxLength={length || undefined}
+  //       disabled={disabled}
+  //       autoSize={{ minRows: 1, maxRows: 4 }}
+  //       controls={false}
+  //     />
+  //   </Form.Item>
+  // );
 
   // Рендерим текстовое поле для остальных случаев
   const simpleInput = (
@@ -220,6 +245,7 @@ export default function TextInput({
       initialValue={defaultValue}
     >
       <Input.TextArea
+        autoComplete="off"
         placeholder={placeholder}
         maxLength={length || undefined}
         disabled={disabled}
@@ -232,7 +258,7 @@ export default function TextInput({
   let formElement = simpleInput;
   if (listTypeForDadata.includes(type)) formElement = autoComplete;
   if (type === "ЭлектронныйАдрес") formElement = email;
-  if (type === "СерияДокумента" || type === "НомерДокумента") formElement = passportInput;
+  // if (type === "СерияДокумента" || type === "НомерДокумента") formElement = passportInput;
 
   return (
     <WrapperComponent
@@ -242,6 +268,8 @@ export default function TextInput({
       howDepend={howDepend}
       name={name}
       read={read}
+      style={style}
+
     >
       {formElement}
     </WrapperComponent>

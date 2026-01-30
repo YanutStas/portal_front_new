@@ -12,6 +12,7 @@ import {
   Breadcrumb,
   Tag,
   Descriptions,
+  Modal,
 } from "antd";
 import styles from "./ServicesItem.module.css";
 import { motion } from "framer-motion";
@@ -24,7 +25,11 @@ import ListDocs from "../../components/ServiceItem/ListDocs";
 
 const { Title, Text, Paragraph } = Typography;
 
+const blockSendClaim = !!import.meta.env.VITE_BACK_BLOCK_SEND_CLAIM
+
 export default function ServiceItem({ currentKey }) {
+
+  const [openModalTemp, setOpenModalTemp] = useState(false);
   const [open, setOpen] = useState(false);
   const [openDrawerSteps, setOpenDrawerSteps] = useState(false);
   const { colorPrimary } = theme.useToken().token;
@@ -57,7 +62,7 @@ export default function ServiceItem({ currentKey }) {
   const onClose = () => {
     setOpen(false);
   };
-  console.log(serviceItem);
+  // console.log(serviceItem);
   return (
     <div>
       {serviceItem && (
@@ -69,7 +74,7 @@ export default function ServiceItem({ currentKey }) {
             }}
             items={
               serviceItem.path &&
-              serviceItem.path.map((item,index) => {
+              serviceItem.path.map((item, index) => {
                 if (serviceItem.path.length - 1 === index) {
                   return {
                   }
@@ -220,11 +225,25 @@ export default function ServiceItem({ currentKey }) {
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                <Link to={`/cabinet/new-claim/${serviceItem.Ref_Key}`}>
-                  <Button type="primary" size="large" >
+                {blockSendClaim &&
+                  <Button type="primary" size="large"
+                    onClick={() => {
+                      setOpenModalTemp(true)
+                    }}>
                     Заполнить заявку
                   </Button>
-                </Link>
+
+                }
+                {!blockSendClaim &&
+                  <Link to={`/cabinet/new-claim/${serviceItem.Ref_Key}`}>
+                    <Button type="primary" size="large"
+                      onClick={() => {
+                        setOpenModalTemp(true)
+                      }}>
+                      Заполнить заявку
+                    </Button>
+                  </Link>
+                }
               </motion.div>
             </Flex>
           }
@@ -248,6 +267,17 @@ export default function ServiceItem({ currentKey }) {
           onClose={() => setError(null)}
         />
       )}
+      <Modal
+        open={openModalTemp}
+        onCancel={() => { setOpenModalTemp(false) }}
+        footer={false}
+        title={"Подача заявок на получение услуг временно приостановлена."}
+      >
+        <Flex vertical>
+          {/* <Typography.Text style={{fontSize:20}}>Подача заявок на получение услуг временно приостановлена.</Typography.Text> */}
+          <Typography.Text style={{ fontSize: 20 }}>Приносим извинения за неудобства.</Typography.Text>
+        </Flex>
+      </Modal>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Button, Form, Space, theme } from "antd";
+import { Button, Form, Space, theme, Typography } from "antd";
 import { IMaskInput } from "react-imask";
 import useRegistration from "../../../../../../stores/useRegistration";
 import PhoneCodeVerification from "../PhoneCodeVerification";
@@ -15,6 +15,8 @@ const PhoneVerification = React.memo(() => {
   const submitPhone = useRegistration((state) => state.submitPhone);
   const codeRequested = useRegistration((state) => state.codeRequested);
   const setCodeRequested = useRegistration((state) => state.setCodeRequested);
+  const isSendingPhone = useRegistration((state) => state.isSendingPhone);
+  const codeRequestedError = useRegistration((state) => state.codeRequestedError);
 
   const [isPhoneValid, setIsPhoneValid] = useState(false);
   const [timer, setTimer] = useState(0);
@@ -39,10 +41,14 @@ const PhoneVerification = React.memo(() => {
 
   const onFinish = useCallback(async () => {
     const formattedPhone = phone.replace(/[^\d]/g, "");
-    await submitPhone(formattedPhone);
-    setCodeRequested(true);
-    setTimer(60);
-    setHasAttempted(true);
+    const result = await submitPhone(formattedPhone);
+    setHasAttempted(true); 
+    if (result?.ok) {
+      setCodeRequested(true);
+      setTimer(60); 
+    } else {
+      setCodeRequested(false); 
+    }
   }, [phone, submitPhone, setCodeRequested]);
 
   const handleChange = useCallback(
@@ -69,13 +75,23 @@ const PhoneVerification = React.memo(() => {
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Space>
-            <Button type="primary" htmlType="submit" disabled={!isPhoneValid || timer > 0}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              disabled={!isPhoneValid || timer > 0 || isSendingPhone}
+              loading={isSendingPhone}
+            >
               {buttonText}
             </Button>
             {timer > 0 && <span className={styles.timer}>{timer} сек.</span>}
           </Space>
         </Form.Item>
       </Form>
+      {codeRequestedError && (
+        <Typography.Text type="danger" style={{ display: "block", marginTop: 8 }}>
+          {codeRequestedError}
+        </Typography.Text>
+      )}
       {codeRequested && <PhoneCodeVerification />}
     </div>
   );

@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Input, Form } from "antd";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
+import useGlobal from '../../stores/useGlobal';
 
 export default function KppInput({
     name = "kpp",
@@ -14,10 +15,16 @@ export default function KppInput({
     fullDescription = false,
     stylesField_key = false,
 }) {
+    const testData = useGlobal((state) => state.testData)
+    const form = Form.useFormInstance();
     // const form = Form.useFormInstance();
     // console.log("CadastrInput");
     // console.log("name", name);
-
+    useEffect(() => {
+        if (testData) {
+            form.setFieldValue(name, "502401001")
+        }
+    }, [testData])
     const formElement = (
         <Form.Item
             label={
@@ -32,7 +39,12 @@ export default function KppInput({
                 let newvalue = value.replace(/[^\d]/g, "");
                 return newvalue
             }}
+
             rules={[
+                {
+                    min: 9,
+                    message: "Минимальная длина 9 цифр"
+                },
                 {
                     required: required,
                     message: "Это поле обязательное",
@@ -43,6 +55,7 @@ export default function KppInput({
             <Input
                 placeholder={placeholder}
                 maxLength={9}
+            // minLength={9}
             />
         </Form.Item>
     );

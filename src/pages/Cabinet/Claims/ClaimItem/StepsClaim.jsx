@@ -1,22 +1,29 @@
-import { Button, ConfigProvider, Drawer, Flex, Modal, Timeline, Typography, theme } from 'antd'
-import React, { useState } from 'react'
-import { CheckCircleOutlined, ClockCircleOutlined, FileTextOutlined, InfoCircleOutlined, LikeOutlined } from "@ant-design/icons";
+import { Button, Card, Collapse, ConfigProvider, Drawer, Flex, Modal, Tag, Timeline, Typography, theme } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileTextOutlined, InfoCircleOutlined, LikeOutlined } from "@ant-design/icons";
 import { color } from 'framer-motion';
 import moment from 'moment';
 import ActionItem from '../../../../components/Cabinet/Action/ActionItem';
 import useClaims from "../../../../stores/Cabinet/useClaims";
 import TaskItem from '../../../../components/Cabinet/Action/TaskItem';
 import FileForDownload from '../../../../components/FileForDownload';
+import Preloader from '../../../../components/Main/Preloader';
+import MarkDownText from '../../../../components/MarkDownText/MarkDownText';
 
 
-export default function StepsClaim({ steps = false, claimId, versionId }) {
-  const fetchClaimItem = useClaims((state) => state.fetchClaimItem);
+export default function StepsClaim({ steps = false, claimId, versionId, reloadClaim }) {
+  // const fetchClaimItem = useClaims((state) => state.fetchClaimItem);
+  const loadingDataByClaim = useClaims((state) => state.loadingDataByClaim);
+  const fetchDataByClaim = useClaims((state) => state.fetchDataByClaim);
   const token = theme.useToken().token
   // console.log(token)
   const [openDrawer, setOpenDrawer] = useState(null)
   const [openModalAction, setOpenModalAction] = useState(false)
   const [openModalTask, setOpenModalTask] = useState(false)
-
+  const [reload, setReload] = useState(false)
+  useEffect(() => {
+    fetchDataByClaim(claimId, "steps")
+  }, [reload])
   const handlerOpenDrawer = (title, content) => {
     setOpenDrawer({
       title,
@@ -26,11 +33,12 @@ export default function StepsClaim({ steps = false, claimId, versionId }) {
   const handlerCloseDrawer = () => {
     setOpenDrawer(null)
   }
+  if (loadingDataByClaim) {
+    return <Preloader />
+  }
 
   return (
     <>
-
-
       {steps &&
         <>
           <ConfigProvider
@@ -54,17 +62,35 @@ export default function StepsClaim({ steps = false, claimId, versionId }) {
                   return {
                     children: <div style={{ position: "relative" }}>
                       <Flex vertical justify='center' align='flex-start' style={{ marginBottom: 10, marginLeft: 5 }}>
-                        <Typography.Text style={{ color: "gray", fontSize: 14 }}>{moment(item.date).format('DD.MM.YYYY hh:mm')}</Typography.Text>
-                        <Flex gap={5}>
-                          <Typography.Text style={{ fontSize: 18 }}>{item.name}</Typography.Text>
-                          {item.shortDescription &&
-                            <Typography.Text style={{ color: "gray", fontSize: 14 }}>{item.shortDescription}</Typography.Text>
+                        <Typography.Text style={{ color: "gray", fontSize: 14 }}>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Typography.Text>
+                        <Flex gap={5} vertical align='flex-start'>
+                          <Tag >{item.name}</Tag>
+                          {item.action?.type === "fact" && item.shortDescription &&
+                            <Flex>                              
+                                <Typography.Text>{item.shortDescription}</Typography.Text>
+                               <InfoCircleOutlined style={{ marginBottom: 10, fontSize: 14, color: "#E37021" }} onClick={() => { handlerOpenDrawer(item.shortDescription, item.description) }} />
+                            </Flex>
                           }
-                          {item.description && <InfoCircleOutlined style={{ marginBottom: 10, fontSize: 14, color: "gray" }} onClick={() => { handlerOpenDrawer(item.name, item.description) }} />}
+                          {item.action?.type !== "fact" && item.shortDescription &&
+                            <Card
+                              size='small'
+                              styles={{ title: { fontSize: 16 }, header: { padding: 10 }, body: { fontSize: 16 } }}
+                              title={item.shortDescription}
+                            >
+                              <MarkDownText
+                                fontSize={16}
+                              >{item.description}</MarkDownText>
+                            </Card>
+                          }
+                          {/* <Collapse size='small' items={[{
+                            key: '1',
+                            label: item.shortDescription,
+                            children: <MarkDownText>{item.description}</MarkDownText>,
+                          },]} /> */}
                         </Flex>
                         {item.files && <>
                           {item.files.map((item, index) =>
-                            <FileForDownload key={index} type={item.ext} name={item.name} id={item.id} size={item.size} />
+                            <FileForDownload key={index} type={item.ext} name={item.name} id={item.id} size={item.size} signs={item.signs} />
                           )}
                         </>}
                         {item.action && item.action.type === "plan" &&
@@ -84,7 +110,7 @@ export default function StepsClaim({ steps = false, claimId, versionId }) {
                               {item.action.currentStatus.label}
                             </Typography.Text>
                             <Typography.Text style={{ color: "gray", fontSize: 14 }}>
-                              {moment(item.action.date).format("DD.MM.YYYY hh:mm")}
+                              {moment(item.action.date).format("DD.MM.YYYY HH:mm")}
                             </Typography.Text>
                             {item.action.email &&
                               <Typography.Text style={{ color: "gray", fontSize: 14 }}>
@@ -108,9 +134,10 @@ export default function StepsClaim({ steps = false, claimId, versionId }) {
                       <Typography.Text>{item.name}</Typography.Text>
                       {item.description && <InfoCircleOutlined style={{ marginBottom: 10, fontSize: 14, color: "gray" }} onClick={() => { handlerOpenDrawer(item.name, item.description) }} />}
                     </Flex>,
-                    dot: item.completed ?
+                    dot: item.state === "completed" ?
                       <CheckCircleOutlined style={{ color: item.color || "#52c41a", fontSize: 30 }} /> :
-                      <ClockCircleOutlined className="timeline-clock-icon" style={{ color: item.color || (item.current ? "blue" : "gray"), fontSize: 30 }} />
+                      (item.state === "noAction" ? <CloseCircleOutlined style={{ color: item.color || "red", fontSize: 30 }} /> :
+                        <ClockCircleOutlined className="timeline-clock-icon" style={{ color: item.color || (item.current ? "blue" : "gray"), fontSize: 30 }} />)
                   }
                 }
                 return undefined
@@ -131,11 +158,11 @@ export default function StepsClaim({ steps = false, claimId, versionId }) {
             open={!!openModalAction}
             onCancel={() => {
               setOpenModalAction(false)
-              fetchClaimItem(claimId)
+              fetchDataByClaim(claimId, "steps")
 
             }}
             footer={false}
-            destroyOnClose={true}
+            destroyOnHidden={true}
             width={"80%"}
           >
             <ActionItem
@@ -146,6 +173,7 @@ export default function StepsClaim({ steps = false, claimId, versionId }) {
               taskBasis={openModalAction.taskBasis}
               onCancel={() => {
                 setOpenModalAction(false)
+                reloadClaim()
               }}
             />
           </Modal>
@@ -157,7 +185,7 @@ export default function StepsClaim({ steps = false, claimId, versionId }) {
               // fetchClaimItem(claimId)
             }}
             footer={false}
-            destroyOnClose={true}
+            destroyOnHidden={true}
             width={"80%"}
           >
             <TaskItem

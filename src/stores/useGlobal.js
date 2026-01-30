@@ -7,7 +7,15 @@ const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 const useGlobal = create((set) => ({
   darkMode: false,
   currentPage: "/",
+  testData: false,
 
+  setTestData: (value) => {
+    set((state) => {
+      return {
+        testData: value,
+      };
+    });
+  },
   setCurrentPage: (url) => {
     set((state) => {
       return {

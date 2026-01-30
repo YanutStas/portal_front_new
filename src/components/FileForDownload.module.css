@@ -1,28 +1,39 @@
 .docLine{
     display: flex;
     align-items: flex-start;
-    margin-bottom: 25px;
+}
+.docLine_container{
+    margin-bottom: 10px;
+
 }
 
 .docLine__wrapIcon{
     width: 38px;
     min-width: 38px;
-    margin-right: 25px;
-    margin-top: 8px;
+    /* margin-right: 25px;
+    margin-top: 8px; */
 }
 .docLine__name{
     display: block;
-    font-size: 20px;
-    line-height: 32px;
-    color: #3a4558;
+    font-size: 14px;
+    line-height: 20px;
+    /* color: #3a4558; */
     transition: color 0.3s ease-in-out;
 }
 .docLine__fileInfo{
     font-size: 14px;
     line-height: 24px;
-    color: #3a4558;
+    /* color: #3a4558; */
     opacity: 0.7;
 }
 .docLine:hover .docLine__name {
     color: #0061aa;
+}
+.iconButton{
+    cursor: pointer;
+    font-size: 24px;
+    transition: all .2s ease-in-out;
+}
+.iconButton:hover{
+    opacity: .7;
 }

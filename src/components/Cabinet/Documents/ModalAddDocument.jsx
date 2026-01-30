@@ -159,7 +159,7 @@ export default function ModalAddDocument({ visible, onClose, categoryKey }) {
         open={openModalAdd || visible}
         onCancel={handleModalClose}
         footer={null}
-        destroyOnClose={true}
+        destroyOnHidden={true}
         keyboard={false}
       >
         <ConfigProvider
@@ -459,7 +459,7 @@ export default function ModalAddDocument({ visible, onClose, categoryKey }) {
 //         open={openModalAdd || visible}
 //         onCancel={handleModalClose}
 //         footer={null}
-//         destroyOnClose={true}
+//         destroyOnHidden={true}
 //         keyboard={false}
 //       >
 //         <ConfigProvider

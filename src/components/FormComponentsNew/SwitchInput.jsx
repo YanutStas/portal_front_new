@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Switch } from "antd";
+import { Form, Switch, Typography } from "antd";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
 
@@ -13,12 +13,13 @@ export default function SwitchInput({
   span = false,
   fullDescription = false,
   stylesField_key = false,
+  style = false,
   requiredTrue = false,
   requiredMessage = "***",
   read = false
 }) {
   const [error, setError] = useState(false)
-  
+
 
   if (defaultValue && defaultValue === "true") {
     defaultValue = true;
@@ -36,7 +37,7 @@ export default function SwitchInput({
           fullDescription ? (
             <InfoDrawer fullDescription={fullDescription}>{label}</InfoDrawer>
           ) : (
-            label
+            <Typography.Text style={{ whiteSpace: "break-spaces"}}>{label}</Typography.Text>
           )
         }
         rules={[
@@ -66,7 +67,7 @@ export default function SwitchInput({
       >
         <Switch />
       </Form.Item>
-      {error && <p style={{color:"red"}}>{requiredMessage}</p>}
+      {error && <p style={{ color: "red" }}>{requiredMessage}</p>}
     </>
   );
 
@@ -78,6 +79,7 @@ export default function SwitchInput({
       howDepend={howDepend}
       name={name}
       read={read}
+      style={style}
     >
       {formElement}
     </WrapperComponent>

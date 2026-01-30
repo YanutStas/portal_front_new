@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Input, Form } from "antd";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
+import useGlobal from '../../stores/useGlobal';
 
 export default function SchetInput({
     name = "schet",
@@ -15,9 +16,15 @@ export default function SchetInput({
     stylesField_key = false,
     maxLength = false
 }) {
-    // const form = Form.useFormInstance();
+     const testData = useGlobal((state) => state.testData)
+    const form = Form.useFormInstance();
     // console.log("CadastrInput");
     // console.log("name", name);
+    useEffect(() => {
+        if (testData) {
+          form.setFieldValue(name, "40602810500760000043")
+        }
+      },[testData])
 
     const formElement = (
         <Form.Item
@@ -35,10 +42,13 @@ export default function SchetInput({
             }}
             rules={[
                 {
+                    min: maxLength,
+                    message: `Минимальная длина ${maxLength} цифр`,
+                },
+                {
                     required: required,
                     message: "Это поле обязательное",
                 },
-                // { validator: validateSnils },
             ]}
         >
             <Input

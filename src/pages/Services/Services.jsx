@@ -10,14 +10,14 @@ import Preloader from "../../components/Main/Preloader";
 import ErrorModal from "../../components/ErrorModal";
 import folderPic from "../../img/catalog/folder.png";
 import docPic from "../../img/catalog/doc.png";
-import noImage from "../../img/catalog/noimage.png";
+// import noImage from "../../img/catalog/noimage.png";
 
-import { IconPowerUp } from "../../components/icons/IconPowerUp";
-import { IconPowerUpArrow } from "../../components/icons/IconPowerUpArrow";
-import { IconConnectNew } from "../../components/icons/IconConnectNew";
-import { IconDocument } from "../../components/icons/IconDocument";
-import { IconFolder } from "../../components/icons/IconFolder";
-import { IconService } from "../../components/icons/IconService";
+// import { IconPowerUp } from "../../components/icons/IconPowerUp";
+// import { IconPowerUpArrow } from "../../components/icons/IconPowerUpArrow";
+// import { IconConnectNew } from "../../components/icons/IconConnectNew";
+// import { IconDocument } from "../../components/icons/IconDocument";
+// import { IconFolder } from "../../components/icons/IconFolder";
+// import { IconService } from "../../components/icons/IconService";
 import getPublicFile from "../../lib/getPublicFile";
 import ScrollToTop from "../../components/ScrollToTop";
 
@@ -26,7 +26,7 @@ const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
 export default function Services() {
   const [srcPictures, setSrcPictures] = useState({})
-  const [isHoverCard, setIsHoverCard] = useState({});
+  // const [isHoverCard, setIsHoverCard] = useState({});
   const location = useLocation();
   const { token } = theme.useToken();
   const isLoading = useServices((state) => state.isLoading);
@@ -50,7 +50,7 @@ export default function Services() {
 
     fetchData();
   }, [level2, fetchServices]);
-  console.log("services", services);
+  // console.log("services", services);
   // console.log("path", path);
 
   const getPicture = async (fileId, ext) => {
@@ -62,19 +62,19 @@ export default function Services() {
     // }
     // setSrcPictures(prev => ({ ...prev, [fileId]: url }))
   }
-  useEffect(() => {
-    // services.services?.forEach(item => {
-    //   // console.log("picture?.id", item.picture?.id);
-    //   // if (!samePictureName(item.picture?.name))
-    //   if (item.picture?.id) {
-    //     getPicture(item.picture?.id, item.picture?.ext)
-    //   }
-    // })
-  }, [services])
-  useEffect(() => {
-    console.log("srcPictures", srcPictures);
+  // useEffect(() => {
+  //   // services.services?.forEach(item => {
+  //   //   // console.log("picture?.id", item.picture?.id);
+  //   //   // if (!samePictureName(item.picture?.name))
+  //   //   if (item.picture?.id) {
+  //   //     getPicture(item.picture?.id, item.picture?.ext)
+  //   //   }
+  //   // })
+  // }, [services])
+  // useEffect(() => {
+  //   console.log("srcPictures", srcPictures);
 
-  }, [srcPictures])
+  // }, [srcPictures])
 
 
   return (

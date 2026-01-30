@@ -1,5 +1,5 @@
 import useRegistration from "../../../../../../stores/useRegistration";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Typography } from "antd";
 import EmailCodeVerification from "../EmailCodeVerification";
 
 const EmailVerification = () => {
@@ -8,13 +8,19 @@ const EmailVerification = () => {
   const email = useRegistration((state) => state.email);
   const setEmail = useRegistration((state) => state.setEmail);
   const submitEmail = useRegistration((state) => state.submitEmail);
+  const isSendingEmail = useRegistration((state) => state.isSendingEmail);
+  const emailVerifiedError = useRegistration((state) => state.emailVerifiedError);
   const codeRequestedEmail = useRegistration(
     (state) => state.codeRequestedEmail
   );
 
   const onFinish = async (values) => {
     const result = await submitEmail(values.email);
-    if (result && result.status === "ok") {}
+    // if (result && result.status === "ok") {
+
+    // } else {
+
+    // }
   };
 
   const onEmailChange = (event) => {
@@ -42,12 +48,13 @@ const EmailVerification = () => {
           <Input value={email} onChange={onEmailChange} />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" disabled={isSendingEmail}>
             Получить код
           </Button>
         </Form.Item>
       </Form>
       {codeRequestedEmail && <EmailCodeVerification />}
+      {emailVerifiedError && <Typography.Text style={{color:"red"}}>При отправке кода на почту произошла ошибка. Попробуйте позднее.</Typography.Text>}
     </div>
   );
 };

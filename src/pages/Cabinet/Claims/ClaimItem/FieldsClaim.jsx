@@ -91,16 +91,24 @@ export default function FieldsClaim({ template, values }) {
             }}
         >{value.Description}</a> : "нет")
     }
-    const getDate = (index, label, idLine, valItem = false) => {
+    const getDate = (index, label, idLine, part = false, valItem = false) => {
         let value = valItem ? valItem[idLine] : values[idLine]
         let date = "не указана"
         if (value) {
-            date = moment(value).format("DD.MM.YYYY hh:mm")
+            if (part === "МесяцГод") {
+                date = moment(value).format("MM.YYYY")
+            } else if (part === "Дата") {
+                date = moment(value).format("DD.MM.YYYY")
+            } else if (part === "Время") {
+                date = moment(value).format("HH:mm")
+            } else {
+                date = moment(value).format("DD.MM.YYYY HH:mm")
+            }
         }
         return singleTextField(index, label, date)
     }
     const getAddress = (index, label, idLine, valItem = false) => {
-        let value = valItem ? valItem[idLine]?.fullAddress : values[idLine]?.fullAddress
+        let value = valItem ? valItem[idLine] : values[idLine]
         return singleTextField(index, label, value)
     }
     const getDivider = (index, label) => {
@@ -138,8 +146,8 @@ export default function FieldsClaim({ template, values }) {
             if (!result) return false
         }
 
-        return <Col {...styles} xxl={styles?.span ? styles.span : 24} xs={24}>
-            <Card className="formElement groupInput" key={index} title={field.label} style={{ borderColor: token.colorBorder, color: token.colorBorder, }} styles={{ title: { whiteSpace: "normal" } }}>
+        return <Col {...styles} xxl={styles?.span ? styles.span : 24} xs={24} key={index}>
+            <Card className="formElement groupInput" title={field.label} style={{ borderColor: token.colorBorder, color: token.colorBorder, }} styles={{ title: { whiteSpace: "normal" } }}>
                 {getFields(field.component.fields, true)}
             </Card>
         </Col>
@@ -147,9 +155,9 @@ export default function FieldsClaim({ template, values }) {
     const getTable = (index, field) => {
         const styles = template?.portalFields?.styles[field.stylesField_key]
         const valuesTable = values[field.idLine]
-        return <Col {...styles} xxl={styles?.span ? styles.span : 24} xs={24}>
+        return <Col {...styles} xxl={styles?.span ? styles.span : 24} xs={24} key={index}>
 
-            <Card className="formElement groupInput" style={{ borderColor: token.colorBorder, color: token.colorBorder, }} key={index} title={field.label} styles={{ title: { whiteSpace: "normal", } }} >
+            <Card className="formElement groupInput" style={{ borderColor: token.colorBorder, color: token.colorBorder, }} title={field.label} styles={{ title: { whiteSpace: "normal", } }} >
                 <Flex wrap="wrap" gap={10}>
                     {valuesTable && valuesTable.map((valItem, index) =>
                         <Card className="formElement groupInput" title={<Typography.Text style={{ color: "gray" }}>{index + 1}</Typography.Text>} key={index} style={{ flexGrow: 1, border: "1px solid", borderColor: token.colorBorder, color: token.colorBorder, }}>
@@ -170,16 +178,17 @@ export default function FieldsClaim({ template, values }) {
                     return getDivider(index, field.label)
                 }
                 if (field.component.Ref_Type === "componentsDateInput") {
-                    return getDate(index, field.label, field.idLine)
+                    // console.log("fields", field.label)
+                    return getDate(index, field.label, field.idLine, field.component.part, valItem)
                 }
                 if (field.component.Ref_Type === "componentsAddressInput") {
-                    return getAddress(index, field.label, field.idLine)
+                    return getAddress(index, field.label, field.idLine, valItem)
                 }
                 if (field.component.Ref_Type === "componentsSwitchInput") {
                     return getSwitch(index, field.label, field.idLine)
                 }
                 if (field.component.Ref_Type === "componentsFileInput") {
-                    return getFile(index, field.label, field.idLine)
+                    return getFile(index, field.label, field.idLine, valItem)
                 }
                 if (field.component.Ref_Type === "componentsGroupFieldsInput") {
                     return getGroupFields(index, field)

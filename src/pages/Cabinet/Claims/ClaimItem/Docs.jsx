@@ -55,7 +55,7 @@ export default function Docs({ files }) {
                 </div>
                 <Flex vertical gap={10}>
                     {item.docFiles.map((item, index) =>
-                        <FileForDownload key={index} type={item.ext} name={item.name} id={item.id} size={item.size} />
+                        <FileForDownload key={index} type={item.ext} name={item.name} id={item.id} size={item.size} date={item.date}/>
                     )}
                 </Flex>
             </Flex>)}

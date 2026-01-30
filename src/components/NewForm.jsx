@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Divider, Form, Button, Flex, Typography } from "antd";
+import React, { useEffect, useState, useMemo } from "react";
+import { Divider, Form, Button, Flex, Typography, Modal } from "antd";
 import TextInput from "./FormComponents/TextInput";
 import CheckboxInput from "./FormComponents/CheckboxInput";
 import SelectInput from "./FormComponents/SelectInput";
@@ -32,6 +32,72 @@ const NewForm = ({
   const showModalAdd = useSubjects((state) => state.showModalAdd);
   const [edit, setEdit] = useState(tempedit);
   const [read, setRead] = useState(tempread);
+
+  // Карта "имя поля" -> "человекочитаемый заголовок"
+  const labelByName = useMemo(() => {
+    const map = {};
+    try {
+      (fields || []).forEach((f) => {
+        if (!f) return;
+        const key = f.name;
+        if (key) map[key] = f.displayName || f.name;
+      });
+    } catch (e) {
+      // no-op
+    }
+    return map;
+  }, [fields]);
+
+  // Русская плюрализация для словосочетаний "проблемное поле"
+  const plural = (n, one, few, many) => {
+    const mod10 = n % 10;
+    const mod100 = n % 100;
+    if (mod10 === 1 && mod100 !== 11) return one;
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return few;
+    return many;
+  };
+
+  // Показываем модалку при неуспешной валидации
+  const handleFinishFailed = ({ errorFields = [] }) => {
+    const count = errorFields.length;
+    const first = errorFields[0]?.name;
+
+    const list = errorFields.slice(0, 5).map(({ name }) => {
+      const key = Array.isArray(name) ? name[0] : name;
+      return labelByName[key] || (Array.isArray(name) ? name.join(".") : String(name));
+    });
+
+    Modal.warning({
+      title: "Есть незаполненные поля",
+      content: (
+        <div>
+          <p>
+            Найдено {count}{" "}
+            {plural(count, "проблемное поле", "проблемных поля", "проблемных полей")}.
+            Пожалуйста, заполните подсвеченные поля.
+          </p>
+          {list.length > 0 && (
+            <ul style={{ margin: 0, paddingLeft: 18 }}>
+              {list.map((lbl) => (
+                <li key={lbl}>{lbl}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ),
+      okText: "Понятно",
+      onOk: () => {
+        if (first) {
+          try {
+            // Дополнительно проскроллим к первому проблемному полю
+            form?.scrollToField(first, { behavior: "smooth", block: "center" });
+          } catch {
+            // ignore
+          }
+        }
+      },
+    });
+  };
 
   console.log("value!!!!!!!", value);
 
@@ -206,6 +272,7 @@ const NewForm = ({
       form={form}
       {...formItemLayout}
       onFinish={handlerSubmitForm}
+      onFinishFailed={handleFinishFailed}
       initialValues={edit ? value : false}
     >
       {fields.map(renderField)}
@@ -266,7 +333,7 @@ const NewForm = ({
 };
 
 export default NewForm;
-// import TextInput from "./FormComponents/TextInput";
+
 // import CheckboxInput from "./FormComponents/CheckboxInput";
 // import SelectInput from "./FormComponents/SelectInput";
 // import AddressInput from "./FormComponents/AddressInput/AddressInput";

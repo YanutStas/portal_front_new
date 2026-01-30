@@ -1,7 +1,7 @@
 import React from "react";
 import pdfIcon from "../../img/docs/pdf.svg";
 import styles from "./Law.module.css";
-import userGuidePdf from "../../assets/Руководство пользователя Порталом потребителя услуг АО «Мособлэнерго».pdf";
+import userGuidePdf from "../../assets/Руководство пользователя Портал потребителя АО «Мособлэнерго».pdf";
 
 export default function UserGuide() {
   return (
@@ -21,7 +21,7 @@ export default function UserGuide() {
             Руководство пользователя Порталом потребителя услуг АО
             «Мособлэнерго»
           </span>
-          <span className={styles.docLine__fileInfo}>2.8 МБ</span>
+          <span className={styles.docLine__fileInfo}>3.2 МБ</span>
         </div>
       </a>
     </div>

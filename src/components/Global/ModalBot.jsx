@@ -8,18 +8,19 @@ import {
   message as antdMessage,
   theme,
 } from "antd";
-import { sendMessageToGigachat } from "./gigachatApi";
+import { sendMessageToGigachat, sendMessageToN8n } from "./gigachatApi";
 import moment from "moment";
 import "moment/locale/ru";
 
 import MarkDownText from "../MarkDownText/MarkDownText";
 import GigaChatLogo from "../../img/answers/GigaChat.svg";
+import ChatGPT from "../../pages/ChatGPT";
 
 const ModalBot = ({ visible, onClose }) => {
   const [chatMessages, setChatMessages] = useState([
     {
       sender: "bot",
-      text: "Здравствуйте! Чем я могу вам помочь?",
+      text: "Здравствуйте, меня зовут Мособлэлектрик.\n\nПо какому вопросу Вас проконсультировать?",
       timestamp: new Date(),
     },
   ]);
@@ -63,7 +64,7 @@ const ModalBot = ({ visible, onClose }) => {
 
     try {
       // Отправляем сообщение к GigaChat
-      const botResponse = await sendMessageToGigachat(userMessage);
+      const botResponse = await sendMessageToN8n(userMessage);
 
       // Добавляем ответ бота в историю сообщений с временем
       setChatMessages((prevMessages) => [
@@ -98,9 +99,9 @@ const ModalBot = ({ visible, onClose }) => {
               color: token.colorTextHeading,
             }}
           >
-            Помощник
+            Консультант
           </span>
-          <img
+          {/* <img
             src={GigaChatLogo}
             alt="GigaChat"
             style={{
@@ -109,20 +110,21 @@ const ModalBot = ({ visible, onClose }) => {
               filter:
                 "invert(56%) sepia(11%) saturate(746%) hue-rotate(178deg) brightness(93%) contrast(88%)",
             }}
-          />
+          /> */}
         </div>
       }
       // title="Помощник"
       open={visible}
       onCancel={onClose}
       footer={null}
-      width={600}
+      width={800}
     >
-      {/* Область сообщений */}
-      <div
+      {/* Область сообщений  */}
+      <ChatGPT/>
+      {/* <div
         ref={messagesContainerRef}
         style={{
-          maxHeight: "400px",
+          maxHeight: "550px",
           overflowY: "auto",
           marginBottom: "16px",
           padding: "8px",
@@ -176,19 +178,20 @@ const ModalBot = ({ visible, onClose }) => {
         )}
       </div>
 
-      {/* Поле ввода и кнопка отправки */}
+      //  Поле ввода и кнопка отправки
       <div style={{ display: "flex", gap: "8px" }}>
-        <Input
+        <Input.TextArea
           placeholder="Введите сообщение"
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
           onPressEnter={handleSendMessage}
           disabled={loading}
+          autoSize
         />
         <Button type="primary" onClick={handleSendMessage} disabled={loading}>
           Отправить
         </Button>
-      </div>
+      </div> */}
     </Modal>
   );
 };

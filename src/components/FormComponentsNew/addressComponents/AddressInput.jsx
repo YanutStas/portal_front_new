@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { AutoComplete, Form, Flex, Input, ConfigProvider, theme } from "antd";
+import React, { useState, useRef, useEffect } from "react";
+import { AutoComplete, Form, Flex, Input, ConfigProvider, theme, Button } from "antd";
 import debounce from "lodash/debounce";
 import axios from "axios";
 import AddressModal from "./AddressModal";
@@ -7,12 +7,14 @@ import fieldConfig from "./AddressInput.json";
 import { EditOutlined } from "@ant-design/icons";
 import WrapperComponent from "../WrapperComponent";
 import InfoDrawer from "../../InfoDrawer";
+import useGlobal from "../../../stores/useGlobal";
+import Typography from "antd/es/typography/Typography";
 
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
 const AddressInput = ({
   name = "name",
-  label = "Label",
+  label = " ",
   disabled = false,
   placeholder = "",
   required = undefined,
@@ -26,6 +28,7 @@ const AddressInput = ({
   stylesField_key = false,
   country = false,
   region = false,
+  regionType = false,
   area = false,
   city = false,
   settlement = false,
@@ -33,14 +36,38 @@ const AddressInput = ({
   fullAddress = undefined,
   read = false
 }) => {
+ 
   const { token } = theme.useToken();
-  // console.log(country)
+  const testData = useGlobal((state) => state.testData)
   const form = Form.useFormInstance();
+  // console.log(country)
   // let fieldDepends = Form.useWatch(dependOf, form)
   const [options, setOptions] = useState([]);
+  const [reload, setReload] = useState(false);
+
   const [address, setAddress] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const modalFormRef = useRef(null);
+  useEffect(() => {
+    if (testData) {
+      form.setFieldValue(name, {
+    "fullAddress": "143430, Россия, Московская обл, г Красногорск, пгт Нахабино, ул Карла Маркса, двлд 9",
+    "postal_code": "143430",
+    "country": "Россия",
+    "region": "Московская",
+    "region_type": "обл",
+    "city": "Красногорск",
+    "city_type": "г",
+    "settlement": "Нахабино",
+    "settlement_type": "пгт",
+    "street": "Карла Маркса",
+    "street_type": "ул",
+    "house": "9",
+    "house_type": "двлд"
+})
+      setReload(!reload)
+    }
+  }, [testData])
 
   // Функция для получения предложений
   const fetchSuggestions = debounce((text, type) => {
@@ -164,62 +191,54 @@ const AddressInput = ({
         },
       }}
     >
-      <Form.List name={name}>
-        {(fields, { add, remove }) => (
-          <>
-            <Flex align="flex-start">
-              <Form.Item
-                name={"fullAddress"}
-                label={
-                  fullDescription ? (
-                    <InfoDrawer fullDescription={fullDescription}>
-                      {label}
-                    </InfoDrawer>
-                  ) : (
-                    label
-                  )
-                }
-                rules={[
-                  { 
-                    required: required, 
-                    message: "Это поле обязательное" },
-                ]}
-                style={{ flex: 1, minWidth: 300 }}
-                labelAlign="left"
-                initialValue={fullAddress}
-              >
-                <AutoComplete
-                  options={options}
-                  onSelect={(value, option) => onSelect(value, option)}
-                  onSearch={(text) => fetchSuggestions(text, "fullAddress")}
-                  placeholder={placeholder}
-                >
-                  <Input.TextArea />
-                </AutoComplete>
-              </Form.Item>
-              <div
-                style={{
-                  cursor: "pointer",
-                  color: token.colorTextLabel,
-                  padding: 5,
-                  paddingTop: 30,
-                }}
-                onClick={openModal}
-              >
-                <EditOutlined />
-                {/* Заполнить */}
-              </div>
-            </Flex>
-            <AddressModal
-              visible={modalVisible}
-              onSave={handleModalSave}
-              onCancel={() => setModalVisible(false)}
-              name={name}
-              defaultValue={{ country, region, area, city, settlement, street }}
-            />
-          </>
-        )}
-      </Form.List>
+
+      <Flex vertical>
+        <Form.Item
+          name={name}
+          label={
+            fullDescription ? (
+              <InfoDrawer fullDescription={fullDescription}>
+                {label}
+              </InfoDrawer>
+            ) : (
+              label
+            )
+          }
+          rules={[
+            {
+              required: required,
+              message: "Это поле обязательное"
+            },
+          ]}
+          style={{ flex: 1, minWidth: 300 }}
+          labelAlign="left"
+        // initialValue={fullAddress}
+
+        >
+          <Typography.Text style={{ color: "gray" }}>{form.getFieldValue(name)?.fullAddress}</Typography.Text>
+          {/* <Input.TextArea disabled /> */}
+        </Form.Item>
+        <Flex gap={10} justify="center">
+          <Button type="primary" onClick={openModal}>{form.getFieldValue(name)?.fullAddress ? "Изменить" : "Указать адрес"}</Button>
+          {form.getFieldValue(name)?.fullAddress &&
+            <Button onClick={() => {
+              form.setFieldValue(name, undefined)
+              setReload(!reload)
+            }}>Очистить</Button>
+          }
+        </Flex>
+      </Flex>
+      <AddressModal
+        visible={modalVisible}
+        onSave={handleModalSave}
+        onCancel={() => setModalVisible(false)}
+        name={name}
+        form={form}
+        defaultValue={{ country, region, regionType, area, city, settlement, street }}
+        label={label}
+      />
+
+
     </ConfigProvider>
   );
 

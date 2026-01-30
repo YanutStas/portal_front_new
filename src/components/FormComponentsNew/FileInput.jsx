@@ -11,6 +11,7 @@ import {
   Upload,
   theme,
   Modal,
+  Typography,
 } from "antd";
 import { Space } from "antd";
 import InfoDrawer from "../InfoDrawer";
@@ -94,6 +95,8 @@ const FileInput = ({
   fullDescription = false,
   stylesField_key = false,
   read = false,
+  style = false,
+  availableExtensions = false
 }) => {
   const [api, contextHolder] = notification.useNotification();
   const { removeBlockButtonNewClaim, addBlockButtonNewClaim } = useNewClaim(
@@ -196,6 +199,19 @@ const FileInput = ({
   const removeItem = (file) =>
     setFileList((prev) => prev.filter((f) => f !== file));
 
+  const extConvertToText = (arrExt) => {
+    let text = ''
+    if (arrExt.length > 0) {
+      arrExt.forEach(item => {
+        text = text + `.${item}, `
+      })
+      // console.log(text);
+
+
+      return text.slice(0, -2)
+    }
+    return false
+  }
   const formElement = (
     <Card
       title={label}
@@ -244,11 +260,12 @@ const FileInput = ({
         </>
       }
       actions={[
-        <>
+        <div style={{cursor:"default"}}>
           {required && !isAttached && <Tag color="red">Не добавлен*</Tag>}
           {isAttached ? <Tag color="green">Добавлен</Tag> : (!required && <Tag color={"blue"}>Не добавлен</Tag>)}
-        </>
+        </div>
       ]}
+      
     >
       {contextHolder}
       <Form.Item
@@ -265,15 +282,6 @@ const FileInput = ({
         <Flex gap={10} vertical justify="space-between" style={{ height: "100%" }}>
           <Flex vertical justify="center" style={{ height: "100%" }}>
 
-            <Flex justify="center" align="center">
-              <Upload {...props} style={{ textAlign: "center", display: "block", width: "100%" }}>
-                <Button icon={<UploadOutlined />} type="primary">
-                  Выбрать файлы
-                </Button>
-              </Upload>
-            </Flex>
-
-
             <div
               style={{
                 maxHeight: 240,
@@ -282,6 +290,11 @@ const FileInput = ({
                 paddingRight: 4,
               }}
             >
+              {fileList.length > 0 &&
+                <div style={{ marginBottom: 5 }}>
+                  <Typography.Text style={{fontWeight:600}} >Предварительный просмотр:</Typography.Text>
+                </div>
+              }
               {fileList.map((file) => (
                 <MiniThumb
                   key={file.name}
@@ -291,19 +304,34 @@ const FileInput = ({
                 />
               ))}
             </div>
-          </Flex>
+            <Flex justify="center" align="center">
+              <Upload {...props} style={{ textAlign: "center", display: "block", width: "100%" }} accept={availableExtensions ? extConvertToText(availableExtensions) : ".png,.jpg,.jpeg,.pdf"}>
+                <Button
+                  // icon={<UploadOutlined />} 
+                  type="primary"
+                >
+                  {fileList.length > 0 ? "Выбрать еще..." : "Выбрать файлы..."}
+                </Button>
+              </Upload>
+            </Flex>
+            <Typography.Text style={{ textAlign: "center", color: "gray", fontSize: 12 }}>{availableExtensions ? extConvertToText(availableExtensions) : ".png, .jpg, .jpeg, .pdf"}</Typography.Text>
+            <Typography.Text style={{ textAlign: "center", color: "gray", fontSize: 12 }}>{"меньше 20МБ"}</Typography.Text>
 
-          <Button
-            type="primary"
-            onClick={handleUpload}
-            disabled={fileList.length === 0}
-            loading={uploading}
-            color="green" variant="solid"
-            style={{ marginTop: 16, padding: 10 }}
-            className={fileList.length > 0 && styles.buttonAdd}
-          >
-            {uploading ? "Загрузка..." : "Добавить документ"}
-          </Button>
+
+          </Flex>
+          {fileList.length > 0 &&
+            <Button
+              type="primary"
+              onClick={handleUpload}
+              // disabled={fileList.length === 0}
+              loading={uploading}
+              color="green" variant="solid"
+              style={{ marginTop: 16, padding: 10 }}
+              className={fileList.length > 0 && styles.buttonAdd}
+            >
+              {uploading ? "Загрузка..." : "Сохранить"}
+            </Button>
+          }
 
         </Flex>
       )}
@@ -327,6 +355,7 @@ const FileInput = ({
         howDepend={howDepend}
         name={name}
         read={read}
+        style={style}
       >
         {formElement}
       </WrapperComponent>
