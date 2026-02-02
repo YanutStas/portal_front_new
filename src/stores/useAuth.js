@@ -1,7 +1,6 @@
 import { create } from "zustand";
-import axios from "axios";
-
-const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
+import http from "../lib/http";
+import clientLogger from "../lib/logging/clientLogger";
 
 const useAuth = create((set, get) => {
   return {
@@ -10,7 +9,6 @@ const useAuth = create((set, get) => {
     isCodeModalOpen: false,
     loginError: "",
     email: "",
-    password: "",
     isCodeRequested: false,
     authTimer: 0,
     redirection: "",
@@ -59,65 +57,95 @@ const useAuth = create((set, get) => {
 
     login: async (email, password) => {
       try {
-        const response = await axios.post(
-          `${backServer}/api/auth/login`,
-          { email, password },
-          { withCredentials: true }
+        const response = await http.post(
+          "/api/auth/login",
+          { email, password }
         );
         if (response.data && response.status === 200) {
+          const maskedEmail =
+            typeof email === "string"
+              ? email.replace(/^(.{2}).*(@.*)$/, "$1***$2")
+              : "";
+
+          clientLogger.info(
+            "AUTH/login",
+            { email: maskedEmail, status: response.status },
+            "Запрошен пин-код для входа"
+          );
+
           set((state) => {
             state.startAuthTimer();
             return {
               email,
-              password,
               isCodeRequested: true,
               loginError: "",
               showErrorModal: false,
             };
           });
-        } else if (response.data && response.status === 403) {
-
         }
       } catch (error) {
-        console.log(error)
-        // if (error.message === "Network Error" || error.code === "ERR_NETWORK") {
-        //   set(() => ({
-        //     showErrorModal: true,
-        //   }));
-        // } else {
-        if (error.status === 403) {
+        console.log(error);
+        const status = error.response?.status;
+        const code = error?.code;
+        const maskedEmail =
+          typeof email === "string"
+            ? email.replace(/^(.{2}).*(@.*)$/, "$1***$2")
+            : "";
+
+        if (status === 403) {
+          clientLogger.warn(
+            "AUTH/login",
+            { email: maskedEmail, status, code },
+            "Неверный логин или пароль"
+          );
           return set(() => ({
             loginError: "Неверный логин или пароль",
             authTimer: 0,
             showErrorModal: true,
           }));
         }
-         if (error.status === 423) {
+
+        if (status === 423) {
+          clientLogger.warn(
+            "AUTH/login",
+            { email: maskedEmail, status, code },
+            "Пользователь заблокирован"
+          );
           return set(() => ({
-            loginError: "Пользователь заблокирован. Обратитесь в службу поддержки.",
+            loginError:
+              "Пользователь заблокирован. Обратитесь в службу поддержки.",
             authTimer: 0,
             showErrorModal: true,
           }));
         }
 
-        set(() => ({
+        clientLogger.error(
+          "AUTH/login",
+          { email: maskedEmail, status, code },
+          "Техническая ошибка авторизации"
+        );
+
+        return set(() => ({
           loginError: "Ошибка авторизации.",
           authTimer: 0,
           showErrorModal: true,
-          showGlobalError: true
+          showGlobalError: true,
         }));
-        // }
       }
     },
 
     verifyPincode: async (pincode) => {
       try {
-        const response = await axios.post(
-          `${backServer}/api/auth/logincode`,
-          { pincode },
-          { withCredentials: true }
+        const response = await http.post(
+          "/api/auth/logincode",
+          { pincode }
         );
         if (response.data && response.status === 200) {
+          clientLogger.info(
+            "AUTH/verifyPincode",
+            { status: response.status },
+            "Пин-код подтверждён, получили JWT"
+          );
           localStorage.setItem("jwt", response.data.jwt);
           set(() => ({
             auth: true,
@@ -126,11 +154,25 @@ const useAuth = create((set, get) => {
             loginError: "",
           }));
         } else {
+          clientLogger.warn(
+            "AUTH/verifyPincode",
+            { status: response.status },
+            "Неверный пинкод (ответ не 200)"
+          );
           set(() => ({
             loginError: "Неверный пинкод.",
           }));
         }
       } catch (error) {
+        const status = error?.response?.status;
+        const code = error?.code;
+
+        clientLogger.error(
+          "AUTH/verifyPincode",
+          { status, code },
+          "Ошибка при подтверждении пинкода"
+        );
+
         set(() => ({
           loginError:
             error.response?.data?.message ||
@@ -144,7 +186,6 @@ const useAuth = create((set, get) => {
       set(() => ({
         auth: false,
         email: "",
-        password: "",
         isCodeRequested: false,
         loginError: "",
         isAuthModalOpen: false,
@@ -157,12 +198,21 @@ const useAuth = create((set, get) => {
       let validJwt = false;
       if (localStorage.getItem("jwt")) {
         try {
-          const res = await axios.post(`${backServer}/api/auth/checkjwt`, {
+          const res = await http.post("/api/auth/checkjwt", {
             jwt: localStorage.getItem("jwt"),
           });
           validJwt = res.data;
         } catch (error) {
           console.log(error);
+          const status = error?.response?.status;
+          const code = error?.code;
+
+          clientLogger.warn(
+            "AUTH/checkJWT",
+            { status, code },
+            "Не удалось проверить JWT"
+          );
+
           return false;
         }
       }
