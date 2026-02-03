@@ -34,16 +34,11 @@ export default function CadastrInput({
             }
             name={name}
             normalize={(value) => {
-                let newvalue = value.replace(/[^\d,:]/g, "");
-                // if (newvalue.length === 2) {
-                //     newvalue = `${newvalue}:`;
-                // }
-                // if (newvalue.length === 5) {
-                //     newvalue = `${newvalue}:`;
-                // }
-                return newvalue
+                let raw = value.replace(/[^\d,:]/g, "");    
+
+                return raw
             }}
-            
+
             rules={[
                 {
                     required: required,
@@ -51,9 +46,17 @@ export default function CadastrInput({
                 },
                 {
                     validator: (_, value) => {
-                         return /\d{2}:\d{2}:\d{6,7}:\d{1,10}/.test(value) ? Promise.resolve() : Promise.reject(new Error('Неверно введен кадастровый номер'))
-                            // console.log("Проверка",/\d{2}:\d{2}:\d{6,7}:\d*/.test(value))
-                            // return Promise.resolve()
+                        if(!/\d{2}:\d{2}:\d{6,7}:\d{1,10}/.test(value)){
+                            return Promise.reject(new Error('Неверно введен кадастровый номер'))
+                        }
+                        if(!/^(50|77):\d{2}:\d{6,7}:\d{1,10}/.test(value)){
+                            return Promise.reject(new Error('Кадастровый номер не находится в пределах МО'))
+                        }
+                        return Promise.resolve()
+                        // return /^(50|77):\d{2}:\d{6,7}:\d{1,10}/.test(value) ? Promise.resolve() : Promise.reject(new Error('Неверно введен кадастровый номер'))
+                        //  return /\d{2}:\d{2}:\d{6,7}:\d{1,10}/.test(value) ? Promise.resolve() : Promise.reject(new Error('Неверно введен кадастровый номер'))
+                        // console.log("Проверка",/\d{2}:\d{2}:\d{6,7}:\d*/.test(value))
+                        // return Promise.resolve()
                     }
                 },
             ]}
