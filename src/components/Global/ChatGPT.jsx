@@ -1,9 +1,10 @@
 // ChatUI.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { Input, Button, Space, Spin, Typography, Flex } from 'antd';
+import { Input, Button, Space, Spin, Typography, Flex, theme } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import Markdown from 'markdown-to-jsx';
-import { useN8nStream } from '../hooks/useN8nStream';
+import { useN8nStream } from '../../hooks/useN8nStream';
+import VoiceRecorder from './VoiceRecords';
 
 const { Text } = Typography;
 
@@ -15,6 +16,7 @@ const markdownOptions = {
 };
 
 export default function ChatUI() {
+    const token = theme.useToken().token
     const [input, setInput] = useState('');
     const { messages, sendMessage, isLoading } = useN8nStream();
 
@@ -58,6 +60,7 @@ export default function ChatUI() {
         sendMessage(input, sessionId);
         setInput('');
     };
+    console.log(token)
 
     return (
         <Flex vertical style={{ maxWidth: 800, margin: '0 auto', padding: '20px' }}>
@@ -67,11 +70,11 @@ export default function ChatUI() {
                 style={{
                     height: 500,
                     overflowY: 'auto',        // ← обязательно!
-                    border: '1px solid #f0f0f0',
+                    border: `1px solid ${token.colorBorder}`,
                     borderRadius: 8,
                     padding: 16,
                     marginBottom: 16,
-                    backgroundColor: '#fafafa',
+                    backgroundColor: token.colorBgContainer,
                     boxSizing: 'border-box',  // ← чтобы padding не увеличивал высоту
                 }}
             >
@@ -89,7 +92,7 @@ export default function ChatUI() {
                                 maxWidth: '85%',
                                 padding: 12,
                                 borderRadius: 12,
-                                backgroundColor: msg.role === 'user' ? '#e6f7ff' : '#ffffff',
+                                backgroundColor: msg.role === 'user' ? token.colorBgLayout : token.colorPrimaryBg,
                                 boxShadow: msg.role === 'user' ? 'none' : '0 1px 2px rgba(0,0,0,0.1)',
                                 wordBreak: 'break-word',
                             }}
@@ -142,6 +145,7 @@ export default function ChatUI() {
                 >
                     Отправить
                 </Button>
+                {/* <VoiceRecorder/> */}
             </Space.Compact>
         </Flex>
     );

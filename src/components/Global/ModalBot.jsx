@@ -14,7 +14,7 @@ import "moment/locale/ru";
 
 import MarkDownText from "../MarkDownText/MarkDownText";
 import GigaChatLogo from "../../img/answers/GigaChat.svg";
-import ChatGPT from "../../pages/ChatGPT";
+import ChatGPT from "./ChatGPT";
 
 const ModalBot = ({ visible, onClose }) => {
   const [chatMessages, setChatMessages] = useState([
