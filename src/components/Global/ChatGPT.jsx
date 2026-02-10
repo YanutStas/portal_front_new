@@ -60,7 +60,7 @@ export default function ChatUI() {
         sendMessage(input, sessionId);
         setInput('');
     };
-    console.log(token)
+    // console.log(token)
 
     return (
         <Flex vertical style={{ maxWidth: 800, margin: '0 auto', padding: '20px' }}>
@@ -113,7 +113,7 @@ export default function ChatUI() {
                                 gap: 8,
                                 padding: 12,
                                 borderRadius: 12,
-                                backgroundColor: '#ffffff',
+                                backgroundColor: token.colorBgLayout ,
                                 boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
                             }}
                         >

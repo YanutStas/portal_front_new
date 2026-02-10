@@ -83,7 +83,7 @@ export default function QuickAnswers() {
             style={{ width: "70%", height: "auto" }}
             preview={false}
           />
-          <Tooltip title="Не нашли нужный ответ? Задайте вопрос нашему консультанту.">
+          <Tooltip title="Не нашли нужный ответ? Задайте вопрос нашему консультанту." zIndex={1}>
             <Button
               type="primary"
               onClick={() => setChatModalVisible(true)}
