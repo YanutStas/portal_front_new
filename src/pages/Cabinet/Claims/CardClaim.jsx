@@ -70,6 +70,11 @@ export default function CardClaim({ item, borderColor, state = false }) {
                             <Descriptions.Item label="По услуге">
                                 {item.service.description}
                             </Descriptions.Item>
+                            {item.description && item.description !== "" &&
+                            <Descriptions.Item label="Описание">
+                                {item.description}
+                            </Descriptions.Item>
+                            }
                         </Descriptions>
                         {item.currentStatus?.label &&
                             // <div style={{ position: "absolute", bottom: 10, right: 10 }}>
