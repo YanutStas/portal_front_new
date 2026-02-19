@@ -315,7 +315,7 @@ const FileInput = ({
               </Upload>
             </Flex>
             <Typography.Text style={{ textAlign: "center", color: "gray", fontSize: 12 }}>{availableExtensions ? extConvertToText(availableExtensions) : ".png, .jpg, .jpeg, .pdf"}</Typography.Text>
-            <Typography.Text style={{ textAlign: "center", color: "gray", fontSize: 12 }}>{"меньше 20МБ"}</Typography.Text>
+            <Typography.Text style={{ textAlign: "center", color: "gray", fontSize: 12 }}>{"меньше 10МБ"}</Typography.Text>
 
 
           </Flex>
