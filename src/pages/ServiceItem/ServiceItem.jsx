@@ -19,7 +19,7 @@ import { motion } from "framer-motion";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import MarkDownText from "../../components/MarkDownText/MarkDownText";
 import Preloader from "../../components/Main/Preloader";
-import Law from "../../components/Documentation/Law";
+// import Law from "../../components/Documentation/Law";
 import ErrorModal from "../../components/ErrorModal";
 import ListDocs from "../../components/ServiceItem/ListDocs";
 
@@ -27,7 +27,7 @@ const { Title, Text, Paragraph } = Typography;
 
 const blockSendClaim = !!import.meta.env.VITE_BACK_BLOCK_SEND_CLAIM
 
-export default function ServiceItem({ currentKey }) {
+export default function ServiceItem({ currentKey, blockButton }) {
 
   const [openModalTemp, setOpenModalTemp] = useState(false);
   const [open, setOpen] = useState(false);
@@ -38,7 +38,7 @@ export default function ServiceItem({ currentKey }) {
   const isLoading = useServices((state) => state.isLoading);
   const { level2, key } = useParams();
 
-  const chain = useServices((state) => state.chain);
+  // const chain = useServices((state) => state.chain);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -53,11 +53,11 @@ export default function ServiceItem({ currentKey }) {
     };
 
     fetchData();
-  }, [level2, key, fetchServiceItem]);
+  }, [level2, key, fetchServiceItem,currentKey]);
 
-  const showDrawer = () => {
-    setOpen(true);
-  };
+  // const showDrawer = () => {
+  //   setOpen(true);
+  // };
 
   const onClose = () => {
     setOpen(false);
@@ -86,7 +86,7 @@ export default function ServiceItem({ currentKey }) {
               })
             }
           />
-          <Title level={1} style={{ marginTop: "10px", marginBottom: 0 }}>
+          <Title level={1} style={{ marginTop: "10px", marginBottom: 0, fontSize:24 }}>
             {serviceItem.label}
           </Title>
           <Descriptions style={{ marginBottom: 10 }} size={"small"} column={1} items={[
@@ -219,7 +219,7 @@ export default function ServiceItem({ currentKey }) {
               },
             ]}
           />
-          {!currentKey &&
+          {!blockButton &&
             <Flex align="center" justify="center" style={{ padding: "20px" }}>
               <motion.div
                 whileHover={{ scale: 1.1 }}

@@ -10,6 +10,7 @@ import AppFooter from "./components/Global/AppFooter/AppFooter";
 import Calc from "./pages/Calc/Calc";
 import About from "./pages/About/About";
 import Services from "./pages/Services/Services";
+import ServicesAll from "./pages/Services/ServicesAll";
 import CabinetMenu from "./components/Cabinet/CabinetMenu";
 import AuthModal from "./components/Global/Auth/AuthModal/AuthModal";
 import CodeModal from "./components/Global/Auth/Login/CodeModal";
@@ -111,6 +112,7 @@ export default function App() {
                 <Route path="/" element={<Main />} />
 
                 <Route path="/services" element={<Services />} />
+                <Route path="/services-all" element={<ServicesAll />} />
                 <Route path="/checksig" element={<CheckSig />} />
                 <Route path="/services/:level2" element={<Services />} />
                 <Route

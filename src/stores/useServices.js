@@ -45,6 +45,27 @@ const useServices = create((set, get) => ({
     }
   },
 
+  fetchServicesAll: async () => {
+    set({ servicesAll: [], isLoadingAll: true, errorAll: null }); // Сбрасываем состояния
+
+    try {
+      const res = await axios.get(`${backServer}/api/services/all`)
+      // console.log("res.data", res.data);
+      
+      set({
+        servicesAll: res.data.data,
+        isLoadingAll: false,
+      });
+
+    } catch (error) {
+      console.log(error);
+      set({
+        isLoadingAll: false,
+        errorAll: error.message || "Произошла ошибка при загрузке всех услуг",
+      });
+    }
+  },
+
   fetchServiceItem: async (
     key,
     property = { withFields: true }

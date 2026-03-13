@@ -250,7 +250,7 @@ export default function ClaimItem() {
             onCancel={() => { setOpenDescService(false) }}
             width={"min(1600px, 100%)"}
           >
-            <ServiceItem currentKey={claim.template?.id} />
+            <ServiceItem currentKey={claim.template?.id} blockButton={true}/>
           </Modal>
 
 

@@ -25,10 +25,10 @@ const { Title } = Typography;
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
 export default function Services() {
-  const [srcPictures, setSrcPictures] = useState({})
+  // const [srcPictures, setSrcPictures] = useState({})
   // const [isHoverCard, setIsHoverCard] = useState({});
   const location = useLocation();
-  const { token } = theme.useToken();
+  // const { token } = theme.useToken();
   const isLoading = useServices((state) => state.isLoading);
   const services = useServices((state) => state.services);
   // const chain = useServices((state) => state.chain);
