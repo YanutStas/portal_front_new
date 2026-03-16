@@ -36,13 +36,13 @@ export default function FileForDownload({ type, id, name, size, date = false, si
   const [downloading, setDownloading] = useState(false)
   const [isChecking, setIsChecking] = useState(false)
   // console.log(token);
-  console.log(chekingValue);
+  // console.log(chekingValue);
   const [messageApi, contextHolder] = message.useMessage();
   let jsonReport = false
-  if(chekingValue && (chekingValue.resultCode === 0 || chekingValue.resultCode === 3) ){
+  if (chekingValue && (chekingValue.resultCode === 0 || chekingValue.resultCode === 3 || chekingValue.resultCode === 13)) {
     jsonReport = JSON.parse(chekingValue.jsonReport)
-    console.log(jsonReport);
-}
+    // console.log(jsonReport);
+  }
   return (
     <>
       <Flex vertical gap={10} style={{ marginBottom: 20, marginTop: 20 }}>
@@ -169,10 +169,10 @@ export default function FileForDownload({ type, id, name, size, date = false, si
           width={800}
           footer
         >
-          {chekingValue && (chekingValue.resultCode === 0 || chekingValue.resultCode === 3)  &&
+          {chekingValue && (chekingValue.resultCode === 0 || chekingValue.resultCode === 3) &&
             <>
               {/* <Typography.Title style={{ color: "green" }} level={5}>{chekingValue.description}</Typography.Title> */}
-              <Descriptions  column={1} style={{ marginTop: 20 }} items={[
+              <Descriptions column={1} style={{ marginTop: 20 }} items={[
                 {
                   key: '1',
                   label: 'Действительность',
@@ -209,7 +209,7 @@ export default function FileForDownload({ type, id, name, size, date = false, si
                   children: <span>с {moment(jsonReport.signatures[0].cert.pkeyNotBefore).format('DD.MM.YYYY')} по {moment(jsonReport.signatures[0].cert.pkeyNotAfter).format('DD.MM.YYYY')}</span>,
                 },
               ]} />
-              <PdfDownloader base64String={chekingValue.pdfReport}/>
+              <PdfDownloader base64String={chekingValue.pdfReport} />
             </>
           }
           {chekingValue.resultCode === 1 &&

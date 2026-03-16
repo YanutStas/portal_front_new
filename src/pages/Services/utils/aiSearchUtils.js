@@ -120,7 +120,7 @@ export const searchWithAI = async (userQuery, treeData) => {
 
     const result = await response.json();
     const content = result.choices?.[0]?.message?.content;
-    
+
     let parsed;
     try {
         parsed = parseLLMResponse(content);
@@ -131,7 +131,7 @@ export const searchWithAI = async (userQuery, treeData) => {
 
     const validation = validateTreeStructure(parsed);
     // console.log("validation",validation);
-    
+
     if (!validation.valid) {
         console.error("❌ Валидация структуры:", { query: userQuery, error: validation.error });
         throw new Error(`Неверный формат данных: ${validation.error}`);

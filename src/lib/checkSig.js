@@ -12,10 +12,10 @@ const checkSig = async (formData) => {
     // body.append("methodName", "verifyCMSSignatureDetached")
     body.append("cms", formData.cms)
     body.append("data", formData.data)
-    console.log("body", Object.fromEntries(body.entries()))
+    // console.log("body", Object.fromEntries(body.entries()))
 
     const res = await axios.post(url, body)
-    console.log(res.data)
+    // console.log(res.data)
     if (res.data.status && res.data.status == "OK") {
         const json = JSON.parse(res.data.data)
         const jsonReport = JSON.parse(json.jsonReport)

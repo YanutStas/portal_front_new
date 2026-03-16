@@ -14,10 +14,10 @@ export default function CheckSig() {
         }))
     }
     useEffect(() => {
-        console.log(dataList);
+        // console.log(dataList);
 
     }, [dataList])
-    console.log(chekingValue);
+    // console.log(chekingValue);
 
     return (
         <>

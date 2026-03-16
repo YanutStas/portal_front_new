@@ -27,8 +27,8 @@ export default function FieldsClaim({ template, values }) {
     const token = theme.useToken().token
     // const [form] = Form.useForm();
     // form.setFieldsValue(values)
-    console.log(template);
-    console.log(values);
+    // console.log(template);
+    // console.log(values);
 
     const openDocument = useCallback((fileId) => {
         const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
@@ -117,7 +117,7 @@ export default function FieldsClaim({ template, values }) {
     const getMap = (index, label, idLine, valItem = false) => {
         // console.log("index", index);
         let value = valItem ? valItem[idLine] : values[idLine]
-        console.log("value", value);
+        // console.log("value", value);
 
         return <div key={index} style={{ width: "100%", paddingLeft: 10 }}>
             <Flex gap={10} wrap={"wrap"}>
