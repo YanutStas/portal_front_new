@@ -38,10 +38,14 @@ export default function FileForDownload({ type, id, name, size, date = false, si
   // console.log(token);
   // console.log(chekingValue);
   const [messageApi, contextHolder] = message.useMessage();
+
   let jsonReport = false
   if (chekingValue && (chekingValue.resultCode === 0 || chekingValue.resultCode === 3 || chekingValue.resultCode === 13)) {
-    jsonReport = JSON.parse(chekingValue.jsonReport)
-    // console.log(jsonReport);
+    try {
+      jsonReport = JSON.parse(chekingValue.jsonReport)
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <>

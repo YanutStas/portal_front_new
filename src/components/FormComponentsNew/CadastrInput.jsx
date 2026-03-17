@@ -49,7 +49,7 @@ export default function CadastrInput({
                         if(!/\d{2}:\d{2}:\d{6,7}:\d{1,10}/.test(value)){
                             return Promise.reject(new Error('Неверно введен кадастровый номер'))
                         }
-                        if(!/^(50|77):\d{2}:\d{6,7}:\d{1,10}/.test(value)){
+                        if(!/^(50|77|67|69|76|33|62|71|40):\d{2}:\d{6,7}:\d{1,10}/.test(value)){
                             return Promise.reject(new Error('Кадастровый номер не находится в пределах МО'))
                         }
                         return Promise.resolve()

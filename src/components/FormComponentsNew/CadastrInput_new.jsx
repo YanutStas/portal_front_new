@@ -38,7 +38,7 @@ export default function CadastrInput({
         raw = raw.replace(/[^\d,:]/g, '');
 
         // Принудительно 50/77 в начале
-        if (raw.length >= 2 && !['50', '77'].includes(raw.substring(0, 2))) {
+        if (raw.length >= 2 && !['50', '77','67','69','76','33','62','71','40'].includes(raw.substring(0, 2))) {
             raw = raw.length === 1 ? `5${raw}` : '50' + raw.slice(2);
         }
         if (raw.length === 0) {
@@ -154,7 +154,7 @@ export default function CadastrInput({
                 {
                     validator: (_, value) => {
                         if (!value) return Promise.resolve();
-                        const re = /^(50|77):\d{2}:\d{6,7}:\d{1,10}$/;
+                        const re = /^(50|77|67|69|76|33|62|71|40):\d{2}:\d{6,7}:\d{1,10}$/;
                         return re.test(value)
                             ? Promise.resolve()
                             : Promise.reject(new Error('Неверно введен кадастровый номер'));
