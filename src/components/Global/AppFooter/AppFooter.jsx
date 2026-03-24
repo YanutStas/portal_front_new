@@ -5,21 +5,25 @@ import useAuth from "../../../stores/useAuth";
 import styles from "./AppFooter.module.css";
 
 import telegaIcon from "../../../img/socialMedia/telega.png";
-import vkIcon from "../../../img/socialMedia/vk.png";
+import vkIcon from "../../../img/socialMedia/vk.svg";
 import okIcon from "../../../img/socialMedia/ok.png";
 import yandexIcon from "../../../img/socialMedia/yandex.png";
+import dzenDarkIcon from "../../../img/socialMedia/dark-dzen.svg";
+import dzenLightIcon from "../../../img/socialMedia/light-dzen.svg";
 import maxIcon from "../../../img/socialMedia/max.svg";
+import useGlobal from "../../../stores/useGlobal";
 
 const { Footer } = Layout;
 const { Link } = Typography;
 
 export default function AppFooter() {
   const auth = useAuth((state) => state.auth);
+  const { darkMode } = useGlobal();
 
   return (
     <Footer
       // className={`${auth ? styles.footerContentAuth : styles.footerContent}`}
-      className={ styles.footerContent}
+      className={styles.footerContent}
     >
       <Space direction="vertical" size="large" align="center">
         {/* Социальные сети */}
@@ -69,7 +73,7 @@ export default function AppFooter() {
               rel="noopener noreferrer"
               icon={
                 <img
-                  src={yandexIcon}
+                  src={darkMode ? dzenLightIcon : dzenDarkIcon}
                   alt="Yandex"
                   style={{ width: 30, height: 30 }}
                 />
@@ -95,7 +99,7 @@ export default function AppFooter() {
 
         {/* Текущая информация о сайте */}
         <Typography.Text>
-          
+
           <Link
             href="https://mosoblenergo.ru/"
             target="_blank"
