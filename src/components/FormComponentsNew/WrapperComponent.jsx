@@ -12,7 +12,8 @@ export default function WrapperComponent({
   howDepend = false,
   stylesField_key,
   read = false,
-  style = false
+  style = false,
+  typeElem = ""
 }) {
   // console.log("style", style);
   // console.log("WrapperComponent name", name);
@@ -56,7 +57,9 @@ export default function WrapperComponent({
     if (show) return formElement;
   }
   if (dependOf && howDepend && howDepend.max) {
-    mainForm.setFieldValue(name, "");
+    if (typeElem !== "switch") {
+      mainForm.setFieldValue(name, "");
+    }
     if (fieldDepends >= howDepend.min && fieldDepends <= howDepend.max)
       return formElement;
   }

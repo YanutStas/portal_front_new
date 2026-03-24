@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Switch, Typography } from "antd";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
@@ -18,15 +18,24 @@ export default function SwitchInput({
   requiredMessage = "***",
   read = false
 }) {
+  // const form = Form.useFormInstance();
   const [error, setError] = useState(false)
 
+  const normalizedDefaultValue =
+    defaultValue === "true" ? true :
+      defaultValue === "false" ? false :
+        defaultValue;
 
-  if (defaultValue && defaultValue === "true") {
-    defaultValue = true;
-  }
-  if (defaultValue && defaultValue === "false") {
-    defaultValue = false;
-  }
+  
+  //  useEffect(() => {
+  //   if (name && form) {
+  //     form.setFieldsValue({ [name]: normalizedDefaultValue });
+  //   }
+  // }, [form, name, normalizedDefaultValue]);
+
+  // useEffect(() => {
+  //   form.setFieldsValue({ [name]: defaultValue });
+  // }, [defaultValue, form, name]);
 
   const formElement = (
     <>
@@ -37,9 +46,11 @@ export default function SwitchInput({
           fullDescription ? (
             <InfoDrawer fullDescription={fullDescription}>{label}</InfoDrawer>
           ) : (
-            <Typography.Text style={{ whiteSpace: "break-spaces"}}>{label}</Typography.Text>
+            <Typography.Text style={{ whiteSpace: "break-spaces" }}>{label}</Typography.Text>
           )
         }
+        initialValue={normalizedDefaultValue}
+        valuePropName="checked"
         rules={[
           {
             required: required,
@@ -50,8 +61,6 @@ export default function SwitchInput({
             validator: (rule, value) => {
               // console.log("rule:", rule);
               // console.log("value:", value);
-
-
               if (requiredTrue && !value) {
                 setError(true)
                 return Promise.reject()
@@ -63,7 +72,6 @@ export default function SwitchInput({
             }
           }
         ]}
-        initialValue={defaultValue}
       >
         <Switch />
       </Form.Item>
@@ -80,6 +88,7 @@ export default function SwitchInput({
       name={name}
       read={read}
       style={style}
+      typeElem={"switch"}
     >
       {formElement}
     </WrapperComponent>
