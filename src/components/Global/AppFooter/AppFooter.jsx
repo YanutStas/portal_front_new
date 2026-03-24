@@ -8,6 +8,7 @@ import telegaIcon from "../../../img/socialMedia/telega.png";
 import vkIcon from "../../../img/socialMedia/vk.png";
 import okIcon from "../../../img/socialMedia/ok.png";
 import yandexIcon from "../../../img/socialMedia/yandex.png";
+import maxIcon from "../../../img/socialMedia/max.svg";
 
 const { Footer } = Layout;
 const { Link } = Typography;
@@ -70,6 +71,21 @@ export default function AppFooter() {
                 <img
                   src={yandexIcon}
                   alt="Yandex"
+                  style={{ width: 30, height: 30 }}
+                />
+              }
+            />
+          </Col>
+          <Col>
+            <Button
+              type="link"
+              href="https://max.ru/id5032137342_gos"
+              target="_blank"
+              rel="noopener noreferrer"
+              icon={
+                <img
+                  src={maxIcon}
+                  alt="Max"
                   style={{ width: 30, height: 30 }}
                 />
               }
