@@ -13,6 +13,7 @@ import FileInput from "./FormComponentsNew/FileInput";
 import FormulaInput from "./FormComponentsNew/FormulaInput";
 import GroupInput from "./FormComponentsNew/GroupInput";
 import HiddenInput from "./FormComponentsNew/HiddenInput";
+import HyperlinkToFileInput from "./FormComponentsNew/HyperlinkToFileInput";
 import InnInput from "./FormComponentsNew/InnInput";
 import KppInput from "./FormComponentsNew/KppInput";
 import MapInput from "./FormComponentsNew/mapComponents/MapInput";
@@ -472,6 +473,19 @@ export default function selectComponent(item, index, style) {
   if (item.component?.Ref_Type?.includes("MapInput"))
     return (
       <MapInput
+        key={index}
+        {...item.component}
+        {...item}
+        fullDescription={item.name_fullDescription}
+        name={item.idLine}
+        dependOf={item.dependIdLine}
+        howDepend={item.dependСondition}
+        style={style}
+      />
+    );
+  if (item.component?.Ref_Type?.includes("HyperlinkToFile"))
+    return (
+      <HyperlinkToFileInput
         key={index}
         {...item.component}
         {...item}
