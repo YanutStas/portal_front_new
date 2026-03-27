@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Input, Form } from "antd";
+import { Input, Form, Flex } from "antd";
 import WrapperComponent from "./WrapperComponent";
 import InfoDrawer from "../InfoDrawer";
 import useGlobal from '../../stores/useGlobal';
@@ -28,24 +28,15 @@ export default function HyperlinkToFileInput({
         }
     }, [testData])
     const formElement = (
-        <Form.Item
-        // label={
-        //     fullDescription ? (
-        //         <InfoDrawer fullDescription={fullDescription}>{label}</InfoDrawer>
-        //     ) : (
-        //         label
-        //     )
-        // }
-        // name={name}
-
-        >
+       <Flex align='center' style={{height:"100%"}}>
             {typeHyperlink === "ПубличныйФайл" &&
-                <FileForDownload id={file.Ref_Key} />
+                <FileForDownload id={file.Ref_Key} name={label || file.name} size={file.size} />
             }
             {typeHyperlink === "ВнешнийАдрес" &&
                 <Link to={externalAddress} target='_blank'>{label}</Link>
             }
-        </Form.Item>
+            </Flex>
+        // </Form.Item>
     );
 
     return (
