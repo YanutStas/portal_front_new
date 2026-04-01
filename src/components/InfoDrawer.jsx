@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Drawer, theme } from "antd";
+import { Button, Drawer, theme, Typography } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import MarkDownText from "./MarkDownText/MarkDownText";
 
@@ -23,7 +23,7 @@ const InfoDrawer = ({ fullDescription, children: label, button = false, title = 
     <>
       {!button &&
         <>
-          {label}
+          <Typography.Text style={{ whiteSpace: "break-spaces" }}>{label}</Typography.Text>
           <InfoCircleOutlined
             onClick={showDrawer}
             style={{
