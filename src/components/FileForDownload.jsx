@@ -15,7 +15,7 @@ import openDocs from "./Cabinet/openDocument";
 import moment from "moment";
 import { Button, Descriptions, Flex, message, Modal, Spin, Typography, theme, Tooltip } from "antd";
 import checkSig from "./Cabinet/checkSig";
-import { DownloadOutlined, SafetyOutlined } from '@ant-design/icons'
+import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, DownloadOutlined, SafetyOutlined } from '@ant-design/icons'
 import PdfDownloader from "./PdfDownloader";
 const typeFile = {
   pdf,
@@ -180,14 +180,27 @@ export default function FileForDownload({ type, id, name, size, date = false, si
           {chekingValue &&
             <>
               {/* <Typography.Title style={{ color: "green" }} level={5}>{chekingValue.description}</Typography.Title> */}
-              {chekingValue.map((item) =>
+              {chekingValue.values?.map((item) =>
                 <>
-<Typography.Title level={2}>{item.title}</Typography.Title>
-                  <Descriptions column={1} style={{ marginTop: 20 }} items={item.items}
+                  <Typography.Title level={2}>{item.title}</Typography.Title>
+                  <Descriptions column={1} style={{ marginTop: 20 }} items={item.items.map(elem => {
+                    if (elem.type === "boolean") {
+                      console.log(elem.value);
+
+                      elem.children = elem.value ? <CheckCircleOutlined style={{ color: "green", fontSize: 32 }} /> : <CloseCircleOutlined style={{ color: "red  ", fontSize: 32 }} />
+                    } else if (elem.type === "date") {
+                      console.log(elem.value);
+
+                      elem.children = <Typography.Text>{moment(elem.value).format('DD.MM.YYYY HH:mm')}</Typography.Text>
+                    } else {
+                      elem.children = elem.value
+                    }
+                    return elem
+                  })}
                   />
                 </>
               )}
-              <PdfDownloader base64String={chekingValue.pdfReport} />
+              <PdfDownloader base64String={chekingValue.base64} />
             </>
           }
           {chekingValue.resultCode === 1 &&
