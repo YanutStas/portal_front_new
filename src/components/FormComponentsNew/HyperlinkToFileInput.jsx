@@ -5,16 +5,17 @@ import InfoDrawer from "../InfoDrawer";
 import useGlobal from '../../stores/useGlobal';
 import { Link } from 'react-router-dom';
 import FileForDownload from '../FileForDownload';
+import FileForOpen from '../FileForOpen';
 
 export default function HyperlinkToFileInput({
     name = "Hyperlink",
     label = "",
-    required = undefined,
+    // required = undefined,
     dependOf = false,
     howDepend = false,
-    placeholder = false,
+    // placeholder = false,
     span = false,
-    fullDescription = false,
+    // fullDescription = false,
     stylesField_key = false,
     typeHyperlink = false,
     file = false,
@@ -30,7 +31,7 @@ export default function HyperlinkToFileInput({
     const formElement = (
        <Flex align='center' style={{height:"100%"}}>
             {typeHyperlink === "ПубличныйФайл" &&
-                <FileForDownload id={file.Ref_Key} name={label || file.name} size={file.size} />
+                <FileForOpen id={file.Ref_Key} name={label || file.name} size={file.size} ext={file.ext}/>
             }
             {typeHyperlink === "ВнешнийАдрес" &&
                 <Link to={externalAddress} target='_blank'>{label}</Link>
