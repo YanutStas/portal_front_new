@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import pdf from "../img/docs/pdf.svg";
 import doc from "../img/docs/doc.svg";
 import docx from "../img/docs/docx.svg";
@@ -38,6 +38,10 @@ export default function FileForDownload({ type, id, name, size, date = false, si
   // console.log(token);
   // console.log(chekingValue);
   const [messageApi, contextHolder] = message.useMessage();
+
+  useEffect(() => {
+    console.log("chekingValue", chekingValue)
+  }, [chekingValue])
 
   let jsonReport = false
   if (chekingValue && (chekingValue.resultCode === 0 || chekingValue.resultCode === 3 || chekingValue.resultCode === 13)) {
@@ -146,7 +150,7 @@ export default function FileForDownload({ type, id, name, size, date = false, si
               setIsChecking(false)
               if (checked && checked.status === "OK") {
                 // console.log("checked",JSON.parse(checked.data));
-                setChekingValue(JSON.parse(checked.data))
+                setChekingValue(checked.data)
               } else {
                 messageApi.open({
                   type: 'error',
@@ -173,46 +177,16 @@ export default function FileForDownload({ type, id, name, size, date = false, si
           width={800}
           footer
         >
-          {chekingValue && (chekingValue.resultCode === 0 || chekingValue.resultCode === 3) &&
+          {chekingValue &&
             <>
               {/* <Typography.Title style={{ color: "green" }} level={5}>{chekingValue.description}</Typography.Title> */}
-              <Descriptions column={1} style={{ marginTop: 20 }} items={[
-                {
-                  key: '1',
-                  label: 'Действительность',
-                  children: <span style={{ color: jsonReport.isValid ? "green" : "red" }}>{jsonReport.resultText}</span>,
-                },
-                {
-                  key: '2',
-                  label: 'Дата отчета',
-                  children: <span>{jsonReport.reportDate}</span>,
-                },
-                {
-                  key: '3',
-                  label: 'Издатель сертификата',
-                  children: <span >{jsonReport.signatures[0].cert.issuer}</span>,
-                },
-                {
-                  key: '4',
-                  label: 'Владелец сертификата',
-                  children: <span>{jsonReport.signatures[0].cert.subject}</span>,
-                },
-                {
-                  key: '5',
-                  label: 'Серийный номер',
-                  children: <span>{jsonReport.signatures[0].cert.serial}</span>,
-                },
-                {
-                  key: '56',
-                  label: 'Действует',
-                  children: <span>с {moment(jsonReport.signatures[0].cert.notBefore).format('DD.MM.YYYY')} по {moment(jsonReport.signatures[0].cert.notAfter).format('DD.MM.YYYY')}</span>,
-                },
-                {
-                  key: '7',
-                  label: 'Срок действия ключа подписи',
-                  children: <span>с {moment(jsonReport.signatures[0].cert.pkeyNotBefore).format('DD.MM.YYYY')} по {moment(jsonReport.signatures[0].cert.pkeyNotAfter).format('DD.MM.YYYY')}</span>,
-                },
-              ]} />
+              {chekingValue.map((item) =>
+                <>
+<Typography.Title level={2}>{item.title}</Typography.Title>
+                  <Descriptions column={1} style={{ marginTop: 20 }} items={item.items}
+                  />
+                </>
+              )}
               <PdfDownloader base64String={chekingValue.pdfReport} />
             </>
           }
