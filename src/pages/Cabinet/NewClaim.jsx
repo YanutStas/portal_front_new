@@ -135,6 +135,10 @@ export default function NewClaim() {
       removeBlockButtonNewClaim();
       setIsDirty(false);
     } catch (err) {
+       messageApi.open({
+          type: 'error',
+          content: 'Ошибка при создании заявки.',
+        });
       console.log(err.message || "Ошибка при создании заявки.");
       removeBlockButtonNewClaim();
     }
