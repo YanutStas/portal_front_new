@@ -27,7 +27,7 @@ const EmailCodeVerification = () => {
 
   return (
     <>
-      <Typography.Text level={5}>Введите код из письма:</Typography.Text>
+      <Typography.Text>Введите код из письма:</Typography.Text>
       <Form
         ref={formRef}
         name="emailCodeForm"
@@ -50,7 +50,7 @@ const EmailCodeVerification = () => {
           />
         </Form.Item>
       </Form>
-       {codeRequestedEmailError && <Typography.Text style={{color:"red"}}>{codeRequestedEmailError}</Typography.Text>}
+      {codeRequestedEmailError && <Typography.Text style={{ color: "red" }}>{codeRequestedEmailError}</Typography.Text>}
     </>
   );
 };

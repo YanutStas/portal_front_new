@@ -47,6 +47,10 @@ const EmailVerification = () => {
         >
           <Input value={email} onChange={onEmailChange} />
         </Form.Item>
+        <div style={{ fontSize: 11, marginTop: -20, marginBottom: 10 }}>
+
+          <Typography.Text style={{ fontSize: 11, color:"#666"}} >Код может не прийти при использовании зарубежных почтовых сервисов. Рекомендуем российские (Yandex, Mail.ru и др.).</Typography.Text>
+        </div>
         <Form.Item>
           <Button type="primary" htmlType="submit" disabled={isSendingEmail}>
             Получить код
@@ -54,7 +58,7 @@ const EmailVerification = () => {
         </Form.Item>
       </Form>
       {codeRequestedEmail && <EmailCodeVerification />}
-      {emailVerifiedError && <Typography.Text style={{color:"red"}}>При отправке кода на почту произошла ошибка. Попробуйте позднее.</Typography.Text>}
+      {emailVerifiedError && <Typography.Text style={{ color: "red" }}>При отправке кода на почту произошла ошибка. Попробуйте позднее.</Typography.Text>}
     </div>
   );
 };
