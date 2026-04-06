@@ -66,9 +66,9 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
                         <Flex gap={5} vertical align='flex-start'>
                           <Tag >{item.name}</Tag>
                           {item.action?.type === "fact" && item.shortDescription &&
-                            <Flex>                              
-                                <Typography.Text>{item.shortDescription}</Typography.Text>
-                               <InfoCircleOutlined style={{ marginBottom: 10, fontSize: 14, color: "#E37021" }} onClick={() => { handlerOpenDrawer(item.shortDescription, item.description) }} />
+                            <Flex>
+                              <Typography.Text>{item.shortDescription}</Typography.Text>
+                              <InfoCircleOutlined style={{ marginBottom: 10, fontSize: 14, color: "#E37021" }} onClick={() => { handlerOpenDrawer(item.shortDescription, item.description) }} />
                             </Flex>
                           }
                           {item.action?.type !== "fact" && item.shortDescription &&
@@ -153,7 +153,7 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
           >
             {openDrawer?.content}
           </Drawer>
-          <Modal
+          {/* <Modal
             title={openModalAction.title}
             open={!!openModalAction}
             onCancel={() => {
@@ -163,9 +163,13 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
             }}
             footer={false}
             destroyOnHidden={true}
-            width={"80%"}
-          >
+          // width={300}
+          // style={{minWidth:300}}
+          > */}
             <ActionItem
+              title={openModalAction.title}
+              open={!!openModalAction}
+
               actionId={openModalAction.id}
               claimId={claimId}
               versionId={versionId}
@@ -176,7 +180,7 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
                 reloadClaim()
               }}
             />
-          </Modal>
+          {/* </Modal> */}
           <Modal
             title={openModalTask.title}
             open={!!openModalTask}

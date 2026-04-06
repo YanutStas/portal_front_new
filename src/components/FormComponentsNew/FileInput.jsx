@@ -212,6 +212,10 @@ const FileInput = ({
     }
     return false
   }
+  // if (label === "Файл ЭЦП") {
+  //   console.log("style",style);
+  // }
+
   const formElement = (
     <Card
       title={label}
@@ -260,12 +264,12 @@ const FileInput = ({
         </>
       }
       actions={[
-        <div style={{cursor:"default"}}>
+        <div style={{ cursor: "default" }}>
           {required && !isAttached && <Tag color="red">Не добавлен*</Tag>}
           {isAttached ? <Tag color="green">Добавлен</Tag> : (!required && <Tag color={"blue"}>Не добавлен</Tag>)}
         </div>
       ]}
-      
+
     >
       {contextHolder}
       <Form.Item
@@ -292,7 +296,7 @@ const FileInput = ({
             >
               {fileList.length > 0 &&
                 <div style={{ marginBottom: 5 }}>
-                  <Typography.Text style={{fontWeight:600}} >Предварительный просмотр:</Typography.Text>
+                  <Typography.Text style={{ fontWeight: 600 }} >Предварительный просмотр:</Typography.Text>
                 </div>
               }
               {fileList.map((file) => (
