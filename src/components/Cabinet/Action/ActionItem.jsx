@@ -36,7 +36,6 @@ export default function ActionItem({ actionId, claimId, taskBasis, buttonText, v
         }
         setSendingTask(false)
     }
-    // console.log("action",action);
 
     return (
         <Modal

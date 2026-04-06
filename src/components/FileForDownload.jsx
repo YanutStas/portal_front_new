@@ -39,9 +39,9 @@ export default function FileForDownload({ type, id, name, size, date = false, si
   // console.log(chekingValue);
   const [messageApi, contextHolder] = message.useMessage();
 
-  useEffect(() => {
-    console.log("chekingValue", chekingValue)
-  }, [chekingValue])
+  // useEffect(() => {
+  //   console.log("chekingValue", chekingValue)
+  // }, [chekingValue])
 
   let jsonReport = false
   if (chekingValue && (chekingValue.resultCode === 0 || chekingValue.resultCode === 3 || chekingValue.resultCode === 13)) {

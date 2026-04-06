@@ -35,7 +35,7 @@ export default function WrapperComponent({
   const mainForm = Form.useFormInstance();
   let fieldDepends = Form.useWatch(dependOf, mainForm);
 
-console.log("style",style);
+// console.log("style",style);
 
 
   const formElement = (

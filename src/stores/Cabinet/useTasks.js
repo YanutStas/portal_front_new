@@ -17,12 +17,12 @@ const useTasks = create((set, get) => ({
                     Authorization: `Bearer ${token}`,
                 },
             });
-            console.log(response.data);
+            // console.log(response.data);
 
             if (response.data) {
                 set({ action: response.data, isLoadingAction: false });
             } else {
-                console.log("Данные задачи не получены.");
+                // console.log("Данные задачи не получены.");
                 set({ isLoadingAction: false });
             }
         } catch (error) {
