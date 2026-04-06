@@ -45,7 +45,7 @@ export default function ActionItem({ actionId, claimId, taskBasis, buttonText, v
             onCancel={onCancel}
             footer={false}
             destroyOnHidden={true}
-            width={action?.modalProperty?.style}
+            width={action?.modalProperty?.style || "80%"}
         >
 
             <div style={{ maxWidth: "100%" }}>
