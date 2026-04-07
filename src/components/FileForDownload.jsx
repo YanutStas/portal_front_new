@@ -39,9 +39,9 @@ export default function FileForDownload({ type, id, name, size, date = false, si
   // console.log(chekingValue);
   const [messageApi, contextHolder] = message.useMessage();
 
-  // useEffect(() => {
-  //   console.log("chekingValue", chekingValue)
-  // }, [chekingValue])
+  useEffect(() => {
+    console.log("chekingValue", chekingValue)
+  }, [chekingValue])
 
   let jsonReport = false
   if (chekingValue && (chekingValue.resultCode === 0 || chekingValue.resultCode === 3 || chekingValue.resultCode === 13)) {
@@ -180,25 +180,26 @@ export default function FileForDownload({ type, id, name, size, date = false, si
           {chekingValue &&
             <>
               {/* <Typography.Title style={{ color: "green" }} level={5}>{chekingValue.description}</Typography.Title> */}
-              {chekingValue.values?.map((item) =>
-                <>
+              {chekingValue.values?.map((item, index) =>
+                <div key={index} >
                   <Typography.Title level={2}>{item.title}</Typography.Title>
-                  <Descriptions column={1} style={{ marginTop: 20 }} items={item.items.map(elem => {
+                  <Descriptions size="small" column={1} style={{ marginTop: 20 }} items={item.items.map(elem => {
                     if (elem.type === "boolean") {
-                      console.log(elem.value);
+                      // console.log(elem.value);
 
                       elem.children = elem.value ? <CheckCircleOutlined style={{ color: "green", fontSize: 32 }} /> : <CloseCircleOutlined style={{ color: "red  ", fontSize: 32 }} />
                     } else if (elem.type === "date") {
-                      console.log(elem.value);
-
                       elem.children = <Typography.Text>{moment(elem.value).format('DD.MM.YYYY HH:mm')}</Typography.Text>
                     } else {
                       elem.children = elem.value
                     }
+                    if (elem.icon) {
+                      elem.children = <Typography.Text style={{ color: elem.icon.color || undefined }}>{elem.value}</Typography.Text>
+                    }
                     return elem
                   })}
                   />
-                </>
+                </div>
               )}
               <PdfDownloader base64String={chekingValue.base64} />
             </>
