@@ -7,7 +7,8 @@ import rtf from "../img/docs/rtf.svg";
 import styles from "./FileForOpen.module.css";
 import openDocs from "./Cabinet/openDocument";
 import { useState } from "react";
-import { Flex, message, Spin } from "antd";
+import { Flex, message, Spin, Typography } from "antd";
+import FileIcon from "./FileIcon";
 const type = {
     pdf,
     doc,
@@ -17,35 +18,37 @@ const type = {
     rtf,
 };
 
-export default function FileForOpen({ id, name, size, ext }) {
+export default function FileForOpen({ id, name, size, ext, fontSize }) {
     const [messageApi, contextHolder] = message.useMessage();
     const [downloading, setDownloading] = useState(false)
+    const openFile = async () => {
+        if (!downloading) {
+            setDownloading(true)
+            try {
+                if (!await openDocs(id, name, false)) {
+                    messageApi.open({
+                        type: 'error',
+                        content: 'Ошибка скачивания файла',
+                    });
+                }
+            } catch (error) {
+                console.log(error);
+            }
+            setDownloading(false)
+        }
+    }
     return (
         <>
             {contextHolder}
-            <a
-                onClick={async () => {
-                    if (!downloading) {
-                        setDownloading(true)
-                        try {
-                            if (!await openDocs(id, name, false)) {
-                                messageApi.open({
-                                    type: 'error',
-                                    content: 'Ошибка скачивания файла',
-                                });
-                            }
-                        } catch (error) {
-                            console.log(error);
-                        }
-                        setDownloading(false)
-                    }
-                }}
-            // key={index}
-            // className={styles.docLine}
-            // href={`${siteMosoblServer}${url}`}
-            // download=""
-            // rel="noopener noreferrer"
-            // target="_blank"
+            <FileIcon 
+            name={name}
+            ext={`.${ext}`}
+            onClick={openFile}
+            sizeKb={size/1024}
+
+            />
+            {/* <a
+                onClick={openFile}
             >
                 <Flex align="center">
 
@@ -61,15 +64,15 @@ export default function FileForOpen({ id, name, size, ext }) {
                         }
                     </div>
                     <div className="docLine__wrapText">
-                        <span className={styles.docLine__name}>{name}</span>
-                        <span className={styles.docLine__fileInfo}>
+                        <Typography.Text style={fontSize === "small" ? { fontSize: 16, lineHeight: 24 } : undefined}>{name}</Typography.Text>
+                        <Typography.Text type="secondary">
                             {Number(size) > 1000
                                 ? `${(size / 1000).toFixed(2)} МБ`
                                 : `${Math.round(size)} КБ`}
-                        </span>
+                        </Typography.Text>
                     </div>
                 </Flex>
-            </a>
+            </a> */}
         </>
     )
 }
