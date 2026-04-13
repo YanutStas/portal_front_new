@@ -166,10 +166,10 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
           // width={300}
           // style={{minWidth:300}}
           > */}
+          {openModalAction &&
             <ActionItem
               title={openModalAction.title}
               open={!!openModalAction}
-
               actionId={openModalAction.id}
               claimId={claimId}
               versionId={versionId}
@@ -180,6 +180,7 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
                 reloadClaim()
               }}
             />
+          }
           {/* </Modal> */}
           <Modal
             title={openModalTask.title}
