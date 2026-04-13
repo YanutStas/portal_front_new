@@ -94,8 +94,10 @@ export default function FormulaInput({
       })
       try {
         const evalu = evaluate(temp.formula).toFixed(ractionDigits);
+        console.log("evalu",evalu);
+        
         if (!isNaN(evalu) && evalu !== values[nameTable][name[0]][name[1]]) {
-          form.setFieldValue([nameTable, name[0], name[1]], evalu);
+          form.setFieldValue([nameTable, name[0], name[1]], Number(evalu));
         }
       } catch (error) {
         console.log(error);
@@ -114,8 +116,9 @@ export default function FormulaInput({
       })
       try {
         const evalu = evaluate(temp.formula).toFixed(ractionDigits);
+        console.log("evalu",evalu);
         if (!isNaN(evalu) && evalu !== values[name]) {
-          form.setFieldValue(name, evalu);
+          form.setFieldValue(name, Number(evalu));
         }
       } catch (error) {
         console.log(error);
