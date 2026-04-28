@@ -66,20 +66,22 @@ function processTreeData(data) {
       <Card
         styles={{
           body: {
-            backgroundColor: node.style?.backgroundСolor
+            backgroundColor: node.style?.backgroundСolor,
+            padding: 5
           }
         }}
         style={{ borderColor: "gray" }} >
-        <Card.Meta title={<Flex gap={10} align='center'>{node.style?.picture?.id && <ImagePublic img={node.style?.picture} />}{name}</Flex>} />
+        <Card.Meta title={<Flex gap={10} align='center'>{node.style?.picture?.id && <ImagePublic img={node.style?.picture} />}<span style={{color:node.style?.textСolor}}>{name}</span></Flex>} />
       </Card>
       {node.neighbors && node.neighbors.map(item => <Card
         styles={{
           body: {
-            backgroundColor: item.style?.backgroundСolor
+            backgroundColor: item.style?.backgroundСolor,
+            padding: 5
           }
         }}
         style={{ borderColor: "gray" }} >
-        <Card.Meta title={<Flex gap={10} align='center'>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}{item.component.name||item.component.currentStatus.label}</Flex>} />
+        <Card.Meta title={<Flex gap={10} align='center'>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}<span  style={{color:node.style?.textСolor}}>{item.component.name || item.component.currentStatus.label}</span></Flex>} />
       </Card>)}
     </Flex>
 
