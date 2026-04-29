@@ -12,7 +12,37 @@ import MarkDownText from '../../../../components/MarkDownText/MarkDownText';
 import ImagePublic from '../../../../components/ImagePublic';
 
 
-const getThree = (children, level) => {
+function getCards(item) {
+  return (
+    <Card
+      styles={{
+        body: {
+          backgroundColor: item.style?.backgroundСolor,
+          padding: 10
+        }
+      }}
+      style={{ 
+        // borderColor: "gray", 
+        flex: 1 
+      }}
+    >
+      <Card.Meta
+        avatar={<>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}</>}
+        title={<Flex align='center' gap={5} style={{ color: item.style?.textСolor }}>{item.component?.name || item.component?.currentStatus?.label}</Flex>}
+        description={item.component?.date && moment(item.component?.date).format('DD.MM.YYYY HH:mm')}
+      />
+    </Card>
+  )
+}
+function getNeighbors(neighboard) {
+  return (
+    <>
+      {neighboard?.map(item => (getCards(item)))}
+    </>
+  )
+}
+
+function getChildren(children, level) {
   return <Flex
     vertical
     gap={10}
@@ -20,31 +50,21 @@ const getThree = (children, level) => {
   >
     {children?.map(item =>
       <>
-        <Card
-          type="inner"
-          title={<>{item.component?.name}</>}
-          styles={{
-            header: {
-              backgroundColor: item.style?.backgroundСolor
-            }
-          }}
-          style={{ borderColor: "gray" }} >
-          <Card.Meta
-            // title={item.component?.name} 
-            description={item.component?.shortDescription}
-          />
-        </Card>
-        {item.children && getThree(item.children, level + 1)}
+        <Flex gap={0} align='center' wrap='wrap' justify='stretch' style={{ width: "100%" }}>
+          {getCards(item)}
+          {item.neighbors && getNeighbors(item.neighbors)}
+        </Flex>
+        {item.children && getChildren(item.children, level + 1)}
       </>
     )}
   </Flex>
 }
-const selectElement = (step, index) => {
-  if (step.type === "step") {
+// const selectElement = (step, index) => {
+//   if (step.type === "step") {
 
-  }
+//   }
 
-}
+// }
 
 
 function processTreeData(data) {
@@ -71,7 +91,7 @@ function processTreeData(data) {
           }
         }}
         style={{ borderColor: "gray" }} >
-        <Card.Meta title={<Flex gap={10} align='center'>{node.style?.picture?.id && <ImagePublic img={node.style?.picture} />}<span style={{color:node.style?.textСolor}}>{name}</span></Flex>} />
+        <Card.Meta title={<Flex gap={10} align='center'>{node.style?.picture?.id && <ImagePublic img={node.style?.picture} />}<span style={{ color: node.style?.textСolor }}>{name}</span></Flex>} />
       </Card>
       {node.neighbors && node.neighbors.map(item => <Card
         styles={{
@@ -81,7 +101,7 @@ function processTreeData(data) {
           }
         }}
         style={{ borderColor: "gray" }} >
-        <Card.Meta title={<Flex gap={10} align='center'>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}<span  style={{color:node.style?.textСolor}}>{item.component.name || item.component.currentStatus.label}</span></Flex>} />
+        <Card.Meta title={<Flex gap={10} align='center'>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}<span style={{ color: node.style?.textСolor }}>{item.component.name || item.component.currentStatus.label}</span></Flex>} />
       </Card>)}
     </Flex>
 
@@ -130,7 +150,7 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
     if (steps) {
 
       setChangeSteps(processTreeData(steps.items))
-      console.log("changeSteps", changeSteps);
+      // console.log("changeSteps", changeSteps);
     }
 
   }, [steps])
@@ -151,22 +171,27 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
   return (
     <>
       {steps &&
-        // <Collapse items={steps.items.map((item, index) => ({
-        //   key: index,
-        //   label: item.component?.name,
-        //   children: getThree(item.children, 1),
-        //   styles: {
-        //     header: {
-        //       backgroundColor: item.style?.backgroundСolor,
-        //     },
-        //   }
-        // }))} />
-        <Tree
-          selectable={false}
-          showLine={<p>234</p>}
-          treeData={changeSteps.data}
-          defaultExpandedKeys={changeSteps.defaultExpandedKeys}
-        />
+        <Collapse items={steps.items.map((item, index) => ({
+          key: index,
+          label: <Flex align='center' gap={5}>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}{item.component?.name}</Flex>,
+          children: getChildren(item.children, 1),
+          styles: {
+            header: {
+              backgroundColor: item.style?.backgroundСolor,
+            },
+          }
+        }))} />
+        // <Tree
+        //   selectable={false}
+        //   showLine={<p>234</p>}
+        //   treeData={changeSteps.data}
+        //   defaultExpandedKeys={changeSteps.defaultExpandedKeys}
+        //   styles={{
+        //     itemIcon: {
+        //       color: 'red'
+        //     }
+        //   }}
+        // />
 
       }
     </>
