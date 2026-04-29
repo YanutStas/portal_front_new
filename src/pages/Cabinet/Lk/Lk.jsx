@@ -94,12 +94,12 @@ export default function Lk() {
                             <div style={{ marginTop: 20 }}>
                                 <FiltersClaims claimsAll={claimsByPersonalAccount} setSelectFilters={setSelectFilters} selectFilters={selectFilters} />
                             </div>
-                            <Divider orientation='left'>В работе</Divider>
+                            <Divider titlePlacement='start'>В работе</Divider>
                             <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20 }}>
                                 {claims && claims.sort((a, b) => b.number - a.number).filter(item => item.currentStatus.state !== "completed" && item.currentStatus.state !== "noAction").map((item, index) =>
                                     <CardClaim item={item} key={index} />)}
                             </Flex>
-                            <Divider orientation='left'>В архиве</Divider>
+                            <Divider titlePlacement='start'>В архиве</Divider>
                             <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20 }}>
                                 {claims && claims.sort((a, b) => b.number - a.number).filter(item => item.currentStatus.state === "completed" || item.currentStatus.state === "noAction").map((item, index) =>
                                     <CardClaim item={item} key={index} state={item.currentStatus.state} />)}

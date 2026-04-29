@@ -112,9 +112,9 @@ export default function NumberInput({
         suffix={
           objectProp?.unit?.position === "suffix" ? unit[name] : undefined
         }
-        addonAfter={
-          objectProp?.unit?.position === "addonAfter" ? unit[name] : undefined
-        }
+        // addonAfter={
+        //   objectProp?.unit?.position === "addonAfter" ? unit[name] : undefined
+        // }
       />
     </Form.Item>
   );

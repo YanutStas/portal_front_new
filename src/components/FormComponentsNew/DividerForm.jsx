@@ -38,7 +38,8 @@ function DividerForm({
           dashed={dashed}
           variant={variant}
           type={type}
-          orientation={orientation}
+          // orientation={orientation}
+          titlePlacement={orientation}
           orientationMargin="0"
         >
           {label}

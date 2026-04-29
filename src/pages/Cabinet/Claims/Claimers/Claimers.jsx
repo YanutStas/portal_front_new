@@ -150,7 +150,7 @@ export default function Claimers() {
           } */}
           {claimsAll?.length > 0 &&
             <>
-              <Divider orientation="left">
+              <Divider titlePlacement="start">
                 <Flex gap={10} align="center">
                   <FileSearchOutlined style={{ fontSize: 24 }} />
                   <Typography.Text>Заявки на проверке</Typography.Text>

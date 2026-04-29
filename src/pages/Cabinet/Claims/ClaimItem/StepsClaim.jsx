@@ -39,9 +39,10 @@ function getCards(item) {
         description={item.component?.date && moment(item.component?.date).format('DD.MM.YYYY HH:mm')}
         styles={{
           title: {
-            color: 'red'
+            marginBottom: 0
           }
         }}
+
       />
     </Card>
   )
@@ -185,7 +186,6 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
           {steps.processTrees?.map((item) =>
             <Radio.Button key={item.id} value={item.id}>{item.name}</Radio.Button>
           )}
-
         </Radio.Group>
       </div>
       {steps &&

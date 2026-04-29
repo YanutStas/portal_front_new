@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Divider, Typography, theme, Button, Flex, Tag, Modal, Empty, TreeSelect } from 'antd'
-import Meta from 'antd/es/card/Meta'
+// import Meta from 'antd/es/card/Meta'
 import moment from 'moment'
 import useAppeals from '../../../../stores/Cabinet/useAppeals'
 import Preloader from '../../../../components/Main/Preloader'
