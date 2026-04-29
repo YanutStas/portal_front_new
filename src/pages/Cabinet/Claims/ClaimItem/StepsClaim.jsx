@@ -1,4 +1,4 @@
-import { Button, Card, Collapse, ConfigProvider, Drawer, Flex, Modal, Tag, Timeline, Tree, Typography, theme } from 'antd'
+import { Badge, Button, Card, Collapse, ConfigProvider, Drawer, Flex, Modal, Radio, Tag, Timeline, Tree, Typography, theme } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileTextOutlined, InfoCircleOutlined, LikeOutlined } from "@ant-design/icons";
 import { color } from 'framer-motion';
@@ -17,19 +17,31 @@ function getCards(item) {
     <Card
       styles={{
         body: {
-          backgroundColor: item.style?.backgroundСolor,
+          // backgroundColor: item.style?.backgroundСolor,
           padding: 10
         }
       }}
-      style={{ 
+      style={{
         // borderColor: "gray", 
-        flex: 1 
+        flex: 1
       }}
     >
       <Card.Meta
         avatar={<>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}</>}
-        title={<Flex align='center' gap={5} style={{ color: item.style?.textСolor }}>{item.component?.name || item.component?.currentStatus?.label}</Flex>}
+        title={
+          <Flex
+            align='center'
+            gap={5}
+          // style={{ color: item.style?.textСolor }}
+          >
+            {item.component?.name || item.component?.currentStatus?.label}
+          </Flex>}
         description={item.component?.date && moment(item.component?.date).format('DD.MM.YYYY HH:mm')}
+        styles={{
+          title: {
+            color: 'red'
+          }
+        }}
       />
     </Card>
   )
@@ -61,9 +73,7 @@ function getChildren(children, level) {
 }
 // const selectElement = (step, index) => {
 //   if (step.type === "step") {
-
 //   }
-
 // }
 
 
@@ -166,18 +176,26 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
   if (loadingDataByClaim) {
     return <Preloader />
   }
-
+  [].length
 
   return (
     <>
+      <div style={{ marginBottom: 20 }}>
+        <Radio.Group size="middle" defaultValue={steps.processTrees.find(item => item.current).id}>
+          {steps.processTrees?.map((item) =>
+            <Radio.Button key={item.id} value={item.id}>{item.name}</Radio.Button>
+          )}
+
+        </Radio.Group>
+      </div>
       {steps &&
         <Collapse items={steps.items.map((item, index) => ({
           key: index,
-          label: <Flex align='center' gap={5}>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}{item.component?.name}</Flex>,
+          label: <Flex align='center' gap={5}>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}{item.component?.name}{item.children?.length && <span style={{ color: "gray" }}>({item.children?.length})</span>}</Flex>,
           children: getChildren(item.children, 1),
           styles: {
             header: {
-              backgroundColor: item.style?.backgroundСolor,
+              // backgroundColor: item.style?.backgroundСolor,
             },
           }
         }))} />
