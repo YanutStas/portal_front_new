@@ -15,7 +15,7 @@ import {
   PhoneOutlined,
   ClockCircleOutlined,
 } from "@ant-design/icons";
-import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
+// import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
 import { useContacts } from "../../stores/useContacts";
 import styles from "./Contacts.module.css";
 import Preloader from "../../components/Main/Preloader";
