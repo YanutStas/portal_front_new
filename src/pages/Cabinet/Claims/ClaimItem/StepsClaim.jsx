@@ -1,6 +1,6 @@
 import { Badge, Button, Card, Collapse, ConfigProvider, Drawer, Flex, Modal, Radio, Tag, Timeline, Tree, Typography, theme } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileTextOutlined, InfoCircleOutlined, LikeOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileTextOutlined, InfoCircleOutlined, LikeOutlined, DownloadOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { color } from 'framer-motion';
 import moment from 'moment';
 import ActionItem from '../../../../components/Cabinet/Action/ActionItem';
@@ -12,63 +12,101 @@ import MarkDownText from '../../../../components/MarkDownText/MarkDownText';
 import ImagePublic from '../../../../components/ImagePublic';
 
 
-function getCards(item) {
-  return (
-    <Card
-      styles={{
-        body: {
-          // backgroundColor: item.style?.backgroundСolor,
-          padding: 10
-        }
-      }}
-      style={{
-        // borderColor: "gray", 
-        flex: 1
-      }}
-    >
-      <Card.Meta
-        avatar={<>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}</>}
-        title={
-          <Flex
-            align='center'
-            gap={5}
-          // style={{ color: item.style?.textСolor }}
-          >
-            {item.component?.name || item.component?.currentStatus?.label}
-          </Flex>}
-        description={item.component?.date && moment(item.component?.date).format('DD.MM.YYYY HH:mm')}
-        styles={{
-          title: {
-            marginBottom: 0
-          }
-        }}
+function GetCards({ item, claimId, versionId, reloadClaim }) {
+  const [openModalAction, setOpenModalAction] = useState(false)
+  let actions = undefined
+  if (item.type === "file") {
+    actions = [<DownloadOutlined onClick={() => { }} />, <FileUnknownOutlined />]
+  }
 
-      />
-    </Card>
-  )
-}
-function getNeighbors(neighboard) {
   return (
     <>
-      {neighboard?.map(item => (getCards(item)))}
+      <Card
+        styles={{
+          body: {
+            // backgroundColor: item.style?.backgroundСolor,
+            padding: 10
+          }
+        }}
+        style={{
+          // borderColor: "gray", 
+          flex: 1
+        }}
+      // actions={actions}
+      >
+        {/* Если это файл то ... */}
+        {(item.type === "file") && <FileForDownload type={item.component.ext} name={item.component.name} id={item.component.id} size={item.component.size} signs={item.type === "sign"} />}
+
+        {/* Если это все остальное ... */}
+        {(item.type !== "file" && item.type !== "task") && <Card.Meta
+          avatar={<>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}</>}
+          title={
+            <Flex
+              align='center'
+              gap={5}
+            // style={{ color: item.style?.textСolor }}
+            >
+              {item.component?.name || item.component?.currentStatus?.label}
+              {item.component?.shortDescription && <Tag variant='outlined' color={item.style?.textСolor || "magenta"}>{item.component?.shortDescription}</Tag>}
+            </Flex>}
+          description={item.component?.date && moment(item.component?.date).format('DD.MM.YYYY HH:mm')}
+          styles={{
+            title: {
+              marginBottom: 0
+            }
+          }}
+
+        />}
+
+        {/* Если это задача с типом ПЛАН ... */}
+        {item.type === "task" && item.component.type === "plan" &&
+          <Button type='primary' style={{ marginTop: 10, fontSize: 16 }} onClick={() => {
+            setOpenModalAction({ id: item.component.id, title: item.component.label, taskBasis: item.component.taskBasis, buttonText: item.component.buttonText })
+          }}>{item.component.label}</Button>}
+
+        {/* Если есть описание карточки ... */}
+        {item.component?.description && <Typography.Paragraph>{item.component?.description}</Typography.Paragraph>}
+      </Card>
+      {openModalAction &&
+        <ActionItem
+          title={openModalAction.title}
+          open={!!openModalAction}
+          actionId={openModalAction.id}
+          claimId={claimId}
+          versionId={versionId}
+          buttonText={openModalAction.buttonText}
+          taskBasis={openModalAction.taskBasis}
+          onCancel={() => {
+            setOpenModalAction(false)
+            reloadClaim()
+          }}
+        />
+      }
+    </>
+  )
+}
+function GetNeighbors({ neighbors, claimId, versionId, reloadClaim }) {
+  return (
+    <>
+      {neighbors?.map((item, index) => (<GetCards key={index} item={item} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />))}
     </>
   )
 }
 
-function getChildren(children, level) {
+function GetChildren({ childrenArr, level, claimId, versionId, reloadClaim }) {
   return <Flex
     vertical
     gap={10}
     style={{ marginLeft: 15 * level }}
   >
-    {children?.map(item =>
-      <>
+    {childrenArr?.map((item, index) =>
+      <Flex vertical gap={10} key={index}>
         <Flex gap={0} align='center' wrap='wrap' justify='stretch' style={{ width: "100%" }}>
-          {getCards(item)}
-          {item.neighbors && getNeighbors(item.neighbors)}
+          <GetCards item={item} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />
+          {item.neighbors && <GetNeighbors neighbors={item.neighbors} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />}
         </Flex>
-        {item.children && getChildren(item.children, level + 1)}
-      </>
+        {item.children && <GetChildren childrenArr={item.children} level={level + 1} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />}
+      </Flex>
     )}
   </Flex>
 }
@@ -151,7 +189,7 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
   // console.log(token)
   const [changeSteps, setChangeSteps] = useState([])
   const [openDrawer, setOpenDrawer] = useState(null)
-  const [openModalAction, setOpenModalAction] = useState(false)
+
   const [openModalTask, setOpenModalTask] = useState(false)
   const [reload, setReload] = useState(false)
   useEffect(() => {
@@ -189,10 +227,10 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
         </Radio.Group>
       </div>
       {steps &&
-        <Collapse items={steps.items.map((item, index) => ({
+        <Collapse defaultActiveKey={[steps?.items?.findIndex(item => item.component.state === "inAction")]} items={steps.items.map((item, index) => ({
           key: index,
           label: <Flex align='center' gap={5}>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}{item.component?.name}{item.children?.length && <span style={{ color: "gray" }}>({item.children?.length})</span>}</Flex>,
-          children: getChildren(item.children, 1),
+          children: <GetChildren childrenArr={item.children} level={1} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />,
           styles: {
             header: {
               // backgroundColor: item.style?.backgroundСolor,
