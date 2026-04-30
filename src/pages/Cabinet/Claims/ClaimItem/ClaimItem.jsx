@@ -83,14 +83,14 @@ export default function ClaimItem() {
     {
       key: 6,
       label: <Typography.Text style={{ padding: "10px 10px" }}>Информация по заявке</Typography.Text>,
-      children: <InfoClaim template={claim?.template} values={claim?.values} pdf={pdf} />,
+      children: <InfoClaim template={claim?.template} values={claim?.values} pdf={pdf} claimId={claim?.id}/>,
     },
     {
       key: 3,
       label: <Badge count={claim?.files?.reduce((acc, item) => {
         return acc + item.docs?.length
       }, 0)} offset={[0, 5]} color="gray"><Typography.Text style={{ padding: "10px 10px" }}>Документы</Typography.Text></Badge>,
-      children: <Docs files={claim?.files} />,
+      children: <Docs files={claim?.files} claimId={claim?.id}/>,
     },
     {
       key: 5,
@@ -134,12 +134,12 @@ export default function ClaimItem() {
                   {
                     key: '2',
                     label: 'По услуге',
-                    children: claim.template.label,
+                    children: claim.template?.label,
                   },
                   {
                     key: '3',
                     label: 'Код услуги',
-                    children: claim.template.codeService,
+                    children: claim.template?.codeService,
                   },
                 ]} />
               </ConfigProvider>

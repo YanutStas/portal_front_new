@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Typography, Skeleton, Descriptions, theme, Divider, Flex, Empty } from "antd";
+import { Card, Typography, Skeleton, Descriptions, theme, Divider, Flex, Empty, Pagination } from "antd";
 import { FileSearchOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import AppHelmet from "../../../../components/Global/AppHelmet";
@@ -35,6 +35,8 @@ export default function Claimers() {
 
   const [selectFilters, setSelectFilters] = useState({})
   const [claims, setClaims] = useState()
+  const [page, setPage] = useState(1)
+  const [size, setSize] = useState(15)
   const claimsAll = useClaims((state) => state.claims);
   const fetchClaims = useClaims((state) => state.fetchClaims);
   const personalAccounts = usePersonalAccounts((state) => state.personalAccounts);
@@ -45,7 +47,7 @@ export default function Claimers() {
     setClaims(claimsAll)
   }, [claimsAll])
   useEffect(() => {
-    console.log(selectFilters);
+    // console.log(selectFilters);
 
     if (claimsAll) {
       setClaims(claimsAll.filter(item => {
@@ -59,7 +61,7 @@ export default function Claimers() {
     }
   }, [selectFilters])
   useEffect(() => {
-    fetchClaims();
+    fetchClaims(page, size);
     fetchPersonalAccounts();
   }, [fetchClaims]);
   console.log("claimsAll", claimsAll)
@@ -157,14 +159,14 @@ export default function Claimers() {
                 </Flex>
               </Divider>
               <FiltersClaims claimsAll={claimsAll} setSelectFilters={setSelectFilters} selectFilters={selectFilters} />
+              <Flex wrap={"wrap"} gap={20} >
+                {claims?.sort((a, b) => b.number - a.number).map((item, index) => (
+                  <CardClaim item={item} key={index} />
+                ))}
+              </Flex>
+              <Pagination defaultCurrent={1} total={500} />
             </>
           }
-          <Flex wrap={"wrap"} gap={20} >
-            {claims?.sort((a, b) => b.number - a.number).map((item, index) => (
-              <CardClaim item={item} key={index} />
-            ))}
-          </Flex>
-
           {/* <Divider orientation="left">Отклоненные заявки</Divider> */}
 
         </div>

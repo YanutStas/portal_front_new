@@ -6,7 +6,7 @@ import useAppeals from '../../../../stores/Cabinet/useAppeals'
 import Preloader from '../../../../components/Main/Preloader'
 import AppealItem from '../../../../components/Cabinet/Appeal/AppealItem'
 import useDataForForm from '../../../../stores/Cabinet/useDataForForm'
-import useNewClaim from '../../../../stores/Cabinet/useClaims'
+import useClaim from '../../../../stores/Cabinet/useClaims'
 // const appealsByClaim = [
 //     // {
 //     //     number: "123",
@@ -43,7 +43,7 @@ const changeData = (arr) => {
     })
 
 }
-export default function Appeals({ claimId, appealsByClaim, reloadClaim }) {
+export default function Appeals({ claimId, reloadClaim }) {
     const { setLinks, setStyles, clearDataForForm } = useDataForForm((state) => state)
     const { appeals,
         fetchAppealsAll,
@@ -54,16 +54,28 @@ export default function Appeals({ claimId, appealsByClaim, reloadClaim }) {
         clearAppeal,
         readingAnswer,
         isReadingAnswer } = useAppeals(store => store)
-    const { loadingDataByClaim, fetchDataByClaim } = useNewClaim((state) => state)
+    const { loadingDataByClaim, fetchDataByClaim } = useClaim((state) => state)
     const [isOpenModalAppeals, setIsOpenModalAppeals] = useState(false)
     const [treeData, setTreeData] = useState(false)
     const [selectType, setSelectType] = useState(false)
+    const [appealsByClaim, setAppealsByClaim] = useState([])
     const [reload, setReload] = useState(false)
+    const [loading, setLoading] = useState(false)
     const token = theme.useToken().token
+
+    async function fetchData() {
+        try {
+            setLoading(true)
+            setAppealsByClaim((await fetchDataByClaim(claimId, "appeals"))?.appeals)
+            setLoading(false)
+        } catch (error) {
+            console.log('Проблемы загрузки infoClaim')
+        }
+    }
 
     useEffect(() => {
         fetchAppealsAll()
-        fetchDataByClaim(claimId, "appeals")
+        fetchData()
         // reloadClaim()
     }, [reload])
     useEffect(() => {
@@ -117,7 +129,10 @@ export default function Appeals({ claimId, appealsByClaim, reloadClaim }) {
         //     console.log('Ошибка при прочтении')
         // }
     }
-    if (loadingDataByClaim) {
+
+    console.log("appealsByClaim",appealsByClaim);
+    
+    if (loading) {
         return <Preloader />
     }
     return (
@@ -182,7 +197,7 @@ export default function Appeals({ claimId, appealsByClaim, reloadClaim }) {
             )
             }
             <Button
-                disabled={appealsByClaim?.length !== 0 && appealsByClaim.reduce((accum, item) => !item.answer ? true : accum, false)}
+                disabled={appealsByClaim?.length !== 0 && appealsByClaim?.reduce((accum, item) => !item.answer ? true : accum, false)}
                 type='primary'
                 onClick={() => { setIsOpenModalAppeals(true) }}
             >Подать обращение</Button>

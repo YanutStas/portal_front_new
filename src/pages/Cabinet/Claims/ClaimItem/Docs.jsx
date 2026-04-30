@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Law from '../../../../components/Documentation/Law'
 import FileForDownload from '../../../../components/FileForDownload'
 import { Collapse, Flex, Typography, Button } from 'antd'
 import moment from 'moment'
 import InfoDrawer from '../../../../components/InfoDrawer'
+import useClaim from '../../../../stores/Cabinet/useClaims'
+import Preloader from '../../../../components/Main/Preloader'
 
 // const docs = [
 //     {
@@ -26,12 +28,34 @@ import InfoDrawer from '../../../../components/InfoDrawer'
 //     },
 // ]
 
-export default function Docs({ files }) {
+export default function Docs({  claimId }) {
+    const [files, setFiles] = useState()
+    const [loading, setLoading] = useState(false)
+    const fetchDataByClaim = useClaim((state) => state.fetchDataByClaim);
+    async function fetchData() {
+        try {
+            setLoading(true)
+            setFiles((await fetchDataByClaim(claimId, "docs"))?.files)
+            setLoading(false)
+        } catch (error) {
+            console.log('Проблемы загрузки infoClaim')
+        }
+    }
+    useEffect(() => {
+        fetchData()
+    }, [])
 
-    const groups = files.map((item, index) => ({
+    console.log("files", files);
+    if (loading) {
+        return <Preloader />
+    }
+
+
+
+    const groups = files?.map((item, index) => ({
         key: index,
         label: <Flex gap={10} wrap={"wrap"}>
-            <Typography.Text  style={{ fontWeight:600 }}>
+            <Typography.Text style={{ fontWeight: 600 }}>
                 {item.groupName}
             </Typography.Text>
             <Typography.Text>
@@ -55,7 +79,7 @@ export default function Docs({ files }) {
                 </div>
                 <Flex vertical gap={10}>
                     {item.docFiles.map((item, index) =>
-                        <FileForDownload key={index} type={item.ext} name={item.name} id={item.id} size={item.size} date={item.date}/>
+                        <FileForDownload key={index} type={item.ext} name={item.name} id={item.id} size={item.size} date={item.date} />
                     )}
                 </Flex>
             </Flex>)}

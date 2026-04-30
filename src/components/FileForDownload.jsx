@@ -40,7 +40,7 @@ export default function FileForDownload({ type, id, name, size, date = false, si
   const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
-    console.log("chekingValue", chekingValue)
+    // console.log("chekingValue", chekingValue)
   }, [chekingValue])
 
   let jsonReport = false

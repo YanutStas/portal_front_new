@@ -57,7 +57,7 @@ const useClaim = create((set, get) => ({
   },
   fetchDataByClaim: async (key, dataSet = "steps") => {
     try {
-      set((state) => ({ loadingDataByClaim: true }));
+      // set((state) => ({ loadingDataByClaim: true }));
       const res = await axios.get(`${backServer}/api/cabinet/claims/${key}?dataSet=${dataSet}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -65,13 +65,17 @@ const useClaim = create((set, get) => ({
         withCredentials: true,
       });
       // console.log('res.data', res.data.data.appeals)
-      const newClaim = Object.assign({}, get().claim)
+      // const newClaim = Object.assign({}, get().claim)
       // console.log('newClaim', newClaim)
-      newClaim[dataSet] = res.data.data[dataSet]
-      set({ claim: newClaim, loadingDataByClaim: false });
+      // newClaim[dataSet] = res.data.data[dataSet]
+      console.log('DATA', res.data.data);
+
+      return res.data.data
+      // set({ claim: newClaim, loadingDataByClaim: false });
     } catch (error) {
       console.log(error)
-      set({ loadingDataByClaim: false });
+      return false
+      // set({ loadingDataByClaim: false });
     }
   },
   createClaim: async (data) => {

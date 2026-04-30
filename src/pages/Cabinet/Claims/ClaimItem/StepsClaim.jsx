@@ -142,7 +142,8 @@ function processTreeData(data) {
         style={{ borderColor: "gray" }} >
         <Card.Meta title={<Flex gap={10} align='center'>{node.style?.picture?.id && <ImagePublic img={node.style?.picture} />}<span style={{ color: node.style?.textСolor }}>{name}</span></Flex>} />
       </Card>
-      {node.neighbors && node.neighbors.map(item => <Card
+      {node.neighbors && node.neighbors.map((item,index) => <Card
+      key={index}
         styles={{
           body: {
             backgroundColor: item.style?.backgroundСolor,
@@ -178,10 +179,10 @@ function processTreeData(data) {
 }
 
 
-export default function StepsClaim({ steps = false, claimId, versionId, reloadClaim }) {
+export default function StepsClaim({ claimId, versionId, reloadClaim }) {
 
-  console.log("steps", steps);
-
+  const [steps, setSteps] = useState({})
+  const [loadingSteps, setLoadingSteps] = useState(false)
   // const fetchClaimItem = useClaims((state) => state.fetchClaimItem);
   const loadingDataByClaim = useClaims((state) => state.loadingDataByClaim);
   const fetchDataByClaim = useClaims((state) => state.fetchDataByClaim);
@@ -189,19 +190,28 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
   // console.log(token)
   const [changeSteps, setChangeSteps] = useState([])
   const [openDrawer, setOpenDrawer] = useState(null)
-
+  
   const [openModalTask, setOpenModalTask] = useState(false)
   const [reload, setReload] = useState(false)
+  
+  async function fetchSteps() {    
+    try {
+      setLoadingSteps(true)
+      setSteps((await fetchDataByClaim(claimId, "steps"))?.steps)
+      setLoadingSteps(false)
+    } catch (error) {
+      console.log('Проблемы загрузки steps')
+    }
+  }
   useEffect(() => {
-    fetchDataByClaim(claimId, "steps")
+    fetchSteps()
   }, [reload])
   useEffect(() => {
-    if (steps) {
-
+    if (steps) {      
       setChangeSteps(processTreeData(steps.items))
       // console.log("changeSteps", changeSteps);
     }
-
+    
   }, [steps])
   const handlerOpenDrawer = (title, content) => {
     setOpenDrawer({
@@ -212,22 +222,23 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
   const handlerCloseDrawer = () => {
     setOpenDrawer(null)
   }
-  if (loadingDataByClaim) {
+  if (loadingSteps) {
     return <Preloader />
   }
   [].length
-
+  
+  console.log("steps", steps);
   return (
     <>
       <div style={{ marginBottom: 20 }}>
-        <Radio.Group size="middle" defaultValue={steps.processTrees.find(item => item.current).id}>
-          {steps.processTrees?.map((item) =>
+        <Radio.Group size="middle" defaultValue={steps?.processTrees?.find(item => item.current).id}>
+          {steps?.processTrees?.map((item) =>
             <Radio.Button key={item.id} value={item.id}>{item.name}</Radio.Button>
           )}
         </Radio.Group>
       </div>
-      {steps &&
-        <Collapse defaultActiveKey={[steps?.items?.findIndex(item => item.component.state === "inAction")]} items={steps.items.map((item, index) => ({
+      {steps && steps?.items &&
+        <Collapse defaultActiveKey={[steps?.items?.findIndex(item => item.component.state === "inAction")]} items={steps?.items?.map((item, index) => ({
           key: index,
           label: <Flex align='center' gap={5}>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}{item.component?.name}{item.children?.length && <span style={{ color: "gray" }}>({item.children?.length})</span>}</Flex>,
           children: <GetChildren childrenArr={item.children} level={1} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />,
