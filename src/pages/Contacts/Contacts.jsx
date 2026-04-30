@@ -25,6 +25,7 @@ import AppHelmet from "../../components/Global/AppHelmet";
 import Container from "../../components/Container";
 import getPublicFile from "../../lib/getPublicFile";
 import ScrollToTop from "../../components/ScrollToTop";
+import MapComponent from '../../components/MapComponent';
 
 const { Text, Title } = Typography;
 const { Search } = Input;
@@ -43,7 +44,12 @@ export default function Contacts() {
     const [lat, lon] = coords;
     return `https://yandex.ru/maps/?rtext=~${lat},${lon}&rtt=auto`;
   };
-
+const routeCoordinates = [
+    [37.6173, 55.7558], // Москва
+    [39.1960, 57.7070], // Ярославль
+    [40.9714, 58.4070], // Вологда
+    [30.3158, 59.9343], // Санкт-Петербург
+  ];
   // if (loading) {
   //   return (
   //   );
@@ -147,7 +153,12 @@ export default function Contacts() {
 
                           {center.coordinates ? (
                             <>
-                              <YMaps>
+                              <MapComponent
+                                coordinates={[[center.coordinates[1],center.coordinates[0]]]}
+                                color="#ff0000"
+                                width={5}
+                              />
+                              {/* <YMaps>
                                 <Map
                                   defaultState={{
                                     center: center.coordinates,
@@ -158,7 +169,7 @@ export default function Contacts() {
                                 >
                                   <Placemark geometry={center.coordinates} />
                                 </Map>
-                              </YMaps>
+                              </YMaps> */}
                             </>
                           ) : (
                             <Alert
