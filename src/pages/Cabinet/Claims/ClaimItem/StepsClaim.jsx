@@ -262,7 +262,7 @@ export default function StepsClaim({ claimId, versionId, reloadClaim, activeProc
   return (
     <>
       {steps && steps?.items &&
-        <Collapse defaultActiveKey={[steps?.items?.findIndex(item => item.component.state === "inAction")]} items={steps?.items?.map((item, index) => ({
+        <Collapse defaultActiveKey={[steps?.items?.findIndex(item => item.component.current)]} items={steps?.items?.map((item, index) => ({
           key: index,
           label: <Flex align='center' gap={5}>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}{item.component?.name}{item.children?.length && <span style={{ color: "gray" }}>({item.children?.length})</span>}</Flex>,
           children: <GetChildren childrenArr={item.children} level={1} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />,
