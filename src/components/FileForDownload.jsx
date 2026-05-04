@@ -79,7 +79,7 @@ export default function FileForDownload({ type, id, name, size, date = false, si
               <Flex align="center" gap={5} >
 
                 <Flex justify="center" align="center" >
-                  <img src={typeFile[type] ? typeFile[type] : typeFile.noext} alt={`icon ${type}`} style={{ maxWidth: 50 }} />
+                  <img src={typeFile[type] ? typeFile[type] : typeFile.noext} alt={`icon ${type}`} style={{ maxWidth: 30 }} />
                 </Flex>
                 <Flex vertical>
                   <span className={styles.docLine__name} style={{ color: token.colorText }}>{name}</span>

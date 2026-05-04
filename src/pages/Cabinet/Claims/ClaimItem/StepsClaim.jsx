@@ -47,7 +47,7 @@ function GetCards({ item, claimId, versionId, reloadClaim }) {
             // style={{ color: item.style?.textСolor }}
             >
               {item.component?.name || item.component?.currentStatus?.label}
-              {item.component?.shortDescription && <Tag variant='outlined' color={item.style?.textСolor || "magenta"}>{item.component?.shortDescription}</Tag>}
+              {(item.component?.shortDescription || item.component?.currentStatus?.label) && <Tag variant='outlined' color={item.style?.textСolor || "magenta"}>{item.component?.shortDescription || item.component?.currentStatus?.label}</Tag>}
             </Flex>}
           description={item.component?.date && moment(item.component?.date).format('DD.MM.YYYY HH:mm')}
           styles={{
@@ -65,7 +65,7 @@ function GetCards({ item, claimId, versionId, reloadClaim }) {
           }}>{item.component.label}</Button>}
 
         {/* Если есть описание карточки ... */}
-        {item.component?.description && <Typography.Paragraph>{item.component?.description}</Typography.Paragraph>}
+        {(item.component?.description || item.component?.currentStatus?.description) && <Typography.Paragraph>{item.component?.description || item.component?.currentStatus?.description}</Typography.Paragraph>}
       </Card>
       {openModalAction &&
         <ActionItem
@@ -142,8 +142,8 @@ function processTreeData(data) {
         style={{ borderColor: "gray" }} >
         <Card.Meta title={<Flex gap={10} align='center'>{node.style?.picture?.id && <ImagePublic img={node.style?.picture} />}<span style={{ color: node.style?.textСolor }}>{name}</span></Flex>} />
       </Card>
-      {node.neighbors && node.neighbors.map((item,index) => <Card
-      key={index}
+      {node.neighbors && node.neighbors.map((item, index) => <Card
+        key={index}
         styles={{
           body: {
             backgroundColor: item.style?.backgroundСolor,
@@ -179,9 +179,10 @@ function processTreeData(data) {
 }
 
 
-export default function StepsClaim({ claimId, versionId, reloadClaim }) {
+export default function StepsClaim({ claimId, versionId, reloadClaim, activeProcessTrees }) {
 
   const [steps, setSteps] = useState({})
+  
   const [loadingSteps, setLoadingSteps] = useState(false)
   // const fetchClaimItem = useClaims((state) => state.fetchClaimItem);
   const loadingDataByClaim = useClaims((state) => state.loadingDataByClaim);
@@ -190,14 +191,14 @@ export default function StepsClaim({ claimId, versionId, reloadClaim }) {
   // console.log(token)
   const [changeSteps, setChangeSteps] = useState([])
   const [openDrawer, setOpenDrawer] = useState(null)
-  
+
   const [openModalTask, setOpenModalTask] = useState(false)
   const [reload, setReload] = useState(false)
-  
-  async function fetchSteps() {    
+
+  async function fetchSteps() {
     try {
       setLoadingSteps(true)
-      setSteps((await fetchDataByClaim(claimId, "steps"))?.steps)
+      setSteps((await fetchDataByClaim(claimId, "steps", activeProcessTrees))?.steps)
       setLoadingSteps(false)
     } catch (error) {
       console.log('Проблемы загрузки steps')
@@ -205,13 +206,13 @@ export default function StepsClaim({ claimId, versionId, reloadClaim }) {
   }
   useEffect(() => {
     fetchSteps()
-  }, [reload])
+  }, [reload, activeProcessTrees])
   useEffect(() => {
-    if (steps) {      
+    if (steps) {
       setChangeSteps(processTreeData(steps.items))
       // console.log("changeSteps", changeSteps);
     }
-    
+
   }, [steps])
   const handlerOpenDrawer = (title, content) => {
     setOpenDrawer({
@@ -225,18 +226,11 @@ export default function StepsClaim({ claimId, versionId, reloadClaim }) {
   if (loadingSteps) {
     return <Preloader />
   }
-  [].length
-  
-  console.log("steps", steps);
+ 
+
+  // console.log("steps", steps);
   return (
-    <>
-      <div style={{ marginBottom: 20 }}>
-        <Radio.Group size="middle" defaultValue={steps?.processTrees?.find(item => item.current).id}>
-          {steps?.processTrees?.map((item) =>
-            <Radio.Button key={item.id} value={item.id}>{item.name}</Radio.Button>
-          )}
-        </Radio.Group>
-      </div>
+    <>      
       {steps && steps?.items &&
         <Collapse defaultActiveKey={[steps?.items?.findIndex(item => item.component.state === "inAction")]} items={steps?.items?.map((item, index) => ({
           key: index,

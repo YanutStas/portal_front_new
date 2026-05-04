@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Typography, Button, Steps, Tabs, Modal, Result, Flex, Badge, theme, Descriptions, ConfigProvider, } from "antd";
+import { Typography, Button, Steps, Tabs, Modal, Result, Flex, Badge, theme, Descriptions, ConfigProvider, Radio, } from "antd";
 import { useParams, useSearchParams } from "react-router-dom";
 // import pdfMake from "pdfmake/build/pdfmake";
 import useClaims from "../../../../stores/Cabinet/useClaims";
@@ -34,6 +34,8 @@ export default function ClaimItem() {
   const [openSuccessPay, setOpenSuccessPay] = useState(false);
   const [searchParams] = useSearchParams()
 
+  const [activeProcessTrees, setActiveProcessTrees] = useState(false)
+
   const claim = useClaims((state) => state.claim);
   const loadingClaim = useClaims((state) => state.loadingClaim);
   const fetchClaimItem = useClaims((state) => state.fetchClaimItem);
@@ -67,8 +69,32 @@ export default function ClaimItem() {
   const tabs = [
     {
       key: 1,
-      label: <Badge count={claim?.countTasks} offset={[0, 5]}><Typography.Text style={{ padding: "10px 10px" }}>Процесс выполнения</Typography.Text></Badge>,
-      children: <StepsClaim steps={claim?.steps} claimId={claim?.id} versionId={claim?.versionId} reloadClaim={reloadClaim} />,
+      label: <Badge count={claim?.countTasks} offset={[0, 5]}><Typography.Text style={{ padding: "10px 10px" }}>Процесс</Typography.Text></Badge>,
+      children: <Flex vertical gap={10}>
+        {claim?.processTrees && claim?.processTrees.length > 1 &&
+          <div style={{ marginBottom: 20 }}>
+            <Radio.Group
+              optionType="button"
+              size="middle"
+              defaultValue={() => {
+                setActiveProcessTrees(claim?.processTrees?.find((item, index) => item.current || index === 0)?.id)
+              }}
+              onChange={(e) => {
+                setActiveProcessTrees(e.target.value)
+              }}
+              value={activeProcessTrees}
+              options={claim?.processTrees?.map((item) =>
+              ({
+                label: item.name,
+                value: item.id
+              })
+              )}
+            />
+
+          </div>
+        }
+        <StepsClaim steps={claim?.steps} claimId={claim?.id} versionId={claim?.versionId} reloadClaim={reloadClaim} activeProcessTrees={claim?.processTrees} />
+      </Flex>,
     },
     // {
     //   key: 4,
@@ -83,19 +109,19 @@ export default function ClaimItem() {
     {
       key: 6,
       label: <Typography.Text style={{ padding: "10px 10px" }}>Информация по заявке</Typography.Text>,
-      children: <InfoClaim template={claim?.template} values={claim?.values} pdf={pdf} claimId={claim?.id}/>,
+      children: <InfoClaim template={claim?.template} values={claim?.values} pdf={pdf} claimId={claim?.id} />,
     },
     {
       key: 3,
       label: <Badge count={claim?.files?.reduce((acc, item) => {
         return acc + item.docs?.length
       }, 0)} offset={[0, 5]} color="gray"><Typography.Text style={{ padding: "10px 10px" }}>Документы</Typography.Text></Badge>,
-      children: <Docs files={claim?.files} claimId={claim?.id}/>,
+      children: <Docs files={claim?.files} claimId={claim?.id} />,
     },
     {
       key: 5,
       label: <Badge count={claim?.countAppeals} offset={[0, 5]}><Typography.Text style={{ padding: "10px 10px" }}>Обращения</Typography.Text></Badge>,
-      children: <Appeals claimId={claim?.id} appealsByClaim={claim?.appeals} reloadClaim={reloadClaim}/>,
+      children: <Appeals claimId={claim?.id} appealsByClaim={claim?.appeals} reloadClaim={reloadClaim} />,
     },
   ]
 
@@ -250,7 +276,7 @@ export default function ClaimItem() {
             onCancel={() => { setOpenDescService(false) }}
             width={"min(1600px, 100%)"}
           >
-            <ServiceItem currentKey={claim.template?.id} blockButton={true}/>
+            <ServiceItem currentKey={claim.template?.id} blockButton={true} />
           </Modal>
 
 

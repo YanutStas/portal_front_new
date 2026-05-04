@@ -55,7 +55,7 @@ const useClaim = create((set, get) => ({
       set({ loadingClaim: false });
     }
   },
-  fetchDataByClaim: async (key, dataSet = "steps") => {
+  fetchDataByClaim: async (key, dataSet = "steps", processTree = false) => {
     try {
       // set((state) => ({ loadingDataByClaim: true }));
       const res = await axios.get(`${backServer}/api/cabinet/claims/${key}?dataSet=${dataSet}`, {
@@ -68,7 +68,7 @@ const useClaim = create((set, get) => ({
       // const newClaim = Object.assign({}, get().claim)
       // console.log('newClaim', newClaim)
       // newClaim[dataSet] = res.data.data[dataSet]
-      console.log('DATA', res.data.data);
+      // console.log('DATA', res.data.data);
 
       return res.data.data
       // set({ claim: newClaim, loadingDataByClaim: false });
