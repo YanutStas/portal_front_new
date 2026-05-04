@@ -26,37 +26,67 @@ function GetCards({ item, claimId, versionId, reloadClaim }) {
           body: {
             // backgroundColor: item.style?.backgroundСolor,
             padding: 10
+          },
+          root:{
+
+            flex: 1,
+            maxWidth: "100%"
           }
         }}
         style={{
           // borderColor: "gray", 
-          flex: 1
         }}
       // actions={actions}
       >
         {/* Если это файл то ... */}
-        {(item.type === "file") && <FileForDownload type={item.component.ext} name={item.component.name} id={item.component.id} size={item.component.size} signs={item.type === "sign"} />}
+        {(item.type === "file" || item.type === "sign123"  ) && <FileForDownload type={item.component.ext} name={item.component.name} id={item.component.id} size={item.component.size} signs={item.type === "sign"} />}
 
         {/* Если это все остальное ... */}
-        {(item.type !== "file" && item.type !== "task") && <Card.Meta
-          avatar={<>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}</>}
-          title={
+        {(item.type !== "file" && item.type !== "task") && <Flex gap={5}>
+          <>{item.style?.picture?.id && <div style={{ width: 30, height: 30 }}><ImagePublic img={item.style?.picture} /></div>}</>
+          <Flex vertical >
             <Flex
               align='center'
               gap={5}
-            // style={{ color: item.style?.textСolor }}
+              wrap="wrap"
+              style={{
+                // color: item.style?.textСolor 
+                maxWidth: "100%"
+              }}
             >
-              {item.component?.name || item.component?.currentStatus?.label}
+              <Typography.Text style={{ fontSize: 16, whiteSpace: "balance" }}>{item.component?.name || item.component?.currentStatus?.label}</Typography.Text>
               {(item.component?.shortDescription || item.component?.currentStatus?.label) && <Tag variant='outlined' color={item.style?.textСolor || "magenta"}>{item.component?.shortDescription || item.component?.currentStatus?.label}</Tag>}
-            </Flex>}
-          description={item.component?.date && moment(item.component?.date).format('DD.MM.YYYY HH:mm')}
-          styles={{
-            title: {
-              marginBottom: 0
-            }
-          }}
+            </Flex>
+            <Typography.Text type="secondary">{item.component?.date && moment(item.component?.date).format('DD.MM.YYYY HH:mm')}</Typography.Text>
+          </Flex>
+        </Flex>
+          //   <Card.Meta
+          //   avatar={<>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}</>}
+          //   title={
+          //     <Flex
+          //       align='center'
+          //       gap={5}
+          //       wrap="wrap"
+          //       style={{
+          //         // color: item.style?.textСolor 
+          //         maxWidth: "100%"
+          //       }}
+          //     >
+          //       <Typography.Text style={{ fontSize: 16, whiteSpace: "balance" }}>{item.component?.name || item.component?.currentStatus?.label}</Typography.Text>
+          //       {(item.component?.shortDescription || item.component?.currentStatus?.label) && <Tag variant='outlined' color={item.style?.textСolor || "magenta"}>{item.component?.shortDescription || item.component?.currentStatus?.label}</Tag>}
+          //     </Flex>}
+          //   description={item.component?.date && moment(item.component?.date).format('DD.MM.YYYY HH:mm')}
+          //   styles={{
+          //     title: {
+          //       marginBottom: 0
+          //     },
+          //     root: {
+          //       maxWidth: "100%"
+          //     }
+          //   }}
 
-        />}
+          // />
+        }
 
         {/* Если это задача с типом ПЛАН ... */}
         {item.type === "task" && item.component.type === "plan" &&
@@ -97,11 +127,11 @@ function GetChildren({ childrenArr, level, claimId, versionId, reloadClaim }) {
   return <Flex
     vertical
     gap={10}
-    style={{ marginLeft: 15 * level }}
+    style={{ marginLeft: 15 * level - 15 }}
   >
     {childrenArr?.map((item, index) =>
       <Flex vertical gap={10} key={index}>
-        <Flex gap={0} align='center' wrap='wrap' justify='stretch' style={{ width: "100%" }}>
+        <Flex gap={3} align='stretch' wrap='wrap' justify='stretch' style={{ width: "100%" }}>
           <GetCards item={item} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />
           {item.neighbors && <GetNeighbors neighbors={item.neighbors} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />}
         </Flex>
@@ -182,7 +212,7 @@ function processTreeData(data) {
 export default function StepsClaim({ claimId, versionId, reloadClaim, activeProcessTrees }) {
 
   const [steps, setSteps] = useState({})
-  
+
   const [loadingSteps, setLoadingSteps] = useState(false)
   // const fetchClaimItem = useClaims((state) => state.fetchClaimItem);
   const loadingDataByClaim = useClaims((state) => state.loadingDataByClaim);
@@ -226,11 +256,11 @@ export default function StepsClaim({ claimId, versionId, reloadClaim, activeProc
   if (loadingSteps) {
     return <Preloader />
   }
- 
+
 
   // console.log("steps", steps);
   return (
-    <>      
+    <>
       {steps && steps?.items &&
         <Collapse defaultActiveKey={[steps?.items?.findIndex(item => item.component.state === "inAction")]} items={steps?.items?.map((item, index) => ({
           key: index,

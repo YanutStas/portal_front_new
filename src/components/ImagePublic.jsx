@@ -26,6 +26,7 @@ export default function ImagePublic({ img, size = 30 }) {
             }}
             alt={`ico`}
             height={size}
+            width={size}
         />
     )
 }

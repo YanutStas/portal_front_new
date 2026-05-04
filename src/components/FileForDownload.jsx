@@ -53,7 +53,7 @@ export default function FileForDownload({ type, id, name, size, date = false, si
   }
   return (
     <>
-      <Flex vertical gap={10} style={{ marginBottom: 20, marginTop: 20 }}>
+      <Flex vertical gap={10} >
         {contextHolder}
         <Flex gap={5} align="center" >
           <Flex gap={10} align="center">
@@ -82,14 +82,14 @@ export default function FileForDownload({ type, id, name, size, date = false, si
                   <img src={typeFile[type] ? typeFile[type] : typeFile.noext} alt={`icon ${type}`} style={{ maxWidth: 30 }} />
                 </Flex>
                 <Flex vertical>
-                  <span className={styles.docLine__name} style={{ color: token.colorText }}>{name}</span>
-                  <span className={styles.docLine__fileInfo} style={{ color: token.colorTextDescription }}>
+                  <Typography.Text>{name}</Typography.Text>
+                  <Typography.Text type="secondary">
                     {Number(size / 1000) > 1000
                       ? `${(Number(size / 1000) / 1000).toFixed(2)}МБ`
                       : `${Math.round(Number(size / 1000))}КБ`}
-                  </span>
+                  </Typography.Text>
                   {date &&
-                    <span className={styles.docLine__fileInfo} style={{ marginLeft: 10 }}>{moment(date).format('DD.MM.YYYY HH.mm')}</span>
+                    <Typography.Text type="secondary">{moment(date).format('DD.MM.YYYY HH.mm')}</Typography.Text>
                   }
                 </Flex>
                 {downloading && <Spin />}
@@ -97,7 +97,7 @@ export default function FileForDownload({ type, id, name, size, date = false, si
             </a>
             {!downloading && <Tooltip styles={{ body: { fontSize: 12 } }} placement="top" title={"Скачать"} color="#0061aa"> <Button
               icon={<DownloadOutlined style={{ fontSize: 24 }} />}
-              size="large"
+              size="medium"
 
               onClick={async () => {
                 if (!downloading) {
@@ -118,7 +118,8 @@ export default function FileForDownload({ type, id, name, size, date = false, si
               }}
               className={styles.iconButton}
             // style={{ color: token.colorTextDescription }}
-            /></Tooltip>}
+            />
+            </Tooltip>}
           </Flex>
           {/* {sig && <SafetyOutlined className={styles.iconButton} style={{ fontSize: 24 }} size="small"
               onClick={async () => {
