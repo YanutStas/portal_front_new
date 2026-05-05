@@ -191,7 +191,7 @@ function processTreeData(data) {
           }
         }}
         style={{ borderColor: "gray" }} >
-        <Card.Meta title={<Flex gap={10} align='center'>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}<span style={{ color: node.style?.textСolor }}>{item.component.name || item.component.currentStatus.label}</span></Flex>} />
+        <Card.Meta title={<Flex gap={10} align='center'>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}<span style={{ color: node.style?.textСolor }}>{item.component?.name || item.component?.currentStatus?.label}</span></Flex>} />
       </Card>)}
     </Flex>
 

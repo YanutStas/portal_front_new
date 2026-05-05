@@ -85,15 +85,15 @@ export default function FileForDownload({ type, id, name, size, date = false, si
                   <Typography.Text>{name}</Typography.Text>
                   <Flex gap={5}>
 
+                      {date &&
+                        <Typography.Text type="secondary">{moment(date).format('DD.MM.YYYY HH:mm')}</Typography.Text>
+                      }
                     <Typography.Text type="secondary">
                       {Number(size / 1000) > 1000
                         ? `${(Number(size / 1000) / 1000).toFixed(2)}МБ`
                         : `${Math.round(Number(size / 1000))}КБ`}
                     </Typography.Text>
                     {/* <Typography.Text type="secondary">{dateAdd && moment(dateAdd).format('DD.MM.YYYY HH:mm')}</Typography.Text> */}
-                    {date &&
-                      <Typography.Text type="secondary">{moment(date).format('DD.MM.YYYY HH:mm')}</Typography.Text>
-                    }
                   </Flex>
                 </Flex>
                 {downloading && <Spin />}
