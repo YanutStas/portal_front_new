@@ -27,7 +27,7 @@ function GetCards({ item, claimId, versionId, reloadClaim }) {
             // backgroundColor: item.style?.backgroundСolor,
             padding: 10
           },
-          root:{
+          root: {
 
             flex: 1,
             maxWidth: "100%"
@@ -39,10 +39,20 @@ function GetCards({ item, claimId, versionId, reloadClaim }) {
       // actions={actions}
       >
         {/* Если это файл то ... */}
-        {(item.type === "file" || item.type === "sign123"  ) && <FileForDownload type={item.component.ext} name={item.component.name} id={item.component.id} size={item.component.size} signs={item.type === "sign"} />}
+        {(item.type === "file" || item.type === "sign") &&
+          <FileForDownload
+            type={item.component?.ext}
+            name={item.component?.name}
+            id={item.component?.id}
+            size={item.component?.size}
+            sig={item.type === "sign"}
+            idDocForCheckSig={item.component?.baseFile?.id}
+            date={item.component?.date}
+            img={<>{item.style?.picture?.id && <div style={{ width: 30, height: 30 }}><ImagePublic img={item.style?.picture} /></div>}</>}
+          />}
 
         {/* Если это все остальное ... */}
-        {(item.type !== "file" && item.type !== "task") && <Flex gap={5}>
+        {(item.type !== "file" && item.type !== "task"&& item.type !== "sign") && <Flex gap={5}>
           <>{item.style?.picture?.id && <div style={{ width: 30, height: 30 }}><ImagePublic img={item.style?.picture} /></div>}</>
           <Flex vertical >
             <Flex
@@ -258,7 +268,7 @@ export default function StepsClaim({ claimId, versionId, reloadClaim, activeProc
   }
 
 
-  // console.log("steps", steps);
+  console.log("steps", steps);
   return (
     <>
       {steps && steps?.items &&

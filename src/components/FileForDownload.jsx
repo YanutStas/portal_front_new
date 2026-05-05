@@ -30,7 +30,7 @@ const typeFile = {
   noext
 };
 // const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
-export default function FileForDownload({ type, id, name, size, date = false, signs = false, sig = false, idDocForCheckSig = false }) {
+export default function FileForDownload({ type, id, name, size, date = false, signs = false, sig = false, idDocForCheckSig = false, dateAdd = false, img = false }) {
   const token = theme.useToken().token
   const [chekingValue, setChekingValue] = useState(false)
   const [downloading, setDownloading] = useState(false)
@@ -70,27 +70,31 @@ export default function FileForDownload({ type, id, name, size, date = false, si
                     }
                   } catch (error) {
                     console.log(error);
-
                   }
                   setDownloading(false)
                 }
               }}
             >
-              <Flex align="center" gap={5} >
-
+              <Flex align="center" gap={5}>
                 <Flex justify="center" align="center" >
-                  <img src={typeFile[type] ? typeFile[type] : typeFile.noext} alt={`icon ${type}`} style={{ maxWidth: 30 }} />
+                  {img ? img :
+                    <img src={typeFile[type] ? typeFile[type] : typeFile.noext} alt={`icon ${type}`} style={{ maxWidth: 30 }} />
+                  }
                 </Flex>
                 <Flex vertical>
                   <Typography.Text>{name}</Typography.Text>
-                  <Typography.Text type="secondary">
-                    {Number(size / 1000) > 1000
-                      ? `${(Number(size / 1000) / 1000).toFixed(2)}МБ`
-                      : `${Math.round(Number(size / 1000))}КБ`}
-                  </Typography.Text>
-                  {date &&
-                    <Typography.Text type="secondary">{moment(date).format('DD.MM.YYYY HH.mm')}</Typography.Text>
-                  }
+                  <Flex gap={5}>
+
+                    <Typography.Text type="secondary">
+                      {Number(size / 1000) > 1000
+                        ? `${(Number(size / 1000) / 1000).toFixed(2)}МБ`
+                        : `${Math.round(Number(size / 1000))}КБ`}
+                    </Typography.Text>
+                    {/* <Typography.Text type="secondary">{dateAdd && moment(dateAdd).format('DD.MM.YYYY HH:mm')}</Typography.Text> */}
+                    {date &&
+                      <Typography.Text type="secondary">{moment(date).format('DD.MM.YYYY HH:mm')}</Typography.Text>
+                    }
+                  </Flex>
                 </Flex>
                 {downloading && <Spin />}
               </Flex>
@@ -142,27 +146,30 @@ export default function FileForDownload({ type, id, name, size, date = false, si
                 // console.log("idDocForCheckSig", idDocForCheckSig);
               }}
             />} */}
-          {sig && <Tooltip styles={{ body: { fontSize: 12 } }} placement="top" title={"Проверить"} color="#0061aa"><Button disabled={isChecking} style={{ fontSize: 14 }} icon={<SafetyOutlined style={{ fontSize: 24 }} />}
-            size="large"
-            onClick={async () => {
-              setIsChecking(true)
-              const checked = await checkSig(idDocForCheckSig, id)
+          {sig && <Tooltip styles={{ body: { fontSize: 12 } }} placement="top" title={"Проверить"} color="#0061aa">
+            <Button
+              disabled={isChecking}
+              style={{ fontSize: 14 }}
+              // icon={<SafetyOutlined style={{ fontSize: 24 }} />}
+              size="middle"
+              onClick={async () => {
+                setIsChecking(true)
+                const checked = await checkSig(idDocForCheckSig, id)
 
-              setIsChecking(false)
-              if (checked && checked.status === "OK") {
-                // console.log("checked",JSON.parse(checked.data));
-                setChekingValue(checked.data)
-              } else {
-                messageApi.open({
-                  type: 'error',
-                  content: 'Ошибка проверки подписи',
-                });
-              }
-              // console.log("id", id);
-              // console.log("idDocForCheckSig", idDocForCheckSig);
-            }}
-          /></Tooltip>}
-
+                setIsChecking(false)
+                if (checked && checked.status === "OK") {
+                  // console.log("checked",JSON.parse(checked.data));
+                  setChekingValue(checked.data)
+                } else {
+                  messageApi.open({
+                    type: 'error',
+                    content: 'Ошибка проверки подписи',
+                  });
+                }
+                // console.log("id", id);
+                // console.log("idDocForCheckSig", idDocForCheckSig);
+              }}
+            >Проверить</Button></Tooltip>}
         </Flex>
         {signs && <div style={{ marginLeft: 40, }}>
           {signs.map((item, index) => <FileForDownload sig={true} key={index} type={item.ext} name={item.name} id={item.id} size={item.size} idDocForCheckSig={id} />)}
