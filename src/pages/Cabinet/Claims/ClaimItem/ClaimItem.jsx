@@ -93,7 +93,7 @@ export default function ClaimItem() {
 
           </div>
         }
-        <StepsClaim steps={claim?.steps} claimId={claim?.id} versionId={claim?.versionId} reloadClaim={reloadClaim} activeProcessTrees={claim?.processTrees} />
+        <StepsClaim claimId={claim?.id} versionId={claim?.versionId} reloadClaim={reloadClaim} activeProcessTrees={activeProcessTrees} />
       </Flex>,
     },
     // {

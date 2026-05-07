@@ -58,7 +58,10 @@ const useClaim = create((set, get) => ({
   fetchDataByClaim: async (key, dataSet = "steps", processTree = false) => {
     try {
       // set((state) => ({ loadingDataByClaim: true }));
-      const res = await axios.get(`${backServer}/api/cabinet/claims/${key}?dataSet=${dataSet}`, {
+      const url = `${backServer}/api/cabinet/claims/${key}?dataSet=${dataSet}&processTree=${processTree}`
+      // console.log("url", url);
+
+      const res = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
         },

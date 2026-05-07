@@ -52,7 +52,7 @@ function GetCards({ item, claimId, versionId, reloadClaim }) {
           />}
 
         {/* Если это все остальное ... */}
-        {(item.type !== "file" && item.type !== "task"&& item.type !== "sign") && <Flex gap={5}>
+        {(item.type !== "file" && item.type !== "task" && item.type !== "sign") && <Flex gap={5}>
           <>{item.style?.picture?.id && <div style={{ width: 30, height: 30 }}><ImagePublic img={item.style?.picture} /></div>}</>
           <Flex vertical >
             <Flex
@@ -244,7 +244,9 @@ export default function StepsClaim({ claimId, versionId, reloadClaim, activeProc
       console.log('Проблемы загрузки steps')
     }
   }
+  // console.log("activeProcessTrees", activeProcessTrees);
   useEffect(() => {
+
     fetchSteps()
   }, [reload, activeProcessTrees])
   useEffect(() => {
