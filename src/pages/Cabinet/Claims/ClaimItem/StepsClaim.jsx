@@ -11,6 +11,8 @@ import Preloader from '../../../../components/Main/Preloader';
 import MarkDownText from '../../../../components/MarkDownText/MarkDownText';
 import ImagePublic from '../../../../components/ImagePublic';
 
+import icon from '../../../../img/header/logo-sun.png'
+
 
 function GetCards({ item, claimId, versionId, reloadClaim }) {
   const [openModalAction, setOpenModalAction] = useState(false)
@@ -112,11 +114,13 @@ function GetCards({ item, claimId, versionId, reloadClaim }) {
           <Descriptions items={item.component?.items} bordered />
 
         }
-        {item.type === "qrCode" &&
+        {item.type === "stagePayments" && 
+        item.component?.qrCode &&
           <QRCode
             errorLevel="H"
-            value={item.component?.value || "https://mosoblenergo.ru/"}
-            icon="https://osmocode.ru/wp-content/uploads/2022/04/5-4.png"
+            value={item.component?.qrCode || "https://mosoblenergo.ru/"}
+            icon={icon}
+            iconSize={60}
           />
         }
       </Card>
