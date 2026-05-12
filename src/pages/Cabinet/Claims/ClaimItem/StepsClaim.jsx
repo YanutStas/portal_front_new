@@ -14,12 +14,14 @@ import ImagePublic from '../../../../components/ImagePublic';
 import icon from '../../../../img/header/logo-sun.png'
 
 
-function GetCards({ item, claimId, versionId, reloadClaim }) {
+function GetCards({ item, claimId, versionId, reloadClaim, index }) {
   const [openModalAction, setOpenModalAction] = useState(false)
+  const [openModalQR, setOpenModalQR] = useState({})
   let actions = undefined
   if (item.type === "file") {
     actions = [<DownloadOutlined onClick={() => { }} />, <FileUnknownOutlined />]
   }
+  // console.log("openModalQR", openModalQR);
 
   return (
     <>
@@ -114,14 +116,31 @@ function GetCards({ item, claimId, versionId, reloadClaim }) {
           <Descriptions items={item.component?.items} bordered />
 
         }
-        {item.type === "stagePayments" && 
-        item.component?.qrCode &&
-          <QRCode
-            errorLevel="H"
-            value={item.component?.qrCode || "https://mosoblenergo.ru/"}
-            icon={icon}
-            iconSize={60}
-          />
+        {item.type === "stagePayments" &&
+          item.component?.qrCode &&
+
+          <>
+            <Button onClick={() => {
+              setOpenModalQR(true)
+            }}>Показать QR</Button>
+            <Modal
+              open={openModalQR}
+              onCancel={() => {
+                setOpenModalQR(false)
+              }}
+              title={"QR код"}
+              width={550}
+              footer={false}
+            >
+              <QRCode
+                errorLevel="H"
+                size={500}
+                value={item.component?.qrCode || "https://mosoblenergo.ru/"}
+              // icon={icon}
+              // iconSize={60}
+              />
+            </Modal>
+          </>
         }
       </Card>
       {openModalAction &&
@@ -145,7 +164,7 @@ function GetCards({ item, claimId, versionId, reloadClaim }) {
 function GetNeighbors({ neighbors, claimId, versionId, reloadClaim }) {
   return (
     <>
-      {neighbors?.map((item, index) => (<GetCards key={index} item={item} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />))}
+      {neighbors?.map((item, index) => (<GetCards index={index} key={index} item={item} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />))}
     </>
   )
 }
@@ -159,7 +178,7 @@ function GetChildren({ childrenArr, level, claimId, versionId, reloadClaim }) {
     {childrenArr?.map((item, index) =>
       <Flex vertical gap={10} key={index}>
         <Flex gap={3} align='stretch' wrap='wrap' justify='stretch' style={{ width: "100%" }}>
-          <GetCards item={item} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />
+          <GetCards index={index} item={item} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />
           {item.neighbors && <GetNeighbors neighbors={item.neighbors} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />}
         </Flex>
         {item.children && <GetChildren childrenArr={item.children} level={level + 1} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />}
