@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Collapse, ConfigProvider, Drawer, Flex, Modal, Radio, Tag, Timeline, Tree, Typography, theme } from 'antd'
+import { Badge, Button, Card, Collapse, ConfigProvider, Descriptions, Drawer, Flex, Modal, Radio, Table, Tag, Timeline, Tree, Typography, theme } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileTextOutlined, InfoCircleOutlined, LikeOutlined, DownloadOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { color } from 'framer-motion';
@@ -106,6 +106,10 @@ function GetCards({ item, claimId, versionId, reloadClaim }) {
 
         {/* Если есть описание карточки ... */}
         {(item.component?.description || item.component?.currentStatus?.description) && <Typography.Paragraph>{item.component?.description || item.component?.currentStatus?.description}</Typography.Paragraph>}
+
+        {item.type === "stagePayments" &&
+          <Descriptions items={item.component?.items} />
+        }
       </Card>
       {openModalAction &&
         <ActionItem

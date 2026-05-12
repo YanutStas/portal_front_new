@@ -53,9 +53,9 @@ export default function FileForDownload({ type, id, name, size, date = false, si
   }
   return (
     <>
-      <Flex vertical gap={10} >
+      <Flex vertical gap={10} wrap={"wrap"}>
         {contextHolder}
-        <Flex gap={5} align="center" >
+        <Flex gap={5} align="center" wrap={"wrap"}>
           <Flex gap={10} align="center">
             <a
               onClick={async () => {
