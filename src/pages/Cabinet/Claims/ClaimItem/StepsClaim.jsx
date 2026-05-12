@@ -16,7 +16,7 @@ import icon from '../../../../img/header/logo-sun.png'
 
 function GetCards({ item, claimId, versionId, reloadClaim, index }) {
   const [openModalAction, setOpenModalAction] = useState(false)
-  const [openModalQR, setOpenModalQR] = useState({})
+  const [openModalQR, setOpenModalQR] = useState(false)
   let actions = undefined
   if (item.type === "file") {
     actions = [<DownloadOutlined onClick={() => { }} />, <FileUnknownOutlined />]
