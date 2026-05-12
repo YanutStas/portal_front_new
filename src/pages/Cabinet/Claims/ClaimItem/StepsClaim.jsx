@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Collapse, ConfigProvider, Descriptions, Drawer, Flex, Modal, Radio, Table, Tag, Timeline, Tree, Typography, theme } from 'antd'
+import { Badge, Button, Card, Collapse, ConfigProvider, Descriptions, Drawer, Flex, Modal, Radio, Table, Tag, Timeline, Tree, Typography, theme, QRCode } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileTextOutlined, InfoCircleOutlined, LikeOutlined, DownloadOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { color } from 'framer-motion';
@@ -108,7 +108,16 @@ function GetCards({ item, claimId, versionId, reloadClaim }) {
         {(item.component?.description || item.component?.currentStatus?.description) && <Typography.Paragraph>{item.component?.description || item.component?.currentStatus?.description}</Typography.Paragraph>}
 
         {item.type === "stagePayments" &&
-          <Descriptions items={item.component?.items} bordered/>
+
+          <Descriptions items={item.component?.items} bordered />
+
+        }
+        {item.type === "qrCode" &&
+          <QRCode
+            errorLevel="H"
+            value={item.component?.value || "https://mosoblenergo.ru/"}
+            icon="https://osmocode.ru/wp-content/uploads/2022/04/5-4.png"
+          />
         }
       </Card>
       {openModalAction &&
