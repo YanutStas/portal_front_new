@@ -108,7 +108,7 @@ function GetCards({ item, claimId, versionId, reloadClaim }) {
         {(item.component?.description || item.component?.currentStatus?.description) && <Typography.Paragraph>{item.component?.description || item.component?.currentStatus?.description}</Typography.Paragraph>}
 
         {item.type === "stagePayments" &&
-          <Descriptions items={item.component?.items} />
+          <Descriptions items={item.component?.items} bordered/>
         }
       </Card>
       {openModalAction &&
