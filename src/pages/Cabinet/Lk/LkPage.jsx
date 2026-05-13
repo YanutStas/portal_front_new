@@ -1,4 +1,4 @@
-import { Button, Collapse, Descriptions, Divider, Drawer, Flex, List, theme, Typography } from 'antd';
+import { Button, Collapse, Descriptions, Divider, Drawer, Flex, List, Pagination, theme, Typography } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import CardClaim from '../Claims/CardClaim';
@@ -6,11 +6,16 @@ import usePersonalAccounts from '../../../stores/Cabinet/usePersonalAccount';
 import Preloader from '../../../components/Main/Preloader'
 import Container from '../../../components/Container';
 import FiltersClaims from "../Claims/Claimers/FiltersClaims";
+import LineClaim from '../Claims/LineClaim';
+import { BarsOutlined, BorderOutlined } from '@ant-design/icons';
 
-export default function Lk() {
+export default function LkPage() {
     const [openDrawer, setOpenDrawer] = useState(false)
     const [selectFilters, setSelectFilters] = useState({})
     const [claims, setClaims] = useState()
+    const [typeView, setTypeView] = useState('card')
+    const [page, setPage] = useState(1)
+    const [pageSize, setPageSize] = useState(10)
     // const [lk, setLk] = useState(null)
     // const [listClaims, setListClaims] = useState(null)
     // const [listCompletedClaims, setListCompletedClaims] = useState(null)
@@ -21,6 +26,7 @@ export default function Lk() {
         claimsByPersonalAccount,
         fetchClaimsByPersonalAccount,
         // loadingPersonalAccounts,
+        metaClaimsByPersonalAccount,
         loadingPersonalAccount,
         loadingClaimsByPersonalAccount,
     } = usePersonalAccounts(state => state)
@@ -43,35 +49,13 @@ export default function Lk() {
     }, [selectFilters])
     useEffect(() => {
         fetchPersonalAccountItem(id)
-        fetchClaimsByPersonalAccount(id)
-        // setListCompletedClaims([
-        //     {
-        //         Ref_Key: "c416e302-98df-11ef-9501-5ef3fcb042f7",
-        //         number: "000000109",
-        //         date: "2024-10-01T09:00:32",
-        //         service: {
-        //             description: "Описание услуги N3"
-        //         }
-        //     },
-        //     {
-        //         Ref_Key: "c416e302-98df-11ef-9501-5ef3fcb042f6",
-        //         number: "000000108",
-        //         date: "2024-09-12T10:56:32",
-        //         service: {
-        //             description: "Описание услуги №4"
-        //         }
-        //     }
-        // ])
-    }, [])
-    // const collap = [
-    //     {
-    //         key: '1',
-    //         label: 'Выполненные заявки',
-    //         children: <Flex gap={10} style={{ marginBottom: 10 }}>{listCompletedClaims && listCompletedClaims.map((item, index) => <CardClaim item={item} key={index} borderColor={"red"} />)}</Flex>,
-    //     },
-    // ]
-    // console.log(token)
-    console.log("claims", claimsByPersonalAccount)
+        fetchClaimsByPersonalAccount(id, page, pageSize)
+    }, [page, pageSize])
+
+    // console.log("page", page)
+    // console.log("pageSize", pageSize)
+    // console.log("claims", claimsByPersonalAccount)
+    // console.log("metaClaimsByPersonalAccount", metaClaimsByPersonalAccount)
     return (
         <Container>
             {loadingPersonalAccount && <Preloader />}
@@ -86,27 +70,53 @@ export default function Lk() {
                             <Typography.Text style={{ color: token.colorTextDescription }}>КПП:{personalAccount?.kpp}</Typography.Text>
                         }
                     </Flex>
-
                     <Button onClick={() => { setOpenDrawer(true) }}>Подробнее...</Button>
+
                     {loadingClaimsByPersonalAccount && <Preloader />}
+
                     {!loadingClaimsByPersonalAccount &&
                         <>
-                            <div style={{ marginTop: 20 }}>
-                                <FiltersClaims claimsAll={claimsByPersonalAccount} setSelectFilters={setSelectFilters} selectFilters={selectFilters} />
-                            </div>
-                            <Divider titlePlacement='start'>В работе</Divider>
-                            <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20 }}>
-                                {claims && claims.sort((a, b) => b.number - a.number).filter(item => item.currentStatus.state !== "completed" && item.currentStatus.state !== "noAction").map((item, index) =>
-                                    <CardClaim item={item} key={index} />)}
+                            <Flex justify='flex-end' gap={10}>
+                                <BorderOutlined style={{ fontSize: 24, cursor: "pointer" }} onClick={() => { setTypeView('card') }} />
+                                <BarsOutlined style={{ fontSize: 24, cursor: "pointer" }} onClick={() => { setTypeView('line') }} />
                             </Flex>
-                            <Divider titlePlacement='start'>В архиве</Divider>
+                            {/* <div style={{ marginTop: 20 }}>
+                                <FiltersClaims claimsAll={claimsByPersonalAccount} setSelectFilters={setSelectFilters} selectFilters={selectFilters} />
+                            </div> */}
+                            {/* <Divider titlePlacement='start'>В работе</Divider> */}
+                            <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20 }}>
+                                {claims && claims.map((item, index) => {
+                                    if (typeView === 'card') return <CardClaim item={item} key={index} state={item.currentStatus?.state}/>
+                                    if (typeView === 'line') return <LineClaim item={item} key={index} state={item.currentStatus?.state} />
+                                }
+                                )}
+                            </Flex>
+                            {/* <Divider titlePlacement='start'>В архиве</Divider>
                             <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20 }}>
                                 {claims && claims.sort((a, b) => b.number - a.number).filter(item => item.currentStatus.state === "completed" || item.currentStatus.state === "noAction").map((item, index) =>
                                     <CardClaim item={item} key={index} state={item.currentStatus.state} />)}
-                            </Flex>
+                            </Flex> */}
+                            <Pagination
+                                locale={{
+                                    items_per_page: 'на страницу', // Заменяет "/page"
+                                }}
+                                styles={{
+                                    root: {
+                                        display:"flex",
+                                        rowGap:10,
+                                        flexWrap: "wrap"
+                                    }
+                                }}
+                                defaultCurrent={page}
+                                showTotal={total => `Всего ${total}`}
+                                pageSize={pageSize}
+                                total={metaClaimsByPersonalAccount.total}
+                                onChange={(page, pageSize) => {
+                                    setPage(page)
+                                    setPageSize(pageSize)
+                                }} />
                         </>
                     }
-                    {/* <Collapse items={collap} /> */}
 
                     <Drawer
                         title={personalAccount?.name}

@@ -1,11 +1,10 @@
 import { Badge, Card, Descriptions, Drawer, Flex, Tag, theme, Typography } from 'antd'
 import React, { useState } from 'react'
-import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileTextOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileTextOutlined, InfoCircleOutlined, SyncOutlined } from "@ant-design/icons";
 import { Link } from 'react-router-dom'
 import styles from "./Claimers/Claimers.module.css";
 import moment from 'moment';
 import InfoDrawer from '../../../components/InfoDrawer';
-import { InfoCircleOutlined } from "@ant-design/icons";
 import MarkDownText from '../../../components/MarkDownText/MarkDownText';
 
 export default function CardClaim({ item, borderColor, state = false }) {
@@ -58,6 +57,7 @@ export default function CardClaim({ item, borderColor, state = false }) {
                     {(item.countAppeals > 0 || item.countTasks > 0) && <div style={{ position: "absolute", borderRadius: 10, top: -5, right: -5 }}><Badge count={(Number(item.countAppeals) || 0) + (Number(item.countTasks) || 0)} showZero /></div>}
                     {state &&
                         <div style={{ position: "absolute", borderRadius: 10, bottom: 5, right: 5 }}>
+                            {state === "inAction" && <SyncOutlined style={{ color: item.color || "blue", fontSize: 30 }} />}
                             {state === "noAction" && <CloseCircleOutlined style={{ color: item.color || "red", fontSize: 30 }} />}
                             {state === "completed" && <CheckCircleOutlined style={{ color: item.color || "#52c41a", fontSize: 30 }} />}
                         </div>}
@@ -71,9 +71,9 @@ export default function CardClaim({ item, borderColor, state = false }) {
                                 {item.service.description}
                             </Descriptions.Item>
                             {item.description && item.description !== "" &&
-                            <Descriptions.Item label="Описание">
-                                {item.description}
-                            </Descriptions.Item>
+                                <Descriptions.Item label="Описание">
+                                    {item.description}
+                                </Descriptions.Item>
                             }
                         </Descriptions>
                         {item.currentStatus?.label &&
@@ -82,14 +82,13 @@ export default function CardClaim({ item, borderColor, state = false }) {
 
                                 <Flex gap={5} wrap="wrap" align='center'>
                                     <div>
-                                        <Tag style={{ marginRight: 2 }} color="geekblue">{item.currentStatus.label}</Tag>
+                                        <Tag style={{ marginRight: 2, whiteSpace: "normal" }} color="geekblue">{item.currentStatus.label}</Tag>
                                     </div>
                                     {item.currentStatus?.date &&
                                         <Typography.Text style={{ color: "gray", fontSize: 12 }}>от {moment(item.currentStatus.date).format("DD.MM.YYYY")}</Typography.Text>
                                     }
                                 </Flex>
                                 <Flex gap={3}>
-
                                     <Typography.Text style={{
                                         fontWeight: 600,
                                         // color: token.colorInfoText,
