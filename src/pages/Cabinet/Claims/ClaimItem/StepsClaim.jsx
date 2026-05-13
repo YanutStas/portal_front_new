@@ -119,28 +119,28 @@ function GetCards({ item, claimId, versionId, reloadClaim, index }) {
         {item.type === "stagePayments" &&
           item.component?.qrCode &&
 
-          <>
-            <Button onClick={() => {
+          <div style={{marginTop:10}}>
+            <Button type='primary' onClick={() => {
               setOpenModalQR(true)
-            }}>Показать QR</Button>
+            }}>QR код для оплаты</Button>
             <Modal
               open={openModalQR}
               onCancel={() => {
                 setOpenModalQR(false)
               }}
-              title={"QR код"}
+              title={ item.component?.qrCode?.name||"QR код"}
               width={550}
               footer={false}
             >
               <QRCode
                 errorLevel="H"
                 size={500}
-                value={item.component?.qrCode || "https://mosoblenergo.ru/"}
+                value={item.component?.qrCode?.value || "https://mosoblenergo.ru/"}
               // icon={icon}
               // iconSize={60}
               />
             </Modal>
-          </>
+          </div>
         }
       </Card>
       {openModalAction &&
