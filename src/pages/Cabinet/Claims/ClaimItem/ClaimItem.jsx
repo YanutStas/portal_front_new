@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Typography, Button, Steps, Tabs, Modal, Result, Flex, Badge, theme, Descriptions, ConfigProvider, Radio, } from "antd";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 // import pdfMake from "pdfmake/build/pdfmake";
 import useClaims from "../../../../stores/Cabinet/useClaims";
 // import ChatComponent from "../ChatComponent/ChatComponent";
@@ -19,6 +19,8 @@ import StepsClaim from "./StepsClaim";
 import Preloader from "../../../../components/Main/Preloader";
 import Container from "../../../../components/Container";
 import InfoClaim from "./InfoClaim";
+import { LeftOutlined } from '@ant-design/icons';
+
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -42,6 +44,7 @@ export default function ClaimItem() {
   const { id } = useParams();
 
   const token = theme.useToken().token
+  const navigate = useNavigate();
   // console.log("searchParams", searchParams);
   // console.log("claim", claim);
 
@@ -130,6 +133,7 @@ export default function ClaimItem() {
 
   return (
     <Container>
+      <Button icon={<LeftOutlined />} onClick={() => navigate(-1)}>Назад</Button>
       {loadingClaim &&
         <Preloader />
       }

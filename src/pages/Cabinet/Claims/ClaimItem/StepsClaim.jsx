@@ -12,6 +12,7 @@ import MarkDownText from '../../../../components/MarkDownText/MarkDownText';
 import ImagePublic from '../../../../components/ImagePublic';
 
 import icon from '../../../../img/header/logo-sun.png'
+import { QrModal } from '../../../../components/QrModal';
 
 
 function GetCards({ item, claimId, versionId, reloadClaim, index }) {
@@ -119,11 +120,19 @@ function GetCards({ item, claimId, versionId, reloadClaim, index }) {
         {item.type === "stagePayments" &&
           item.component?.qrCode &&
 
-          <div style={{marginTop:10}}>
+          <div style={{ marginTop: 10 }}>
             <Button type='primary' onClick={() => {
               setOpenModalQR(true)
             }}>QR код для оплаты</Button>
-            <Modal
+            <QrModal
+              open={openModalQR}
+              onCancel={() => {
+                setOpenModalQR(false)
+              }}
+              value={item.component?.qrCode?.value || "https://mosoblenergo.ru/"}
+              title={item.component?.qrCode?.name || "QR код"}
+            />
+            {/* <Modal
               open={openModalQR}
               onCancel={() => {
                 setOpenModalQR(false)
@@ -139,7 +148,7 @@ function GetCards({ item, claimId, versionId, reloadClaim, index }) {
               // icon={icon}
               // iconSize={60}
               />
-            </Modal>
+            </Modal> */}
           </div>
         }
       </Card>
