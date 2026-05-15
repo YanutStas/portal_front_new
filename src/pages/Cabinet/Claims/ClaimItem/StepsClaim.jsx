@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Collapse, ConfigProvider, Descriptions, Drawer, Flex, Modal, Radio, Table, Tag, Timeline, Tree, Typography, theme, QRCode } from 'antd'
+import { Badge, Button, Card, Collapse, ConfigProvider, Descriptions, Drawer, Flex, Modal, Radio, Table, Tag, Timeline, Tree, Typography, theme, QRCode, Empty } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileTextOutlined, InfoCircleOutlined, LikeOutlined, DownloadOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { color } from 'framer-motion';
@@ -112,18 +112,16 @@ function GetCards({ item, claimId, versionId, reloadClaim, index }) {
         {/* Если есть описание карточки ... */}
         {(item.component?.description || item.component?.currentStatus?.description) && <Typography.Paragraph>{item.component?.description || item.component?.currentStatus?.description}</Typography.Paragraph>}
 
-        {item.type === "stagePayments" &&
-
+        {item.type === "stagePayments" && item.component?.items?.length > 0 &&
           <Descriptions items={item.component?.items} bordered />
-
         }
         {item.type === "stagePayments" &&
           item.component?.qrCode &&
 
-          <div style={{ marginTop: 10 }}>
+          <Flex justify='flex-end' style={{ marginTop: 10 }}>
             <Button type='primary' onClick={() => {
               setOpenModalQR(true)
-            }}>QR код для оплаты</Button>
+            }}>Оплатить</Button>
             <QrModal
               open={openModalQR}
               onCancel={() => {
@@ -149,7 +147,7 @@ function GetCards({ item, claimId, versionId, reloadClaim, index }) {
               // iconSize={60}
               />
             </Modal> */}
-          </div>
+          </Flex>
         }
       </Card>
       {openModalAction &&
@@ -318,6 +316,9 @@ export default function StepsClaim({ claimId, versionId, reloadClaim, activeProc
   console.log("steps", steps);
   return (
     <>
+    {!steps&&
+    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}  description="Нет данных"/>
+    }
       {steps && steps?.items &&
         <Collapse defaultActiveKey={[steps?.items?.findIndex(item => item.component.current)]} items={steps?.items?.map((item, index) => ({
           key: index,

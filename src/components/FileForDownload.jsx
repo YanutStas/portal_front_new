@@ -17,6 +17,7 @@ import { Button, Descriptions, Flex, message, Modal, Spin, Typography, theme, To
 import checkSig from "./Cabinet/checkSig";
 import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, DownloadOutlined, SafetyOutlined } from '@ant-design/icons'
 import PdfDownloader from "./PdfDownloader";
+import Preloader from "./Main/Preloader";
 const typeFile = {
   pdf,
   doc,
@@ -32,6 +33,7 @@ const typeFile = {
 // const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 export default function FileForDownload({ type, id, name, size, date = false, signs = false, sig = false, idDocForCheckSig = false, dateAdd = false, img = false }) {
   const token = theme.useToken().token
+  const [openModal, setOpenModal] = useState(false)
   const [chekingValue, setChekingValue] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const [isChecking, setIsChecking] = useState(false)
@@ -85,9 +87,9 @@ export default function FileForDownload({ type, id, name, size, date = false, si
                   <Typography.Text>{name}</Typography.Text>
                   <Flex gap={5}>
 
-                      {date &&
-                        <Typography.Text type="secondary">{moment(date).format('DD.MM.YYYY HH:mm')}</Typography.Text>
-                      }
+                    {date &&
+                      <Typography.Text type="secondary">{moment(date).format('DD.MM.YYYY HH:mm')}</Typography.Text>
+                    }
                     <Typography.Text type="secondary">
                       {Number(size / 1000) > 1000
                         ? `${(Number(size / 1000) / 1000).toFixed(2)}МБ`
@@ -146,30 +148,33 @@ export default function FileForDownload({ type, id, name, size, date = false, si
                 // console.log("idDocForCheckSig", idDocForCheckSig);
               }}
             />} */}
-          {sig && <Tooltip styles={{ body: { fontSize: 12 } }} placement="top" title={"Проверить"} color="#0061aa">
-            <Button
-              disabled={isChecking}
-              style={{ fontSize: 14 }}
-              // icon={<SafetyOutlined style={{ fontSize: 24 }} />}
-              size="middle"
-              onClick={async () => {
-                setIsChecking(true)
-                const checked = await checkSig(idDocForCheckSig, id)
-
-                setIsChecking(false)
-                if (checked && checked.status === "OK") {
-                  // console.log("checked",JSON.parse(checked.data));
-                  setChekingValue(checked.data)
-                } else {
-                  messageApi.open({
-                    type: 'error',
-                    content: 'Ошибка проверки подписи',
-                  });
-                }
-                // console.log("id", id);
-                // console.log("idDocForCheckSig", idDocForCheckSig);
-              }}
-            >Проверить</Button></Tooltip>}
+          {sig &&
+            // <Tooltip styles={{ body: { fontSize: 12 } }} placement="top" title={"Проверить"} color="#0061aa">
+              <Button
+                disabled={isChecking}
+                style={{ fontSize: 14 }}
+                // icon={<SafetyOutlined style={{ fontSize: 24 }} />}
+                size="middle"
+                onClick={async () => {
+                  setIsChecking(true)
+                  setOpenModal(true)
+                  const checked = await checkSig(idDocForCheckSig, id)
+                  setIsChecking(false)
+                  if (checked && checked.status === "OK") {
+                    // console.log("checked",JSON.parse(checked.data));
+                    setChekingValue(checked.data)
+                  } else {
+                    messageApi.open({
+                      type: 'error',
+                      content: 'Ошибка проверки подписи',
+                    });
+                  }
+                  // console.log("id", id);
+                  // console.log("idDocForCheckSig", idDocForCheckSig);
+                }}
+              >О подписи</Button>
+            // </Tooltip> 
+          }
         </Flex>
         {signs && <div style={{ marginLeft: 40, }}>
           {signs.map((item, index) => <FileForDownload sig={true} key={index} type={item.ext} name={item.name} id={item.id} size={item.size} idDocForCheckSig={id} />)}
@@ -178,13 +183,20 @@ export default function FileForDownload({ type, id, name, size, date = false, si
       </Flex>
       {sig &&
         <Modal
-          open={chekingValue}
+          open={openModal}
           onCancel={() => {
-            setChekingValue(false)
+            setOpenModal(false)
           }}
           width={800}
           footer
+          title={name}
         >
+          {!chekingValue &&
+            <>
+              <Preloader />
+              <Typography.Title level={3} style={{ marginBottom: 20, textAlign: "center" }}>Проверка подписи...</Typography.Title>
+            </>
+          }
           {chekingValue &&
             <>
               {/* <Typography.Title style={{ color: "green" }} level={5}>{chekingValue.description}</Typography.Title> */}
