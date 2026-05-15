@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card, Typography, Skeleton, Descriptions, theme, Divider, Flex, Empty, Pagination } from "antd";
-import { FileSearchOutlined, UserOutlined } from "@ant-design/icons";
+import { BarsOutlined, BorderOutlined, FileSearchOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import AppHelmet from "../../../../components/Global/AppHelmet";
 import useClaims from "../../../../stores/Cabinet/useClaims";
@@ -11,6 +11,8 @@ import CardClaim from "../CardClaim";
 import usePersonalAccounts from "../../../../stores/Cabinet/usePersonalAccount";
 import Container from "../../../../components/Container";
 import FiltersClaims from "./FiltersClaims";
+import Preloader from "../../../../components/Main/Preloader";
+import LineClaim from "../LineClaim";
 
 // const { Title } = Typography;
 
@@ -32,12 +34,13 @@ import FiltersClaims from "./FiltersClaims";
 // ]
 
 export default function Claimers() {
-
+  const [typeView, setTypeView] = useState('card')
   const [selectFilters, setSelectFilters] = useState({})
   const [claims, setClaims] = useState()
   const [page, setPage] = useState(1)
-  const [size, setSize] = useState(15)
+  const [pageSize, setPageSize] = useState(10)
   const claimsAll = useClaims((state) => state.claims);
+  const metaClaims = useClaims((state) => state.metaClaims);
   const fetchClaims = useClaims((state) => state.fetchClaims);
   const personalAccounts = usePersonalAccounts((state) => state.personalAccounts);
   const fetchPersonalAccounts = usePersonalAccounts((state) => state.fetchPersonalAccounts);
@@ -61,22 +64,20 @@ export default function Claimers() {
     }
   }, [selectFilters])
   useEffect(() => {
-    fetchClaims(page, size);
     fetchPersonalAccounts();
-  }, [fetchClaims]);
+  }, []);
+  useEffect(() => {
+    fetchClaims(page, pageSize);
+  }, [page, pageSize]);
   console.log("claimsAll", claimsAll)
   // console.log("token",token)
   return (
     <Container>
+
       <AppHelmet title={"Список заявок"} desc={"Список поданных заявок"} />
       {/* <Title level={1}>Заявки</Title> */}
       {!claims ? (
-        <div>
-          {/* Отображение скелетонов, пока данные загружаются */}
-          <Skeleton active avatar paragraph={{ rows: 2 }} />
-          <Skeleton active avatar paragraph={{ rows: 2 }} />
-          <Skeleton active avatar paragraph={{ rows: 2 }} />
-        </div>
+        <Preloader />
       ) : (
         <div className={styles.claimsContainer}>
           {claims?.length === 0 && personalAccounts.length === 0 &&
@@ -87,10 +88,10 @@ export default function Claimers() {
               }
             />
           }
-          {personalAccounts && personalAccounts.length > 0 && <Divider orientation="left">
+          {personalAccounts && personalAccounts.length > 0 && <Divider titlePlacement="start">
             <Flex gap={10} align="center">
               <UserOutlined style={{ fontSize: 24 }} />
-              <Typography.Text>Заявки от:</Typography.Text>
+              <Typography.Text>Личные кабинеты</Typography.Text>
             </Flex>
           </Divider>}
           <Flex wrap={"wrap"} gap={20} >
@@ -100,33 +101,25 @@ export default function Claimers() {
                 key={index}
                 to={`/cabinet/lk/${item.id}`}
                 className={styles.styleLink}
+                // style={{width:"100%"}}
               >
                 <Card
-                  extra={<UserOutlined style={{ fontSize: 24, color: "gray" }} />}
-                  className={styles.styleCard}
-                  styles={{
-                    body: {
-                      // backgroundImage: "url('https://grizly.club/uploads/posts/2023-02/1675895570_grizly-club-p-lichnii-kabinet-klipart-25.png')",
-                      // backgroundRepeat:"no-repeat",
-                      // backgroundSize:"15%",
-                      // backgroundPosition:"right 25px bottom 50%"
-                    }
-                  }}
                   hoverable
-                  title={<Flex wrap={"wrap"} align="center" justify="space-between">
-                    <Typography.Text>{item.name}</Typography.Text>
-                    {/* <div><Typography.Text style={{ color: token.colorTextDescription }}>От: </Typography.Text><Typography.Text>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Typography.Text></div> */}
-                  </Flex>}
                   style={{
                     border: `1px solid ${token.colorInfo}`,
-                    // background: "linear-gradient(0deg, rgba(243, 112, 33,.1) 0%, rgba(255,255,255,0) 30%)",
                   }}
                 // extra={<div><Typography.Text style={{ color: token.colorTextDescription }}>Создан: </Typography.Text><Typography.Text>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Typography.Text></div>}
                 >
-                  <Descriptions column={1}>
-                    {/* <Descriptions.Item label="Создана">
+                  <Card.Meta
+                    avatar={<UserOutlined
+                      style={{ fontSize: 24, color: "gray" }} />}
+                    title={item.name}
+                    description={`Заявок ${item.totalClaims}`}
+                  />
+                  {/* <Descriptions column={1}>
+                     <Descriptions.Item label="Создана">
                         {moment(item.date).format('DD.MM.YYYY HH:mm')}
-                        </Descriptions.Item> */}
+                        </Descriptions.Item> 
                     {item.totalClaims &&
                       <Descriptions.Item label="Заявок" styles={{ content: { color: "green", fontWeight: 700 } }}>
                         {item.totalClaims}
@@ -137,7 +130,7 @@ export default function Claimers() {
                         {item.finishedClaims}
                       </Descriptions.Item>
                     }
-                  </Descriptions>
+                  </Descriptions> */}
                 </Card>
               </Link>
             ))}
@@ -158,16 +151,44 @@ export default function Claimers() {
                   <Typography.Text>Заявки на проверке</Typography.Text>
                 </Flex>
               </Divider>
-              <FiltersClaims claimsAll={claimsAll} setSelectFilters={setSelectFilters} selectFilters={selectFilters} />
-              <Flex wrap={"wrap"} gap={20} >
-                {claims?.sort((a, b) => b.number - a.number).map((item, index) => (
-                  <CardClaim item={item} key={index} />
-                ))}
+              {/* <FiltersClaims claimsAll={claimsAll} setSelectFilters={setSelectFilters} selectFilters={selectFilters} /> */}
+              <Flex justify='flex-end' gap={10}>
+                <BorderOutlined style={{ fontSize: 24, cursor: "pointer" }} onClick={() => { setTypeView('card') }} />
+                <BarsOutlined style={{ fontSize: 24, cursor: "pointer" }} onClick={() => { setTypeView('line') }} />
               </Flex>
-              <Pagination defaultCurrent={1} total={500} />
+              <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20 }}>
+                {claims && claims.map((item, index) => {
+                  if (typeView === 'card') return <CardClaim item={item} key={index} state={item.currentStatus?.state} />
+                  if (typeView === 'line') return <LineClaim item={item} key={index} state={item.currentStatus?.state} />
+                }
+                )}
+              </Flex>
+              <Pagination
+                locale={{
+                  items_per_page: 'на страницу',
+                  next_5: "Следующие 5 страниц",
+                  prev_5: "Предыдущие 5 страниц",
+                  next_page: "Следующая страница",
+                  prev_page: "Предыдущая страница"
+                }}
+                styles={{
+                  root: {
+                    display: "flex",
+                    rowGap: 10,
+                    flexWrap: "wrap"
+                  }
+                }}
+                defaultCurrent={page}
+                showTotal={total => `Всего ${total}`}
+                pageSize={pageSize}
+                total={metaClaims?.total}
+                showSizeChanger
+                onChange={(page, pageSize) => {
+                  setPage(page)
+                  setPageSize(pageSize)
+                }} />
             </>
           }
-          {/* <Divider orientation="left">Отклоненные заявки</Divider> */}
 
         </div>
       )}

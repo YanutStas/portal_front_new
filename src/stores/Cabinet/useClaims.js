@@ -3,6 +3,7 @@ import axios from "axios";
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 const useClaim = create((set, get) => ({
   claims: null,
+  metaClaims:null,
   claim: null,
   loadingClaim: false,
   loadingDataByClaim: false,
@@ -18,18 +19,19 @@ const useClaim = create((set, get) => ({
   clearNewClaim: () => {
     set({ newClaim: null });
   },
-  fetchClaims: async (key) => {
+  fetchClaims: async (page, pageSize) => {
     set((state) => ({ claims: null, loadingClaims: true }));
-    const res = await axios.get(`${backServer}/api/cabinet/claims`, {
+    const res = await axios.get(`${backServer}/api/cabinet/claims?page=${page}&pageSize=${pageSize}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
       },
       withCredentials: true,
     });
-    // console.log(res.data.data);
+    console.log(res.data);
     set((state) => {
       return {
         claims: res.data.data,
+        metaClaims: res.data.meta,
       };
     });
   },

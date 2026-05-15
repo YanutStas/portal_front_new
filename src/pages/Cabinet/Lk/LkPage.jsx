@@ -1,15 +1,16 @@
 import { Button, Collapse, Descriptions, Divider, Drawer, Flex, List, Pagination, theme, Typography } from 'antd';
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import CardClaim from '../Claims/CardClaim';
 import usePersonalAccounts from '../../../stores/Cabinet/usePersonalAccount';
 import Preloader from '../../../components/Main/Preloader'
 import Container from '../../../components/Container';
 import FiltersClaims from "../Claims/Claimers/FiltersClaims";
 import LineClaim from '../Claims/LineClaim';
-import { BarsOutlined, BorderOutlined } from '@ant-design/icons';
+import { BarsOutlined, BorderOutlined, LeftOutlined } from '@ant-design/icons';
 
 export default function LkPage() {
+    const navigate = useNavigate()
     const [openDrawer, setOpenDrawer] = useState(false)
     const [selectFilters, setSelectFilters] = useState({})
     const [claims, setClaims] = useState()
@@ -58,6 +59,7 @@ export default function LkPage() {
     // console.log("metaClaimsByPersonalAccount", metaClaimsByPersonalAccount)
     return (
         <Container>
+            <Button icon={<LeftOutlined />} onClick={() => navigate(-1)}>Назад</Button>
             {loadingPersonalAccount && <Preloader />}
             {!loadingPersonalAccount &&
                 <div>
@@ -86,7 +88,7 @@ export default function LkPage() {
                             {/* <Divider titlePlacement='start'>В работе</Divider> */}
                             <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20 }}>
                                 {claims && claims.map((item, index) => {
-                                    if (typeView === 'card') return <CardClaim item={item} key={index} state={item.currentStatus?.state}/>
+                                    if (typeView === 'card') return <CardClaim item={item} key={index} state={item.currentStatus?.state} />
                                     if (typeView === 'line') return <LineClaim item={item} key={index} state={item.currentStatus?.state} />
                                 }
                                 )}
@@ -98,19 +100,23 @@ export default function LkPage() {
                             </Flex> */}
                             <Pagination
                                 locale={{
-                                    items_per_page: 'на страницу', // Заменяет "/page"
+                                    items_per_page: 'на страницу',
+                                    next_5: "Следующие 5 страниц",
+                                    prev_5: "Предыдущие 5 страниц",
+                                    next_page:"Следующая страница",
+                                    prev_page:"Предыдущая страница"
                                 }}
                                 styles={{
                                     root: {
-                                        display:"flex",
-                                        rowGap:10,
+                                        display: "flex",
+                                        rowGap: 10,
                                         flexWrap: "wrap"
                                     }
                                 }}
                                 defaultCurrent={page}
                                 showTotal={total => `Всего ${total}`}
                                 pageSize={pageSize}
-                                total={metaClaimsByPersonalAccount.total}
+                                total={metaClaimsByPersonalAccount?.total}
                                 onChange={(page, pageSize) => {
                                     setPage(page)
                                     setPageSize(pageSize)

@@ -1,6 +1,6 @@
 import { Badge, Card, Descriptions, Drawer, Flex, Tag, theme, Typography } from 'antd'
 import React, { useState } from 'react'
-import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileTextOutlined, InfoCircleOutlined, SyncOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileSearchOutlined, FileTextOutlined, InfoCircleOutlined, SyncOutlined } from "@ant-design/icons";
 import { Link } from 'react-router-dom'
 import styles from "./Claimers/Claimers.module.css";
 import moment from 'moment';
@@ -57,9 +57,10 @@ export default function CardClaim({ item, borderColor, state = false }) {
                     {(item.countAppeals > 0 || item.countTasks > 0) && <div style={{ position: "absolute", borderRadius: 10, top: -5, right: -5 }}><Badge count={(Number(item.countAppeals) || 0) + (Number(item.countTasks) || 0)} showZero /></div>}
                     {state &&
                         <div style={{ position: "absolute", borderRadius: 10, bottom: 5, right: 5 }}>
-                            {state === "inAction" && <SyncOutlined style={{ color: item.color || "blue", fontSize: 30 }} />}
-                            {state === "noAction" && <CloseCircleOutlined style={{ color: item.color || "red", fontSize: 30 }} />}
-                            {state === "completed" && <CheckCircleOutlined style={{ color: item.color || "#52c41a", fontSize: 30 }} />}
+                            {state === "new" && <FileSearchOutlined style={{ color: item.color || token.colorPrimary, fontSize: 30 }} />}
+                            {state === "inAction" && <SyncOutlined style={{ color: item.color || token.colorPrimary, fontSize: 30 }} />}
+                            {state === "noAction" && <CloseCircleOutlined style={{ color: item.color || token.colorError, fontSize: 30 }} />}
+                            {state === "completed" && <CheckCircleOutlined style={{ color: item.color ||  token.colorSuccess, fontSize: 30 }} />}
                         </div>}
                     <Flex vertical justify='space-between' style={{ height: "100%" }}>
 

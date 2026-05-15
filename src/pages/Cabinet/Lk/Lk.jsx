@@ -77,6 +77,7 @@ export default function Lk() {
             {loadingPersonalAccount && <Preloader />}
             {!loadingPersonalAccount &&
                 <div>
+                    
                     <Typography.Title style={{ margin: "10px 0" }}>{personalAccount?.name}</Typography.Title>
                     <Flex gap={10} style={{ marginBottom: 10 }}>
                         {personalAccount?.inn &&
