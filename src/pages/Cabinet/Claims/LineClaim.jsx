@@ -1,4 +1,4 @@
-import { Card, Descriptions, Flex, Tag, Typography, theme } from "antd";
+import { Badge, Card, Descriptions, Flex, Tag, Typography, theme } from "antd";
 import moment from "moment";
 import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileTextOutlined, InfoCircleOutlined, LoadingOutlined, SyncOutlined, FileSearchOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
@@ -37,6 +37,7 @@ export default function LineClaim({ item, borderColor, state = false }) {
                                 children: item.service?.description
                             }
                         ]} /></Flex>
+                        {(item.countAppeals > 0 || item.countTasks > 0) && <div style={{ position: "absolute", borderRadius: 10, top: -5, right: -5 }}><Badge count={(Number(item.countAppeals) || 0) + (Number(item.countTasks) || 0)} showZero /></div>}
                         <Flex wrap={"wrap"} gap={5} align="center">
                             {state &&
                                 <div style={{ borderRadius: 10, bottom: 5, right: 5 }}>
