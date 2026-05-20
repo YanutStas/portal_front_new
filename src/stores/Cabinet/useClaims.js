@@ -1,15 +1,21 @@
 import { create } from "zustand";
 import axios from "axios";
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
+
+const headers = { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
+
 const useClaim = create((set, get) => ({
   claims: null,
-  metaClaims:null,
+  metaClaims: null,
   claim: null,
   loadingClaim: false,
   loadingDataByClaim: false,
   loadingClaims: false,
   newClaim: null,
   blockButtonNewClaim: false,
+  filtersClaims: false,
+  countClaims: false,
+
   addBlockButtonNewClaim: () => {
     set({ blockButtonNewClaim: true });
   },
@@ -19,29 +25,55 @@ const useClaim = create((set, get) => ({
   clearNewClaim: () => {
     set({ newClaim: null });
   },
-  fetchClaims: async (page, pageSize) => {
+  fetchClaims: async (page, pageSize, filters = {}, sort = false) => {
     set((state) => ({ claims: null, loadingClaims: true }));
-    const res = await axios.get(`${backServer}/api/cabinet/claims?page=${page}&pageSize=${pageSize}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-      },
-      withCredentials: true,
-    });
-    console.log(res.data);
-    set((state) => {
-      return {
-        claims: res.data.data,
-        metaClaims: res.data.meta,
-      };
-    });
+    let url = `${backServer}/api/cabinet/claims?page=${page}&pageSize=${pageSize}`
+    let filtersArray = []
+    for (let key in filters) {
+      if (filters[key]) {
+        filtersArray.push({ name: key, value: filters[key] })
+        // console.log("Ключ: " + key + " значение: " + filters[key]);
+      }
+    }
+
+    if (filtersArray.length > 0) {
+      url = url + `&filters=${JSON.stringify(filtersArray)}`
+    }
+    if (sort) {
+      url = url + `&sort=${sort}`
+    }
+    // console.log("filters", filters)
+    console.log("url", url)
+    try {
+      const res = await axios.get(url, { headers, withCredentials: true, });
+      console.log(res.data);
+      set((state) => {
+        return {
+          claims: res.data.data,
+          metaClaims: res.data.meta,
+          loadingClaims: false
+        };
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  fetchClaimsDataset: async (dataset = "filters") => {
+    if (dataset === "filters") {
+      let url = `${backServer}/api/cabinet/claims?dataset=filters`
+      const res = await axios.get(url, { headers, withCredentials: true, });
+      // console.log("fetchClaimsDataset", res.data);
+
+      set({ filtersClaims: res.data.meta })
+    }
+
   },
   fetchClaimItem: async (key,) => {
     try {
       set((state) => ({ claim: null, loadingClaim: true }));
       const res = await axios.get(`${backServer}/api/cabinet/claims/${key}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
+        headers,
         withCredentials: true,
       });
       if (res.data?.data && Object.keys(res.data.data).length === 0) {
@@ -64,9 +96,7 @@ const useClaim = create((set, get) => ({
       // console.log("url", url);
 
       const res = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
+        headers,
         withCredentials: true,
       });
       // console.log('res.data', res.data.data.appeals)
@@ -90,9 +120,7 @@ const useClaim = create((set, get) => ({
         ...data,
       },
       {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
+        headers,
         withCredentials: true,
       }
     );

@@ -12,9 +12,7 @@ export default function LineClaim({ item, borderColor, state = false }) {
         <>
             <Link
                 to={`/cabinet/claimers/${item.Ref_Key}`}
-            // className={styles.styleLink}
             >
-
                 <Card
                     hoverable
                     styles={{

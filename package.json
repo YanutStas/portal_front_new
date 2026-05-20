@@ -13,6 +13,7 @@
     "@strapi/blocks-react-renderer": "^1.0.2",
     "antd": "^6.3.7",
     "axios": "^1.8.3",
+    "dayjs": "^1.11.20",
     "expr-eval": "^2.0.2",
     "framer-motion": "^12.5.0",
     "lodash": "^4.17.21",
