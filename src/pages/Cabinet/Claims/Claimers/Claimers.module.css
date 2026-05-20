@@ -1,6 +1,6 @@
 .styleLink {
   display: block;
-  width: calc(33% - 8px);
+  width: calc(33% - 10px);
   /* min-height: 250px; */
   transition: transform ease 0.5s;
 }

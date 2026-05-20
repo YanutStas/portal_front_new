@@ -42,10 +42,9 @@ export default function Claimers() {
   const [selectFilters, setSelectFilters] = useState({})
   const [selectSort, setSelectSort] = useState(false)
   // const [claims, setClaims] = useState()
-  const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
+  
   // const claimsAll = useClaims((state) => state.claims);
-  const metaClaims = useClaims((state) => state.metaClaims);
+  
   const filtersClaims = useClaims((state) => state.filtersClaims);
   const fetchClaimsDataset = useClaims((state) => state.fetchClaimsDataset);
 
@@ -172,35 +171,12 @@ export default function Claimers() {
                     <BarsOutlined style={{ fontSize: 24, cursor: "pointer" }} onClick={() => { setTypeView('line') }} />
                   </Flex>
                 </Flex>
-                <ClaimsList page={page} pageSize={pageSize} selectFilters={selectFilters} selectSort={selectSort} typeView={typeView} />
+                <ClaimsList selectFilters={selectFilters} selectSort={selectSort} typeView={typeView} />
               </Flex>
             </Flex>
             <Flex justify="flex-end">
 
-              <Pagination
-                locale={{
-                  items_per_page: 'на страницу',
-                  next_5: "Следующие 5 страниц",
-                  prev_5: "Предыдущие 5 страниц",
-                  next_page: "Следующая страница",
-                  prev_page: "Предыдущая страница"
-                }}
-                styles={{
-                  root: {
-                    display: "flex",
-                    rowGap: 10,
-                    flexWrap: "wrap"
-                  }
-                }}
-                defaultCurrent={page}
-                showTotal={total => `Всего ${total}`}
-                pageSize={pageSize}
-                total={metaClaims?.total}
-                showSizeChanger
-                onChange={(page, pageSize) => {
-                  setPage(page)
-                  setPageSize(pageSize)
-                }} />
+
             </Flex>
           </>
 
