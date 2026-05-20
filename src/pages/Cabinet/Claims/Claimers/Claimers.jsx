@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Card, Typography, Skeleton, Descriptions, theme, Divider, Flex, Empty, Pagination } from "antd";
-import { BarsOutlined, BorderOutlined, FileSearchOutlined, UserOutlined } from "@ant-design/icons";
+import { Card, Typography, Skeleton, Descriptions, theme, Divider, Flex, Empty, Pagination, Collapse, Drawer } from "antd";
+import { BarsOutlined, BorderOutlined, FileSearchOutlined, FilterOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import AppHelmet from "../../../../components/Global/AppHelmet";
 import useClaims from "../../../../stores/Cabinet/useClaims";
@@ -37,6 +37,7 @@ import SortClaimsNew from "./SortClaimsNew";
 // ]
 
 export default function Claimers() {
+  const [openMobileFilters, setOpenMobileFilters] = useState(false)
   const [typeView, setTypeView] = useState('card')
   const [selectFilters, setSelectFilters] = useState({})
   const [selectSort, setSelectSort] = useState(false)
@@ -67,109 +68,155 @@ export default function Claimers() {
   // console.log("token",token)
   // console.log("filtersClaims",filtersClaims)
   return (
-    <Container>
-      <AppHelmet title={"Список заявок"} desc={"Список поданных заявок"} />
-      {/* <Title level={1}>Заявки</Title> */}
+    <>
+      <Container>
+        <AppHelmet title={"Список заявок"} desc={"Список поданных заявок"} />
+        {/* <Title level={1}>Заявки</Title> */}
 
-      <div className={styles.claimsContainer}>
-        {personalAccounts.length === 0 &&
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description={"Поданных заявок пока нет"}
-          />
-        }
-        {personalAccounts && personalAccounts.length > 0 && <Divider titlePlacement="start">
-          <Flex gap={10} align="center">
-            <UserOutlined style={{ fontSize: 24 }} />
-            <Typography.Text>Личные кабинеты</Typography.Text>
-          </Flex>
-        </Divider>}
-        <Flex wrap={"wrap"} gap={20} >
-
-          {personalAccounts && personalAccounts.map((item, index) => (
-            <Link
-              key={index}
-              to={`/cabinet/lk/${item.id}`}
-              className={styles.styleLink}
-            // style={{width:"100%"}}
-            >
-              <Card
-                hoverable
-                style={{
-                  border: `1px solid ${token.colorInfo}`,
-                }}
-              // extra={<div><Typography.Text style={{ color: token.colorTextDescription }}>Создан: </Typography.Text><Typography.Text>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Typography.Text></div>}
-              >
-                <Card.Meta
-                  avatar={<UserOutlined
-                    style={{ fontSize: 24, color: "gray" }} />}
-                  title={item.name}
-                  description={`Заявок ${item.totalClaims}`}
-                />
-
-              </Card>
-            </Link>
-          ))}
-        </Flex>
-
-        {/* -------------------------------------------------------- */}
-
-        <>
-          <Divider titlePlacement="start">
+        <div className={styles.claimsContainer}>
+          {personalAccounts.length === 0 &&
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description={"Поданных заявок пока нет"}
+            />
+          }
+          {personalAccounts && personalAccounts.length > 0 && <Divider titlePlacement="start">
             <Flex gap={10} align="center">
-              <FileSearchOutlined style={{ fontSize: 24 }} />
-              <Typography.Text>Заявки на проверке</Typography.Text>
+              <UserOutlined style={{ fontSize: 24 }} />
+              <Typography.Text>Личные кабинеты</Typography.Text>
             </Flex>
-          </Divider>
-          <Flex justify="space-between" align="flex-end">
-            <Flex vertical style={{ flex: 1 }}>
-              <Flex vertical style={{marginBottom:10}}>
+          </Divider>}
+          <Flex wrap={"wrap"} gap={20} >
+
+            {personalAccounts && personalAccounts.map((item, index) => (
+              <Link
+                key={index}
+                to={`/cabinet/lk/${item.id}`}
+                className={styles.styleLink}
+              // style={{width:"100%"}}
+              >
+                <Card
+                  hoverable
+                  style={{
+                    border: `1px solid ${token.colorInfo}`,
+                  }}
+                // extra={<div><Typography.Text style={{ color: token.colorTextDescription }}>Создан: </Typography.Text><Typography.Text>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Typography.Text></div>}
+                >
+                  <Card.Meta
+                    avatar={<UserOutlined
+                      style={{ fontSize: 24, color: "gray" }} />}
+                    title={item.name}
+                    description={`Заявок ${item.totalClaims}`}
+                  />
+
+                </Card>
+              </Link>
+            ))}
+          </Flex>
+
+          {/* -------------------------------------------------------- */}
+
+          <>
+            <Divider titlePlacement="start">
+              <Flex gap={10} align="center">
+                <FileSearchOutlined style={{ fontSize: 24 }} />
+                <Typography.Text>Заявки</Typography.Text>
+              </Flex>
+            </Divider>
+            {/* <Collapse items={[
+            {
+              label: "Фильтры",
+              children: <Flex vertical style={{ marginBottom: 10 }}>
                 <Typography.Text strong>Фильтры:</Typography.Text>
                 <FiltersClaimsNew filters={filtersClaims?.filters} setSelectFilters={setSelectFilters} />
               </Flex>
-              <Flex vertical style={{marginBottom:10}}>
+            },
+            {
+              label: "Сортировка",
+              children: <Flex vertical style={{ marginBottom: 10 }}>
                 <Typography.Text strong>Сортировка:</Typography.Text>
                 <div style={{ flex: 1 }}>
                   <SortClaimsNew options={filtersClaims?.sortings} setSelectSort={setSelectSort} />
                 </div>
               </Flex>
+            },
+          ]} /> */}
+
+            {/* <Flex vertical style={{ flex: 1 }}>
+            <Flex vertical style={{ marginBottom: 10 }}>
+              <Typography.Text strong>Фильтры:</Typography.Text>
+              <FiltersClaimsNew filters={filtersClaims?.filters} setSelectFilters={setSelectFilters} />
             </Flex>
+            <Flex vertical style={{ marginBottom: 10 }}>
+              <Typography.Text strong>Сортировка:</Typography.Text>
+              <div style={{ flex: 1 }}>
+                <SortClaimsNew options={filtersClaims?.sortings} setSelectSort={setSelectSort} />
+              </div>
+            </Flex>
+          </Flex> */}
             {/* <FiltersClaims claimsAll={claimsAll} setSelectFilters={setSelectFilters} selectFilters={selectFilters} /> */}
-          </Flex>
-            <Flex justify='flex-end' gap={10}>
-              <BorderOutlined style={{ fontSize: 24, cursor: "pointer" }} onClick={() => { setTypeView('card') }} />
-              <BarsOutlined style={{ fontSize: 24, cursor: "pointer" }} onClick={() => { setTypeView('line') }} />
+
+            <Flex gap={10} style={{ width: "100%" }}>
+              <Flex vertical style={{ marginTop: 50 }} className={styles.filtersDesktop}>
+                {/* <Typography.Text strong>Фильтры:</Typography.Text> */}
+                <FiltersClaimsNew filters={filtersClaims?.filters} setSelectFilters={setSelectFilters} />
+              </Flex>
+              <Flex vertical style={{ flex: 1 }}>
+                <Flex style={{ marginLeft: 10 }} gap={10} justify="space-between">
+                  <div className={styles.filtersMobile}>
+                    <FilterOutlined style={{ fontSize: 24, cursor: "pointer" }} onClick={() => { setOpenMobileFilters(true) }} />
+                  </div>
+                  <SortClaimsNew options={filtersClaims?.sortings} setSelectSort={setSelectSort} />
+                  <Flex justify='flex-end' gap={10} className={styles.types}>
+                    <BorderOutlined style={{ fontSize: 24, cursor: "pointer" }} onClick={() => { setTypeView('card') }} />
+                    <BarsOutlined style={{ fontSize: 24, cursor: "pointer" }} onClick={() => { setTypeView('line') }} />
+                  </Flex>
+                </Flex>
+                <ClaimsList page={page} pageSize={pageSize} selectFilters={selectFilters} selectSort={selectSort} typeView={typeView} />
+              </Flex>
             </Flex>
-          <ClaimsList page={page} pageSize={pageSize} selectFilters={selectFilters} selectSort={selectSort} typeView={typeView} />
-          <Pagination
-            locale={{
-              items_per_page: 'на страницу',
-              next_5: "Следующие 5 страниц",
-              prev_5: "Предыдущие 5 страниц",
-              next_page: "Следующая страница",
-              prev_page: "Предыдущая страница"
-            }}
-            styles={{
-              root: {
-                display: "flex",
-                rowGap: 10,
-                flexWrap: "wrap"
-              }
-            }}
-            defaultCurrent={page}
-            showTotal={total => `Всего ${total}`}
-            pageSize={pageSize}
-            total={metaClaims?.total}
-            showSizeChanger
-            onChange={(page, pageSize) => {
-              setPage(page)
-              setPageSize(pageSize)
-            }} />
-        </>
+            <Flex justify="flex-end">
+
+              <Pagination
+                locale={{
+                  items_per_page: 'на страницу',
+                  next_5: "Следующие 5 страниц",
+                  prev_5: "Предыдущие 5 страниц",
+                  next_page: "Следующая страница",
+                  prev_page: "Предыдущая страница"
+                }}
+                styles={{
+                  root: {
+                    display: "flex",
+                    rowGap: 10,
+                    flexWrap: "wrap"
+                  }
+                }}
+                defaultCurrent={page}
+                showTotal={total => `Всего ${total}`}
+                pageSize={pageSize}
+                total={metaClaims?.total}
+                showSizeChanger
+                onChange={(page, pageSize) => {
+                  setPage(page)
+                  setPageSize(pageSize)
+                }} />
+            </Flex>
+          </>
 
 
-      </div>
+        </div>
 
-    </Container>
+      </Container>
+      <Drawer
+        title="Фильтры"
+        open={openMobileFilters}
+        onClose={() => {
+          setOpenMobileFilters(false)
+        }}
+      >
+        <FiltersClaimsNew filters={filtersClaims?.filters} setSelectFilters={setSelectFilters} mobile closeDrawer={()=>{setOpenMobileFilters(false)}}/>
+      </Drawer>
+    </>
   );
 }

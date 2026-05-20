@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Flex, Form, Input, InputNumber, Select, Typography, DatePicker, ConfigProvider, Row, Col, Divider } from "antd";
+import { Flex, Form, Input, InputNumber, Select, Typography, DatePicker, ConfigProvider, Row, Col, Divider, Button } from "antd";
 // import moment from "moment";
 import dayjs from 'dayjs'
 import locale from 'antd/locale/ru_RU';
@@ -9,7 +9,7 @@ import 'dayjs/locale/ru';
 
 dayjs.locale('ru');
 const { RangePicker } = DatePicker
-export default function FiltersClaimsNew({ filters, setSelectFilters }) {
+export default function FiltersClaimsNew({ filters, setSelectFilters, mobile = false, closeDrawer = false }) {
     // 1. Создаём debounced-функцию и храним её в ref, чтобы не пересоздавать при ререндерах
     const debouncedApiCall = useRef(
         debounce((allValues) => {
@@ -28,8 +28,9 @@ export default function FiltersClaimsNew({ filters, setSelectFilters }) {
     const handleValuesChange = (changedValues, allValues) => {
         // Опционально: срабатывать только если изменилось нужное поле
         // if (!changedValues.code) return;
-
-        debouncedApiCall(allValues);
+        if (!mobile) {
+            debouncedApiCall(allValues);
+        }
     };
 
 
@@ -46,8 +47,10 @@ export default function FiltersClaimsNew({ filters, setSelectFilters }) {
         >
             <Form
                 layout="vertical"
-                onFinish={(values) => {
-                    console.log("values", values);
+                onFinish={(allValues) => {
+                    // console.log("values", values);
+                    setSelectFilters(allValues)
+                    closeDrawer()
                 }}
                 onValuesChange={handleValuesChange}
                 styles={{
@@ -57,7 +60,7 @@ export default function FiltersClaimsNew({ filters, setSelectFilters }) {
                 }}
             >
 
-                <Flex gap={10} wrap={"wrap"}>
+                <Flex gap={10} wrap={"wrap"} vertical>
                     {filters && filters.map((item, index) =>
                         <Form.Item
                             style={{ marginBottom: 0 }}
@@ -65,7 +68,7 @@ export default function FiltersClaimsNew({ filters, setSelectFilters }) {
                             label={item.label}
                         >
                             {/* ----------------------------------------------------------------------------------------------------- */}
-                            {item.type === "number" && <Input style={{ minWidth: 300 }} />}
+                            {item.type === "number" && <Input />}
 
                             {/* ----------------------------------------------------------------------------------------------------- */}
                             {item.type === "dateRange" &&
@@ -85,7 +88,7 @@ export default function FiltersClaimsNew({ filters, setSelectFilters }) {
                                 }}
                                 // maxTagTextLength={10}
                                 options={item.options}
-                                style={{ width: 300 }}
+
                                 optionRender={(option) => {
                                     return (
                                         <>
@@ -94,7 +97,7 @@ export default function FiltersClaimsNew({ filters, setSelectFilters }) {
                                             >
                                                 {option.label}
                                             </Typography.Text>
-                                            <Divider styles={{root:{margin:2}}}/>
+                                            <Divider styles={{ root: { margin: 2 } }} />
                                         </>
                                     );
                                 }}
@@ -103,6 +106,11 @@ export default function FiltersClaimsNew({ filters, setSelectFilters }) {
 
                     )}
 
+                    {mobile &&
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit">Применить</Button>
+                        </Form.Item>
+                    }
                 </Flex>
             </Form>
         </ ConfigProvider>
