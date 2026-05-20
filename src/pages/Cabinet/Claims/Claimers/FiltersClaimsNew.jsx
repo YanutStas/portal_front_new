@@ -1,14 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import { Flex, Form, Input, InputNumber, Select, Typography, DatePicker, ConfigProvider, Row, Col } from "antd";
 // import moment from "moment";
 import dayjs from 'dayjs'
 import locale from 'antd/locale/ru_RU';
+import debounce from 'lodash/debounce';
 
 import 'dayjs/locale/ru';
 
 dayjs.locale('ru');
 const { RangePicker } = DatePicker
 export default function FiltersClaimsNew({ filters, setSelectFilters }) {
+    // 1. Создаём debounced-функцию и храним её в ref, чтобы не пересоздавать при ререндерах
+    const debouncedApiCall = useRef(
+        debounce((allValues) => {
+            setSelectFilters(allValues)
+            console.log('Отправка на бэкенд:', allValues);
+            // fetch('/api/save', { method: 'POST', body: JSON.stringify(allValues) })
+        }, 1000) // задержка 1 секунда
+    ).current;
+
+    // 2. Обязательно отменяем таймер при размонтировании компонента
+    useEffect(() => {
+        return () => debouncedApiCall.cancel();
+    }, [debouncedApiCall]);
+
+    // 3. Передаём в onValuesChange
+    const handleValuesChange = (changedValues, allValues) => {
+        // Опционально: срабатывать только если изменилось нужное поле
+        // if (!changedValues.code) return;
+
+        debouncedApiCall(allValues);
+    };
+
 
     return (
         <ConfigProvider
@@ -26,11 +49,7 @@ export default function FiltersClaimsNew({ filters, setSelectFilters }) {
                 onFinish={(values) => {
                     console.log("values", values);
                 }}
-                onValuesChange={(changedValues, allValues) => {
-                    // console.log("changedValues", changedValues);
-                    setSelectFilters(allValues)
-                    console.log("allValues", allValues);
-                }}
+                onValuesChange={handleValuesChange}
                 styles={{
                     label: {
                         padding: 0
@@ -39,10 +58,8 @@ export default function FiltersClaimsNew({ filters, setSelectFilters }) {
             >
 
                 <Flex gap={10} wrap={"wrap"}>
-
                     {filters && filters.map((item, index) =>
                         <Form.Item
-
                             style={{ marginBottom: 0 }}
                             name={item.name}
                             label={item.label}
