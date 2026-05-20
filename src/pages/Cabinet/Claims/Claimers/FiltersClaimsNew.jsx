@@ -1,5 +1,5 @@
-import React, { useEffect, useState,useRef } from "react";
-import { Flex, Form, Input, InputNumber, Select, Typography, DatePicker, ConfigProvider, Row, Col } from "antd";
+import React, { useEffect, useState, useRef } from "react";
+import { Flex, Form, Input, InputNumber, Select, Typography, DatePicker, ConfigProvider, Row, Col, Divider } from "antd";
 // import moment from "moment";
 import dayjs from 'dayjs'
 import locale from 'antd/locale/ru_RU';
@@ -83,9 +83,21 @@ export default function FiltersClaimsNew({ filters, setSelectFilters }) {
                                     filterOption: (input, option) =>
                                         (option?.label ?? '').toLowerCase().includes(input.toLowerCase()),
                                 }}
-                                maxTagTextLength={10}
+                                // maxTagTextLength={10}
                                 options={item.options}
-                                style={{ minWidth: 300 }}
+                                style={{ width: 300 }}
+                                optionRender={(option) => {
+                                    return (
+                                        <>
+                                            <Typography.Text
+                                                style={{ width: "100%", whiteSpace: "pre-wrap", marginBottom: 5 }}
+                                            >
+                                                {option.label}
+                                            </Typography.Text>
+                                            <Divider styles={{root:{margin:2}}}/>
+                                        </>
+                                    );
+                                }}
                             />}
                         </Form.Item>
 
