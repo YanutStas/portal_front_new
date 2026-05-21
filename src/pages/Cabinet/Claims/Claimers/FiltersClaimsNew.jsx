@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Flex, Form, Input, InputNumber, Select, Typography, DatePicker, ConfigProvider, Row, Col, Divider, Button, Radio, Checkbox } from "antd";
+import { Flex, Form, Input, InputNumber, Select, Typography, DatePicker, ConfigProvider, Row, Col, Divider, Button, Radio, Checkbox, Segmented } from "antd";
 // import moment from "moment";
 import dayjs from 'dayjs'
 import locale from 'antd/locale/ru_RU';
@@ -10,6 +10,7 @@ import 'dayjs/locale/ru';
 dayjs.locale('ru');
 const { RangePicker } = DatePicker
 export default function FiltersClaimsNew({ filters, setSelectFilters, mobile = false, closeDrawer = false }) {
+    const [form] = Form.useForm();
     // 1. Создаём debounced-функцию и храним её в ref, чтобы не пересоздавать при ререндерах
     const debouncedApiCall = useRef(
         debounce((allValues) => {
@@ -46,6 +47,7 @@ export default function FiltersClaimsNew({ filters, setSelectFilters, mobile = f
             }}
         >
             <Form
+                form={form}
                 layout="vertical"
                 onFinish={(allValues) => {
                     // console.log("values", values);
@@ -61,14 +63,41 @@ export default function FiltersClaimsNew({ filters, setSelectFilters, mobile = f
 
             >
 
+
                 <Flex gap={10} wrap={"wrap"} vertical >
+                    {/* <Segmented
+                        orientation="vertical"
+                        defaultValue="a"
+                        options={[
+                            { value: 'a', label: "Все" },
+                            { value: 'b', label: "АО Леднев" },
+                            { value: 'c', label: "Полушин А.В." },
+                            { value: 'd', label: "ИП Гришин" },
+                            { value: 'e', label: "ООО Гейдт" },
+                        ]}
+                        onChange={(value) => {
+                            const formValues = form.getFieldsValue()
+                            console.log("value",value)
+                            console.log("formValues",formValues)
+                            form.setFieldValue('segment',value)
+                        }}
+                    /> */}
+                    {/* <Radio.Group defaultValue="a">
+                        <Flex vertical>
+
+                            <Radio.Button value="a">Все</Radio.Button>
+                            <Radio.Button value="b">АО Леднев</Radio.Button>
+                            <Radio.Button value="c">Полушин А.В.</Radio.Button>
+                            <Radio.Button value="d">ИП Гришин</Radio.Button>
+                            <Radio.Button value="e">ООО Гейдт</Radio.Button>
+                        </Flex>
+                    </Radio.Group> */}
                     {filters && filters.map((item, index) =>
                         <Form.Item
                             key={index}
                             style={{ marginBottom: 0, width: "100%" }}
                             name={item.name}
-                            label={<Typography.Text strong>{item.label+":"}</Typography.Text>}
-
+                            label={<Typography.Text strong>{item.label + ":"}</Typography.Text>}
                         >
                             {/* ----------------------------------------------------------------------------------------------------- */}
                             {item.type === "number" && <Input />}
@@ -98,7 +127,6 @@ export default function FiltersClaimsNew({ filters, setSelectFilters, mobile = f
                                 }}
                                 // maxTagTextLength={10}
                                 options={item.options}
-
                                 optionRender={(option) => {
                                     return (
                                         <>

@@ -79,13 +79,13 @@ export default function Claimers() {
               description={"Поданных заявок пока нет"}
             />
           }
-          {personalAccounts && personalAccounts.length > 0 && <Divider titlePlacement="start">
+          {/* {personalAccounts && personalAccounts.length > 0 && <Divider titlePlacement="start">
             <Flex gap={10} align="center">
               <UserOutlined style={{ fontSize: 24 }} />
               <Typography.Text>Личные кабинеты</Typography.Text>
             </Flex>
-          </Divider>}
-          <Flex wrap={"wrap"} gap={20} >
+          </Divider>} */}
+          {/* <Flex wrap={"wrap"} gap={20} >
 
             {personalAccounts && personalAccounts.map((item, index) => (
               <Link
@@ -111,17 +111,17 @@ export default function Claimers() {
                 </Card>
               </Link>
             ))}
-          </Flex>
+          </Flex> */}
 
           {/* -------------------------------------------------------- */}
 
           <>
-            <Divider titlePlacement="start">
+            {/* <Divider titlePlacement="start">
               <Flex gap={10} align="center">
                 <FileSearchOutlined style={{ fontSize: 24 }} />
                 <Typography.Text>Заявки</Typography.Text>
               </Flex>
-            </Divider>
+            </Divider> */}
             {/* <Collapse items={[
             {
               label: "Фильтры",
@@ -156,7 +156,7 @@ export default function Claimers() {
             {/* <FiltersClaims claimsAll={claimsAll} setSelectFilters={setSelectFilters} selectFilters={selectFilters} /> */}
 
             <Flex gap={10} style={{ width: "100%" }}>
-              <Flex vertical style={{ marginTop: 51, width: 350, border: `1px solid ${token.colorBorder}`, padding: 10, borderRadius: 10,backgroundColor:token.colorBgBase }} className={styles.filtersDesktop}>
+              <Flex vertical style={{ marginTop: 0, width: 350, border: `1px solid ${token.colorBorder}`, padding: 10, borderRadius: 10,backgroundColor:token.colorBgBase }} className={styles.filtersDesktop}>
                 {/* <Typography.Text strong>Фильтры:</Typography.Text> */}
                 <FiltersClaimsNew filters={filtersClaims?.filters} setSelectFilters={setSelectFilters} />
               </Flex>
