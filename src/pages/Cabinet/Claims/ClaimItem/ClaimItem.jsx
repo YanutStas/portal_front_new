@@ -129,7 +129,7 @@ export default function ClaimItem() {
   ]
 
 
-  console.log("claim", claim);
+  // console.log("claim", claim);
 
   return (
     <Container>

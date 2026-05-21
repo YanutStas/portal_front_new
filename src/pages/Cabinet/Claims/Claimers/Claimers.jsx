@@ -64,8 +64,8 @@ export default function Claimers() {
   // }, [page, pageSize, selectFilters]);
 
 
-  console.log("token",token)
-  console.log("filtersClaims", filtersClaims)
+  // console.log("token", token)
+  // console.log("filtersClaims", filtersClaims)
   return (
     <>
       <Container>
@@ -154,9 +154,9 @@ export default function Claimers() {
             </Flex>
           </Flex> */}
             {/* <FiltersClaims claimsAll={claimsAll} setSelectFilters={setSelectFilters} selectFilters={selectFilters} /> */}
-
+            
             <Flex gap={10} style={{ width: "100%" }}>
-              <Flex vertical style={{ marginTop: 0, width: 350, border: `1px solid ${token.colorBorder}`, padding: 10, borderRadius: 10,backgroundColor:token.colorBgBase }} className={styles.filtersDesktop}>
+              <Flex vertical style={{ marginTop: 0, width: 350, border: `1px solid ${token.colorBorder}`, padding: 10, borderRadius: 10, backgroundColor: token.colorBgBase }} className={styles.filtersDesktop}>
                 {/* <Typography.Text strong>Фильтры:</Typography.Text> */}
                 <FiltersClaimsNew filters={filtersClaims?.filters} setSelectFilters={setSelectFilters} />
               </Flex>

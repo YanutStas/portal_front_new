@@ -15,7 +15,7 @@ export default function FiltersClaimsNew({ filters, setSelectFilters, mobile = f
     const debouncedApiCall = useRef(
         debounce((allValues) => {
             setSelectFilters(allValues)
-            console.log('Отправка на бэкенд:', allValues);
+            // console.log('Отправка на бэкенд:', allValues);
             // fetch('/api/save', { method: 'POST', body: JSON.stringify(allValues) })
         }, 1000) // задержка 1 секунда
     ).current;
