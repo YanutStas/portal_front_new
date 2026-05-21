@@ -35,13 +35,12 @@ export default function ClaimsList({ selectFilters, selectSort, typeView }) {
                         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Нет заявок" />
                     </Flex>
                 }
-                {!loadingClaims && claimsAll && claimsAll.map((item, index) => {
-                    return <>
+                {!loadingClaims && claimsAll && claimsAll.map((item, index) => {                   
 
-                        {typeView === 'card' && <CardClaim item={item} key={index} state={item.currentStatus?.state} />}
-                        {typeView === 'line' && <LineClaim item={item} key={index} state={item.currentStatus?.state} />}
+                        if(typeView === 'card') return <CardClaim item={item} key={index} state={item.currentStatus?.state} />
+                        if(typeView === 'line') return <LineClaim item={item} key={index} state={item.currentStatus?.state} />
 
-                    </>
+                  
                 }
                 )}
             </Flex>

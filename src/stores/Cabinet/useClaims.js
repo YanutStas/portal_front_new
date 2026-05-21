@@ -2,7 +2,6 @@ import { create } from "zustand";
 import axios from "axios";
 const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
 
-const headers = { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
 
 const useClaim = create((set, get) => ({
   claims: null,
@@ -45,7 +44,7 @@ const useClaim = create((set, get) => ({
     // console.log("filters", filters)
     console.log("url", url)
     try {
-      const res = await axios.get(url, { headers, withCredentials: true, });
+      const res = await axios.get(url, { headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }, withCredentials: true, });
       console.log(res.data);
       set((state) => {
         return {
@@ -62,7 +61,7 @@ const useClaim = create((set, get) => ({
   fetchClaimsDataset: async (dataset = "filters") => {
     if (dataset === "filters") {
       let url = `${backServer}/api/cabinet/claims?dataset=filters`
-      const res = await axios.get(url, { headers, withCredentials: true, });
+      const res = await axios.get(url, { headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }, withCredentials: true, });
       // console.log("fetchClaimsDataset", res.data);
 
       set({ filtersClaims: res.data.meta })
@@ -96,7 +95,7 @@ const useClaim = create((set, get) => ({
       // console.log("url", url);
 
       const res = await axios.get(url, {
-        headers,
+        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
         withCredentials: true,
       });
       // console.log('res.data', res.data.data.appeals)
@@ -120,7 +119,7 @@ const useClaim = create((set, get) => ({
         ...data,
       },
       {
-        headers,
+        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
         withCredentials: true,
       }
     );

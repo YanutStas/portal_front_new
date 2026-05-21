@@ -65,7 +65,7 @@ export default function Claimers() {
 
 
   // console.log("token",token)
-  // console.log("filtersClaims",filtersClaims)
+  console.log("filtersClaims",filtersClaims)
   return (
     <>
       <Container>
@@ -165,7 +165,7 @@ export default function Claimers() {
                   <div className={styles.filtersMobile}>
                     <FilterOutlined style={{ fontSize: 24, cursor: "pointer" }} onClick={() => { setOpenMobileFilters(true) }} />
                   </div>
-                  <SortClaimsNew options={filtersClaims?.sortings} setSelectSort={setSelectSort} />
+                  <SortClaimsNew sorts={filtersClaims?.sorts} setSelectSort={setSelectSort} />
                   <Flex justify='flex-end' gap={10} className={styles.types}>
                     <BorderOutlined style={{ fontSize: 24, cursor: "pointer" }} onClick={() => { setTypeView('card') }} />
                     <BarsOutlined style={{ fontSize: 24, cursor: "pointer" }} onClick={() => { setTypeView('line') }} />

@@ -63,6 +63,7 @@ export default function FiltersClaimsNew({ filters, setSelectFilters, mobile = f
                 <Flex gap={10} wrap={"wrap"} vertical>
                     {filters && filters.map((item, index) =>
                         <Form.Item
+                            key={index}
                             style={{ marginBottom: 0 }}
                             name={item.name}
                             label={item.label}
