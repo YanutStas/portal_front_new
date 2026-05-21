@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Flex, Form, Input, InputNumber, Select, Typography, DatePicker, ConfigProvider, Row, Col, Divider, Button } from "antd";
+import { Flex, Form, Input, InputNumber, Select, Typography, DatePicker, ConfigProvider, Row, Col, Divider, Button, Radio, Checkbox } from "antd";
 // import moment from "moment";
 import dayjs from 'dayjs'
 import locale from 'antd/locale/ru_RU';
@@ -58,15 +58,17 @@ export default function FiltersClaimsNew({ filters, setSelectFilters, mobile = f
                         padding: 0
                     }
                 }}
+
             >
 
-                <Flex gap={10} wrap={"wrap"} vertical>
+                <Flex gap={10} wrap={"wrap"} vertical >
                     {filters && filters.map((item, index) =>
                         <Form.Item
                             key={index}
-                            style={{ marginBottom: 0 }}
+                            style={{ marginBottom: 0, width: "100%" }}
                             name={item.name}
-                            label={item.label}
+                            label={<Typography.Text strong>{item.label+":"}</Typography.Text>}
+
                         >
                             {/* ----------------------------------------------------------------------------------------------------- */}
                             {item.type === "number" && <Input />}
@@ -79,6 +81,13 @@ export default function FiltersClaimsNew({ filters, setSelectFilters, mobile = f
                                     minDate={dayjs(item.min)}
                                     maxDate={dayjs(item.max)}
                                 />}
+                            {/* ----------------------------------------------------------------------------------------------------- */}
+                            {item.type === "radioButton" &&
+                                <Radio.Group vertical options={item.options} defaultValue={item.defaultValue} />
+                            }
+                            {item.type === "checkbox" &&
+                                <Checkbox.Group vertical options={item.options} defaultValue={item.defaultValue} />
+                            }
 
                             {/* ----------------------------------------------------------------------------------------------------- */}
                             {item.type === "select" && <Select

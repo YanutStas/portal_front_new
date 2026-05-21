@@ -68,11 +68,11 @@ const useClaim = create((set, get) => ({
     }
 
   },
-  fetchClaimItem: async (key,) => {
+  fetchClaimItem: async (key) => {
     try {
       set((state) => ({ claim: null, loadingClaim: true }));
       const res = await axios.get(`${backServer}/api/cabinet/claims/${key}`, {
-        headers,
+        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
         withCredentials: true,
       });
       if (res.data?.data && Object.keys(res.data.data).length === 0) {
