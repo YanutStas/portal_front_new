@@ -8,6 +8,7 @@ const usePersonalAccounts = create((set) => ({
   personalAccounts: [],
   personalAccount: null,
   claimsByPersonalAccount: [],
+  metaClaimsByPersonalAccount: {},
 
   fetchPersonalAccounts: async () => {
     set((state) => ({ personalAccounts: [], loadingPersonalAccounts: true }));
@@ -25,9 +26,9 @@ const usePersonalAccounts = create((set) => ({
       };
     });
   },
-  fetchClaimsByPersonalAccount: async (key) => {
+  fetchClaimsByPersonalAccount: async (key, page, pageSize) => {
     set((state) => ({ claimsByPersonalAccount: [], loadingClaimsByPersonalAccount: true }));
-    const res = await axios.get(`${backServer}/api/cabinet/personalAccounts/${key}/claims`, {
+    const res = await axios.get(`${backServer}/api/cabinet/personalAccounts/${key}/claims?page=${page}&pageSize=${pageSize}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
       },
@@ -38,6 +39,7 @@ const usePersonalAccounts = create((set) => ({
     set((state) => {
       return {
         claimsByPersonalAccount: res.data.data,
+        metaClaimsByPersonalAccount: res.data.meta,
         loadingClaimsByPersonalAccount: false
       };
     });

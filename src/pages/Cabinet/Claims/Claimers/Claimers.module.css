@@ -1,6 +1,6 @@
 .styleLink {
   display: block;
-  width: calc(33% - 8px);
+  width: calc(33% - 10px);
   /* min-height: 250px; */
   transition: transform ease 0.5s;
 }
@@ -54,8 +54,11 @@
 }
 
 .styleCard:hover {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); */
 }
+.filtersMobile{
+    display: none;
+  }
 
 @media (max-width: 1900px) {
   .styleLink {
@@ -65,6 +68,15 @@
 @media (max-width: 1199px) {
   .styleLink {
     width: 100%;
+  }
+  .types{
+    display: none;
+  }
+  /* .filtersDesktop{
+    display: none;
+  } */
+  .filtersMobile{
+    display: flex;
   }
 }
 @media (max-width: 991px) {

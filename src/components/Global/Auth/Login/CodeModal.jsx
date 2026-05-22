@@ -12,7 +12,7 @@ const CodeModal = () => {
       open={isCodeModalOpen}
       onCancel={() => toggleModal("isCodeModalOpen", false)}
       footer={null}
-      maskClosable={false}
+      mask={{ closable: false }}
     >
       <CodeForm />
     </Modal>

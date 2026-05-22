@@ -44,7 +44,7 @@ export default function CodeForm() {
             onChange={handleChange}
             length={4}
             formatter={(str) => str.toUpperCase()}
-            className={styles.codeInput}
+            // className={styles.codeInput}
             type="tel"
             inputMode="numeric"
             pattern="[0-9]*"
