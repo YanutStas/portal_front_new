@@ -19,7 +19,7 @@ export default function ClaimsList({ selectFilters, selectSort, typeView }) {
 
     // console.log("claimsAll", claimsAll)
     return (
-        <>
+        <>        
             <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20, width: "100%" }} >
                 {loadingClaims &&
                     <Flex gap={10} style={{ width: "100%" }} wrap={"wrap"}>

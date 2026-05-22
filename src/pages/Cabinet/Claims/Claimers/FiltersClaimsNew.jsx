@@ -6,10 +6,12 @@ import locale from 'antd/locale/ru_RU';
 import debounce from 'lodash/debounce';
 
 import 'dayjs/locale/ru';
+import useClaim from "../../../../stores/Cabinet/useClaims";
 
 dayjs.locale('ru');
 const { RangePicker } = DatePicker
 export default function FiltersClaimsNew({ formFilter, filters, setSelectFilters, mobile = false, closeDrawer = false }) {
+    const metaClaims = useClaim((state) => state.metaClaims);
     // const [form] = Form.useForm();
     if (!formFilter) {
         return <div>Загрузка...</div>;
@@ -49,6 +51,7 @@ export default function FiltersClaimsNew({ formFilter, filters, setSelectFilters
                 }
             }}
         >
+            <Typography.Text type="secondary">Всего: {metaClaims?.total}</Typography.Text>
             <Form
                 form={formFilter}
                 layout="vertical"
@@ -144,7 +147,6 @@ export default function FiltersClaimsNew({ formFilter, filters, setSelectFilters
                                 }}
                             />}
                         </Form.Item>
-
                     )}
 
                     {mobile &&

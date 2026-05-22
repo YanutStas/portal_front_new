@@ -16,6 +16,7 @@ import LineClaim from "../LineClaim";
 import FiltersClaimsNew from "./FiltersClaimsNew";
 import ClaimsList from "./ClaimsList";
 import SortClaimsNew from "./SortClaimsNew";
+import { useIsMobile } from "../../../../hooks/isMobile";
 
 // const { Title } = Typography;
 
@@ -37,6 +38,7 @@ import SortClaimsNew from "./SortClaimsNew";
 // ]
 
 export default function Claimers() {
+  const isMobile = useIsMobile()
   const [formFilter] = Form.useForm()
   // const formFilter = useMemo(() => Form.createForm({}), []);
   const [openMobileFilters, setOpenMobileFilters] = useState(false)
@@ -158,10 +160,12 @@ export default function Claimers() {
             {/* <FiltersClaims claimsAll={claimsAll} setSelectFilters={setSelectFilters} selectFilters={selectFilters} /> */}
 
             <Flex gap={10} style={{ width: "100%" }}>
-              <Flex vertical style={{ marginTop: 0, width: 350, border: `1px solid ${token.colorBorder}`, padding: 10, borderRadius: 10, backgroundColor: token.colorBgBase }} className={styles.filtersDesktop}>
-                {/* <Typography.Text strong>Фильтры:</Typography.Text> */}
-                <FiltersClaimsNew formFilter={formFilter} filters={filtersClaims?.filters} setSelectFilters={setSelectFilters} />
-              </Flex>
+              {!isMobile &&
+                <Flex vertical style={{ marginTop: 0, width: 350, border: `1px solid ${token.colorBorder}`, padding: 10, borderRadius: 10, backgroundColor: token.colorBgBase }} className={styles.filtersDesktop}>
+                  {/* <Typography.Text strong>Фильтры:</Typography.Text> */}
+                  <FiltersClaimsNew formFilter={formFilter} filters={filtersClaims?.filters} setSelectFilters={setSelectFilters} mobile={false} />
+                </Flex>
+              }
               <Flex vertical style={{ flex: 1 }} >
                 <Flex style={{ marginLeft: 10 }} gap={10} justify="space-between">
                   <div className={styles.filtersMobile}>
@@ -169,6 +173,7 @@ export default function Claimers() {
                   </div>
                   <SortClaimsNew sorts={filtersClaims?.sorts} setSelectSort={setSelectSort} />
                   <Flex justify='flex-end' gap={10} className={styles.types}>
+
                     <BorderOutlined style={{ fontSize: 24, cursor: "pointer" }} onClick={() => { setTypeView('card') }} />
                     <BarsOutlined style={{ fontSize: 24, cursor: "pointer" }} onClick={() => { setTypeView('line') }} />
                   </Flex>
@@ -177,10 +182,7 @@ export default function Claimers() {
               </Flex>
             </Flex>
           </>
-
-
         </div>
-
       </Container>
       <Drawer
         title="Фильтры"
@@ -188,6 +190,7 @@ export default function Claimers() {
         onClose={() => {
           setOpenMobileFilters(false)
         }}
+        destroyOnHidden
       >
         <FiltersClaimsNew formFilter={formFilter} filters={filtersClaims?.filters} setSelectFilters={setSelectFilters} mobile closeDrawer={() => { setOpenMobileFilters(false) }} />
       </Drawer>

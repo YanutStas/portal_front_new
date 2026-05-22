@@ -72,9 +72,9 @@
   .types{
     display: none;
   }
-  .filtersDesktop{
+  /* .filtersDesktop{
     display: none;
-  }
+  } */
   .filtersMobile{
     display: flex;
   }
