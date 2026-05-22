@@ -9,8 +9,11 @@ import 'dayjs/locale/ru';
 
 dayjs.locale('ru');
 const { RangePicker } = DatePicker
-export default function FiltersClaimsNew({ filters, setSelectFilters, mobile = false, closeDrawer = false }) {
-    const [form] = Form.useForm();
+export default function FiltersClaimsNew({ formFilter, filters, setSelectFilters, mobile = false, closeDrawer = false }) {
+    // const [form] = Form.useForm();
+    if (!formFilter) {
+        return <div>Загрузка...</div>;
+    }
     // 1. Создаём debounced-функцию и храним её в ref, чтобы не пересоздавать при ререндерах
     const debouncedApiCall = useRef(
         debounce((allValues) => {
@@ -47,7 +50,7 @@ export default function FiltersClaimsNew({ filters, setSelectFilters, mobile = f
             }}
         >
             <Form
-                form={form}
+                form={formFilter}
                 layout="vertical"
                 onFinish={(allValues) => {
                     // console.log("values", values);

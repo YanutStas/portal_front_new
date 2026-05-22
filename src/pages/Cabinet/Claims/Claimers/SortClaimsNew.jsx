@@ -4,9 +4,9 @@ export default function SortClaimsNew({ sorts, setSelectSort }) {
     const onChange = (value) => {
         setSelectSort(value)
     }
-    console.log("sorts", sorts);
-    console.log("sorts?.defaultValue", sorts?.defaultValue);
-    console.log("sorts?.options", sorts?.options);
+    // console.log("sorts", sorts);
+    // console.log("sorts?.defaultValue", sorts?.defaultValue);
+    // console.log("sorts?.options", sorts?.options);
 
     return (
         <div style={{ flex: 1 }}>

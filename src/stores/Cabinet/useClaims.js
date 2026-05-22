@@ -42,10 +42,10 @@ const useClaim = create((set, get) => ({
       url = url + `&sort=${sort}`
     }
     // console.log("filters", filters)
-    console.log("url", url)
+    // console.log("url", url)
     try {
       const res = await axios.get(url, { headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }, withCredentials: true, });
-      console.log(res.data);
+      // console.log(res.data);
       set((state) => {
         return {
           claims: res.data.data,

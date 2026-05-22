@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Card, Typography, Skeleton, Descriptions, theme, Divider, Flex, Empty, Pagination, Collapse, Drawer } from "antd";
+import React, { useEffect, useMemo, useState } from "react";
+import { Card, Typography, Skeleton, Descriptions, theme, Divider, Flex, Empty, Pagination, Collapse, Drawer, Form } from "antd";
 import { BarsOutlined, BorderOutlined, FileSearchOutlined, FilterOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import AppHelmet from "../../../../components/Global/AppHelmet";
@@ -37,6 +37,8 @@ import SortClaimsNew from "./SortClaimsNew";
 // ]
 
 export default function Claimers() {
+  const [formFilter] = Form.useForm()
+  // const formFilter = useMemo(() => Form.createForm({}), []);
   const [openMobileFilters, setOpenMobileFilters] = useState(false)
   const [typeView, setTypeView] = useState('card')
   const [selectFilters, setSelectFilters] = useState({})
@@ -154,13 +156,13 @@ export default function Claimers() {
             </Flex>
           </Flex> */}
             {/* <FiltersClaims claimsAll={claimsAll} setSelectFilters={setSelectFilters} selectFilters={selectFilters} /> */}
-            
+
             <Flex gap={10} style={{ width: "100%" }}>
               <Flex vertical style={{ marginTop: 0, width: 350, border: `1px solid ${token.colorBorder}`, padding: 10, borderRadius: 10, backgroundColor: token.colorBgBase }} className={styles.filtersDesktop}>
                 {/* <Typography.Text strong>Фильтры:</Typography.Text> */}
-                <FiltersClaimsNew filters={filtersClaims?.filters} setSelectFilters={setSelectFilters} />
+                <FiltersClaimsNew formFilter={formFilter} filters={filtersClaims?.filters} setSelectFilters={setSelectFilters} />
               </Flex>
-              <Flex vertical style={{ flex: 1 }}>
+              <Flex vertical style={{ flex: 1 }} >
                 <Flex style={{ marginLeft: 10 }} gap={10} justify="space-between">
                   <div className={styles.filtersMobile}>
                     <FilterOutlined style={{ fontSize: 24, cursor: "pointer" }} onClick={() => { setOpenMobileFilters(true) }} />
@@ -173,10 +175,6 @@ export default function Claimers() {
                 </Flex>
                 <ClaimsList selectFilters={selectFilters} selectSort={selectSort} typeView={typeView} />
               </Flex>
-            </Flex>
-            <Flex justify="flex-end">
-
-
             </Flex>
           </>
 
@@ -191,7 +189,7 @@ export default function Claimers() {
           setOpenMobileFilters(false)
         }}
       >
-        <FiltersClaimsNew filters={filtersClaims?.filters} setSelectFilters={setSelectFilters} mobile closeDrawer={() => { setOpenMobileFilters(false) }} />
+        <FiltersClaimsNew formFilter={formFilter} filters={filtersClaims?.filters} setSelectFilters={setSelectFilters} mobile closeDrawer={() => { setOpenMobileFilters(false) }} />
       </Drawer>
     </>
   );
