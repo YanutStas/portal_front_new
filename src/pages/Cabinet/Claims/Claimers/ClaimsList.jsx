@@ -14,12 +14,24 @@ export default function ClaimsList({ selectFilters, selectSort, typeView }) {
     const [pageSize, setPageSize] = useState(10)
 
     useEffect(() => {
+
+        // const currentPage = (selectFilters || selectSort) && page !== 1 ? 1 : page;
         fetchClaims(page, pageSize, selectFilters, selectSort);
-    }, [page, pageSize, selectFilters, selectSort]);
+    }, [page, pageSize]);
+
+    useEffect(() => {
+        if (page === 1) {
+            fetchClaims(page, pageSize, selectFilters, selectSort);
+        } else {
+            setPage(1);
+        }
+    }, [selectFilters, selectSort]);
+
+
 
     // console.log("claimsAll", claimsAll)
     return (
-        <>        
+        <>
             <Flex wrap={"wrap"} gap={20} style={{ marginTop: 20, marginBottom: 20, width: "100%" }} >
                 {loadingClaims &&
                     <Flex gap={10} style={{ width: "100%" }} wrap={"wrap"}>
@@ -62,6 +74,7 @@ export default function ClaimsList({ selectFilters, selectSort, typeView }) {
                         }
                     }}
                     defaultCurrent={page}
+                    current={page}
                     showTotal={total => `Всего ${total}`}
                     pageSize={pageSize}
                     total={metaClaims?.total}
