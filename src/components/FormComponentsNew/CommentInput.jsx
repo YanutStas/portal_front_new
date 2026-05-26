@@ -6,6 +6,7 @@ export default function CommentInput({
   name = "name",
   label = "Label",
   disabled = false,
+  length = undefined,
   placeholder = "",
   required = false,
   dependOf = false,
@@ -30,6 +31,8 @@ export default function CommentInput({
         placeholder={placeholder}
         disabled={disabled}
         autoSize={{ minRows: 2, maxRows: 6 }}
+        maxLength={length}
+        showCount
       />
     </Form.Item>
   );
