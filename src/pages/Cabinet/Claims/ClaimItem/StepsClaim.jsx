@@ -129,6 +129,7 @@ function GetCards({ item, claimId, versionId, reloadClaim, index }) {
               }}
               value={item.component?.qrCode?.value || "https://mosoblenergo.ru/"}
               title={item.component?.qrCode?.name || "QR код"}
+              paymentDetails={item.component?.paymentDetails || false}
             />
             {/* <Modal
               open={openModalQR}
@@ -316,9 +317,9 @@ export default function StepsClaim({ claimId, versionId, reloadClaim, activeProc
   console.log("steps", steps);
   return (
     <>
-    {!steps&&
-    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}  description="Нет данных"/>
-    }
+      {!steps &&
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Нет данных" />
+      }
       {steps && steps?.items &&
         <Collapse defaultActiveKey={[steps?.items?.findIndex(item => item.component.current)]} items={steps?.items?.map((item, index) => ({
           key: index,

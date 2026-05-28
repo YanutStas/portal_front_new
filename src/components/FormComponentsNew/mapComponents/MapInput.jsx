@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Button, Card, Tag, Form, Flex,theme } from "antd";
-import MapModal from "./MapModal";
+import MapModal from "./MapModalNew";
 
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
+// import pdfMake from "pdfmake/build/pdfmake";
+// import pdfFonts from "pdfmake/build/vfs_fonts";
 import WrapperComponent from "../WrapperComponent";
 import CoordinatesDisplay from "./CoordinatesDisplay";
 import InfoDrawer from "../../InfoDrawer";
 
-pdfMake.vfs = pdfFonts.vfs;
+// pdfMake.vfs = pdfFonts.vfs;
 
 export default function MapInput({
   name = "name",
