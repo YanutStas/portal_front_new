@@ -49,7 +49,7 @@ export const QrModal = ({ open, onCancel, value, title, paymentDetails }) => {
         {
             key: '2',
             label: 'Реквизиты',
-            children: (paymentDetails && paymentDetails.length > 0) ? <Descriptions size='small' column={1} items={paymentDetails} /> : false,
+            children: (paymentDetails && paymentDetails.length > 0) ? <Descriptions size='small' column={1} items={paymentDetails} layout="vertical"/> : false,
         },
     ];
 
