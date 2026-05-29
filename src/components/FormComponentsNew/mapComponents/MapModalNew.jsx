@@ -3,11 +3,12 @@ import { useState } from "react";
 import MapDisplay from "./MapDisplay";
 
 export default function MapModalNew({ visible, initialValue, onSave, onCancel, type = null }) {
-    const [selectedPoint, setSelectedPoint] = useState([0,0])
-    const [polygonPoints, setPolygonPoints] = useState()
+    const [selectedPoint, setSelectedPoint] = useState([])
+    const [polygonPoints, setPolygonPoints] = useState([])
     return (
         <>
             <Modal
+                // destroyOnHidden
                 title="Выберите координаты на карте"
                 open={visible}
                 onCancel={onCancel}
@@ -27,7 +28,7 @@ export default function MapModalNew({ visible, initialValue, onSave, onCancel, t
                     </Button>,
                 ]}
             >
-                <MapDisplay coordinates={selectedPoint} setSelectedPoint={setSelectedPoint}/>
+                <MapDisplay coordinates={selectedPoint} polygonPoints={polygonPoints} setPolygonPoints={setPolygonPoints} setSelectedPoint={setSelectedPoint} />
             </Modal>
         </>
     )
