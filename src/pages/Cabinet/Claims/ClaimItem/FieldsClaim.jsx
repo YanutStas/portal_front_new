@@ -112,7 +112,7 @@ export default function FieldsClaim({ template, values }) {
         return singleTextField(index, label, value)
     }
     const getDivider = (index, label) => {
-        return <Divider key={index} orientation='left' style={{ margin: 10, whiteSpace: "normal" }}>{label}</Divider>
+        return <Divider key={index} titlePlacement='start' style={{ margin: 10, whiteSpace: "normal" }}>{label}</Divider>
     }
     const getMap = (index, label, idLine, valItem = false) => {
         // console.log("index", index);

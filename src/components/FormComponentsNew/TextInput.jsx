@@ -1,4 +1,4 @@
-import { Form, Input, AutoComplete, InputNumber } from "antd";
+import { Form, Input, AutoComplete, InputNumber, theme } from "antd";
 import { useState, useEffect, useCallback } from "react";
 import { debounce } from "lodash";
 import axios from "axios";
@@ -41,6 +41,7 @@ export default function TextInput({
   style = false,
   read = false
 }) {
+  const token = theme.useToken().token
   const testData = useGlobal((state) => state.testData)
   // const serviceItem = useServices((state) => state.serviceItem);
   // if (label === "Номер записи в ЕГРЮЛ") {
@@ -49,11 +50,11 @@ export default function TextInput({
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const form = Form.useFormInstance();
-  if(label==="Номер записи в ЕГРЮЛ"){
+  if (label === "Номер записи в ЕГРЮЛ") {
 
-    console.log("type",type);
+    console.log("type", type);
   }
-  
+
   useEffect(() => {
     if (testData) {
       type === "Фамилия" && form.setFieldValue(name, "Иванов")
@@ -155,6 +156,7 @@ export default function TextInput({
       message: "Это поле обязательное",
     },
   ];
+  console.log(token);
 
   // Рендерим AutoComplete для полей, связанных с DaData
   const autoComplete = (
@@ -178,6 +180,12 @@ export default function TextInput({
         placeholder={placeholder}
         disabled={disabled}
         maxLength={length || undefined}
+        styles={{
+          input: {
+            fontSize: 18,
+            fontFamily: token.fontFamily
+          }
+        }}
       />
     </Form.Item>
   );

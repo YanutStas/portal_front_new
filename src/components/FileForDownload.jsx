@@ -17,6 +17,7 @@ import { Button, Descriptions, Flex, message, Modal, Spin, Typography, theme, To
 import checkSig from "./Cabinet/checkSig";
 import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, DownloadOutlined, SafetyOutlined } from '@ant-design/icons'
 import PdfDownloader from "./PdfDownloader";
+import Preloader from "./Main/Preloader";
 const typeFile = {
   pdf,
   doc,
@@ -30,8 +31,9 @@ const typeFile = {
   noext
 };
 // const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
-export default function FileForDownload({ type, id, name, size, date = false, signs = false, sig = false, idDocForCheckSig = false }) {
+export default function FileForDownload({ type, id, name, size, date = false, signs = false, sig = false, idDocForCheckSig = false, dateAdd = false, img = false }) {
   const token = theme.useToken().token
+  const [openModal, setOpenModal] = useState(false)
   const [chekingValue, setChekingValue] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const [isChecking, setIsChecking] = useState(false)
@@ -40,7 +42,7 @@ export default function FileForDownload({ type, id, name, size, date = false, si
   const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
-    console.log("chekingValue", chekingValue)
+    // console.log("chekingValue", chekingValue)
   }, [chekingValue])
 
   let jsonReport = false
@@ -53,9 +55,9 @@ export default function FileForDownload({ type, id, name, size, date = false, si
   }
   return (
     <>
-      <Flex vertical gap={10} style={{ marginBottom: 20, marginTop: 20 }}>
+      <Flex vertical gap={10} wrap={"wrap"}>
         {contextHolder}
-        <Flex gap={5} align="center" >
+        <Flex gap={5} align="center" wrap={"wrap"}>
           <Flex gap={10} align="center">
             <a
               onClick={async () => {
@@ -70,34 +72,38 @@ export default function FileForDownload({ type, id, name, size, date = false, si
                     }
                   } catch (error) {
                     console.log(error);
-
                   }
                   setDownloading(false)
                 }
               }}
             >
-              <Flex align="center" gap={5} >
-
+              <Flex align="center" gap={5}>
                 <Flex justify="center" align="center" >
-                  <img src={typeFile[type] ? typeFile[type] : typeFile.noext} alt={`icon ${type}`} style={{ maxWidth: 50 }} />
+                  {img ? img :
+                    <img src={typeFile[type] ? typeFile[type] : typeFile.noext} alt={`icon ${type}`} style={{ maxWidth: 30 }} />
+                  }
                 </Flex>
                 <Flex vertical>
-                  <span className={styles.docLine__name} style={{ color: token.colorText }}>{name}</span>
-                  <span className={styles.docLine__fileInfo} style={{ color: token.colorTextDescription }}>
-                    {Number(size / 1000) > 1000
-                      ? `${(Number(size / 1000) / 1000).toFixed(2)}МБ`
-                      : `${Math.round(Number(size / 1000))}КБ`}
-                  </span>
-                  {date &&
-                    <span className={styles.docLine__fileInfo} style={{ marginLeft: 10 }}>{moment(date).format('DD.MM.YYYY HH.mm')}</span>
-                  }
+                  <Typography.Text>{name}</Typography.Text>
+                  <Flex gap={5}>
+
+                    {date &&
+                      <Typography.Text type="secondary">{moment(date).format('DD.MM.YYYY HH:mm')}</Typography.Text>
+                    }
+                    <Typography.Text type="secondary">
+                      {Number(size / 1000) > 1000
+                        ? `${(Number(size / 1000) / 1000).toFixed(2)}МБ`
+                        : `${Math.round(Number(size / 1000))}КБ`}
+                    </Typography.Text>
+                    {/* <Typography.Text type="secondary">{dateAdd && moment(dateAdd).format('DD.MM.YYYY HH:mm')}</Typography.Text> */}
+                  </Flex>
                 </Flex>
                 {downloading && <Spin />}
               </Flex>
             </a>
             {!downloading && <Tooltip styles={{ body: { fontSize: 12 } }} placement="top" title={"Скачать"} color="#0061aa"> <Button
               icon={<DownloadOutlined style={{ fontSize: 24 }} />}
-              size="large"
+              size="medium"
 
               onClick={async () => {
                 if (!downloading) {
@@ -118,7 +124,8 @@ export default function FileForDownload({ type, id, name, size, date = false, si
               }}
               className={styles.iconButton}
             // style={{ color: token.colorTextDescription }}
-            /></Tooltip>}
+            />
+            </Tooltip>}
           </Flex>
           {/* {sig && <SafetyOutlined className={styles.iconButton} style={{ fontSize: 24 }} size="small"
               onClick={async () => {
@@ -141,27 +148,33 @@ export default function FileForDownload({ type, id, name, size, date = false, si
                 // console.log("idDocForCheckSig", idDocForCheckSig);
               }}
             />} */}
-          {sig && <Tooltip styles={{ body: { fontSize: 12 } }} placement="top" title={"Проверить"} color="#0061aa"><Button disabled={isChecking} style={{ fontSize: 14 }} icon={<SafetyOutlined style={{ fontSize: 24 }} />}
-            size="large"
-            onClick={async () => {
-              setIsChecking(true)
-              const checked = await checkSig(idDocForCheckSig, id)
-
-              setIsChecking(false)
-              if (checked && checked.status === "OK") {
-                // console.log("checked",JSON.parse(checked.data));
-                setChekingValue(checked.data)
-              } else {
-                messageApi.open({
-                  type: 'error',
-                  content: 'Ошибка проверки подписи',
-                });
-              }
-              // console.log("id", id);
-              // console.log("idDocForCheckSig", idDocForCheckSig);
-            }}
-          /></Tooltip>}
-
+          {sig &&
+            // <Tooltip styles={{ body: { fontSize: 12 } }} placement="top" title={"Проверить"} color="#0061aa">
+              <Button
+                disabled={isChecking}
+                style={{ fontSize: 14 }}
+                // icon={<SafetyOutlined style={{ fontSize: 24 }} />}
+                size="middle"
+                onClick={async () => {
+                  setIsChecking(true)
+                  setOpenModal(true)
+                  const checked = await checkSig(idDocForCheckSig, id)
+                  setIsChecking(false)
+                  if (checked && checked.status === "OK") {
+                    // console.log("checked",JSON.parse(checked.data));
+                    setChekingValue(checked.data)
+                  } else {
+                    messageApi.open({
+                      type: 'error',
+                      content: 'Ошибка проверки подписи',
+                    });
+                  }
+                  // console.log("id", id);
+                  // console.log("idDocForCheckSig", idDocForCheckSig);
+                }}
+              >О подписи</Button>
+            // </Tooltip> 
+          }
         </Flex>
         {signs && <div style={{ marginLeft: 40, }}>
           {signs.map((item, index) => <FileForDownload sig={true} key={index} type={item.ext} name={item.name} id={item.id} size={item.size} idDocForCheckSig={id} />)}
@@ -170,13 +183,20 @@ export default function FileForDownload({ type, id, name, size, date = false, si
       </Flex>
       {sig &&
         <Modal
-          open={chekingValue}
+          open={openModal}
           onCancel={() => {
-            setChekingValue(false)
+            setOpenModal(false)
           }}
           width={800}
           footer
+          title={name}
         >
+          {!chekingValue &&
+            <>
+              <Preloader />
+              <Typography.Title level={3} style={{ marginBottom: 20, textAlign: "center" }}>Проверка подписи...</Typography.Title>
+            </>
+          }
           {chekingValue &&
             <>
               {/* <Typography.Title style={{ color: "green" }} level={5}>{chekingValue.description}</Typography.Title> */}

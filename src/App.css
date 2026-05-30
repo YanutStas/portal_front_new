@@ -173,6 +173,17 @@ button,
   border-style: solid;
 }
 
+
+/* Базовые стили для flex-контейнера */
+.custom-pagination.ant-pagination {
+  display: flex;
+  flex-wrap: wrap;       /* Разрешаем перенос элементов */
+  justify-content: center;
+  gap: 8px;              /* Отступы между элементами */
+}
+
+
+
 @media (max-width: 1800px) {
   .formElement {}
 }
@@ -223,4 +234,24 @@ button,
   .mainContentAuth {
     margin: 64px 0 0 0;
   }
+}
+/* При ширине контейнера ≤ 576px переносим селектор на новую строку */
+@media (max-width: 576px) {
+  .custom-pagination .ant-pagination-options {
+    flex-basis: 100%;    /* Занимает всю ширину → перенос */
+    justify-content: center;
+    margin-top: 4px;     /* Небольшой отступ сверху */
+  }
+  
+  /* Опционально: если включён showQuickJumper, его тоже можно выровнять */
+  .custom-pagination .ant-pagination-jumper {
+    flex-basis: 100%;
+    justify-content: center;
+  }
+}
+@media only screen and (max-width: 576px) {
+    :where(.css-dev-only-do-not-override-tql0nm).ant-pagination .ant-pagination-options {
+        display: flex;
+        gap: 10px;
+    }
 }

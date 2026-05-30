@@ -1,6 +1,6 @@
-import { Button, Card, Collapse, ConfigProvider, Drawer, Flex, Modal, Tag, Timeline, Typography, theme } from 'antd'
+import { Badge, Button, Card, Collapse, ConfigProvider, Descriptions, Drawer, Flex, Modal, Radio, Table, Tag, Timeline, Tree, Typography, theme, QRCode, Empty } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileTextOutlined, InfoCircleOutlined, LikeOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileTextOutlined, InfoCircleOutlined, LikeOutlined, DownloadOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { color } from 'framer-motion';
 import moment from 'moment';
 import ActionItem from '../../../../components/Cabinet/Action/ActionItem';
@@ -9,21 +9,297 @@ import TaskItem from '../../../../components/Cabinet/Action/TaskItem';
 import FileForDownload from '../../../../components/FileForDownload';
 import Preloader from '../../../../components/Main/Preloader';
 import MarkDownText from '../../../../components/MarkDownText/MarkDownText';
+import ImagePublic from '../../../../components/ImagePublic';
+
+import icon from '../../../../img/header/logo-sun.png'
+import { QrModal } from '../../../../components/QrModal';
 
 
-export default function StepsClaim({ steps = false, claimId, versionId, reloadClaim }) {
+function GetCards({ item, claimId, versionId, reloadClaim, index }) {
+  const [openModalAction, setOpenModalAction] = useState(false)
+  const [openModalQR, setOpenModalQR] = useState(false)
+  let actions = undefined
+  if (item.type === "file") {
+    actions = [<DownloadOutlined onClick={() => { }} />, <FileUnknownOutlined />]
+  }
+  // console.log("openModalQR", openModalQR);
+
+  return (
+    <>
+      <Card
+        styles={{
+          body: {
+            // backgroundColor: item.style?.backgroundСolor,
+            padding: 10
+          },
+          root: {
+
+            flex: 1,
+            maxWidth: "100%"
+          }
+        }}
+        style={{
+          // borderColor: "gray", 
+        }}
+      // actions={actions}
+      >
+        {/* Если это файл то ... */}
+        {(item.type === "file" || item.type === "sign") &&
+          <FileForDownload
+            type={item.component?.ext}
+            name={item.component?.name}
+            id={item.component?.id}
+            size={item.component?.size}
+            sig={item.type === "sign"}
+            idDocForCheckSig={item.component?.baseFile?.id}
+            date={item.component?.date}
+            img={<>{item.style?.picture?.id && <div style={{ width: 30, height: 30 }}><ImagePublic img={item.style?.picture} /></div>}</>}
+          />}
+
+        {/* Если это все остальное ... */}
+        {(item.type !== "file" && item.type !== "task" && item.type !== "sign") && <Flex gap={5}>
+          <>{item.style?.picture?.id && <div style={{ width: 30, height: 30 }}><ImagePublic img={item.style?.picture} /></div>}</>
+          <Flex vertical >
+            <Flex
+              align='center'
+              gap={5}
+              wrap="wrap"
+              style={{
+                // color: item.style?.textСolor 
+                maxWidth: "100%"
+              }}
+            >
+              <Typography.Text style={{ fontSize: 16, whiteSpace: "balance" }}>{item.component?.name || item.component?.currentStatus?.label}</Typography.Text>
+              {(item.component?.shortDescription || item.component?.currentStatus?.label) && <Tag variant='outlined' color={item.style?.textСolor || "magenta"}>{item.component?.shortDescription || item.component?.currentStatus?.label}</Tag>}
+            </Flex>
+            <Typography.Text type="secondary">{item.component?.date && moment(item.component?.date).format('DD.MM.YYYY HH:mm')}</Typography.Text>
+          </Flex>
+        </Flex>
+          //   <Card.Meta
+          //   avatar={<>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}</>}
+          //   title={
+          //     <Flex
+          //       align='center'
+          //       gap={5}
+          //       wrap="wrap"
+          //       style={{
+          //         // color: item.style?.textСolor 
+          //         maxWidth: "100%"
+          //       }}
+          //     >
+          //       <Typography.Text style={{ fontSize: 16, whiteSpace: "balance" }}>{item.component?.name || item.component?.currentStatus?.label}</Typography.Text>
+          //       {(item.component?.shortDescription || item.component?.currentStatus?.label) && <Tag variant='outlined' color={item.style?.textСolor || "magenta"}>{item.component?.shortDescription || item.component?.currentStatus?.label}</Tag>}
+          //     </Flex>}
+          //   description={item.component?.date && moment(item.component?.date).format('DD.MM.YYYY HH:mm')}
+          //   styles={{
+          //     title: {
+          //       marginBottom: 0
+          //     },
+          //     root: {
+          //       maxWidth: "100%"
+          //     }
+          //   }}
+
+          // />
+        }
+
+        {/* Если это задача с типом ПЛАН ... */}
+        {item.type === "task" && item.component.type === "plan" &&
+          <Button type='primary' style={{ marginTop: 10, fontSize: 16 }} onClick={() => {
+            setOpenModalAction({ id: item.component.id, title: item.component.label, taskBasis: item.component.taskBasis, buttonText: item.component.buttonText })
+          }}>{item.component.label}</Button>}
+
+        {/* Если есть описание карточки ... */}
+        {(item.component?.description || item.component?.currentStatus?.description) && <Typography.Paragraph>{item.component?.description || item.component?.currentStatus?.description}</Typography.Paragraph>}
+
+        {item.type === "stagePayments" && item.component?.items?.length > 0 &&
+          <Descriptions items={item.component?.items} bordered />
+        }
+        {item.type === "stagePayments" &&
+          item.component?.qrCode &&
+
+          <Flex justify='flex-end' style={{ marginTop: 10 }}>
+            <Button type='primary' onClick={() => {
+              setOpenModalQR(true)
+            }}>Оплатить</Button>
+            <QrModal
+              open={openModalQR}
+              onCancel={() => {
+                setOpenModalQR(false)
+              }}
+              value={item.component?.qrCode?.value || "https://mosoblenergo.ru/"}
+              title={item.component?.qrCode?.name || "QR код"}
+              paymentDetails={item.component?.paymentDetails || false}
+            />
+            {/* <Modal
+              open={openModalQR}
+              onCancel={() => {
+                setOpenModalQR(false)
+              }}
+              title={ item.component?.qrCode?.name||"QR код"}
+              width={550}
+              footer={false}
+            >
+              <QRCode
+                errorLevel="H"
+                size={500}
+                value={item.component?.qrCode?.value || "https://mosoblenergo.ru/"}
+              // icon={icon}
+              // iconSize={60}
+              />
+            </Modal> */}
+          </Flex>
+        }
+      </Card>
+      {openModalAction &&
+        <ActionItem
+          title={openModalAction.title}
+          open={!!openModalAction}
+          actionId={openModalAction.id}
+          claimId={claimId}
+          versionId={versionId}
+          buttonText={openModalAction.buttonText}
+          taskBasis={openModalAction.taskBasis}
+          onCancel={() => {
+            setOpenModalAction(false)
+            reloadClaim()
+          }}
+        />
+      }
+    </>
+  )
+}
+function GetNeighbors({ neighbors, claimId, versionId, reloadClaim }) {
+  return (
+    <>
+      {neighbors?.map((item, index) => (<GetCards index={index} key={index} item={item} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />))}
+    </>
+  )
+}
+
+function GetChildren({ childrenArr, level, claimId, versionId, reloadClaim }) {
+  return <Flex
+    vertical
+    gap={10}
+    style={{ marginLeft: 15 * level - 15 }}
+  >
+    {childrenArr?.map((item, index) =>
+      <Flex vertical gap={10} key={index}>
+        <Flex gap={3} align='stretch' wrap='wrap' justify='stretch' style={{ width: "100%" }}>
+          <GetCards index={index} item={item} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />
+          {item.neighbors && <GetNeighbors neighbors={item.neighbors} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />}
+        </Flex>
+        {item.children && <GetChildren childrenArr={item.children} level={level + 1} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />}
+      </Flex>
+    )}
+  </Flex>
+}
+// const selectElement = (step, index) => {
+//   if (step.type === "step") {
+//   }
+// }
+
+
+function processTreeData(data) {
+  // Счетчик для генерации уникальных ключей
+  let uniqueKeyCounter = 0;
+  const defaultExpandedKeys = []
+
+  /**
+   * Рекурсивная функция обработки одного узла
+   */
+  function traverse(node) {
+    if (!node || typeof node !== 'object') return;
+
+    // 1. Добавляем/обновляем свойства для текущего узла
+    // Если component существует, берем имя, иначе пустая строка
+    const name = (node.component && node.component.name) ? node.component.name : (node.component && node.component.currentStatus && node.component.currentStatus.label) ? node.component.currentStatus.label : '';
+    if (node.component?.state === "inAction") defaultExpandedKeys.push(uniqueKeyCounter)
+    node.title = <Flex gap={10} align='center' wrap='wrap'>
+      <Card
+        styles={{
+          body: {
+            backgroundColor: node.style?.backgroundСolor,
+            padding: 5
+          }
+        }}
+        style={{ borderColor: "gray" }} >
+        <Card.Meta title={<Flex gap={10} align='center'>{node.style?.picture?.id && <ImagePublic img={node.style?.picture} />}<span style={{ color: node.style?.textСolor }}>{name}</span></Flex>} />
+      </Card>
+      {node.neighbors && node.neighbors.map((item, index) => <Card
+        key={index}
+        styles={{
+          body: {
+            backgroundColor: item.style?.backgroundСolor,
+            padding: 5
+          }
+        }}
+        style={{ borderColor: "gray" }} >
+        <Card.Meta title={<Flex gap={10} align='center'>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}<span style={{ color: node.style?.textСolor }}>{item.component?.name || item.component?.currentStatus?.label}</span></Flex>} />
+      </Card>)}
+    </Flex>
+
+
+    // Генерируем уникальный ключ. 
+    // Можно использовать просто счетчик или комбинацию: `${node.type}_${node.component?.id}_${uniqueKeyCounter++}`
+    node.key = `key_${uniqueKeyCounter++}`;
+
+    // 2. Если есть массив children, проходим по нему рекурсивно
+    if (Array.isArray(node.children)) {
+      node.children.forEach(child => {
+        traverse(child);
+      });
+    }
+  }
+
+  // Запускаем обработку для каждого элемента корневого массива
+  if (Array.isArray(data)) {
+    data.forEach(item => {
+      traverse(item);
+    });
+  }
+
+  return { data, defaultExpandedKeys };
+}
+
+
+export default function StepsClaim({ claimId, versionId, reloadClaim, activeProcessTrees }) {
+
+  const [steps, setSteps] = useState({})
+
+  const [loadingSteps, setLoadingSteps] = useState(false)
   // const fetchClaimItem = useClaims((state) => state.fetchClaimItem);
   const loadingDataByClaim = useClaims((state) => state.loadingDataByClaim);
   const fetchDataByClaim = useClaims((state) => state.fetchDataByClaim);
   const token = theme.useToken().token
   // console.log(token)
+  const [changeSteps, setChangeSteps] = useState([])
   const [openDrawer, setOpenDrawer] = useState(null)
-  const [openModalAction, setOpenModalAction] = useState(false)
+
   const [openModalTask, setOpenModalTask] = useState(false)
   const [reload, setReload] = useState(false)
+
+  async function fetchSteps() {
+    try {
+      setLoadingSteps(true)
+      setSteps((await fetchDataByClaim(claimId, "steps", activeProcessTrees))?.steps)
+      setLoadingSteps(false)
+    } catch (error) {
+      console.log('Проблемы загрузки steps')
+    }
+  }
+  // console.log("activeProcessTrees", activeProcessTrees);
   useEffect(() => {
-    fetchDataByClaim(claimId, "steps")
-  }, [reload])
+
+    fetchSteps()
+  }, [reload, activeProcessTrees])
+  useEffect(() => {
+    if (steps) {
+      setChangeSteps(processTreeData(steps.items))
+      // console.log("changeSteps", changeSteps);
+    }
+
+  }, [steps])
   const handlerOpenDrawer = (title, content) => {
     setOpenDrawer({
       title,
@@ -33,181 +309,40 @@ export default function StepsClaim({ steps = false, claimId, versionId, reloadCl
   const handlerCloseDrawer = () => {
     setOpenDrawer(null)
   }
-  if (loadingDataByClaim) {
+  if (loadingSteps) {
     return <Preloader />
   }
 
+
+  console.log("steps", steps);
   return (
     <>
-      {steps &&
-        <>
-          <ConfigProvider
-            theme={{
-              token: {
-                fontSize: 20
-              },
-              components: {
-                Timeline: {
-                  dotBg: token.colorBgLayout,
-                  tailWidth: 3,
-                  dotBorderWidth: 3
-                },
-              },
-            }}>
-            <Timeline
-              style={{ fontSize: 30, marginTop: 10 }}
-              // mode='alternate'
-              items={steps.map(item => {
-                if (item.type === "status" || item.type === "statua") {
-                  return {
-                    children: <div style={{ position: "relative" }}>
-                      <Flex vertical justify='center' align='flex-start' style={{ marginBottom: 10, marginLeft: 5 }}>
-                        <Typography.Text style={{ color: "gray", fontSize: 14 }}>{moment(item.date).format('DD.MM.YYYY HH:mm')}</Typography.Text>
-                        <Flex gap={5} vertical align='flex-start'>
-                          <Tag >{item.name}</Tag>
-                          {item.action?.type === "fact" && item.shortDescription &&
-                            <Flex>
-                              <Typography.Text>{item.shortDescription}</Typography.Text>
-                              <InfoCircleOutlined style={{ marginBottom: 10, fontSize: 14, color: "#E37021" }} onClick={() => { handlerOpenDrawer(item.shortDescription, item.description) }} />
-                            </Flex>
-                          }
-                          {item.action?.type !== "fact" && item.shortDescription &&
-                            <Card
-                              size='small'
-                              styles={{ title: { fontSize: 16 }, header: { padding: 10 }, body: { fontSize: 16 } }}
-                              title={item.shortDescription}
-                            >
-                              <MarkDownText
-                                fontSize={16}
-                              >{item.description}</MarkDownText>
-                            </Card>
-                          }
-                          {/* <Collapse size='small' items={[{
-                            key: '1',
-                            label: item.shortDescription,
-                            children: <MarkDownText>{item.description}</MarkDownText>,
-                          },]} /> */}
-                        </Flex>
-                        {item.files && <>
-                          {item.files.map((item, index) =>
-                            <FileForDownload key={index} type={item.ext} name={item.name} id={item.id} size={item.size} signs={item.signs} />
-                          )}
-                        </>}
-                        {item.action && item.action.type === "plan" &&
-                          <Button type='primary' style={{ marginTop: 10, fontSize: 16 }} onClick={() => {
-                            // console.log(item.action.id);
-                            setOpenModalAction({ id: item.action.id, title: item.action.label, taskBasis: item.action.taskBasis, buttonText: item.action.buttonText })
-                          }}>{item.action.label}</Button>}
-                        {item.action && item.action.type === "fact" &&
-                          <Flex gap={1} align='baseline' vertical style={{ borderLeft: `4px solid ${item.action.currentStatus?.color || "#52c41a"}`, paddingLeft: 5, borderRadius: 3, marginLeft: 10 }}>
-                            <a
-                              style={{ color: "#0061aa" }}
-                              onClick={() => {
-                                console.log(item.action.currentStatus?.id);
-                                setOpenModalTask({ id: item.action.id, title: item.action.typeAction.label, })
-                              }}>{item.action.typeAction.label}</a>
-                            <Typography.Text style={{ color: "gray", fontSize: 14 }}>
-                              {item.action.currentStatus.label}
-                            </Typography.Text>
-                            <Typography.Text style={{ color: "gray", fontSize: 14 }}>
-                              {moment(item.action.date).format("DD.MM.YYYY HH:mm")}
-                            </Typography.Text>
-                            {item.action.email &&
-                              <Typography.Text style={{ color: "gray", fontSize: 14 }}>
-                                {item.action.email}
-                              </Typography.Text>
-                            }
-                            <Typography.Text style={{ color: "gray", fontSize: 14 }}>
-                              №{item.action.number}
-                            </Typography.Text>
-                          </Flex>
-                        }
-                      </Flex>
-                      <div style={{ position: "absolute", height: "100%", width: 3, borderRadius: 3, backgroundColor: item.color || "#52c41a", top: 0, left: -3 }}></div>
-                    </div>,
-                    color: item.color || "green"
-                  }
-                }
-                if (item.type === "step") {
-                  return {
-                    children: <Flex style={{ marginBottom: 10, marginLeft: 10 }} gap={5}>
-                      <Typography.Text>{item.name}</Typography.Text>
-                      {item.description && <InfoCircleOutlined style={{ marginBottom: 10, fontSize: 14, color: "gray" }} onClick={() => { handlerOpenDrawer(item.name, item.description) }} />}
-                    </Flex>,
-                    dot: item.state === "completed" ?
-                      <CheckCircleOutlined style={{ color: item.color || "#52c41a", fontSize: 30 }} /> :
-                      (item.state === "noAction" ? <CloseCircleOutlined style={{ color: item.color || "red", fontSize: 30 }} /> :
-                        <ClockCircleOutlined className="timeline-clock-icon" style={{ color: item.color || (item.current ? "blue" : "gray"), fontSize: 30 }} />)
-                  }
-                }
-                return undefined
-              })}
-            />
-          </ConfigProvider>
-
-          <Drawer
-            title={openDrawer?.title}
-            closable={{ 'aria-label': 'Close Button' }}
-            onClose={handlerCloseDrawer}
-            open={openDrawer}
-          >
-            {openDrawer?.content}
-          </Drawer>
-          {/* <Modal
-            title={openModalAction.title}
-            open={!!openModalAction}
-            onCancel={() => {
-              setOpenModalAction(false)
-              fetchDataByClaim(claimId, "steps")
-
-            }}
-            footer={false}
-            destroyOnHidden={true}
-          // width={300}
-          // style={{minWidth:300}}
-          > */}
-          {openModalAction &&
-            <ActionItem
-              title={openModalAction.title}
-              open={!!openModalAction}
-              actionId={openModalAction.id}
-              claimId={claimId}
-              versionId={versionId}
-              buttonText={openModalAction.buttonText}
-              taskBasis={openModalAction.taskBasis}
-              onCancel={() => {
-                setOpenModalAction(false)
-                reloadClaim()
-              }}
-            />
-          }
-          {/* </Modal> */}
-          <Modal
-            title={openModalTask.title}
-            open={!!openModalTask}
-            onCancel={() => {
-              setOpenModalTask(false)
-              // fetchClaimItem(claimId)
-            }}
-            footer={false}
-            destroyOnHidden={true}
-            width={"80%"}
-          >
-            <TaskItem
-              taskId={openModalTask.id}
-              // claimId={claimId}
-              // versionId={versionId}
-              // buttonText={openModalAction.buttonText}
-              // taskBasis={openModalAction.taskBasis}
-              onCancel={() => {
-                setOpenModalTask(false)
-              }}
-            />
-          </Modal>
-        </>
-      }
       {!steps &&
-        <Typography.Text>Информация по этапам отсутствует</Typography.Text>
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Нет данных" />
+      }
+      {steps && steps?.items &&
+        <Collapse defaultActiveKey={[steps?.items?.findIndex(item => item.component.current)]} items={steps?.items?.map((item, index) => ({
+          key: index,
+          label: <Flex align='center' gap={5}>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}{item.component?.name}{item.children?.length && <span style={{ color: "gray" }}>({item.children?.length})</span>}</Flex>,
+          children: <GetChildren childrenArr={item.children} level={1} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />,
+          styles: {
+            header: {
+              // backgroundColor: item.style?.backgroundСolor,
+            },
+          }
+        }))} />
+        // <Tree
+        //   selectable={false}
+        //   showLine={<p>234</p>}
+        //   treeData={changeSteps.data}
+        //   defaultExpandedKeys={changeSteps.defaultExpandedKeys}
+        //   styles={{
+        //     itemIcon: {
+        //       color: 'red'
+        //     }
+        //   }}
+        // />
+
       }
     </>
   )

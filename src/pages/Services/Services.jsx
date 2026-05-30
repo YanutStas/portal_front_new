@@ -124,9 +124,9 @@ export default function Services() {
           />
         ) : (
           <>
-            <Title level={1} className={styles.title}>
+            {/* <Title level={1} className={styles.title}>
               {services && services.label || "Каталог услуг"}
-            </Title>
+            </Title> */}
             {services && services.services?.length > 0 ? (
               <Flex wrap="wrap" style={{ width: "100%" }} className={styles.flexContainer}>
                 {services.services

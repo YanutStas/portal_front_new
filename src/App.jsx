@@ -40,6 +40,7 @@ import Error from "./pages/Error";
 import CheckSig from "./pages/CheckSig";
 import Version from "./pages/Version";
 import Privacy from "./pages/Privacy";
+import LkPage from "./pages/Cabinet/Lk/LkPage";
 
 const { Content } = Layout;
 
@@ -150,7 +151,8 @@ export default function App() {
                   <Route path="documents" element={<Documents />} />
                   <Route path="checking" element={<Checking />} />
                   <Route path="claimers" element={<Claimers />} />
-                  <Route path="lk/:id" element={<Lk />} />
+                  <Route path="lk/:id" element={<LkPage/>} />
+                  <Route path="lkpage/:id" element={<LkPage />} />
                   <Route path="claimers/:id" element={<ClaimItem />} />
                   <Route path="archives" element={<Archives />} />
                 </Route>

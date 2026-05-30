@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Typography, Button, Steps, Tabs, Modal, Result, Flex, Badge, theme, Descriptions, ConfigProvider, } from "antd";
-import { useParams, useSearchParams } from "react-router-dom";
+import { Typography, Button, Steps, Tabs, Modal, Result, Flex, Badge, theme, Descriptions, ConfigProvider, Radio, } from "antd";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 // import pdfMake from "pdfmake/build/pdfmake";
 import useClaims from "../../../../stores/Cabinet/useClaims";
 // import ChatComponent from "../ChatComponent/ChatComponent";
@@ -19,6 +19,8 @@ import StepsClaim from "./StepsClaim";
 import Preloader from "../../../../components/Main/Preloader";
 import Container from "../../../../components/Container";
 import InfoClaim from "./InfoClaim";
+import { LeftOutlined } from '@ant-design/icons';
+
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -34,12 +36,15 @@ export default function ClaimItem() {
   const [openSuccessPay, setOpenSuccessPay] = useState(false);
   const [searchParams] = useSearchParams()
 
+  const [activeProcessTrees, setActiveProcessTrees] = useState(false)
+
   const claim = useClaims((state) => state.claim);
   const loadingClaim = useClaims((state) => state.loadingClaim);
   const fetchClaimItem = useClaims((state) => state.fetchClaimItem);
   const { id } = useParams();
 
   const token = theme.useToken().token
+  const navigate = useNavigate();
   // console.log("searchParams", searchParams);
   // console.log("claim", claim);
 
@@ -67,8 +72,32 @@ export default function ClaimItem() {
   const tabs = [
     {
       key: 1,
-      label: <Badge count={claim?.countTasks} offset={[0, 5]}><Typography.Text style={{ padding: "10px 10px" }}>Процесс выполнения</Typography.Text></Badge>,
-      children: <StepsClaim steps={claim?.steps} claimId={claim?.id} versionId={claim?.versionId} reloadClaim={reloadClaim} />,
+      label: <Badge count={claim?.countTasks} offset={[0, 5]}><Typography.Text style={{ padding: "10px 10px" }}>Процесс</Typography.Text></Badge>,
+      children: <Flex vertical gap={10}>
+        {claim?.processTrees && claim?.processTrees.length > 1 &&
+          <div style={{ marginBottom: 20 }}>
+            <Radio.Group
+              optionType="button"
+              size="middle"
+              defaultValue={() => {
+                setActiveProcessTrees(claim?.processTrees?.find((item, index) => item.current || index === 0)?.id)
+              }}
+              onChange={(e) => {
+                setActiveProcessTrees(e.target.value)
+              }}
+              value={activeProcessTrees}
+              options={claim?.processTrees?.map((item) =>
+              ({
+                label: item.name,
+                value: item.id
+              })
+              )}
+            />
+
+          </div>
+        }
+        <StepsClaim claimId={claim?.id} versionId={claim?.versionId} reloadClaim={reloadClaim} activeProcessTrees={activeProcessTrees} />
+      </Flex>,
     },
     // {
     //   key: 4,
@@ -83,27 +112,28 @@ export default function ClaimItem() {
     {
       key: 6,
       label: <Typography.Text style={{ padding: "10px 10px" }}>Информация по заявке</Typography.Text>,
-      children: <InfoClaim template={claim?.template} values={claim?.values} pdf={pdf} />,
+      children: <InfoClaim template={claim?.template} values={claim?.values} pdf={pdf} claimId={claim?.id} />,
     },
     {
       key: 3,
       label: <Badge count={claim?.files?.reduce((acc, item) => {
         return acc + item.docs?.length
       }, 0)} offset={[0, 5]} color="gray"><Typography.Text style={{ padding: "10px 10px" }}>Документы</Typography.Text></Badge>,
-      children: <Docs files={claim?.files} />,
+      children: <Docs files={claim?.files} claimId={claim?.id} />,
     },
     {
       key: 5,
       label: <Badge count={claim?.countAppeals} offset={[0, 5]}><Typography.Text style={{ padding: "10px 10px" }}>Обращения</Typography.Text></Badge>,
-      children: <Appeals claimId={claim?.id} appealsByClaim={claim?.appeals} reloadClaim={reloadClaim}/>,
+      children: <Appeals claimId={claim?.id} appealsByClaim={claim?.appeals} reloadClaim={reloadClaim} />,
     },
   ]
 
 
-  console.log("claim", claim);
+  // console.log("claim", claim);
 
   return (
     <Container>
+      <Button icon={<LeftOutlined />} onClick={() => navigate(-1)}>Назад</Button>
       {loadingClaim &&
         <Preloader />
       }
@@ -134,12 +164,12 @@ export default function ClaimItem() {
                   {
                     key: '2',
                     label: 'По услуге',
-                    children: claim.template.label,
+                    children: claim.template?.label,
                   },
                   {
                     key: '3',
                     label: 'Код услуги',
-                    children: claim.template.codeService,
+                    children: claim.template?.codeService,
                   },
                 ]} />
               </ConfigProvider>
@@ -250,7 +280,7 @@ export default function ClaimItem() {
             onCancel={() => { setOpenDescService(false) }}
             width={"min(1600px, 100%)"}
           >
-            <ServiceItem currentKey={claim.template?.id} blockButton={true}/>
+            <ServiceItem currentKey={claim.template?.id} blockButton={true} />
           </Modal>
 
 

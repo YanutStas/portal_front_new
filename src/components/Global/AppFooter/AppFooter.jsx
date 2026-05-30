@@ -25,7 +25,7 @@ export default function AppFooter() {
       // className={`${auth ? styles.footerContentAuth : styles.footerContent}`}
       className={styles.footerContent}
     >
-      <Space direction="vertical" size="large" align="center">
+      <Space orientation="vertical" size="large" align="center">
         {/* Социальные сети */}
         <Row gutter={[16, 16]} justify="center">
           <Col>
