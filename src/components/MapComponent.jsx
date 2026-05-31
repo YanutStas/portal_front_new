@@ -22,14 +22,18 @@ import { fromLonLat } from 'ol/proj';
  */
 const MapComponent = ({
   coordinates,
-  iconUrl = 'https://png.pngtree.com/png-vector/20241030/ourmid/pngtree-3d-location-icon-png-image_14163078.png',
+  iconUrl = 'data:image/svg+xml;base64,' + btoa(`
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                  <path fill="#ff4d4f" stroke="#fff" stroke-width="2" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                </svg>
+            `),
   // iconUrl = 'https://openlayers.org/en/latest/examples/data/icon.png',
-  scale = 0.15,
+  scale = 1.3,
   anchor = [0.5, 1]
 }) => {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
-  console.log("coordinates", coordinates);
+  // console.log("coordinates", coordinates);
 
   useEffect(() => {
     if (!coordinates || coordinates.length === 0) return;
@@ -128,7 +132,7 @@ const MapComponent = ({
         mapInstanceRef.current = null;
       }
     };
-  }, [coordinates, iconUrl, scale, anchor]);
+  }, [coordinates]);
 
   return <div ref={mapRef} style={{ width: '100%', height: '500px' }} />;
 };
