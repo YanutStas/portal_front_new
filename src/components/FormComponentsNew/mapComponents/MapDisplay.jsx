@@ -51,25 +51,36 @@ const tileSources = {
     }),
     visible: false
   }),
-  'YandexScheme': new TileLayer({
+  'rgis_sat': new TileLayer({
     source: new XYZ({
-      // ИСПРАВЛЕНО: убрана восьмерка после {x}
-      url: 'https://core-renderer-tiles.maps.yandex.net/tiles?l=map&x={x}&y={y}&z={z}&scale=1&lang=ru_RU',
+      // url: 'https://rgis.mosreg.ru/wmts/ofm2020/16/39756/20599.jpeg',
+      url: 'https://rgis.mosreg.ru/wmts/ofm2020/{z}/{x}/{y}.jpeg',
       maxZoom: 18,
-      attributions: '&copy; <a href="https://yandex.ru/maps">Yandex карты</a>'
+      crossOrigin: 'anonymous',
+      attributions: '&copy; РГИС МО'
     }),
     visible: false
   }),
-  'YandexSat': new TileLayer({
-    source: new XYZ({
-      // Рабочий шаблон для Яндекс Спутника
-      url: 'https://core-sat.maps.yandex.net/tiles?l=sat&v=3.926.0&z={z}&x={x}&y={y}&scale=1&lang=ru_RU',
-      maxZoom: 18,
-      crossOrigin: 'anonymous',
-      attributions: '&copy; Yandex Maps'
-    }),
-    visible: false
-  })
+  // 'YandexScheme': new TileLayer({
+  //   source: new XYZ({
+  //     // ИСПРАВЛЕНО: убрана восьмерка после {x}
+  //     url: 'https://core-renderer-tiles.maps.yandex.net/tiles?l=map&x={x}&y={y}&z={z}&scale=1&lang=ru_RU',
+  //     maxZoom: 18,
+  //     attributions: '&copy; <a href="https://yandex.ru/maps">Yandex карты</a>'
+  //   }),
+  //   visible: false
+  // }),
+  // 'YandexSat': new TileLayer({
+  //   source: new XYZ({
+  //     // Рабочий шаблон для Яндекс Спутника
+  //     url: 'https://core-renderer-tiles.maps.yandex.ru/tiles?l=skl&x={x}&y={y}&z={z}&scale=1&lang=ru_RU',
+  //     // url: 'https://core-sat.maps.yandex.net/tiles?l=sat&v=3.926.0&z={z}&x={x}&y={y}&scale=1&lang=ru_RU',
+  //     maxZoom: 18,
+  //     crossOrigin: 'anonymous',
+  //     attributions: '&copy; Yandex Maps'
+  //   }),
+  //   visible: false
+  // })
 };
 
 // Хелпер для форматирования числа до 6 знаков
@@ -185,9 +196,10 @@ const MapWithLayerSwitcher = ({
       target: mapRef.current,
       layers: [
         tileSources['2gis'],
-        tileSources['YandexScheme'],
-        tileSources['YandexSat'],
+        // tileSources['YandexScheme'],
+        // tileSources['YandexSat'],
         tileSources['rgis'],
+        tileSources['rgis_sat'],
         vectorLayer
       ],
       view: new View({
@@ -461,9 +473,10 @@ const MapWithLayerSwitcher = ({
         <Flex justify='flex-end'>
           <Radio.Group value={activeLayer} onChange={(e) => setActiveLayer(e.target.value)} optionType="button" buttonStyle="solid" size="small">
             <Radio.Button value="2gis">2GIS</Radio.Button>
-            <Radio.Button value="YandexScheme">Yandex схема</Radio.Button>
-            <Radio.Button value="YandexSat">Yandex спутник</Radio.Button>
             <Radio.Button value="rgis">РГИС</Radio.Button>
+            <Radio.Button value="rgis_sat">РГИС спутник</Radio.Button>
+            {/* <Radio.Button value="YandexScheme">Yandex схема</Radio.Button>
+            <Radio.Button value="YandexSat">Yandex спутник</Radio.Button> */}
           </Radio.Group>
         </Flex>
         <div ref={mapRef} style={{ width: '100%', height: '400px', borderRadius: '8px', overflow: 'hidden', border: '1px solid #d9d9d9' }} />
