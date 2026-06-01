@@ -115,7 +115,7 @@ function GetCards({ item, claimId, versionId, reloadClaim, index }) {
         {item.type === "stagePayments" && item.component?.items?.length > 0 &&
           <Descriptions items={item.component?.items} bordered />
         }
-        {item.type === "stagePayments" &&
+        {(item.type === "stagePayments" || item.type === "planFactOfPayment") &&
           item.component?.qrCode &&
 
           <Flex justify='flex-end' style={{ marginTop: 10 }}>
