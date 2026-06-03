@@ -317,10 +317,10 @@ export default function StepsClaim({ claimId, versionId, reloadClaim, activeProc
   console.log("steps", steps);
   return (
     <>
-      {!steps &&
+      {(!steps || steps?.items?.length === 0) &&
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Нет данных" />
       }
-      {steps && steps?.items &&
+      {steps && steps?.items && steps?.items.length > 0 &&
         <Collapse defaultActiveKey={[steps?.items?.findIndex(item => item.component.current)]} items={steps?.items?.map((item, index) => ({
           key: index,
           label: <Flex align='center' gap={5}>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}{item.component?.name}{item.children?.length && <span style={{ color: "gray" }}>({item.children?.length})</span>}</Flex>,
