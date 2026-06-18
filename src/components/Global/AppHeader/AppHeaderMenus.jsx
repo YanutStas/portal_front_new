@@ -93,6 +93,11 @@ export function RightMenuArea({
               Заявки
             </Button>
           </Link>
+          <Link to={"/cabinet/personal_accounts"}>
+            <Button>
+              ЛК
+            </Button>
+          </Link>
           <UserOutlined style={{ fontSize: 28 }}
             onClick={() => { setIsOpenProfileMenu(true) }}
           />
