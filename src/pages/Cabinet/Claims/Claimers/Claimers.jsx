@@ -53,13 +53,13 @@ export default function Claimers() {
   const fetchClaimsDataset = useClaims((state) => state.fetchClaimsDataset);
 
 
-  const personalAccounts = usePersonalAccounts((state) => state.personalAccounts);
-  const fetchPersonalAccounts = usePersonalAccounts((state) => state.fetchPersonalAccounts);
+  // const personalAccounts = usePersonalAccounts((state) => state.personalAccounts);
+  // const fetchPersonalAccounts = usePersonalAccounts((state) => state.fetchPersonalAccounts);
 
   const { token } = theme.useToken();
 
   useEffect(() => {
-    fetchPersonalAccounts();
+    // fetchPersonalAccounts();
     fetchClaimsDataset("filters");
   }, []);
 
@@ -77,12 +77,12 @@ export default function Claimers() {
         {/* <Title level={1}>Заявки</Title> */}
 
         <div className={styles.claimsContainer}>
-          {personalAccounts.length === 0 &&
+          {/* {personalAccounts.length === 0 &&
             <Empty
               image={Empty.PRESENTED_IMAGE_SIMPLE}
               description={"Поданных заявок пока нет"}
             />
-          }
+          } */}
           {/* {personalAccounts && personalAccounts.length > 0 && <Divider titlePlacement="start">
             <Flex gap={10} align="center">
               <UserOutlined style={{ fontSize: 24 }} />
