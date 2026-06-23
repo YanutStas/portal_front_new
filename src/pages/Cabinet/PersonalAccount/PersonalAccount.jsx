@@ -306,7 +306,7 @@ export default function PersonalAccounts() {
                     <Collapse defaultActiveKey={[personalAccounts?.data?.steps?.items?.findIndex(item => item.component.current)]} items={personalAccounts?.data?.steps?.items?.map((item, index) => ({
                         key: index,
                         label: <Flex align='center' gap={5}>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}{item.component?.name}{item.children?.length && <span style={{ color: "gray" }}>({item.children?.length})</span>}</Flex>,
-                        children: <GetChildren childrenArr={item.children} level={1} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />,
+                        children: <GetChildren childrenArr={item.children} level={1} claimId={null} versionId={null} reloadClaim={null} />,
                         styles: {
                             header: {
                                 // backgroundColor: item.style?.backgroundСolor,
