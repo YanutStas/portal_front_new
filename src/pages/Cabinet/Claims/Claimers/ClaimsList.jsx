@@ -11,7 +11,7 @@ export default function ClaimsList({ selectFilters, selectSort, typeView }) {
     const metaClaims = useClaim((state) => state.metaClaims);
     const loadingClaims = useClaim((state) => state.loadingClaims);
     const [page, setPage] = useState(1)
-    const [pageSize, setPageSize] = useState(10)
+    const [pageSize, setPageSize] = useState(12)
 
     useEffect(() => {
 
@@ -77,6 +77,7 @@ export default function ClaimsList({ selectFilters, selectSort, typeView }) {
                     current={page}
                     showTotal={total => `Всего ${total}`}
                     pageSize={pageSize}
+                    pageSizeOptions={[12, 24, 48, 96]}
                     total={metaClaims?.total}
                     showSizeChanger
                     onChange={(page, pageSize) => {

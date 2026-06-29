@@ -41,6 +41,7 @@ import CheckSig from "./pages/CheckSig";
 import Version from "./pages/Version";
 import Privacy from "./pages/Privacy";
 import LkPage from "./pages/Cabinet/Lk/LkPage";
+import PersonalAccounts from "./pages/Cabinet/PersonalAccount/PersonalAccount";
 
 const { Content } = Layout;
 
@@ -152,6 +153,7 @@ export default function App() {
                   <Route path="checking" element={<Checking />} />
                   <Route path="claimers" element={<Claimers />} />
                   <Route path="lk/:id" element={<LkPage/>} />
+                  <Route path="personal_accounts" element={<PersonalAccounts/>} />
                   <Route path="lkpage/:id" element={<LkPage />} />
                   <Route path="claimers/:id" element={<ClaimItem />} />
                   <Route path="archives" element={<Archives />} />

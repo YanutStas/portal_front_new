@@ -14,6 +14,8 @@ import CabinetMenuNew from "../../Cabinet/CabinetMenuNew";
 import ProfileNew from "../../../pages/Cabinet/Profile/ProfileNew";
 const { Text } = Typography
 
+const version = import.meta.env.VITE_BACK_VERSION;
+
 export const items = [
   {
     key: "/services",
@@ -93,6 +95,13 @@ export function RightMenuArea({
               Заявки
             </Button>
           </Link>
+          {version === "local" || version === "test" &&
+            <Link to={"/cabinet/personal_accounts"}>
+              <Button>
+                ЛК
+              </Button>
+            </Link>
+          }
           <UserOutlined style={{ fontSize: 28 }}
             onClick={() => { setIsOpenProfileMenu(true) }}
           />
