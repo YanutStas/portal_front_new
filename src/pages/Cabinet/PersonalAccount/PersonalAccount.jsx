@@ -1,0 +1,322 @@
+
+import axios from "axios";
+const backServer = import.meta.env.VITE_BACK_BACK_SERVER;
+
+import { Badge, Button, Card, Collapse, ConfigProvider, Descriptions, Drawer, Flex, Modal, Radio, Table, Tag, Timeline, Tree, Typography, theme, QRCode, Empty } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileTextOutlined, InfoCircleOutlined, LikeOutlined, DownloadOutlined, FileUnknownOutlined } from "@ant-design/icons";
+import { color } from 'framer-motion';
+import moment from 'moment';
+import ActionItem from '../../../components/Cabinet/Action/ActionItem';
+import useClaims from "../../../stores/Cabinet/useClaims";
+import TaskItem from '../../../components/Cabinet/Action/TaskItem';
+import FileForDownload from '../../../components/FileForDownload';
+import Preloader from '../../../components/Main/Preloader';
+import MarkDownText from '../../../components/MarkDownText/MarkDownText';
+import ImagePublic from '../../../components/ImagePublic';
+
+import icon from '../../../img/header/logo-sun.png'
+import { QrModal } from '../../../components/QrModal';
+
+
+function GetCards({ item, claimId, versionId, reloadClaim, index }) {
+    const [openModalAction, setOpenModalAction] = useState(false)
+    const [openModalQR, setOpenModalQR] = useState(false)
+    let actions = undefined
+    if (item.type === "file") {
+        actions = [<DownloadOutlined onClick={() => { }} />, <FileUnknownOutlined />]
+    }
+    // console.log("openModalQR", openModalQR);
+
+    return (
+        <>
+            <Card
+                styles={{
+                    body: {
+                        // backgroundColor: item.style?.backgroundСolor,
+                        padding: 10
+                    },
+                    root: {
+
+                        flex: 1,
+                        maxWidth: "100%"
+                    }
+                }}
+                style={{
+                    // borderColor: "gray", 
+                }}
+            // actions={actions}
+            >
+                {/* Если это файл то ... */}
+                {(item.type === "file" || item.type === "sign") &&
+                    <FileForDownload
+                        type={item.component?.ext}
+                        name={item.component?.name}
+                        id={item.component?.id}
+                        size={item.component?.size}
+                        sig={item.type === "sign"}
+                        idDocForCheckSig={item.component?.baseFile?.id}
+                        date={item.component?.date}
+                        img={<>{item.style?.picture?.id && <div style={{ width: 30, height: 30 }}><ImagePublic img={item.style?.picture} /></div>}</>}
+                    />}
+
+                {/* Если это все остальное ... */}
+                {(item.type !== "file" && item.type !== "task" && item.type !== "sign") && <Flex gap={5}>
+                    <>{item.style?.picture?.id && <div style={{ width: 30, height: 30 }}><ImagePublic img={item.style?.picture} /></div>}</>
+                    <Flex vertical >
+                        <Flex
+                            align='center'
+                            gap={5}
+                            wrap="wrap"
+                            style={{
+                                // color: item.style?.textСolor 
+                                maxWidth: "100%"
+                            }}
+                        >
+                            <Typography.Text style={{ fontSize: 16, whiteSpace: "balance" }}>{item.component?.name || item.component?.currentStatus?.label}</Typography.Text>
+                            {(item.component?.shortDescription || item.component?.currentStatus?.label) && <Tag variant='outlined' color={item.style?.textСolor || "magenta"}>{item.component?.shortDescription || item.component?.currentStatus?.label}</Tag>}
+                        </Flex>
+                        <Typography.Text type="secondary">{item.component?.date && moment(item.component?.date).format('DD.MM.YYYY HH:mm')}</Typography.Text>
+                    </Flex>
+                </Flex>
+                    //   <Card.Meta
+                    //   avatar={<>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}</>}
+                    //   title={
+                    //     <Flex
+                    //       align='center'
+                    //       gap={5}
+                    //       wrap="wrap"
+                    //       style={{
+                    //         // color: item.style?.textСolor 
+                    //         maxWidth: "100%"
+                    //       }}
+                    //     >
+                    //       <Typography.Text style={{ fontSize: 16, whiteSpace: "balance" }}>{item.component?.name || item.component?.currentStatus?.label}</Typography.Text>
+                    //       {(item.component?.shortDescription || item.component?.currentStatus?.label) && <Tag variant='outlined' color={item.style?.textСolor || "magenta"}>{item.component?.shortDescription || item.component?.currentStatus?.label}</Tag>}
+                    //     </Flex>}
+                    //   description={item.component?.date && moment(item.component?.date).format('DD.MM.YYYY HH:mm')}
+                    //   styles={{
+                    //     title: {
+                    //       marginBottom: 0
+                    //     },
+                    //     root: {
+                    //       maxWidth: "100%"
+                    //     }
+                    //   }}
+
+                    // />
+                }
+
+                {/* Если это задача с типом ПЛАН ... */}
+                {item.type === "task" && item.component.type === "plan" &&
+                    <Button type='primary' style={{ marginTop: 10, fontSize: 16 }} onClick={() => {
+                        setOpenModalAction({ id: item.component.id, title: item.component.label, taskBasis: item.component.taskBasis, buttonText: item.component.buttonText })
+                    }}>{item.component.label}</Button>}
+
+                {/* Если есть описание карточки ... */}
+                {(item.component?.description || item.component?.currentStatus?.description) && <Typography.Paragraph>{item.component?.description || item.component?.currentStatus?.description}</Typography.Paragraph>}
+
+                {item.type === "stagePayments" && item.component?.items?.length > 0 &&
+                    <Descriptions items={item.component?.items} bordered />
+                }
+                {(item.type === "stagePayments" || item.type === "planFactOfPayment") &&
+                    item.component?.qrCode &&
+
+                    <Flex justify='flex-end' style={{ marginTop: 10 }}>
+                        <Button type='primary' onClick={() => {
+                            setOpenModalQR(true)
+                        }}>Оплатить</Button>
+                        <QrModal
+                            open={openModalQR}
+                            onCancel={() => {
+                                setOpenModalQR(false)
+                            }}
+                            value={item.component?.qrCode?.value || "https://mosoblenergo.ru/"}
+                            title={item.component?.qrCode?.name || "QR код"}
+                            paymentDetails={item.component?.paymentDetails || false}
+                        />
+                        {/* <Modal
+              open={openModalQR}
+              onCancel={() => {
+                setOpenModalQR(false)
+              }}
+              title={ item.component?.qrCode?.name||"QR код"}
+              width={550}
+              footer={false}
+            >
+              <QRCode
+                errorLevel="H"
+                size={500}
+                value={item.component?.qrCode?.value || "https://mosoblenergo.ru/"}
+              // icon={icon}
+              // iconSize={60}
+              />
+            </Modal> */}
+                    </Flex>
+                }
+            </Card>
+            {openModalAction &&
+                <ActionItem
+                    title={openModalAction.title}
+                    open={!!openModalAction}
+                    actionId={openModalAction.id}
+                    claimId={claimId}
+                    versionId={versionId}
+                    buttonText={openModalAction.buttonText}
+                    taskBasis={openModalAction.taskBasis}
+                    onCancel={() => {
+                        setOpenModalAction(false)
+                        reloadClaim()
+                    }}
+                />
+            }
+        </>
+    )
+}
+function GetNeighbors({ neighbors, claimId, versionId, reloadClaim }) {
+    return (
+        <>
+            {neighbors?.map((item, index) => (<GetCards index={index} key={index} item={item} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />))}
+        </>
+    )
+}
+
+function GetChildren({ childrenArr, level, claimId, versionId, reloadClaim }) {
+    return <Flex
+        vertical
+        gap={10}
+        style={{ marginLeft: 15 * level - 15 }}
+    >
+        {childrenArr?.map((item, index) =>
+            <Flex vertical gap={10} key={index}>
+                <Flex gap={3} align='stretch' wrap='wrap' justify='stretch' style={{ width: "100%" }}>
+                    <GetCards index={index} item={item} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />
+                    {item.neighbors && <GetNeighbors neighbors={item.neighbors} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />}
+                </Flex>
+                {item.children && <GetChildren childrenArr={item.children} level={level + 1} claimId={claimId} versionId={versionId} reloadClaim={reloadClaim} />}
+            </Flex>
+        )}
+    </Flex>
+}
+// const selectElement = (step, index) => {
+//   if (step.type === "step") {
+//   }
+// }
+
+
+function processTreeData(data) {
+    // Счетчик для генерации уникальных ключей
+    let uniqueKeyCounter = 0;
+    const defaultExpandedKeys = []
+
+    /**
+     * Рекурсивная функция обработки одного узла
+     */
+    function traverse(node) {
+        if (!node || typeof node !== 'object') return;
+
+        // 1. Добавляем/обновляем свойства для текущего узла
+        // Если component существует, берем имя, иначе пустая строка
+        const name = (node.component && node.component.name) ? node.component.name : (node.component && node.component.currentStatus && node.component.currentStatus.label) ? node.component.currentStatus.label : '';
+        if (node.component?.state === "inAction") defaultExpandedKeys.push(uniqueKeyCounter)
+        node.title = <Flex gap={10} align='center' wrap='wrap'>
+            <Card
+                styles={{
+                    body: {
+                        backgroundColor: node.style?.backgroundСolor,
+                        padding: 5
+                    }
+                }}
+                style={{ borderColor: "gray" }} >
+                <Card.Meta title={<Flex gap={10} align='center'>{node.style?.picture?.id && <ImagePublic img={node.style?.picture} />}<span style={{ color: node.style?.textСolor }}>{name}</span></Flex>} />
+            </Card>
+            {node.neighbors && node.neighbors.map((item, index) => <Card
+                key={index}
+                styles={{
+                    body: {
+                        backgroundColor: item.style?.backgroundСolor,
+                        padding: 5
+                    }
+                }}
+                style={{ borderColor: "gray" }} >
+                <Card.Meta title={<Flex gap={10} align='center'>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}<span style={{ color: node.style?.textСolor }}>{item.component?.name || item.component?.currentStatus?.label}</span></Flex>} />
+            </Card>)}
+        </Flex>
+
+
+        // Генерируем уникальный ключ. 
+        // Можно использовать просто счетчик или комбинацию: `${node.type}_${node.component?.id}_${uniqueKeyCounter++}`
+        node.key = `key_${uniqueKeyCounter++}`;
+
+        // 2. Если есть массив children, проходим по нему рекурсивно
+        if (Array.isArray(node.children)) {
+            node.children.forEach(child => {
+                traverse(child);
+            });
+        }
+    }
+
+    // Запускаем обработку для каждого элемента корневого массива
+    if (Array.isArray(data)) {
+        data.forEach(item => {
+            traverse(item);
+        });
+    }
+
+    return { data, defaultExpandedKeys };
+}
+
+
+
+
+export default function PersonalAccounts() {
+    const [personalAccounts, setPersonalAccounts] = useState()
+    async function fetchPersonalAccounts() {
+        try {
+            const url = `${backServer}/api/cabinet/personalAccounts`
+            const res = await axios.get(url, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+                },
+                withCredentials: true,
+            })
+            console.log(res.data);
+
+            if (!res.data) return console.log("Аккаунтов нет");
+            setPersonalAccounts(res.data)
+        } catch (error) {
+            console.log(error);
+
+        }
+
+    }
+    useEffect(() => {
+        fetchPersonalAccounts()
+    }, [])
+    console.log(personalAccounts);
+
+    return (
+        <>
+            <Typography.Title>Личные кабинеты</Typography.Title>
+            <>
+                {(!personalAccounts || personalAccounts?.data?.steps?.items?.length === 0) &&
+                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Нет данных" />
+                }
+                {personalAccounts?.data?.steps && personalAccounts?.data?.steps?.items && personalAccounts?.data?.steps?.items.length > 0 &&
+                    <Collapse defaultActiveKey={[personalAccounts?.data?.steps?.items?.findIndex(item => item.component.current)]} items={personalAccounts?.data?.steps?.items?.map((item, index) => ({
+                        key: index,
+                        label: <Flex align='center' gap={5}>{item.style?.picture?.id && <ImagePublic img={item.style?.picture} />}{item.component?.name}{item.children?.length && <span style={{ color: "gray" }}>({item.children?.length})</span>}</Flex>,
+                        children: <GetChildren childrenArr={item.children} level={1} claimId={null} versionId={null} reloadClaim={null} />,
+                        styles: {
+                            header: {
+                                // backgroundColor: item.style?.backgroundСolor,
+                            },
+                        }
+                    }))} />
+
+
+                }
+            </>
+        </>
+    )
+}
