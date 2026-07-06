@@ -59,7 +59,7 @@ export default function DateInput({
             // format={"DD.MM.YYYY"}
             placeholder={placeholder}
             onChange={(date, dateString) => {
-              console.log("dateString", dateString);
+              // console.log("dateString", dateString);
 
             }}
           // required={required}

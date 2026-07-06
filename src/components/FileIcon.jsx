@@ -16,7 +16,7 @@ const type = {
     noext
 };
 export default function FileIcon({ name, sizeKb, url = false, ext = undefined, index = 1, download = undefined, onClick = undefined }) {
-    console.log("ext", ext);
+    // console.log("ext", ext);
 
     return (
 

@@ -156,7 +156,7 @@ export default function TextInput({
       message: "Это поле обязательное",
     },
   ];
-  console.log(token);
+  // console.log(token);
 
   // Рендерим AutoComplete для полей, связанных с DaData
   const autoComplete = (
