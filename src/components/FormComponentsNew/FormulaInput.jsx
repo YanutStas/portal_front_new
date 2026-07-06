@@ -116,7 +116,7 @@ export default function FormulaInput({
       })
       try {
         const evalu = evaluate(temp.formula).toFixed(ractionDigits);
-        console.log("evalu",evalu);
+        // console.log("evalu",evalu);
         if (!isNaN(evalu) && evalu !== values[name]) {
           form.setFieldValue(name, Number(evalu));
         }

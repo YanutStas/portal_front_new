@@ -49,7 +49,7 @@ export default function InnInput({
       })
       .then((response) => {
         if (response.data && response.data.data) {
-          console.log(response.data);
+          // console.log(response.data);
           setOptions(
             response.data.data.map((item) => ({
               value: item.value,
