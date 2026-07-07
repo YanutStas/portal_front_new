@@ -51,15 +51,16 @@ export default function DateInput({
             message: "Это поле обязательное",
           },
         ]}
-      initialValue={moment(defaultValue)}
+        initialValue={defaultValue ? moment(defaultValue) : false}
       >
         {part === "Дата" && (
           <DatePicker
             format={{ format: "DD.MM.YYYY", type: "mask" }}
             // format={"DD.MM.YYYY"}
+            defaultValue={defaultValue}
             placeholder={placeholder}
             onChange={(date, dateString) => {
-              console.log("dateString", dateString);
+              // console.log("dateString", dateString);
 
             }}
           // required={required}
@@ -69,6 +70,7 @@ export default function DateInput({
           <DatePicker
             format={{ format: "MM.YYYY", type: "mask" }}
             // format={"MM.YYYY"}
+
             placeholder={placeholder}
             picker="month"
           // required={required}

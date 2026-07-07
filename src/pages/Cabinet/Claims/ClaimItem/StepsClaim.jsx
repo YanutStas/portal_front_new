@@ -314,7 +314,7 @@ export default function StepsClaim({ claimId, versionId, reloadClaim, activeProc
   }
 
 
-  console.log("steps", steps);
+  // console.log("steps", steps);
   return (
     <>
       {(!steps || steps?.items?.length === 0) &&
