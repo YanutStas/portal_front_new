@@ -25,10 +25,10 @@ const SubmitModal = ({ open, claim, onClose }) => {
         icon={<CheckCircleFilled style={{ fontSize: 72, color: "#52c41a" }} />}
         // Не знаю тот ли это номер заявки6 но путь будет он :)
         title={claim.number ? <Flex vertical>
-          <Typography.Text style={{fontSize:20,fontWeight:600}}>Заявка принята.</Typography.Text>
+          <Typography.Text style={{fontSize:20,fontWeight:600}}>Заявка направлена.</Typography.Text>
           <Typography.Text>Предварительный номер:</Typography.Text>
           <Typography.Text style={{fontSize:24,fontWeight:600}}> {claim.number} </Typography.Text>
-        </Flex> : `Ваша заявка принята.`}
+        </Flex> : `Ваша заявка направлена.`}
         extra={claim.service?.description ?
           <Flex gap={10} vertical>
             <Flex gap={10} wrap="wrap">
