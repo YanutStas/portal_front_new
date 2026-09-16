@@ -32,6 +32,7 @@ import AddressInputTest from "./components/FormComponentsNew/addressComponents/A
 import Answers from "./pages/Answers/Answers";
 import Test from "./pages/Test";
 import ChatGPT from "./components/Global/ChatGPT";
+import RobotAssistant from "./components/RobotAssistant/RobotAssistant"
 
 import useGlobal from "./stores/useGlobal";
 import useAuth from "./stores/useAuth";
@@ -167,6 +168,7 @@ export default function App() {
             </Content>
           </Layout>
           <AppFooter />
+          <RobotAssistant/>
         </BrowserRouter>
       </Layout>
     </ConfigProvider>
