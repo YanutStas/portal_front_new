@@ -27,7 +27,7 @@ const ErrorModal = ({ visible, error, onClose }) => {
       <br />
       <img
         src={cat}
-        alt="Сайт устал"
+        alt="Портал временно не доступен"
         style={{ width: "100%", marginTop: "20px" }}
       />
       {/* Для отображения ошибки можно использовать это место */}
@@ -39,7 +39,6 @@ const ErrorModal = ({ visible, error, onClose }) => {
             window.location.reload();
           }}
         >
-          {" "}
           Обновить страницу
         </Button>
         <Button
@@ -48,7 +47,6 @@ const ErrorModal = ({ visible, error, onClose }) => {
             window.location.replace("/");
           }}
         >
-          {" "}
           На главную страницу
         </Button>
       </Flex>
