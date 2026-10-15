@@ -2,6 +2,8 @@ import { useState } from "react";
 import pdfMake from "pdfmake/build/pdfmake";
 import calcData from "../pages/Calc/calcData.json";
 import { Parser } from "expr-eval";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.vfs;
 
 const usageCoefficients = {
   "Электроприборы инженерного назначения": 0.6,
