@@ -1,12 +1,19 @@
 // hooks/useN8nAgentStream.js
 import { useState, useCallback } from 'react';
 
+const n8nWebhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL;
+
 export const useN8nStream = () => {
     const [messages, setMessages] = useState([{ id: Date.now(), text: "Здравствуйте! Меня зовут Мособлэлектрик.\n\nПо какому вопросу Вас проконсультировать?", role: 'assistant' }]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
     const sendMessage = useCallback(async (messageText, sessionId) => {
+        if (!n8nWebhookUrl) {
+            setError('Не настроен адрес чата (VITE_N8N_WEBHOOK_URL). Обратитесь к администратору.');
+            return;
+        }
+
         const userMessage = { id: Date.now(), text: messageText, role: 'user' };
         setMessages(prev => [...prev, userMessage]);
         setIsLoading(true);
@@ -15,8 +22,7 @@ export const useN8nStream = () => {
         const controller = new AbortController();
 
         try {
-            // const response = await fetch('https://n8n.mosoblenergo.ru/webhook/f2274c46-ee15-4d83-95fe-b37796dc871a', {
-                const response = await fetch('https://n8n.mosoblenergo.ru/webhook/dcb1d216-fd9b-4bf7-828f-ddc58290803d', {
+            const response = await fetch(n8nWebhookUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -78,7 +84,7 @@ export const useN8nStream = () => {
                                 buffer = buffer.slice(i + 1).trimStart();
                                 start = 0;
                                 break;
-                            } catch (e) {
+                            } catch {
                                 // Невалидный JSON — продолжаем поиск
                                 start = openBrace + 1;
                                 break;
