@@ -46,6 +46,8 @@ import PersonalAccounts from "./pages/Cabinet/PersonalAccount/PersonalAccount";
 
 const { Content } = Layout;
 
+const version = import.meta.env.VITE_BACK_VERSION;
+
 export default function App() {
   const { darkMode, checkDarkMode } = useGlobal();
   const auth = useAuth((state) => state.auth);
@@ -153,8 +155,8 @@ export default function App() {
                   <Route path="documents" element={<Documents />} />
                   <Route path="checking" element={<Checking />} />
                   <Route path="claimers" element={<Claimers />} />
-                  <Route path="lk/:id" element={<LkPage/>} />
-                  <Route path="personal_accounts" element={<PersonalAccounts/>} />
+                  <Route path="lk/:id" element={<LkPage />} />
+                  <Route path="personal_accounts" element={<PersonalAccounts />} />
                   <Route path="lkpage/:id" element={<LkPage />} />
                   <Route path="claimers/:id" element={<ClaimItem />} />
                   <Route path="archives" element={<Archives />} />
@@ -168,7 +170,8 @@ export default function App() {
             </Content>
           </Layout>
           <AppFooter />
-          <RobotAssistant/>
+          {(version === "local" || version === "test") && <RobotAssistant />
+          }
         </BrowserRouter>
       </Layout>
     </ConfigProvider>

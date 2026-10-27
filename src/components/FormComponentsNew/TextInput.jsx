@@ -23,6 +23,14 @@ const listTypeForDadata = [
   "Район",
 ];
 
+// Поля ФИО: у них срезаем пробелы в конце значения
+const fioTypes = ["Фамилия", "Имя", "Отчество"];
+
+// "магомед оглы   " -> "магомед оглы"
+// Внутренние пробелы, дефисы и апострофы не трогаем
+const stripTrailingSpaces = (value) =>
+  typeof value === "string" ? value.replace(/\s+$/u, "") : value;
+
 export default function TextInput({
   name = "",
   label = "",
@@ -149,6 +157,22 @@ export default function TextInput({
     setValue(value); // Обновляем состояние значения
   };
 
+  // При уходе из поля ФИО убираем лишние пробелы в конце значения:
+  // на бэкенд не должно уходить "Иванов   " или "магомед оглы  ".
+  // Именно onBlur, а не normalize — иначе пробел срезался бы на каждом
+  // нажатии и "магомед оглы" нельзя было бы набрать.
+  const handlerBlur = () => {
+    if (!fioTypes.includes(type)) return;
+
+    const current = form.getFieldValue(name);
+    const trimmed = stripTrailingSpaces(current);
+
+    if (trimmed !== current) {
+      form.setFieldValue(name, trimmed);
+      setValue(trimmed);
+    }
+  };
+
   // Общий шаблон для правил валидации полей
   const formItemRules = [
     {
@@ -176,6 +200,7 @@ export default function TextInput({
         options={suggestions} // Подсказки от DaData
         onChange={handlerOnChange} // Обработчик изменения значения
         onSelect={onSelect} // Обработчик выбора значения
+        onBlur={handlerBlur} // Чистка хвостовых пробелов у ФИО
         value={value} // Текущее значение
         placeholder={placeholder}
         disabled={disabled}

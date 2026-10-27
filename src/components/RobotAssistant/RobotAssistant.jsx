@@ -34,7 +34,7 @@ const getOrCreateSessionId = () => {
 // -----------------------------------------
 
 const API_CONFIG = {
-  baseUrl: 'https://n8n.mosoblenergo.ru/webhook/f2274c46-ee15-4d83-95fe-b37796dc871a',
+  baseUrl: import.meta.env.VITE_N8N_WEBHOOK_URL,
 };
 
 // Компонент плавающей кнопки с роботом
@@ -82,10 +82,15 @@ export const RobotChatModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-  console.log(token);
 
   // Отправка сообщения на бэкенд
   const sendMessageToBackend = async (message, currentSessionId) => {
+    if (!API_CONFIG.baseUrl) {
+      throw new Error(
+        'Не задан VITE_N8N_WEBHOOK_URL — адрес робота не настроен. Добавьте переменную в .env'
+      );
+    }
+
     const url = `${API_CONFIG.baseUrl}?message=${encodeURIComponent(message)}&sessionId=${currentSessionId}`;
 
     const response = await fetch(url, {
