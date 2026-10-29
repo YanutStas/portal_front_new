@@ -1,6 +1,9 @@
 # env
 *.env
 
+# локальный список найденных проблем (не для remote)
+ISSUES.md
+
 # Logs
 logs
 *.log
