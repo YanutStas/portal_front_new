@@ -32,6 +32,7 @@ import AddressInputTest from "./components/FormComponentsNew/addressComponents/A
 import Answers from "./pages/Answers/Answers";
 import Test from "./pages/Test";
 import ChatGPT from "./components/Global/ChatGPT";
+import RobotAssistant from "./components/RobotAssistant/RobotAssistant"
 
 import useGlobal from "./stores/useGlobal";
 import useAuth from "./stores/useAuth";
@@ -44,6 +45,8 @@ import LkPage from "./pages/Cabinet/Lk/LkPage";
 import PersonalAccounts from "./pages/Cabinet/PersonalAccount/PersonalAccount";
 
 const { Content } = Layout;
+
+const version = import.meta.env.VITE_BACK_VERSION;
 
 export default function App() {
   const { darkMode, checkDarkMode } = useGlobal();
@@ -152,8 +155,8 @@ export default function App() {
                   <Route path="documents" element={<Documents />} />
                   <Route path="checking" element={<Checking />} />
                   <Route path="claimers" element={<Claimers />} />
-                  <Route path="lk/:id" element={<LkPage/>} />
-                  <Route path="personal_accounts" element={<PersonalAccounts/>} />
+                  <Route path="lk/:id" element={<LkPage />} />
+                  <Route path="personal_accounts" element={<PersonalAccounts />} />
                   <Route path="lkpage/:id" element={<LkPage />} />
                   <Route path="claimers/:id" element={<ClaimItem />} />
                   <Route path="archives" element={<Archives />} />
@@ -167,6 +170,8 @@ export default function App() {
             </Content>
           </Layout>
           <AppFooter />
+          {(version === "local" || version === "test") && <RobotAssistant />
+          }
         </BrowserRouter>
       </Layout>
     </ConfigProvider>

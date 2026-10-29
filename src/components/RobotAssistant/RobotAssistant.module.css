@@ -1,0 +1,213 @@
+/* RobotAssistant.module.css */
+.robotWidget {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  z-index: 999;
+  animation: slideIn 0.3s ease;
+}
+
+.robotWidget:hover {
+  transform: scale(1.05);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.robotAvatarWrapper {
+  position: relative;
+}
+
+.robotPulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: 70px;
+  /* border-radius: 50%; */
+  /* background: rgba(26, 95, 180, 0.3); */
+  /* animation: pulse 2s ease-in-out infinite; */
+  z-index: -1;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.3);
+    opacity: 0;
+  }
+}
+
+.robotAvatar {
+  /* background: linear-gradient(135deg, #1a5fb4, #3584e4) !important; */
+  animation: float 3s ease-in-out infinite;
+  /* box-shadow: 0 4px 20px rgba(26, 95, 180, 0.4); */
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.robotTextBubble {
+  /* background: white; */
+  padding: 12px 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  max-width: 220px;
+}
+
+.robotTextBubble::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 8px solid transparent;
+  /* border-right-color: white; */
+}
+
+.robotTextTitle {
+  display: block;
+  color: #1a5fb4 !important;
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+
+.robotTextDesc {
+  font-size: 12px !important;
+}
+
+/* Modal Styles */
+.modalHeader {
+  background: linear-gradient(135deg, #1a5fb4, #3584e4);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+}
+
+.modalAvatar {
+  /* background: rgba(255, 255, 255, 0.2); */
+}
+
+.modalHeaderInfo {
+  flex: 1;
+}
+
+.modalTitle {
+  color: white !important;
+  font-size: 16px;
+  display: block;
+}
+
+.modalStatus {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-size: 12px;
+}
+
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+}
+
+.messagesWrapper {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message {
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 18px;
+  position: relative;
+  animation: messageAppear 0.3s ease;
+}
+
+@keyframes messageAppear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.messageBot {
+  /* background: #f0f4f8; */
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+
+.messageUser {
+  /* background: linear-gradient(135deg, #1a5fb4, #3584e4); */
+  color: white;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+.messageContent {
+  /* white-space: pre-line; */
+  /* line-height: 1.5; */
+  margin-bottom: 4px;
+}
+
+.messageTime {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.inputArea {
+  padding: 16px 20px;
+  /* border-top: 1px solid #f0f0f0; */
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.chatInput {
+  flex: 1;
+}
+
+.sendButton {
+  height: 40px;
+  width: 40px;
+  background: linear-gradient(135deg, #1a5fb4, #3584e4);
+  flex-shrink: 0;
+}
+
+.sendButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #0d4a8a, #1a5fb4);
+}
+
+/* Адаптивность */
+@media (max-width: 600px) {
+  .robotTextBubble {
+    display: none;
+  }
+}
