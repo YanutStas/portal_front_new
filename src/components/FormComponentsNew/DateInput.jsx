@@ -9,6 +9,23 @@ import useGlobal from "../../stores/useGlobal";
 
 moment.locale("ru");
 
+// 1С не понимает даты позже 3000 года — ограничиваем сверху
+const MAX_DATE = moment("31.12.3000", "DD.MM.YYYY");
+const MAX_DATE_STRING = "31.12.3000";
+
+// блокирует выбор в календаре
+const disabledDate = (current) => !!current && current.isAfter(MAX_DATE, "day");
+
+// валидация ввода с клавиатуры (маска позволяет ввести любую дату)
+const dateLimitRule = {
+  validator: (_, value) => {
+    if (value && value.isAfter(MAX_DATE, "day")) {
+      return Promise.reject(new Error(`Дата не может быть позже ${MAX_DATE_STRING}`));
+    }
+    return Promise.resolve();
+  },
+};
+
 export default function DateInput({
   name = "name",
   part = "Дата",
@@ -50,6 +67,7 @@ export default function DateInput({
             required: required,
             message: "Это поле обязательное",
           },
+          dateLimitRule,
         ]}
         initialValue={defaultValue ? moment(defaultValue) : false}
       >
@@ -57,6 +75,7 @@ export default function DateInput({
           <DatePicker
             format={{ format: "DD.MM.YYYY", type: "mask" }}
             // format={"DD.MM.YYYY"}
+            disabledDate={disabledDate}
             defaultValue={defaultValue}
             placeholder={placeholder}
             onChange={(date, dateString) => {
@@ -70,7 +89,7 @@ export default function DateInput({
           <DatePicker
             format={{ format: "MM.YYYY", type: "mask" }}
             // format={"MM.YYYY"}
-
+            disabledDate={disabledDate}
             placeholder={placeholder}
             picker="month"
           // required={required}
@@ -80,6 +99,7 @@ export default function DateInput({
           <DatePicker
             format={{ format: "DD.MM.YYYY HH:mm", type: "mask" }}
             // format={"DD.MM.YYYY HH:mm"}
+            disabledDate={disabledDate}
             showTime
             placeholder={placeholder}
           // required={required}
